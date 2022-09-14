@@ -7,7 +7,7 @@
 		<style>
 		
 			#button1 {
-				position:relative; left:500px; top:150px;
+				position:relative; top:150px;
 				background-color: #0037ff;
 				border: none;
 				color: white;
@@ -28,8 +28,8 @@
 			}
 			
 			#button2 {
-				position:relative; left:750px; top:150px;
-				background-color: #f56122;
+				position:relative; top:300px;
+				background-color: #f5424b;
 				border: none;
 				color: white;
 				padding: 15px 32px;
@@ -49,7 +49,7 @@
 			}
 			
 			#button3 {
-				position:relative; left:1000px; top:150px;
+				position:relative; top:300px;
 				background-color: #ff0080;
 				border: none;
 				color: white;
@@ -70,7 +70,7 @@
 			}
 			
 			#button4 {
-				position:relative; left:315px; top:400px;
+				position:relative; top:300px;
 				background-color: #8c00ff;
 				border: none;
 				color: white;
@@ -91,7 +91,7 @@
 			}
 			
 			#button5 {
-				position:relative; left:575px; top:400px;
+				position:relative; top:300px;
 				background-color: #1bb9f7;
 				border: none;
 				color: white;
@@ -133,19 +133,25 @@
 			}
 			
 			body {
-				background-image: url('/src/social_back.jpg');
+				background-image: url('./src/social_back.jpg');
 				background-attachment: fixed;
 				background-size: cover;					
 				}
 			
+			.All {
+				text-align: center;
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 10px;
+				grid-auto-rows: 100px;
 		</style>
 	</head>
 	<body>
-		<a href='https://steamcommunity.com/profiles/76561198844357736/'><button type="button" id="button1"><img src='/src/steam.png'></button></a>
-		<a href='https://www.reddit.com/user/ArmaanLegend'><button type="button" id="button2"><img src='/src/reddit.png'></button></a>
-		<a href='https://www.instagram.com/armaan.batra14'><button type="button" id="button3"><img src='/src/insta.png'></button></a>
-		<a href='https://github.com/Diablo-The-Supreme'><button type="button" id="button4"><img src='/src/github.png'></button></a>
-		<a href='https://www.linkedin.com/in/armaan-batra-11b028220/'><button type="button" id="button5"><img src='/src/linkedin.png'></button></a>
-		<a href='https://armaanlegend.itch.io/'><button type="button" id="button6"><img src='/src/itch.png'></button></a>
+		<div class='All'>
+		<a href='https://armaanlegend.itch.io/'><button type="button" id="button2"><img src='./src/itch.png'></button></a>
+		<a href='https://www.instagram.com/armaan.batra14'><button type="button" id="button3"><img src='./src/insta.png'></button></a>
+		<a href='https://github.com/Diablo-The-Supreme'><button type="button" id="button4"><img src='./src/github.png'></button></a>
+		<a href='https://www.linkedin.com/in/armaan-batra-11b028220/'><button type="button" id="button5"><img src='./src/linkedin.png'></button></a>
+		</div>
 	</body>
 </html>
