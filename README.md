@@ -1,5 +1,5 @@
-# Diablo-The-Supreme.github.io
+# ArmaanLeg3nd.github.io
  
 Portfolio Website made solely with HTML and CSS
 
-Homepage = https://Diablo-The-Supreme.github.io/
+Homepage = https://ArmaanLeg3nd.github.io/
