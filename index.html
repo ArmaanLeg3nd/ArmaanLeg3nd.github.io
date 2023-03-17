@@ -9,7 +9,7 @@
 			#name {
 				font-size: 50px;
 				text-align: center-left;
-				padding: 100px 400px;
+				//padding: 100px 400px;
 				font-family: 'Courier New', monospace;
 			}
 			
@@ -23,10 +23,18 @@
 				font-size: 25px;
 				font-family: 'Trebuchet MS', sans-serif;
 				padding: 0px 400px;
+				text-align: center;
+				position: relative;
+				bottom: 500px;
+				display: grid;
+				grid-template-columns: repeat(1, 4fr);
+				gap: 0px;
+				grid-auto-rows: 100px;
+				
 			}
 			
 			#button1 {
-				position:relative; top:100px;
+				//position:relative; top:100px;
 				background-color: #4CAF50;
 				border: none;
 				color: white;
@@ -68,7 +76,7 @@
 			}
 			
 			#button3 {
-				position:relative; top:100px;
+				//position:relative; top:100px;
 				background-color: #f44336;
 				border: none;
 				color: white;
@@ -94,17 +102,51 @@
 				grid-template-columns: repeat(2, 1fr);
 				gap: 10px;
 				grid-auto-rows: 100px;
+				position:relative;
+				bottom: 400px;
+			}
+			
+			.wrapper {
+				height: 100vh;
+				display: grid;
+				place-items: center;
+				position: relative;
+				bottom: 200px;
+			}
+
+			.typing-demo {
+				width: 15ch;
+				animation: typing 2s steps(18), blink .5s step-end infinite alternate;
+				white-space: nowrap;
+				overflow: hidden;
+				border-right: 3px solid;
+				font-family: monospace;
+				font-size: 2em;
+			}
+
+			@keyframes typing {
+				from {
+					width: 0
+				}
+			}
+    
+			@keyframes blink {
+				50% {
+					border-color: transparent
+				}
 			}
 			
 		</style>
 	</head>
 	<body>
 		<p id="name">
+		<div class="wrapper">
+		<div class="typing-demo">
 			<b>
-				hi.<br>
-				i'm<br>
-				armaan.
+				hi. i'm armaan.
 			</b>
+		</div>
+		</div>
 		</p>
 		<p id="info">
 			<b>
@@ -113,8 +155,8 @@
 			</b>
 		</p>
 		<div class='hyper'>
-		<a href='./main/education.html'><button type="button" id="button1">Education</button></a>
-		<a href='./main/social.html'><button type="button" id="button3">Socials</button></a>
+		<a href='./main/education.html' style="cursor:default"><button type="button" id="button1">Education</button></a>
+		<a href='./main/social.html' style="cursor:default"><button type="button" id="button3">Socials</button></a>
 		</div>
 	</body>
 </html>
