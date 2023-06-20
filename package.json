@@ -1,7 +1,7 @@
 {
   "name": "armaanleg3nd.github.io",
   "version": "0.1.0",
-  "homepage": "https://armaanleg3nd.github.io/armaanleg3nd.github.io/",
+  "homepage": "https://armaanleg3nd.github.io/",
   "private": true,
   "dependencies": {
     "@fontsource/press-start-2p": "^5.0.3",
@@ -29,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build",
+    "deploy": "gh-pages -b React-Integration -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
