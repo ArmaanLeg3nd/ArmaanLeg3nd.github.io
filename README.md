@@ -14,7 +14,8 @@ This project was built using these technologies.
 * Tailwind CSS(SCSS)
 * Vscode
 
-<br/>
+## To do
+* Add a certifications section
 
 # Getting Started with Create React App 
   
@@ -86,3 +87,4 @@ This project was built using these technologies.
  ### `npm run build` fails to minify 
   
  This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
