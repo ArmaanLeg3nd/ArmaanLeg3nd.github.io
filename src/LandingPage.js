@@ -7,26 +7,30 @@ import { FaItchIo } from 'react-icons/fa';
 import LoadingScreen from "./LoadingScreen";
 
 const LandingPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
     }, 2000);
-    handleShowHideSidebar();
-    handleEscKey();
     handleTyping();
-    handleSideBarClick();
   }, []);
-
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isMenuButtonHovered, setIsMenuButtonHovered] = useState(false);
-  const menuButtonClass = isMenuButtonHovered ? "menu-button-hovered" : "";
 
   const handleShowHideSidebar = () => {
-    setSidebarOpen((prevSidebarOpen) => !prevSidebarOpen);
+    if (isOpen) {
+      setSidebarOpen(false);
+      setIsOpen(false);
+    } else {
+      setSidebarOpen(true);
+      setIsOpen(true);
+    }
   };
+  
 
   const handleSideBarClick = (target) => {
+    setIsOpen(!isOpen);
     const targetElement = document.querySelector(target);
     if (targetElement) {
       window.scrollTo({
@@ -36,29 +40,6 @@ const LandingPage = () => {
     }
 
     setSidebarOpen(false);
-  };
-
-  const handleEscKey = () => {
-    document.addEventListener("keyup", (e) => {
-      if (e.keyCode === 27) {
-        const target = e.target.getAttribute("href");
-        e.preventDefault();
-
-        const targetElement = document.querySelector(target);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop,
-            behavior: "smooth",
-          });
-        }
-
-        const sidebar = document.querySelector("#sidebar");
-        if (sidebar) {
-          sidebar.classList.remove("slideInLeft");
-          sidebar.classList.add("slideOutLeft");
-        }
-      }
-    });
   };
 
   const handleTyping = () => {
@@ -104,9 +85,17 @@ const LandingPage = () => {
       )}
       {/* Navigation */}
       <div className="container-fluid fill light-white-font">
-        <div id="menu-button" onClick={handleShowHideSidebar} className={menuButtonClass} onMouseEnter={() => setIsMenuButtonHovered(true)} onMouseLeave={() => setIsMenuButtonHovered(false)}>
-          <i className="fa fa-bars fa-3x middle-blue-font"></i>
-        </div>
+        <div id="menu-button">
+        <div id="ham" className={`ham ${isOpen ? 'open' : ''}`} onClick={handleShowHideSidebar}>
+  <div>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+</div>
+        
         <nav
           id="sidebar"
           className={`hidden ${sidebarOpen ? "slideInLeft" : "slideOutLeft"}`}
