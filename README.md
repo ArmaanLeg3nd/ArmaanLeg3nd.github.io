@@ -8,10 +8,10 @@ Personal portfolio: Projects, About me and Social media handles<br/>
 <https://armaanleg3nd.github.io/>
 
 This project was built using these technologies.
-* React.js
-* Node.js
+* React.js - a JavaScript Framework
+* Node.js - a JavaScript Runtime
 * CSS3
-* Tailwind CSS(SCSS)
+* Syntactically Awesome Style Sheets(SASS)
 * Vscode
 
 ## To do
