@@ -13,7 +13,7 @@ This project was built using these technologies.
 * CSS3
 * Syntactically Awesome Style Sheets(SASS)
 * Tailwind CSS
-* Vscode
+* Bootstrap
 
 ## To do
 * Add a certifications section
