@@ -12,6 +12,7 @@ This project was built using these technologies.
 * Node.js - a JavaScript Runtime
 * CSS3
 * Syntactically Awesome Style Sheets(SASS)
+* Tailwind CSS
 * Vscode
 
 ## To do
