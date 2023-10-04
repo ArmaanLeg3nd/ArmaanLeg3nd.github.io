@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Typed from "react-typed";
 import "./LandingPage.scss";
 import "animate.css/animate.min.css";
 import "font-awesome/css/font-awesome.min.css";
-import { FaItchIo } from 'react-icons/fa';
+import { FaItchIo } from "react-icons/fa";
 import LoadingScreen from "./LoadingScreen";
 
 const LandingPage = () => {
@@ -15,7 +15,7 @@ const LandingPage = () => {
     }, 2000);
     handleTyping();
   }, []);
-  
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleShowHideSidebar = () => {
@@ -27,7 +27,6 @@ const LandingPage = () => {
       setIsOpen(true);
     }
   };
-  
 
   const handleSideBarClick = (target) => {
     setIsOpen(!isOpen);
@@ -48,7 +47,7 @@ const LandingPage = () => {
         "a Computer Science Student",
         "a Passionate bookworm",
         "a Music lover",
-        "a Creative Mind on a Journey",
+        "a Tech Geek",
       ],
       typeSpeed: 50,
       backSpeed: 30,
@@ -74,28 +73,43 @@ const LandingPage = () => {
     );
   };
 
+  const applyMaxWidthToFitContentToRows = () => {
+    const rowElements = document.querySelectorAll(".col-md-4");
+    rowElements.forEach((row) => {
+      row.style.maxWidth = "fit-content";
+    });
+  };
+
+  useEffect(() => {
+    applyMaxWidthToFitContentToRows();
+  }, []);
+
   return (
     <div>
       {showSplash && (
         <div className="splash-screen">
           <div className="splash-content">
-          <LoadingScreen />
+            <LoadingScreen />
           </div>
         </div>
       )}
       {/* Navigation */}
       <div className="container-fluid fill light-white-font">
         <div id="menu-button">
-        <div id="ham" className={`ham ${isOpen ? 'open' : ''}`} onClick={handleShowHideSidebar}>
-  <div>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-</div>
-        
+          <div
+            id="ham"
+            className={`ham ${isOpen ? "open" : ""}`}
+            onClick={handleShowHideSidebar}
+          >
+            <div>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+
         <nav
           id="sidebar"
           className={`hidden ${sidebarOpen ? "slideInLeft" : "slideOutLeft"}`}
@@ -136,7 +150,7 @@ const LandingPage = () => {
             <strong className="middle-blue-font">Armaan Batra</strong>
           </p>
           <p>and I'm {handleTyping()}</p>
-          
+
           <p>
             from <strong className="middle-blue-font">New Delhi</strong>.
           </p>
@@ -148,31 +162,56 @@ const LandingPage = () => {
         <h2 className="text-uppercase dark-gray-font">Projects</h2>
         <br />
         {/* Project List */}
-        <div className="container dark-gray-font">
-          <div className="row">
+        <div className="container dark-gray-font" style={{ display: "grid" }}>
+          <div className="row" style={{ justifyContent: "center" }}>
             {/* Project 1 */}
-            <div className="col-md-4">
+            <div className="col-md-4 pi">
               <div className="panel panel-default fixed-width center-block">
                 <div className="panel-body">
                   <a
-                    href="https://github.com/ArmaanLeg3nd/FPS_Kaos_Proto"
-                    target="gh-kaos"
+                    href="https://github.com/ArmaanLeg3nd/physics-sandbox"
+                    target="gh-physics-sandbox"
                   >
                     <img
                       className="img-responsive center-block"
-                      src={require("./unity-logo.png")}
-                      alt="Project 1"
+                      src={require("./phys-sandbox.png")}
+                      alt="Project 3"
+                      style={{height: 300, width: 300}}
                     />
                   </a>
                 </div>
                 <div className="panel-footer">
-                  <h3>kaos</h3>
-                  <p>An FPS made in Unity.</p>
+                  <h3>Physics-sandbox</h3>
+                  <p>
+                    An simulator written in C++ and employed OpenGL for mechanics simulations
+                  </p>
                 </div>
               </div>
             </div>
             {/* Project 2 */}
-            <div className="col-md-4">
+            <div className="col-md-4 pi">
+              <div className="panel panel-default fixed-width center-block">
+                <div className="panel-body">
+                  <a
+                    href="https://github.com/ArmaanLeg3nd/Chokidaar"
+                    target="gh-chokidaar"
+                  >
+                    <img
+                      className="img-responsive center-block"
+                      src={require("./pwd-mgr.png")}
+                      alt="Project 1"
+                      style={{height: 300, width: 300}}
+                    />
+                  </a>
+                </div>
+                <div className="panel-footer">
+                  <h3>Chokidaar</h3>
+                  <p>A password manager developed in python employing jumbling salting and hashing encryption</p>
+                </div>
+              </div>
+            </div>
+            {/* Project 3 */}
+            <div className="col-md-4 pi">
               <div className="panel panel-default fixed-width center-block">
                 <div className="panel-body">
                   <a
@@ -190,12 +229,15 @@ const LandingPage = () => {
                 </div>
                 <div className="panel-footer">
                   <h3>disk-overflow</h3>
-                  <p>Educational Storytelling Website for Underprivileged Children.</p>
+                  <p>
+                    Educational Storytelling Website for Underprivileged
+                    Children.
+                  </p>
                 </div>
               </div>
             </div>
-            {/* Project 3 */}
-            <div className="col-md-4">
+            {/* Project 4 */}
+            <div className="col-md-4 pi">
               <div className="panel panel-default fixed-width center-block">
                 <div className="panel-body">
                   <a
@@ -204,46 +246,24 @@ const LandingPage = () => {
                   >
                     <img
                       className="img-responsive center-block"
-                      src={require("./java-logo.png")}
+                      src={require("./unity-logo.png")}
                       alt="Project 3"
                     />
                   </a>
                 </div>
                 <div className="panel-footer">
                   <h3>nyanmew</h3>
-                  <p>Virtual Pet for Emotional Well-being and Mental Health Support.</p>
+                  <p>
+                    Virtual Pet for Emotional Well-being and Mental Health
+                    Support.
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="row">
-            {/* Project 4 */}
-            <div className="col-md-4">
-              <div className="panel panel-default fixed-width center-block">
-                <div className="panel-body">
-                  <a
-                    href="https://github.com/ArmaanLeg3nd/taob"
-                    target="gh-taob"
-                  >
-                    <img
-                      className="img-responsive center-block"
-                      src={require("./unity-logo.png")}
-                      alt="Project 4"
-                    />
-                  </a>
-                </div>
-                <div className="panel-footer">
-                  <h3>taob: the adventures of the bean</h3>
-                  <p>A 3D side-scroller made in Unity.</p>
-                </div>
-              </div>
-            </div>
-          
           </div>
         </div>
-        
       </div>
-      
+
       {/* About Section */}
       <div id="about" className="container-fluid">
         <h2 className="text-uppercase dark-gray-font text-center">About me</h2>
@@ -252,31 +272,30 @@ const LandingPage = () => {
             <div className="col-md-5 col-md-offset-1 col-sm-12 mx-auto">
               {" "}
               {/* Added "mx-auto" class */}
-              <p className="dark-gray-font text-justify">
-                Hey there! I'm a cheerful guy with an 
-                insatiable love for science and technology. I have a particular 
-                fondness for learning and believe that diving right in and
-                getting your hands dirty is the best way to acquire new skills.
+              <p className="dark-gray-font tj">
+                Hey there! I'm a cheerful guy with an insatiable love for
+                science and technology. I have a particular fondness for
+                learning and believe that diving right in and getting your hands
+                dirty is the best way to acquire new skills.
               </p>
-              <p className="dark-gray-font text-justify">
-                I am trying to increase my coding experience by
-                working on a couple of projects. I've been really imterested in crackmes
-                and reverse engineering lately. I also like to participate in
+              <p className="dark-gray-font tj">
+                I am trying to increase my coding experience by working on a
+                couple of projects. I've been really interested in crackmes and
+                reverse engineering lately. I also like to participate in
                 hackathons as the thrill and pressure brings the best out of me.
               </p>
             </div>
             <div className="col-md-5 col-sm-12 mx-auto">
               {" "}
               {/* Added "mx-auto" class */}
-              <p className="dark-gray-font text-justify">
-                I'm open to new opportunities and challenges,
-                and I'm always looking to learn new things.
-                I'm an Undergraduate Student and currently on the lookout for experience as a Software Engineer.
+              <p className="dark-gray-font tj">
+                I'm open to new opportunities and challenges, and I'm always
+                looking to learn new things. I'm an Undergraduate Student and
+                currently on the lookout for experience as a Software Engineer.
               </p>
-              <p className="dark-gray-font text-justify">
-                I'm a commitment driven hardworker. While I may 
-                not possess the mystical powers of the wizards,
-                but I always get my stuff done.
+              <p className="dark-gray-font tj">
+                I'm a commitment driven hardworker. While I may not possess the
+                mystical powers of the wizards, but I always get my stuff done.
               </p>
             </div>
           </div>
@@ -284,20 +303,18 @@ const LandingPage = () => {
           <br />
           <div className="container-fluid text-center">
             <a
-                id="download-resume-btn"
-                href="https://drive.google.com/uc?id=1DIsb8FPREDRvZrEjO1VUKZd5mUE2DvNs&export=download"
-                className="text-center text-uppercase"
-              >
-            <button
-              id="download-btn"
-              type="button"
-              name="email-btn"
-              className="btn btn-default middle-blue-background center-block download"
+              id="download-resume-btn"
+              href="https://drive.google.com/uc?export=download&id=1g0IHOKr9LwGARl-W_IcZf886tXqzCzkc"
+              className="text-center text-uppercase"
             >
-              
+              <button
+                id="download-btn"
+                type="button"
+                name="email-btn"
+                className="btn btn-default middle-blue-background center-block download"
+              >
                 <i className="fa fa-download"></i>&nbsp;DOWNLOAD CV
-              
-            </button>
+              </button>
             </a>
           </div>
         </div>
@@ -311,20 +328,19 @@ const LandingPage = () => {
         <div>
           <div className="row">
             <div className="col-md-12 text-center">
-                <a
-                  id="download-resume-btn"
-                  href="mailto:armaanbatracs14@gmail.com"
-                  className="text-center text-uppercase"
-                >
-              <button
-                id="email-btn"
-                type="button"
-                name="email-btn"
-                className="btn btn-default middle-blue-background center-block email"
+              <a
+                id="download-resume-btn"
+                href="mailto:armaanbatracs14@gmail.com"
+                className="text-center text-uppercase"
               >
-                
+                <button
+                  id="email-btn"
+                  type="button"
+                  name="email-btn"
+                  className="btn btn-default middle-blue-background center-block email"
+                >
                   <i className="fa fa-envelope"></i>&nbsp;EMAIL ME
-              </button>
+                </button>
               </a>
               <br />
               <br />
@@ -343,7 +359,7 @@ const LandingPage = () => {
                 &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
                 <a
                   className="middle-blue-font"
-                  href="https://www.linkedin.com/in/armaan-batra-11b028220/"
+                  href="https://www.linkedin.com/in/armaanbatra/"
                   title="Experience!"
                   target="linkedin"
                 >
@@ -370,10 +386,10 @@ const LandingPage = () => {
                   target="itchio"
                 >
                   <strong id="dis-icon">
-                  <FaItchIo size={32} className="itch-icon" />
+                    <FaItchIo size={32} className="itch-icon" />
                   </strong>
                 </a>
-                  &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
                 <a
                   className="middle-blue-font"
                   href="https://instagram.com/armaan.batra14"

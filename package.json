@@ -1,6 +1,6 @@
 {
   "name": "armaanleg3nd.github.io",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "homepage": "https://armaanleg3nd.github.io/",
   "private": true,
   "dependencies": {
@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy" : "npm run build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -b active-gh-page -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -55,6 +55,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0-placeholder-for-preset-env.2",
     "gh-pages": "^5.0.0",
-    "node-sass": "^9.0.0"
+    "node-sass": "^9.0.0",
+    "tailwindcss": "^3.3.3"
   }
 }

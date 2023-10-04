@@ -5,8 +5,8 @@ $dark-grey:   #222426;
 $middle-blue: #f66200;
 $light-white: #fdfdff;
 $light-blue:  #edf9f9;
-$dark-blue:  #5e5e5e;
-$sidebar-color: rgba($dark-blue, .95);
+$dark-blue:  #000000;
+$sidebar-color: rgba($dark-blue, 1);
 $sidebar-item-color: rgba($dark-blue, 0);
 
 $phone: "(min-width: 320px) and (max-width: 767px)";
@@ -19,6 +19,8 @@ body {
   font-smoothing: antialiased;
   height: 100%;
 }
+
+.panel-body {}
 
 a {
   color: inherit;
@@ -49,6 +51,7 @@ a {
       height: 60px;
       margin-bottom: 5px;
       width: 100%;
+      transition-duration: 0.5s;
 
       &:hover {
         background-color: $dark-grey !important;
@@ -161,6 +164,10 @@ footer {
 
 .itch-icon {
   margin-top: -14px;
+}
+
+.tj {
+  text-align: justify;
 }
 
 #email-btn {
@@ -405,6 +412,7 @@ footer {
   position: fixed;
   top: 5%;
   margin: auto;
+  padding-top: 35px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
@@ -414,13 +422,17 @@ footer {
   -o-transition: .5s ease-in-out;
   transition: .5s ease-in-out;
   cursor: pointer;
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center the content horizontally */
+  box-shadow: 0 0 10px rgba(0,0,0,.7);
+  border-radius: 5px;
 }
 
 #ham span{
   display: block;
   position: absolute;
   height: 6px;
-  width: 100%;
+  width: 80%;
   background: $middle-blue;
   border-radius: 0px;
   opacity: 1;
@@ -433,24 +445,26 @@ footer {
   -moz-transition: .25s ease-in-out;
   -o-transition: .25s ease-in-out;
   transition: .25s ease-in-out;
+  left: calc(50% - 14.4px);
+  top: 4px;
 }
 
 /* Icon 3 */
 
 #ham span:nth-child(1) {
-  top: 0px;
+  top: 4px;
 }
 
 #ham span:nth-child(2),#ham span:nth-child(3) {
-  top: 10px;
+  top: 14px;
 }
 
 #ham span:nth-child(4) {
-  top: 20px;
+  top: 24px;
 }
 
 #ham.open span:nth-child(1) {
-  top: 10px;
+  top: 14px;
   width: 0%;
   left: 50%;
 }
@@ -470,7 +484,7 @@ footer {
 }
 
 #ham.open span:nth-child(4) {
-  top: 10px;
+  top: 14px;
   width: 0%;
   left: 50%;
 }
@@ -486,11 +500,11 @@ footer {
 #sidebar {
   /* Add your sidebar styles here */
   &.slideInLeft {
-    animation: slideInLeft 0.5s forwards;
+    animation: bubble 1.3s cubic-bezier(0.32, 0, 0.67, 0) forwards;
   }
   
   &.slideOutLeft {
-    animation: slideOutLeft 0.5s forwards;
+    animation: bubble-reverse 1.3s cubic-bezier(0.33, 1, 0.68, 1) forwards;
   }
 }
 
@@ -513,6 +527,25 @@ footer {
     visibility: hidden;
   }
 }
+
+@keyframes bubble {
+  0% {
+    clip-path: circle(0% at 0 0);
+  }
+  100% {
+    clip-path: circle(100% at 100%);
+  }
+}
+
+@keyframes bubble-reverse {
+  0% {
+    clip-path: circle(100% at 100%);
+  }
+  100% {
+    clip-path: circle(0% at 0 0);
+  }
+}
+
 
 .home-section {
   height: 100vh; 
@@ -538,3 +571,14 @@ footer {
   100% { opacity: 1; }
 }
 
+@media screen and (min-width: 768px) and (max-width: 1000px) {
+  .col-md-4
+  {
+    min-width: fit-content;
+  }  
+}
+
+.pi {
+  margin-left: 20px;
+  margin-right: 20px;
+}
