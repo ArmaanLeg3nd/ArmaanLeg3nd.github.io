@@ -1,11 +1,11 @@
-$font-base:  "Raleway", sans-serif;
-$font-about:  "Droid Serif", sans-serif;
+$font-base: "Raleway", sans-serif;
+$font-about: "Droid Serif", sans-serif;
 
-$dark-grey:   #222426;
+$dark-grey: #222426;
 $middle-blue: #f66200;
 $light-white: #fdfdff;
-$light-blue:  #edf9f9;
-$dark-blue:  #000000;
+$light-blue: #edf9f9;
+$dark-blue: #000000;
 $sidebar-color: rgba($dark-blue, 1);
 $sidebar-item-color: rgba($dark-blue, 0);
 
@@ -20,7 +20,13 @@ body {
   height: 100%;
 }
 
-.panel-body {}
+.fa, .itch-icon {
+  transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fa:hover, .itch-icon:hover {
+  color: whitesmoke;
+}
 
 a {
   color: inherit;
@@ -28,7 +34,7 @@ a {
 }
 
 #sidebar {
-  animation-duration: .2s;
+  animation-duration: 0.2s;
   background-color: $sidebar-color;
   height: 100%;
   left: 0;
@@ -66,14 +72,14 @@ a {
         padding-left: 1.2em;
         text-decoration: none;
         transform: translate(-5px, 0);
-        transition: .6s ease-out;
+        transition: 0.6s ease-out;
         vertical-align: middle;
         width: 100%;
 
         &:hover {
           color: $middle-blue !important;
           transform: translate(5px, 0);
-          transition: .2s linear;
+          transition: 0.2s linear;
         }
       }
     }
@@ -90,8 +96,8 @@ a {
     font-weight: 400;
     letter-spacing: 5px;
     margin: 0 !important;
-    margin-after: .83em;
-    margin-before: .83em;
+    margin-after: 0.83em;
+    margin-before: 0.83em;
     padding-bottom: 50px;
     position: relative;
     text-align: center;
@@ -121,8 +127,8 @@ a {
     font-weight: 400;
     letter-spacing: 5px;
     margin: 0 !important;
-    margin-after: .83em;
-    margin-before: .83em;
+    margin-after: 0.83em;
+    margin-before: 0.83em;
     padding-bottom: 50px;
     text-align: center;
 
@@ -172,47 +178,47 @@ footer {
 
 #email-btn {
   background-color: $middle-blue;
-				border: none;
-				color: #222426;
-				text-align: center;
-				text-decoration: none;
-				display: inline-block;
-				font-size: 22px;
-				border-radius: 4px;
-				transition-duration: 0.4s;
-				border: 2px solid black;
-        height: 60px;
-        width: 180px;
-        
+  border: none;
+  color: #222426;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+  border: 2px solid black;
+  height: 60px;
+  width: 180px;
 }
 
 #email-btn:hover {
   background-color: white;
   color: #222426;
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 #download-btn {
   background-color: $middle-blue;
-				border: none;
-				color: #222426;
-				text-align: center;
-				text-decoration: none;
-				display: inline-block;
-				font-size: 22px;
-				border-radius: 4px;
-				transition-duration: 0.4s;
-				border: 2px solid black;
-        height: 60px;
-        width: fit-content;
-        margin-left: -20px;
-        
+  border: none;
+  color: #222426;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+  border: 2px solid black;
+  height: 60px;
+  width: fit-content;
+  margin-left: -20px;
 }
 
 #download-btn:hover {
   background-color: white;
   color: #222426;
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 #download-resume-btn {
@@ -232,7 +238,6 @@ footer {
     color: white;
 
     h1 {
-
       p {
         font-size: 42px;
         font-weight: 400;
@@ -258,7 +263,6 @@ footer {
     color: white;
 
     h1 {
-
       p {
         font-size: 38px;
         font-weight: 400;
@@ -290,7 +294,6 @@ footer {
     color: white;
 
     h1 {
-
       p {
         font-size: 30px;
         font-weight: 400;
@@ -304,11 +307,11 @@ footer {
 
   #contact {
     button {
-      font-size: .7em;
+      font-size: 0.7em;
     }
 
     p {
-      font-size: .7em;
+      font-size: 0.7em;
     }
   }
 }
@@ -383,10 +386,9 @@ footer {
 }
 
 .email {
-  font-size: .9em;
+  font-size: 0.9em;
   height: 2.4em;
   width: 8.7em;
-  
 }
 
 .splash-screen {
@@ -406,7 +408,7 @@ footer {
   text-align: center;
 }
 
-#ham{
+#ham {
   width: 36px;
   height: 27px;
   position: fixed;
@@ -417,18 +419,18 @@ footer {
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  -webkit-transition: .5s ease-in-out;
-  -moz-transition: .5s ease-in-out;
-  -o-transition: .5s ease-in-out;
-  transition: .5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
   cursor: pointer;
   display: flex; /* Use flexbox */
   justify-content: center; /* Center the content horizontally */
-  box-shadow: 0 0 10px rgba(0,0,0,.7);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
   border-radius: 5px;
 }
 
-#ham span{
+#ham span {
   display: block;
   position: absolute;
   height: 6px;
@@ -441,10 +443,10 @@ footer {
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  -webkit-transition: .25s ease-in-out;
-  -moz-transition: .25s ease-in-out;
-  -o-transition: .25s ease-in-out;
-  transition: .25s ease-in-out;
+  -webkit-transition: 0.25s ease-in-out;
+  -moz-transition: 0.25s ease-in-out;
+  -o-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
   left: calc(50% - 14.4px);
   top: 4px;
 }
@@ -455,7 +457,8 @@ footer {
   top: 4px;
 }
 
-#ham span:nth-child(2),#ham span:nth-child(3) {
+#ham span:nth-child(2),
+#ham span:nth-child(3) {
   top: 14px;
 }
 
@@ -489,20 +492,12 @@ footer {
   left: 50%;
 }
 
-// typed.js stuff
-.typed-cursor {
-  -moz-animation: blink .7s infinite;
-  -webkit-animation: blink .7s infinite;
-  animation: blink .7s infinite;
-  opacity: 1;
-}
-
 #sidebar {
   /* Add your sidebar styles here */
   &.slideInLeft {
     animation: bubble 1.3s cubic-bezier(0.32, 0, 0.67, 0) forwards;
   }
-  
+
   &.slideOutLeft {
     animation: bubble-reverse 1.3s cubic-bezier(0.33, 1, 0.68, 1) forwards;
   }
@@ -546,36 +541,51 @@ footer {
   }
 }
 
-
 .home-section {
-  height: 100vh; 
-  width: 100%; 
+  height: 100vh;
+  width: 100%;
 }
 
-
 @keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @-moz-keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1000px) {
-  .col-md-4
-  {
+  .col-md-4 {
     min-width: fit-content;
-  }  
+  }
 }
 
 .pi {

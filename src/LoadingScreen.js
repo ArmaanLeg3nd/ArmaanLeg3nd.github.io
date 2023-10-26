@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { useAnimation } from "framer-motion";
 import HashLoader from "react-spinners/HashLoader";
 import "./LoadingScreen.css";
 
@@ -32,7 +32,6 @@ const LoadingScreen = () => {
         justifyContent: "center",
         alignItems: "center",
         zIndex: 9999,
-        fontFamily: "Metal Lord",
         textAlign: "center",
       }}
     >

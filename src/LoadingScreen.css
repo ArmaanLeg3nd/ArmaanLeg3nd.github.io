@@ -1,8 +1,3 @@
-@font-face {
-  font-family: 'Metal Lord';
-  src: url('../fonts/MetalLord.otf') format('opentype');
-}
-
 #term {
   font-family: monospace;
   font-size: 2em;

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Typed from "react-typed";
+import Typewriter from "typewriter-effect";
 import "./LandingPage.scss";
-import "animate.css/animate.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import { FaItchIo } from "react-icons/fa";
 import LoadingScreen from "./LoadingScreen";
+import useEasingScroll from "react-easing-scroll";
 
 const LandingPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,8 +13,9 @@ const LandingPage = () => {
     setTimeout(() => {
       setShowSplash(false);
     }, 2000);
-    handleTyping();
   }, []);
+
+  useEasingScroll("easeInOutQuad", 1500, "scrollToMe");
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -28,49 +29,9 @@ const LandingPage = () => {
     }
   };
 
-  const handleSideBarClick = (target) => {
+  const handleSideBarClick = () => {
     setIsOpen(!isOpen);
-    const targetElement = document.querySelector(target);
-    if (targetElement) {
-      window.scrollTo({
-        top: targetElement.offsetTop,
-        behavior: "smooth",
-      });
-    }
-
     setSidebarOpen(false);
-  };
-
-  const handleTyping = () => {
-    const options = {
-      strings: [
-        "a Computer Science Student",
-        "a Passionate bookworm",
-        "a Music lover",
-        "a Tech Geek",
-      ],
-      typeSpeed: 50,
-      backSpeed: 30,
-      startDelay: 200,
-      backDelay: 600,
-      loop: true,
-      showCursor: true,
-      cursorChar: "|",
-    };
-
-    return (
-      <Typed
-        className="element"
-        strings={options.strings}
-        typeSpeed={options.typeSpeed}
-        startDelay={options.startDelay}
-        backDelay={options.backDelay}
-        loop={options.loop}
-        showCursor={options.showCursor}
-        cursorChar={options.cursorChar}
-        backSpeed={options.backSpeed}
-      />
-    );
   };
 
   const applyMaxWidthToFitContentToRows = () => {
@@ -85,7 +46,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ overflowX: "hidden" }}>
       {showSplash && (
         <div className="splash-screen">
           <div className="splash-content">
@@ -116,25 +77,38 @@ const LandingPage = () => {
         >
           <ul className="nav nav-pills nav-stacked list-group">
             <li className="text-uppercase">
-              <a href="#home" onClick={() => handleSideBarClick("#home")}>
+              <a
+                href="#home"
+                onClick={() => handleSideBarClick()}
+                className="scrollToMe"
+              >
                 Home
               </a>
             </li>
             <li className="text-uppercase">
               <a
                 href="#projects"
-                onClick={() => handleSideBarClick("#projects")}
+                onClick={() => handleSideBarClick()}
+                className="scrollToMe"
               >
                 Projects
               </a>
             </li>
             <li className="text-uppercase">
-              <a href="#about" onClick={() => handleSideBarClick("#about")}>
+              <a
+                href="#about"
+                onClick={() => handleSideBarClick()}
+                className="scrollToMe"
+              >
                 About
               </a>
             </li>
             <li className="text-uppercase">
-              <a href="#footer" onClick={() => handleSideBarClick("#footer")}>
+              <a
+                href="#footer"
+                onClick={() => handleSideBarClick()}
+                className="scrollToMe"
+              >
                 Contact
               </a>
             </li>
@@ -149,7 +123,21 @@ const LandingPage = () => {
             Hi, my name is{" "}
             <strong className="middle-blue-font">Armaan Batra</strong>
           </p>
-          <p>and I'm {handleTyping()}</p>
+          <p>
+            and I'm{" "}
+            <Typewriter
+              options={{
+                strings: [
+                  "a Computer Science Student",
+                  "a Passionate bookworm",
+                  "a Music lover",
+                  "a Tech Geek",
+                ],
+                autoStart: true,
+                loop: true,
+              }}
+            />
+          </p>
 
           <p>
             from <strong className="middle-blue-font">New Delhi</strong>.
@@ -176,14 +164,15 @@ const LandingPage = () => {
                       className="img-responsive center-block"
                       src={require("./phys-sandbox.png")}
                       alt="Project 3"
-                      style={{height: 300, width: 300}}
+                      style={{ height: 300, width: 300 }}
                     />
                   </a>
                 </div>
                 <div className="panel-footer">
                   <h3>Physics-sandbox</h3>
                   <p>
-                    An simulator written in C++ and employed OpenGL for mechanics simulations
+                    A simulator written in C++ and employed OpenGL for
+                    kinematic simulations
                   </p>
                 </div>
               </div>
@@ -200,18 +189,46 @@ const LandingPage = () => {
                       className="img-responsive center-block"
                       src={require("./pwd-mgr.png")}
                       alt="Project 1"
-                      style={{height: 300, width: 300}}
+                      style={{ height: 300, width: 300 }}
                     />
                   </a>
                 </div>
                 <div className="panel-footer">
                   <h3>Chokidaar</h3>
-                  <p>A password manager developed in python employing jumbling salting and hashing encryption</p>
+                  <p>
+                    A password manager developed in python employing jumbling
+                    salting and hashing encryption
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Project 4 */}
+            <div className="col-md-4 pi">
+              <div className="panel panel-default fixed-width center-block">
+                <div className="panel-body">
+                  <a
+                    href="https://github.com/ArmaanLeg3nd/react-easing-scroll"
+                    target="gh-react-easing-scroll"
+                  >
+                    <img
+                      className="img-responsive center-block"
+                      src={require("./npm.png")}
+                      alt="Project 3"
+                      style={{ height: 300, width: 300 }}
+                    />
+                  </a>
+                </div>
+                <div className="panel-footer">
+                  <h3>react-easing-scroll</h3>
+                  <p>
+                  An NPM Package, developed in TypeScript, offering a modern alternative to jQuery easing for easing-function based scrolling effects, with over 30 easing functions.
+                  </p>
                 </div>
               </div>
             </div>
             {/* Project 3 */}
-            <div className="col-md-4 pi">
+            {/* <div className="col-md-4 pi">
               <div className="panel panel-default fixed-width center-block">
                 <div className="panel-body">
                   <a
@@ -235,9 +252,9 @@ const LandingPage = () => {
                   </p>
                 </div>
               </div>
-            </div>
-            {/* Project 4 */}
-            <div className="col-md-4 pi">
+            </div> */}
+            {/* Project 5 */}
+            {/* <div className="col-md-4 pi">
               <div className="panel panel-default fixed-width center-block">
                 <div className="panel-body">
                   <a
@@ -259,7 +276,7 @@ const LandingPage = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -304,7 +321,7 @@ const LandingPage = () => {
           <div className="container-fluid text-center">
             <a
               id="download-resume-btn"
-              href="https://drive.google.com/uc?export=download&id=1g0IHOKr9LwGARl-W_IcZf886tXqzCzkc"
+              href="https://drive.google.com/uc?export=download&id=1MT-5OdYYsXbKFT-FwZqUW3i3FZ5a1Eay"
               className="text-center text-uppercase"
             >
               <button
