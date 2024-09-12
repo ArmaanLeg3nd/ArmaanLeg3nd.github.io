@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.82609e74.css",
-    "main.js": "/static/js/main.5c27c9f3.js",
+    "main.css": "/static/css/main.e83065a7.css",
+    "main.js": "/static/js/main.af73391c.js",
     "static/media/fontawesome-webfont.svg?v=4.7.0": "/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
     "static/media/phys-sandbox.png": "/static/media/phys-sandbox.9131f36a4ea5aed1b128.png",
     "static/media/fontawesome-webfont.eot": "/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
@@ -9,12 +9,14 @@
     "static/media/fontawesome-webfont.woff?v=4.7.0": "/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "static/media/pwd-mgr.png": "/static/media/pwd-mgr.8536fbbca9cfa62d4ac3.png",
+    "static/media/black-hole.png": "/static/media/black-hole.03a3c1304e7bc73e7058.png",
+    "static/media/hide.png": "/static/media/hide.64fce47f0c327f4428a0.png",
     "index.html": "/index.html",
-    "main.82609e74.css.map": "/static/css/main.82609e74.css.map",
-    "main.5c27c9f3.js.map": "/static/js/main.5c27c9f3.js.map"
+    "main.e83065a7.css.map": "/static/css/main.e83065a7.css.map",
+    "main.af73391c.js.map": "/static/js/main.af73391c.js.map"
   },
   "entrypoints": [
-    "static/css/main.82609e74.css",
-    "static/js/main.5c27c9f3.js"
+    "static/css/main.e83065a7.css",
+    "static/js/main.af73391c.js"
   ]
 }
