@@ -6,13 +6,41 @@ import { FaItchIo } from "react-icons/fa";
 import LoadingScreen from "./LoadingScreen";
 import useEasingScroll from "react-easing-scroll";
 
+function adjustCardHeights() {
+  const cards = document.querySelectorAll('.project-item');
+  let maxHeight = 0;
+
+  // Find the tallest card
+  cards.forEach(card => {
+    card.style.height = 'auto';
+    const height = card.offsetHeight;
+    if (height > maxHeight) {
+      maxHeight = height;
+    }
+  });
+
+  // Set all cards' height to the maximum height
+  cards.forEach(card => {
+    card.style.height = `${maxHeight}px`;
+  });
+}
+
 const LandingPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [projects, setProjects] = useState([]);
+
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
     }, 2000);
+  }, []);
+
+  useEffect(() => {
+    fetch("./projects.json")
+      .then((response) => response.json())
+      .then((data) => setProjects(data))
+      .catch((error) => console.error("Error fetching projects:", error));
   }, []);
 
   useEasingScroll("easeInOutQuad", 1500, "scrollToMe");
@@ -44,6 +72,16 @@ const LandingPage = () => {
   useEffect(() => {
     applyMaxWidthToFitContentToRows();
   }, []);
+
+  useEffect(() => {
+    adjustCardHeights();
+    window.addEventListener('resize', adjustCardHeights);
+    return () => window.removeEventListener('resize', adjustCardHeights);
+  }, [projects]);
+
+  const getImageSrc = (imagePath) => {
+    return imagePath.startsWith("http") ? imagePath : require(`${imagePath}`);
+  };
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -149,135 +187,32 @@ const LandingPage = () => {
       <div id="projects" className="container-fluid light-white-font">
         <h2 className="text-uppercase dark-gray-font">Projects</h2>
         <br />
-        {/* Project List */}
-        <div className="container dark-gray-font" style={{ display: "grid" }}>
-          <div className="row" style={{ justifyContent: "center" }}>
-            {/* Project 1 */}
-            <div className="col-md-4 pi">
-              <div className="panel panel-default fixed-width center-block">
+        {/* Dynamically render projects */}
+        <div className="container dark-gray-font project-grid">
+          {projects.map((project, index) => (
+            <div className="project-item" key={index}>
+              <div className="panel panel-default">
                 <div className="panel-body">
                   <a
-                    href="https://github.com/ArmaanLeg3nd/physics-sandbox"
-                    target="gh-physics-sandbox"
+                    href={project.link}
+                    target={`gh-${project.name.toLowerCase()}`}
+                    rel="noopener noreferrer"
                   >
                     <img
-                      className="img-responsive center-block"
-                      src={require("./phys-sandbox.png")}
-                      alt="Project 3"
-                      style={{ height: 300, width: 300 }}
+                      className="img-responsive project-image"
+                      src={getImageSrc(project.image)}
+                      alt={`Project ${index + 1}`}
                     />
                   </a>
                 </div>
-                <div className="panel-footer">
-                  <h3>Physics-sandbox</h3>
-                  <p>
-                    A simulator written in C++ and employed OpenGL for
-                    kinematic simulations
-                  </p>
+                <div className="panel-footer gap-10">
+                  &nbsp;
+                  <h3>{project.name}</h3>
+                  <p>{project.description}</p>
                 </div>
               </div>
             </div>
-            {/* Project 2 */}
-            <div className="col-md-4 pi">
-              <div className="panel panel-default fixed-width center-block">
-                <div className="panel-body">
-                  <a
-                    href="https://github.com/ArmaanLeg3nd/Chokidaar"
-                    target="gh-chokidaar"
-                  >
-                    <img
-                      className="img-responsive center-block"
-                      src={require("./pwd-mgr.png")}
-                      alt="Project 1"
-                      style={{ height: 300, width: 300 }}
-                    />
-                  </a>
-                </div>
-                <div className="panel-footer">
-                  <h3>Chokidaar</h3>
-                  <p>
-                    A password manager developed in python employing jumbling
-                    salting and hashing encryption
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Project 4 */}
-            <div className="col-md-4 pi">
-              <div className="panel panel-default fixed-width center-block">
-                <div className="panel-body">
-                  <a
-                    href="https://github.com/ArmaanLeg3nd/react-easing-scroll"
-                    target="gh-react-easing-scroll"
-                  >
-                    <img
-                      className="img-responsive center-block"
-                      src={require("./npm.png")}
-                      alt="Project 3"
-                      style={{ height: 300, width: 300 }}
-                    />
-                  </a>
-                </div>
-                <div className="panel-footer">
-                  <h3>react-easing-scroll</h3>
-                  <p>
-                  An NPM Package, developed in TypeScript, offering a modern alternative to jQuery easing for easing-function based scrolling effects, with over 30 easing functions.
-                  </p>
-                </div>
-              </div>
-            </div>
-            {/* Project 3 */}
-            {/* <div className="col-md-4 pi">
-              <div className="panel panel-default fixed-width center-block">
-                <div className="panel-body">
-                  <a
-                    href="https://github.com/ArmaanLeg3nd/Disk-Overflow"
-                    target="gh-disk-overflow"
-                  >
-                    <img
-                      className="img-responsive center-block"
-                      src={require("./react-logo.png")}
-                      alt="Project 2"
-                      height={300}
-                      width={300}
-                    />
-                  </a>
-                </div>
-                <div className="panel-footer">
-                  <h3>disk-overflow</h3>
-                  <p>
-                    Educational Storytelling Website for Underprivileged
-                    Children.
-                  </p>
-                </div>
-              </div>
-            </div> */}
-            {/* Project 5 */}
-            {/* <div className="col-md-4 pi">
-              <div className="panel panel-default fixed-width center-block">
-                <div className="panel-body">
-                  <a
-                    href="https://github.com/ArmaanLeg3nd/NyanMew"
-                    target="gh-NyanMew"
-                  >
-                    <img
-                      className="img-responsive center-block"
-                      src={require("./unity-logo.png")}
-                      alt="Project 3"
-                    />
-                  </a>
-                </div>
-                <div className="panel-footer">
-                  <h3>nyanmew</h3>
-                  <p>
-                    Virtual Pet for Emotional Well-being and Mental Health
-                    Support.
-                  </p>
-                </div>
-              </div>
-            </div> */}
-          </div>
+          ))}
         </div>
       </div>
 
@@ -321,7 +256,7 @@ const LandingPage = () => {
           <div className="container-fluid text-center">
             <a
               id="download-resume-btn"
-              href="https://drive.google.com/uc?export=download&id=1MT-5OdYYsXbKFT-FwZqUW3i3FZ5a1Eay"
+              href="https://drive.google.com/uc?export=download&id=1DLP9ubBL6eeaWWgOHZfX-q7GhxEjLU8i"
               className="text-center text-uppercase"
             >
               <button

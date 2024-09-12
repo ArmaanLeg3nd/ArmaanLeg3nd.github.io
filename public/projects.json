@@ -1,0 +1,38 @@
+[
+  {
+    "name": "react-easing-scroll",
+    "description": "An NPM Package, developed in TypeScript, offering a modern alternative to jQuery easing for easing-function based scrolling effects, with over 30 easing functions.",
+    "image": "./npm.png",
+    "link": "https://github.com/ArmaanLeg3nd/react-easing-scroll"
+  },
+  {
+    "name": "PMXencrypt",
+    "description":"A runtime crypter (malware encrypter) written in python for python-based malware, employing AES-GCM encryption and decryption.",
+    "image": "./hide.png",
+    "link": "https://github.com/ArmaanLeg3nd/pmxencrypt"
+  },
+  {
+    "name": "voidension",
+    "description":"A simple load balancer written in Golang.",
+    "image": "./black-hole.png",
+    "link": "https://github.com/ArmaanLeg3nd/voidension"
+  },
+  {
+    "name": "Doom Tasks",
+    "description": "A cross platform browser extension developed to increase productivity by forcing you to complete tasks.",
+    "image": "https://github.com/ArmaanLeg3nd/Doom-Tasks/blob/main/icons/icon128.png?raw=true",
+    "link": "https://github.com/ArmaanLeg3nd/Doom-Tasks"
+  },
+  {
+    "name": "Chokidaar",
+    "description": "A password manager developed in python employing jumbling salting and hashing encryption.",
+    "image": "./pwd-mgr.png",
+    "link": "https://github.com/ArmaanLeg3nd/Chokidaar"
+  },
+  {
+    "name": "Physics-sandbox",
+    "description": "A simulator written in C++ and employed OpenGL for kinematic simulations",
+    "image": "./phys-sandbox.png",
+    "link": "https://github.com/ArmaanLeg3nd/physics-sandbox"
+  }
+]
