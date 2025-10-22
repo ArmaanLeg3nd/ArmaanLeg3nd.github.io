@@ -7,12 +7,12 @@ import LoadingScreen from "./LoadingScreen";
 import useEasingScroll from "react-easing-scroll";
 
 function adjustCardHeights() {
-  const cards = document.querySelectorAll('.project-item');
+  const cards = document.querySelectorAll(".project-item");
   let maxHeight = 0;
 
   // Find the tallest card
-  cards.forEach(card => {
-    card.style.height = 'auto';
+  cards.forEach((card) => {
+    card.style.height = "auto";
     const height = card.offsetHeight;
     if (height > maxHeight) {
       maxHeight = height;
@@ -20,7 +20,7 @@ function adjustCardHeights() {
   });
 
   // Set all cards' height to the maximum height
-  cards.forEach(card => {
+  cards.forEach((card) => {
     card.style.height = `${maxHeight}px`;
   });
 }
@@ -29,6 +29,7 @@ const LandingPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [projects, setProjects] = useState([]);
+  const [resumeUrl, setResumeUrl] = useState("");
 
   useEffect(() => {
     setTimeout(() => {
@@ -41,6 +42,11 @@ const LandingPage = () => {
       .then((response) => response.json())
       .then((data) => setProjects(data))
       .catch((error) => console.error("Error fetching projects:", error));
+
+    fetch("./misc.json")
+      .then((response) => response.json())
+      .then((data) => setResumeUrl(data.resume_url))
+      .catch((error) => console.error("Error fetching misc data:", error));
   }, []);
 
   useEasingScroll("easeInOutQuad", 1500, "scrollToMe");
@@ -75,8 +81,8 @@ const LandingPage = () => {
 
   useEffect(() => {
     adjustCardHeights();
-    window.addEventListener('resize', adjustCardHeights);
-    return () => window.removeEventListener('resize', adjustCardHeights);
+    window.addEventListener("resize", adjustCardHeights);
+    return () => window.removeEventListener("resize", adjustCardHeights);
   }, [projects]);
 
   const getImageSrc = (imagePath) => {
@@ -162,14 +168,15 @@ const LandingPage = () => {
             <strong className="middle-blue-font">Armaan Batra</strong>
           </p>
           <p>
-            and I'm{" "}
+            and I'm a{" "}
             <Typewriter
               options={{
                 strings: [
-                  "a Computer Science Student",
-                  "a Passionate bookworm",
-                  "a Music lover",
-                  "a Tech Geek",
+                  "Cyber Security Grad Student at NTU",
+                  "Runner",
+                  "Hiker",
+                  "Strength Training Fanatic",
+                  "Tech Generalist",
                 ],
                 autoStart: true,
                 loop: true,
@@ -178,7 +185,8 @@ const LandingPage = () => {
           </p>
 
           <p>
-            from <strong className="middle-blue-font">New Delhi</strong>.
+            currently living in{" "}
+            <strong className="middle-blue-font">Singapore</strong>.
           </p>
         </h1>
       </div>
@@ -222,32 +230,25 @@ const LandingPage = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-5 col-md-offset-1 col-sm-12 mx-auto">
-              {" "}
-              {/* Added "mx-auto" class */}
               <p className="dark-gray-font tj">
-                Hey there! I'm a cheerful guy with an insatiable love for
-                science and technology. I have a particular fondness for
-                learning and believe that diving right in and getting your hands
-                dirty is the best way to acquire new skills.
+                I focus on building technical depth through hands-on security
+                work- exploring systems, breaking them apart, and understanding
+                how they really function.
               </p>
               <p className="dark-gray-font tj">
-                I am trying to increase my coding experience by working on a
-                couple of projects. I've been really interested in crackmes and
-                reverse engineering lately. I also like to participate in
-                hackathons as the thrill and pressure brings the best out of me.
+                My interests include reverse engineering, cryptography, and
+                offensive security. I regularly work on projects, challenges,
+                and CTF-style problems to sharpen my skills.
               </p>
             </div>
             <div className="col-md-5 col-sm-12 mx-auto">
-              {" "}
-              {/* Added "mx-auto" class */}
               <p className="dark-gray-font tj">
-                I'm open to new opportunities and challenges, and I'm always
-                looking to learn new things. I'm an Undergraduate Student and
-                currently on the lookout for experience as a Software Engineer.
+                Outside academics, I run, train, and spend time outdoors- habits
+                that keep me disciplined, consistent, and focused.
               </p>
               <p className="dark-gray-font tj">
-                I'm a commitment driven hardworker. While I may not possess the
-                mystical powers of the wizards, but I always get my stuff done.
+                I'm working toward mastery in cyber security and always pursuing
+                environments that push my capability, not my comfort.
               </p>
             </div>
           </div>
@@ -256,7 +257,7 @@ const LandingPage = () => {
           <div className="container-fluid text-center">
             <a
               id="download-resume-btn"
-              href="https://drive.google.com/uc?export=download&id=1DLP9ubBL6eeaWWgOHZfX-q7GhxEjLU8i"
+              href={resumeUrl}
               className="text-center text-uppercase"
             >
               <button
@@ -269,6 +270,13 @@ const LandingPage = () => {
               </button>
             </a>
           </div>
+          <br />
+          <br />
+          <br />
+        </div>
+        <div className="text-center dark-gray-font tj gap-10 text-uppercase">
+          EMAIL ME at armaan003 (at) e.ntu.edu.sg OR armaanbatracs14 (at)
+          gmail.com
         </div>
       </div>
 
@@ -280,35 +288,8 @@ const LandingPage = () => {
         <div>
           <div className="row">
             <div className="col-md-12 text-center">
-              <a
-                id="download-resume-btn"
-                href="mailto:armaanbatracs14@gmail.com"
-                className="text-center text-uppercase"
-              >
-                <button
-                  id="email-btn"
-                  type="button"
-                  name="email-btn"
-                  className="btn btn-default middle-blue-background center-block email"
-                >
-                  <i className="fa fa-envelope"></i>&nbsp;EMAIL ME
-                </button>
-              </a>
-              <br />
-              <br />
               <br />
               <p className="text-center light-white-font">
-                <a
-                  className="middle-blue-font"
-                  href="https://twitter.com/armaanleg3nd"
-                  title="Follow me!"
-                  target="twitter"
-                >
-                  <strong>
-                    <i className="fa fa-twitter fa-2x"></i>
-                  </strong>
-                </a>
-                &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
                 <a
                   className="middle-blue-font"
                   href="https://www.linkedin.com/in/armaanbatra/"
@@ -328,28 +309,6 @@ const LandingPage = () => {
                 >
                   <strong>
                     <i className="fa fa-github fa-2x"></i>
-                  </strong>
-                </a>
-                &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
-                <a
-                  className="middle-blue-font"
-                  href="https://armaanlegend.itch.io/"
-                  title="Games!"
-                  target="itchio"
-                >
-                  <strong id="dis-icon">
-                    <FaItchIo size={32} className="itch-icon" />
-                  </strong>
-                </a>
-                &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
-                <a
-                  className="middle-blue-font"
-                  href="https://instagram.com/armaan.batra14"
-                  title="Instagram!"
-                  target="instagram"
-                >
-                  <strong>
-                    <i className="fa fa-instagram fa-2x"></i>
                   </strong>
                 </a>
               </p>
