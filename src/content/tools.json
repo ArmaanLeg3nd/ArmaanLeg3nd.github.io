@@ -1,0 +1,18 @@
+[
+  {
+    "id": "oscp",
+    "title": "OSCP strategy workspace",
+    "href": "/tools/oscp/",
+    "category": "Security methodology",
+    "summary": "Navigate from discovery to evidence. Recognition clues, prerequisite checks, complete commands, and conditional next steps.",
+    "facts": ["Recognition", "Commands", "Next decisions"]
+  },
+  {
+    "id": "attack-path",
+    "title": "Attack-path visualizer",
+    "href": "/tools/attack-path/",
+    "category": "Path & evidence",
+    "summary": "Turn recorded investigation steps into a connected path. Import JSON, inspect evidence, and distinguish outcomes and return loops.",
+    "facts": ["JSON exchange", "Explicit transitions", "Local first"]
+  }
+]

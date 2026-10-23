@@ -1,18 +1,22 @@
 ---
 import site from "../content/site.json";
+import tools from "../content/tools.json";
 
 interface Props {
   links: Array<{ label: string; href: string }>;
+  currentPath: string;
 }
 
-const { links } = Astro.props;
+const { links, currentPath } = Astro.props;
+const isActive = (href: string) => href === "/" ? currentPath === "/" : currentPath.startsWith(href);
 ---
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-links">
-      {links.map(({ label, href }) => <a href={href}>{label}</a>)}
-    </div>
+    <nav class="footer-links" aria-label="Footer navigation">
+      {links.map(({ label, href }) => <a href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</a>)}
+    </nav>
+    {site.sections.tools.enabled && <nav class="footer-tools" aria-label="Interactive tools"><span>Interactive tools</span>{tools.map(tool => <a href={tool.href} aria-current={currentPath.startsWith(tool.href) ? "page" : undefined}>{tool.title} <span aria-hidden="true">↗</span></a>)}</nav>}
     <div class="footer-meta">
       <p>© {new Date().getFullYear()} Armaan. Built with curiosity.</p>
       <div>
@@ -61,6 +65,12 @@ const { links } = Astro.props;
     font-family: var(--mono);
     font-size: 0.625rem;
   }
+
+  .footer-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; padding-top: 1.25rem; font: .625rem var(--mono); color: var(--muted); }
+  .footer-tools > span { color: var(--quiet); font-size: .55rem; text-transform: uppercase; letter-spacing: .06em; }
+  .footer-tools a:hover, .footer-links a[aria-current="page"] { color: var(--cyan-soft); }
+  .site-footer a { transition: color var(--motion-duration) ease; }
+  .site-footer :is(.footer-links,.footer-meta,.footer-tools) a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 5px; }
 
   .footer-links a:hover,
   .footer-links a:focus-visible,

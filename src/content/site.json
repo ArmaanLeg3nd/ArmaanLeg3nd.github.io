@@ -1,10 +1,14 @@
 {
   "name": "leg3nd",
+  "tagline": "Projects & tools",
   "title": "Armaan | Security Engineer",
-  "description": "Armaan is a security engineer working across security tooling, agentic engineering, and software development. Explore selected public projects.",
+  "description": "Armaan is a security engineer working across security tooling, agentic engineering, and software development. Explore open-source projects and interactive tools.",
   "timezone": "GMT+8",
   "sections": {
     "projects": {
+      "enabled": true
+    },
+    "tools": {
       "enabled": true
     },
     "writeups": {

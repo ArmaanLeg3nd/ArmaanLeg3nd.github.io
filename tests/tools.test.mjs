@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { freshInvestigation, validateInvestigation, parseInvestigation, serializeInvestigation, addStep, removeStep, getSessionInvestigation, setSessionInvestigation } from '../src/lib/investigation.ts';
-import { substitute, validValue } from '../src/lib/oscp-commands.ts';
+import { substitute, validValue, getSessionCommandValues, setSessionCommandValues } from '../src/lib/oscp-commands.ts';
 import { layoutInvestigation } from '../src/lib/attack-graph.ts';
 const snapshot = JSON.parse(readFileSync(new URL('../src/content/oscp.snapshot.json',import.meta.url),'utf8'));
 const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Validate reachability',status:'planned',host:'host-a',identity:'user-a',capability:'',observation:'Synthetic test observation',createdAt:new Date().toISOString() });
@@ -63,6 +63,26 @@ test('connection substitution respects token boundaries, templates and secrets p
 test('connection field validation rejects operators, newlines and invalid port ranges',() => {
   assert.ok(validValue('PORTS','22,80,440-445')); assert.ok(!validValue('PORT','65536')); assert.ok(!validValue('PORTS','100-20'));
   for(const value of ['x\nwhoami','$(id)','x;id','x"']) assert.ok(!validValue('TARGET',value));
+});
+test('command values survive tool component changes in memory without leaking mutable state',() => {
+  const values={TARGET:'example.invalid'};setSessionCommandValues(values);values.TARGET='changed.invalid';
+  assert.equal(getSessionCommandValues().TARGET,'example.invalid');
+  const restored=getSessionCommandValues();restored.TARGET='mutated.invalid';assert.equal(getSessionCommandValues().TARGET,'example.invalid');
+  setSessionCommandValues({});assert.deepEqual(getSessionCommandValues(),{});
+});
+test('built pages share the same navigation, tool directory links and updated branding',() => {
+  const routes=['','projects/','tools/','tools/oscp/','tools/oscp/services/service-smb/','tools/attack-path/'];
+  for(const route of routes) {
+    const url=new URL(`../dist/${route}index.html`,import.meta.url);
+    if(!existsSync(url)) throw new Error('Run npm run build before the site integration checks');
+    const html=readFileSync(url,'utf8');
+    const header=html.match(/<header\b[^>]*class="site-header"[\s\S]*?<\/header>/)?.[0];
+    const footer=html.match(/<footer\b[^>]*class="site-footer"[\s\S]*?<\/footer>/)?.[0];
+    assert.ok(header && footer,route);
+    for(const href of ['/','/projects/','/tools/']) { assert.ok(header.includes(`href="${href}"`),`${route}: header ${href}`);assert.ok(footer.includes(`href="${href}"`),`${route}: footer ${href}`); }
+    assert.ok(/Projects (?:&amp;|&) tools/.test(header),`${route}: updated brand`);
+    for(const href of ['/tools/oscp/','/tools/attack-path/']) assert.ok(footer.includes(`href="${href}"`),`${route}: tool link ${href}`);
+  }
 });
 test('generated method and topic routes exist in a complete build',() => {
   if(!existsSync(new URL('../dist/tools/oscp/index.html',import.meta.url))) return;

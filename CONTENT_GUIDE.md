@@ -24,6 +24,14 @@ npm run build
 
 The normal build requires neither a private workspace nor a network connection. It uses the snapshot hash/revision to identify content and prepares lazy topic JSON plus static readable method routes. The Markdown renderer is the same version already used by Astro, explicitly declared as a dependency.
 
+### Shared site behavior
+
+Navigation availability comes from `site.json` and `src/lib/sections.ts`; the header and footer receive the same links. `src/content/tools.json` owns the tool directory and footer entries. Keep tool descriptions there rather than duplicating them across pages.
+
+All page and workspace navigation uses Astro's ClientRouter. Command values and investigations survive client-side navigation in browser-module memory, and full reloads clear unsaved memory. Do not add a second history/popstate router inside a tool.
+
+`MotionController` installs one reveal lifecycle per page, including panels mounted after hydration. Use `data-reveal` on meaningful sections, not on every keystroke-driven result or graph node. Reduced motion, keyboard focus and hidden documents keep content visible; leaving a page disconnects observers and stops animations. Tool CSS is scoped under `.tools-surface` to keep project/home styling stable across navigation.
+
 JSON imports are limited to 1 MB, 200 steps and 500 connections. Invalid imports leave the current investigation intact. Replacing a nonempty investigation requires an in-page confirmation. Unknown historical method IDs retain their imported titles/evidence without inventing current prerequisites. Repeated methods use distinct step IDs; return connections are preserved.
 
 ## Content

@@ -17,7 +17,7 @@ const isActive = (href: string) => href === "/"
   <nav class="site-nav" aria-label="Primary navigation">
     <a class="brand" href="/" aria-label={`${site.name} home`}>
       <span>{site.name}</span>
-      <small>Projects</small>
+      <small>{site.tagline}</small>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
       <span>MENU</span>
@@ -42,12 +42,24 @@ const isActive = (href: string) => href === "/"
     const links = document.querySelector<HTMLElement>(".nav-links");
     if (!toggle || !links || toggle.dataset.bound === "true") return;
     toggle.dataset.bound = "true";
+    const close = () => {
+      toggle.setAttribute("aria-expanded", "false");
+      links.dataset.open = "false";
+      const glyph = toggle.querySelector<HTMLElement>(".nav-toggle__glyph");
+      if (glyph) glyph.textContent = "[+]";
+    };
     toggle.addEventListener("click", () => {
       const open = toggle.getAttribute("aria-expanded") === "true";
       toggle.setAttribute("aria-expanded", String(!open));
       links.dataset.open = String(!open);
       const glyph = toggle.querySelector<HTMLElement>(".nav-toggle__glyph");
       if (glyph) glyph.textContent = open ? "[+]" : "[-]";
+    });
+    links.addEventListener("click", event => {
+      if ((event.target as Element).closest("a")) close();
+    });
+    toggle.closest("nav")?.addEventListener("keydown", event => {
+      if ((event as KeyboardEvent).key === "Escape") { close(); toggle.focus(); }
     });
   };
   document.addEventListener("astro:page-load", bindNav);
@@ -137,6 +149,11 @@ const isActive = (href: string) => href === "/"
     background: rgba(231, 225, 214, 0.032);
     color: var(--text);
     outline: none;
+  }
+
+  .nav-links a:focus-visible, .brand:focus-visible, .nav-toggle:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 4px;
   }
 
   .nav-links a:hover::after,

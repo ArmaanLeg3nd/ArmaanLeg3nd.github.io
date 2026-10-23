@@ -1,6 +1,6 @@
 import site from "../content/site.json";
 
-export type SectionKey = "writeups" | "projects" | "notes" | "labs" | "research" | "about" | "contact";
+export type SectionKey = "writeups" | "projects" | "tools" | "notes" | "labs" | "research" | "about" | "contact";
 export type ContentSectionKey = "writeups" | "projects" | "notes" | "labs" | "research";
 
 type SectionCounts = Partial<Record<ContentSectionKey, number>>;
@@ -15,6 +15,7 @@ export const navigationSections: Array<{ key: SectionKey | "home"; label: string
   { key: "home", label: "Home", href: "/" },
   { key: "writeups", label: "Writeups", href: "/writeups/" },
   { key: "projects", label: "Projects", href: "/projects/" },
+  { key: "tools", label: "Tools", href: "/tools/" },
   { key: "notes", label: "Notes", href: "/notes/" },
   { key: "labs", label: "Labs", href: "/labs/" },
   { key: "research", label: "Research", href: "/research/" },

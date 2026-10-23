@@ -1,8 +1,9 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import tools from '../../content/tools.json';
 ---
 <ToolLayout title="Tools" description="Interactive security tools for investigation, recognition, and attack-path reasoning.">
-  <main class="page tools-directory"><p class="eyebrow">Armaan / Interactive tools</p><h1>Tools for the work.</h1><p class="tools-intro">Focused workspaces for understanding a problem, following evidence, and deciding what comes next.</p>
-    <div class="tools-cards"><a class="tool-card" href="/tools/oscp/"><span class="tool-card-label">01 / SECURITY METHODOLOGY</span><h2>OSCP strategy workspace <span>↗</span></h2><p>Navigate from discovery to evidence. Recognition clues, prerequisite checks, complete commands, and conditional next steps.</p><div><span>166 methods</span><span>15 topics</span><span>8 stages</span></div></a><a class="tool-card" href="/tools/attack-path/"><span class="tool-card-label">02 / PATH & EVIDENCE</span><h2>Attack-path visualizer <span>↗</span></h2><p>Turn recorded investigation steps into a connected path. Import JSON, inspect evidence, and distinguish outcomes and return loops.</p><div><span>JSON exchange</span><span>Explicit transitions</span><span>Local first</span></div></a></div>
+  <main class="page tools-directory"><header data-reveal><p class="eyebrow">Armaan / Interactive tools</p><h1>Tools for the work.</h1><p class="tools-intro">Focused workspaces for understanding a problem, following evidence, and deciding what comes next.</p></header>
+    <div class="tools-cards">{tools.map((tool,index) => <a class="tool-card" href={tool.href} data-reveal><span class="tool-card-label">{String(index+1).padStart(2,'0')} / {tool.category.toUpperCase()}</span><h2>{tool.title} <span aria-hidden="true">↗</span></h2><p>{tool.summary}</p><div>{tool.facts.map(fact => <span>{fact}</span>)}</div></a>)}</div>
   </main>
 </ToolLayout>

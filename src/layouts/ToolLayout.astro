@@ -4,4 +4,4 @@ import '../styles/tools.css';
 interface Props { title: string; description: string }
 const { title, description } = Astro.props;
 ---
-<BaseLayout title={`${title} | Armaan`} description={description}><slot /></BaseLayout>
+<BaseLayout title={`${title} | Armaan`} description={description}><div class="tools-surface"><slot /></div></BaseLayout>

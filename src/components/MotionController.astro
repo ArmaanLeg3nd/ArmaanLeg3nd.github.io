@@ -1,43 +1,17 @@
 <script>
-  import { animate } from "motion/mini";
-
-  let observer: IntersectionObserver | undefined;
-
-  const initializeMotion = () => {
-    observer?.disconnect();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
-
-    if (reduced) {
-      targets.forEach((target) => {
-        target.style.opacity = "";
-        target.style.transform = "";
-      });
-      return;
-    }
-
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const target = entry.target as HTMLElement;
-        const delay = Number(target.dataset.revealDelay ?? 0);
-        animate(
-          target,
-          { opacity: [0, 1], transform: ["translateY(18px)", "translateY(0px)"] },
-          { duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }
-        );
-        observer?.unobserve(target);
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -5%" });
-
-    targets.forEach((target) => {
-      target.style.opacity = "0";
-      target.style.transform = "translateY(18px)";
-      observer?.observe(target);
-    });
+  import { installReveals } from '../lib/reveal';
+  let activeRoot: HTMLElement | null = null;
+  let cleanup: (() => void) | undefined;
+  const initialize = () => {
+    const root = document.getElementById('main-content');
+    if (root === activeRoot) return;
+    cleanup?.();
+    activeRoot = root;
+    cleanup = root ? installReveals(root) : undefined;
   };
-
-  document.addEventListener("astro:page-load", initializeMotion);
-  document.addEventListener("astro:before-swap", () => observer?.disconnect());
-  initializeMotion();
+  document.addEventListener('astro:before-swap',() => {
+    cleanup?.(); cleanup = undefined; activeRoot = null;
+  });
+  document.addEventListener('astro:page-load',initialize);
+  initialize();
 </script>

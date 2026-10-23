@@ -24,6 +24,8 @@
   --container: 1100px;
   --gutter: clamp(1rem, 4vw, 3rem);
   --header-height: 4.5rem;
+  --motion-duration: 180ms;
+  --motion-ease: cubic-bezier(.22, 1, .36, 1);
 }
 
 *,
@@ -85,6 +87,13 @@ button,
 a {
   -webkit-tap-highlight-color: transparent;
 }
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 4px;
+}
+
+:where(a, button) { transition: color var(--motion-duration) ease, background-color var(--motion-duration) ease, border-color var(--motion-duration) ease; }
 
 img {
   display: block;

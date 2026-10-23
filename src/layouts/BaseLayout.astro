@@ -4,6 +4,7 @@ import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import MotionController from "../components/MotionController.astro";
 import site from "../content/site.json";
+import { getNavigationLinks } from "../lib/sections";
 import "../styles/global.css";
 
 interface Props {
@@ -16,18 +17,14 @@ const {
   description = site.description
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const navigationLinks = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects/" },
-  { label: "Tools", href: "/tools/" }
-];
+const navigationLinks = getNavigationLinks();
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#121414" />
@@ -38,7 +35,7 @@ const navigationLinks = [
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <title>{title}</title>
-    <ClientRouter />
+    <ClientRouter fallback="swap" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -46,7 +43,7 @@ const navigationLinks = [
     <div id="main-content" transition:name="page-content">
       <slot />
     </div>
-    <Footer links={navigationLinks} />
+    <Footer links={navigationLinks} currentPath={Astro.url.pathname} />
     <MotionController />
   </body>
 </html>

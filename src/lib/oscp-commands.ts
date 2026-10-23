@@ -1,6 +1,9 @@
 export const connectionFields = ['TARGET','LHOST','DC_IP','DOMAIN','USER','SUBNET','PORT','PORTS'] as const;
 export type ConnectionField = typeof connectionFields[number];
 export type CommandValues = Partial<Record<ConnectionField,string>>;
+let sessionValues: CommandValues = {};
+export const getSessionCommandValues = () => ({...sessionValues});
+export function setSessionCommandValues(values: CommandValues) { sessionValues = {...values}; }
 export function validValue(key: ConnectionField, value: string): boolean {
   if (!value) return true;
   if (value.length > 253) return false;
