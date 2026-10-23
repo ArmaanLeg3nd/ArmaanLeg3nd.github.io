@@ -1,49 +1,85 @@
 [
   {
-    "name": "Doom Tasks - Browser Focus Extension",
-    "category": "Browser extension",
-    "summary": "A task-first browser extension that redirects distracting browsing back to the page you need until your tasks are complete.",
-    "stack": ["JavaScript", "Chrome", "Firefox", "Edge"],
-    "repo": "https://github.com/ArmaanLeg3nd/Doom-Tasks",
-    "link": { "label": "Chrome Web Store", "href": "https://chromewebstore.google.com/detail/doom-tasks/fchamnngebddonmbdjhppccnjmadponn" }
-  },
-  {
-    "name": "Voidension - Go Load Balancer",
-    "category": "Infrastructure",
-    "summary": "A configurable Go load balancer with server availability checks, request queuing, and retries with exponential backoff.",
-    "stack": ["Go", "YAML", "HTTP"],
-    "repo": "https://github.com/ArmaanLeg3nd/voidension",
-    "link": { "label": "Package docs", "href": "https://pkg.go.dev/github.com/armaanleg3nd/voidension" }
-  },
-  {
-    "name": "React Easing Scroll - Smooth Scroll Hook",
-    "category": "Developer library",
-    "summary": "A React hook for smooth in-page navigation, with more than 30 easing functions and configurable animation timing.",
-    "stack": ["TypeScript", "React", "npm"],
-    "repo": "https://github.com/ArmaanLeg3nd/react-easing-scroll",
-    "link": { "label": "npm package", "href": "https://www.npmjs.com/package/react-easing-scroll" }
-  },
-  {
-    "name": "MFCT - Chest CT Classification",
-    "category": "Machine learning",
-    "summary": "A chest CT classification experiment combining masked autoencoders and few-shot learning to explore learning from limited labelled data.",
-    "stack": ["Python", "Jupyter", "MAE", "Few-shot learning"],
-    "repo": "https://github.com/ArmaanLeg3nd/MFCT",
-    "note": "Adapted from lambert-x/medical_mae and Facebook Research MAE."
+    "name": "PMXencrypt - Python Runtime Crypter",
+    "category": "Security tooling",
+    "summary": "An educational Python runtime crypter that uses AES-GCM to encrypt Python code, with command-line and graphical interfaces.",
+    "stack": [
+      "Python",
+      "AES-GCM",
+      "CLI",
+      "GUI"
+    ],
+    "repo": "https://github.com/ArmaanLeg3nd/pmxencrypt",
+    "note": "Built with Adhip (@BlBirb)."
   },
   {
     "name": "RSA Cryptanalysis - Meet-in-the-Middle Attack",
     "category": "Security experiment",
     "summary": "An educational meet-in-the-middle attack on unpadded RSA, exploring plaintext recovery when messages have small multiplicative factors.",
-    "stack": ["Python", "Cryptography", "RSA"],
+    "stack": [
+      "Python",
+      "Cryptography",
+      "RSA"
+    ],
     "repo": "https://github.com/ArmaanLeg3nd/cryptanalysis-rsa-meet-in-the-middle-attack"
   },
   {
-    "name": "PMXencrypt - Python Runtime Crypter",
-    "category": "Security tooling",
-    "summary": "An educational Python runtime crypter that uses AES-GCM to encrypt Python code, with command-line and graphical interfaces.",
-    "stack": ["Python", "AES-GCM", "CLI", "GUI"],
-    "repo": "https://github.com/ArmaanLeg3nd/pmxencrypt",
-    "note": "Built with Adhip (@BlBirb)."
+    "name": "MFCT - Chest CT Classification",
+    "category": "Machine learning",
+    "summary": "A chest CT classification experiment combining masked autoencoders and few-shot learning to explore learning from limited labelled data.",
+    "stack": [
+      "Python",
+      "Jupyter",
+      "MAE",
+      "Few-shot learning"
+    ],
+    "repo": "https://github.com/ArmaanLeg3nd/MFCT",
+    "note": "Adapted from lambert-x/medical_mae and Facebook Research MAE."
+  },
+  {
+    "name": "Voidension - Go Load Balancer",
+    "category": "Infrastructure",
+    "summary": "A configurable Go load balancer with server availability checks, request queuing, and retries with exponential backoff.",
+    "stack": [
+      "Go",
+      "YAML",
+      "HTTP"
+    ],
+    "repo": "https://github.com/ArmaanLeg3nd/voidension",
+    "link": {
+      "label": "Package docs",
+      "href": "https://pkg.go.dev/github.com/armaanleg3nd/voidension"
+    }
+  },
+  {
+    "name": "React Easing Scroll - Smooth Scroll Hook",
+    "category": "Developer library",
+    "summary": "A React hook for smooth in-page navigation, with more than 30 easing functions and configurable animation timing.",
+    "stack": [
+      "TypeScript",
+      "React",
+      "npm"
+    ],
+    "repo": "https://github.com/ArmaanLeg3nd/react-easing-scroll",
+    "link": {
+      "label": "npm package",
+      "href": "https://www.npmjs.com/package/react-easing-scroll"
+    }
+  },
+  {
+    "name": "Doom Tasks - Browser Focus Extension",
+    "category": "Browser extension",
+    "summary": "A task-first browser extension that redirects distracting browsing back to the page you need until your tasks are complete.",
+    "stack": [
+      "JavaScript",
+      "Chrome",
+      "Firefox",
+      "Edge"
+    ],
+    "repo": "https://github.com/ArmaanLeg3nd/Doom-Tasks",
+    "link": {
+      "label": "Chrome Web Store",
+      "href": "https://chromewebstore.google.com/detail/doom-tasks/fchamnngebddonmbdjhppccnjmadponn"
+    }
   }
 ]
