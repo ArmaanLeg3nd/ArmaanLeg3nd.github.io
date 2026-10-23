@@ -1,0 +1,227 @@
+---
+import site from "../content/site.json";
+
+interface Props {
+  currentPath: string;
+  links: Array<{ label: string; href: string }>;
+}
+
+const { currentPath, links } = Astro.props;
+
+const isActive = (href: string) => href === "/"
+  ? currentPath === "/"
+  : currentPath.startsWith(href);
+---
+
+<header class="site-header">
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a class="brand" href="/" aria-label={`${site.name} home`}>
+      <span>{site.name}</span>
+      <small>Projects</small>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+      <span>MENU</span>
+      <span class="nav-toggle__glyph" aria-hidden="true">[+]</span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      {links.map(({ label, href }, index) => (
+        <a href={href} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>
+          <span class="nav-index">0{index + 1}</span>{label}
+        </a>
+      ))}
+    </div>
+    <div class="system-state" aria-label="Timezone">
+      {site.timezone}
+    </div>
+  </nav>
+</header>
+
+<script>
+  const bindNav = () => {
+    const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+    const links = document.querySelector<HTMLElement>(".nav-links");
+    if (!toggle || !links || toggle.dataset.bound === "true") return;
+    toggle.dataset.bound = "true";
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      links.dataset.open = String(!open);
+      const glyph = toggle.querySelector<HTMLElement>(".nav-toggle__glyph");
+      if (glyph) glyph.textContent = open ? "[+]" : "[-]";
+    });
+  };
+  document.addEventListener("astro:page-load", bindNav);
+  bindNav();
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-height);
+    border-bottom: 1px solid var(--line);
+    background: rgba(11, 15, 20, 0.86);
+    backdrop-filter: blur(18px);
+  }
+
+  .site-nav {
+    display: grid;
+    grid-template-columns: minmax(10rem, 1fr) auto minmax(8rem, 1fr);
+    align-items: center;
+    width: min(100%, var(--container));
+    height: 100%;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .brand {
+    display: inline-flex;
+    width: max-content;
+    align-items: baseline;
+    gap: 0.5rem;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .brand span {
+    color: var(--text);
+  }
+
+  .brand small {
+    color: var(--quiet);
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .nav-links a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 0.62rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.02em;
+    transition: color 160ms ease, background 160ms ease;
+  }
+
+  .nav-links a::after {
+    position: absolute;
+    right: 0.62rem;
+    bottom: -1px;
+    left: 0.62rem;
+    height: 1px;
+    content: "";
+    background: var(--cyan-soft);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms ease;
+  }
+
+  .nav-links a:hover,
+  .nav-links a:focus-visible,
+  .nav-links a.active {
+    background: rgba(231, 225, 214, 0.032);
+    color: var(--text);
+    outline: none;
+  }
+
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after,
+  .nav-links a.active::after {
+    transform: scaleX(1);
+  }
+
+  .nav-index {
+    display: none;
+  }
+
+  .system-state {
+    justify-self: end;
+    color: var(--quiet);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  @media (max-width: 980px) {
+    .site-nav {
+      grid-template-columns: 1fr auto;
+      padding-inline: 1rem;
+    }
+
+    .system-state {
+      display: none;
+    }
+
+    .nav-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: calc(100% + 1px);
+      right: 0;
+      left: 0;
+      display: grid;
+      height: auto;
+      padding: 0.5rem 1rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(11, 15, 20, 0.98);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-0.75rem);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .nav-links[data-open="true"] {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .nav-links a {
+      min-height: 2.75rem;
+      padding: 0 0.5rem;
+      border-bottom: 1px solid rgba(37, 47, 58, 0.72);
+    }
+
+    .nav-links a::after {
+      display: none;
+    }
+
+    .nav-index {
+      display: inline;
+      width: 2.2rem;
+      color: var(--quiet);
+    }
+  }
+</style>

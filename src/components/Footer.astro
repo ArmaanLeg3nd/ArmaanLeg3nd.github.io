@@ -1,0 +1,93 @@
+---
+import site from "../content/site.json";
+
+interface Props {
+  links: Array<{ label: string; href: string }>;
+}
+
+const { links } = Astro.props;
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      {links.map(({ label, href }) => <a href={href}>{label}</a>)}
+    </div>
+    <div class="footer-meta">
+      <p>© {new Date().getFullYear()} Armaan. Built with curiosity.</p>
+      <div>
+        {site.socials.map((social) => (
+          <a href={social.href} target={social.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+            {social.label}
+          </a>
+        ))}
+        <span>{site.timezone}</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--line);
+    background: rgba(8, 12, 16, 0.92);
+  }
+
+  .footer-inner {
+    width: min(100%, var(--container));
+    margin-inline: auto;
+    padding: 2rem var(--gutter);
+  }
+
+  .footer-links,
+  .footer-meta,
+  .footer-meta div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+
+  .footer-links {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .footer-links a,
+  .footer-meta {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.625rem;
+  }
+
+  .footer-links a:hover,
+  .footer-links a:focus-visible,
+  .footer-meta a:hover,
+  .footer-meta a:focus-visible {
+    color: var(--cyan);
+    outline: none;
+  }
+
+  .footer-meta {
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    color: var(--quiet);
+  }
+
+  .footer-meta p {
+    margin: 0;
+  }
+
+  @media (max-width: 620px) {
+    .footer-inner {
+      padding-inline: 1rem;
+    }
+
+    .footer-meta {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

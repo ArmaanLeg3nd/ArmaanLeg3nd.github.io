@@ -1,0 +1,35 @@
+{
+  "name": "leg3nd",
+  "title": "Armaan | Projects",
+  "description": "Selected public projects by Armaan: developer tools, security experiments, and machine learning.",
+  "timezone": "GMT+8",
+  "sections": {
+    "projects": {
+      "enabled": true
+    },
+    "writeups": {
+      "enabled": false
+    },
+    "notes": {
+      "enabled": false
+    },
+    "labs": {
+      "enabled": false
+    },
+    "research": {
+      "enabled": false
+    },
+    "about": {
+      "enabled": false
+    },
+    "contact": {
+      "enabled": false
+    }
+  },
+  "socials": [
+    {
+      "label": "GitHub \u2197",
+      "href": "https://github.com/ArmaanLeg3nd"
+    }
+  ]
+}

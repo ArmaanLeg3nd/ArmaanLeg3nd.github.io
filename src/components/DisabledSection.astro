@@ -1,0 +1,25 @@
+---
+interface Props {
+  label: string;
+  redirectTo?: string;
+}
+
+const { label, redirectTo = "/" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0;url=${redirectTo}`} />
+    <link rel="canonical" href={redirectTo} />
+    <title>{label} Disabled</title>
+  </head>
+  <body>
+    <a href={redirectTo}>{label} is disabled.</a>
+    <script define:vars={{ redirectTo }} is:inline>
+      window.location.replace(redirectTo);
+    </script>
+  </body>
+</html>

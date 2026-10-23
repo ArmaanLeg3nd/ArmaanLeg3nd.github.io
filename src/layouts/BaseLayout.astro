@@ -1,0 +1,51 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import MotionController from "../components/MotionController.astro";
+import site from "../content/site.json";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = site.title,
+  description = site.description
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const navigationLinks = [
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects/" }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#121414" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <Nav currentPath={Astro.url.pathname} links={navigationLinks} />
+    <div id="main-content" transition:name="page-content">
+      <slot />
+    </div>
+    <Footer links={navigationLinks} />
+    <MotionController />
+  </body>
+</html>

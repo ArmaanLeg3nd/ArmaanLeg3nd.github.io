@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectGrid from "../../components/ProjectGrid.astro";
+---
+<BaseLayout title="Projects | Armaan">
+  <main class="page page--compact">
+    <header class="projects-intro"><p class="eyebrow">Armaan / Open source</p><h1>Things I've built.</h1><p>Developer tools, security experiments, and machine learning. Source and documentation live alongside each project on GitHub.</p></header>
+    <ProjectGrid />
+  </main>
+</BaseLayout>
+<style>
+  .projects-intro { max-width: 43rem; margin-bottom: 4rem; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 500; line-height: 1.1; letter-spacing: -.06em; margin: 1rem 0; }
+  .projects-intro > p:last-child { color: var(--muted); max-width: 54ch; line-height: 1.8; }
+</style>

@@ -1,0 +1,174 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  kind: string;
+  backHref: string;
+  date: Date;
+  status: string;
+  category: string;
+  readTime?: string;
+  tags: string[];
+}
+
+const { title, description, kind, backHref, date, status, category, readTime, tags } = Astro.props;
+const formattedDate = date.toLocaleDateString("en", { year: "numeric", month: "short", day: "2-digit" });
+---
+
+<BaseLayout title={`${title} | ${kind}`} description={description}>
+  <main class="page article-page">
+    <a class="back-link" href={backHref}>Back to {kind}</a>
+    <header data-reveal>
+      <div class="article-kicker">
+        <span>{category}</span>
+        <span class="status-chip" data-tone={status.toLowerCase()}>{status}</span>
+      </div>
+      <h1>{title}</h1>
+      <p class="summary">{description}</p>
+      <div class="article-meta">
+        <span>{formattedDate}</span>
+        <span>{category}</span>
+        {readTime && <span>{readTime}</span>}
+      </div>
+      <div class="article-tags">{tags.map((tag) => <span class="tag">{tag}</span>)}</div>
+    </header>
+    <div class="article-grid">
+      <article class="article-body" data-reveal>
+        <slot />
+      </article>
+      <aside class="article-aside panel" data-reveal>
+        <p class="label">Entry details</p>
+        <dl>
+          <div><dt>TYPE</dt><dd>{kind}</dd></div>
+          <div><dt>STATUS</dt><dd>{status}</dd></div>
+          <div><dt>DATE</dt><dd>{formattedDate}</dd></div>
+          <div><dt>AREA</dt><dd>{category}</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .article-page {
+    max-width: 1180px;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 2.5rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    color: var(--text);
+    outline: 0;
+  }
+
+  header {
+    max-width: 62rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .article-kicker,
+  .article-meta,
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .article-kicker {
+    color: var(--quiet);
+  }
+
+  h1 {
+    max-width: 20ch;
+    margin: 1rem 0;
+    font-family: var(--sans);
+    font-size: clamp(2.25rem, 6vw, 5.3rem);
+    font-weight: 600;
+    letter-spacing: -0.055em;
+    line-height: 1;
+  }
+
+  .summary {
+    max-width: 68ch;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+
+  .article-meta {
+    margin-top: 1.5rem;
+  }
+
+  .article-meta span + span::before {
+    margin-right: 0.7rem;
+    color: var(--quiet);
+    content: "/";
+  }
+
+  .article-tags {
+    margin-top: 1rem;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .article-aside {
+    position: sticky;
+    top: calc(var(--header-height) + 1.5rem);
+    padding: 1.25rem;
+  }
+
+  dl,
+  dt,
+  dd {
+    margin: 0;
+  }
+
+  dl {
+    margin-top: 1rem;
+  }
+
+  dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+  }
+
+  dt { color: var(--quiet); }
+  dd { color: var(--text); text-align: right; }
+
+  @media (max-width: 820px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .article-aside {
+      position: static;
+      grid-row: 1;
+    }
+  }
+</style>
