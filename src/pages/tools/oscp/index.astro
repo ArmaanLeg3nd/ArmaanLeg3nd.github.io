@@ -1,0 +1,6 @@
+---
+import ToolLayout from '../../../layouts/ToolLayout.astro';
+import Workspace from '../../../components/oscp/Workspace.svelte';
+import { catalog } from '../../../lib/oscp';
+---
+<ToolLayout title="OSCP strategy workspace" description="An interactive end-to-end exploitation strategy: discover clues, validate prerequisites, interpret results, and follow conditional attack paths."><Workspace client:load {catalog} /></ToolLayout>

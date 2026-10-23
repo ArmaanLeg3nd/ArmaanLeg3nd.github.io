@@ -1,5 +1,13 @@
 [
   {
+    "name": "OSCP Strategy Workspace & Reference",
+    "category": "Security methodology",
+    "summary": "An interactive exploitation strategy map with recognition checks, operational procedures, and a companion attack-path visualizer for recorded investigations.",
+    "stack": ["Astro", "Svelte", "OSCP"],
+    "repo": "https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference",
+    "link": {"label": "Open workspace", "href": "/tools/oscp/"}
+  },
+  {
     "name": "PMXencrypt - Python Runtime Crypter",
     "category": "Security tooling",
     "summary": "An educational Python runtime crypter that uses AES-GCM to encrypt Python code, with command-line and graphical interfaces.",

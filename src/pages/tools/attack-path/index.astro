@@ -1,0 +1,6 @@
+---
+import ToolLayout from '../../../layouts/ToolLayout.astro';
+import AttackPath from '../../../components/oscp/AttackPath.svelte';
+import { catalog } from '../../../lib/oscp';
+---
+<ToolLayout title="Attack-path visualizer" description="Import investigation JSON and visualize explicit attack steps, evidence, outcomes, and branching or repeated transitions."><AttackPath client:load {catalog} /></ToolLayout>
