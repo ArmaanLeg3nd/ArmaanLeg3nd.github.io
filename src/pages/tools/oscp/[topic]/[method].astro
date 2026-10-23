@@ -4,6 +4,6 @@ import Workspace from '../../../../components/oscp/Workspace.svelte';
 import { catalog, topicMethods } from '../../../../lib/oscp';
 export function getStaticPaths() { return catalog.methods.map(method => ({ params: { topic: method.topic, method: method.id }, props: { method } })); }
 const { method } = Astro.props;
-const initialMethods = (await topicMethods(method.topic)).filter(m => m.id === method.id);
+const initialMethods = await topicMethods(method.topic);
 ---
 <ToolLayout title={`${method.title} | OSCP`} description={method.clue}><Workspace client:load {catalog} initialTopic={method.topic} initialMethod={method.id} {initialMethods} /></ToolLayout>

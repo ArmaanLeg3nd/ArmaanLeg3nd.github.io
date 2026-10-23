@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import type { Catalog } from '../../lib/oscp-types';
   import { freshInvestigation, parseInvestigation, serializeInvestigation, validateInvestigation, addStep, statuses, uid, STATE_KEY, SAVE_KEY, MAX_IMPORT_BYTES, getSessionInvestigation, setSessionInvestigation, type Investigation, type StepStatus } from '../../lib/investigation';
-  let { catalog, activeMethodId = '', ondocumentchange = (_document: Investigation) => {} }: { catalog: Catalog; activeMethodId?: string; ondocumentchange?: (document: Investigation) => void } = $props();
+  let { catalog, activeMethodId = '', ondocumentchange = (_document: Investigation) => {}, onstatuschange = (_saving: boolean) => {} }: { catalog: Catalog; activeMethodId?: string; ondocumentchange?: (document: Investigation) => void; onstatuschange?: (saving: boolean) => void } = $props();
   let document = $state<Investigation>(freshInvestigation(catalog.contentHash));
   let saving = $state(false);
   let open = $state(false);
@@ -19,6 +19,8 @@
   let clearPending = $state(false);
   let fileInput: HTMLInputElement;
   let selectedMethod = $derived(catalog.methods.find(m => m.id === activeMethodId));
+  $effect(() => onstatuschange(saving));
+  export function openPanel() { open = true; }
   function publish(message = '') {
     setSessionInvestigation(document);
     if (saving) {

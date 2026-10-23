@@ -4,10 +4,10 @@ The public site contains the project index at `/` and `/projects/`, plus interac
 
 ## Interactive tools
 
-- `/tools/oscp/`: strategy overview, topic workflows and individually addressable methods.
+- `/tools/oscp/`: starting-capability groups, topic decision guides and inline expandable techniques. Existing direct method URLs open the matching technique within its topic.
 - `/tools/attack-path/`: investigation JSON importer, graph, record inspector and connection editor.
 - Both tools share the `oscp-investigation` version 1 JSON format. Saving investigation records is opt-in. Disabling saving retains the previous saved copy until explicitly cleared. Command-value inputs are in memory only and are never exported or stored.
-- Navigation and tree preferences are saved separately; they do not record investigation outcomes.
+- The last visited location is saved separately; browsing or expanding techniques does not record investigation outcomes.
 - Local records are specific to the current origin/browser. Use Export JSON and Import JSON to move between browsers or devices. Keep secrets and real exam material out of notes.
 - The in-memory investigation survives client-side navigation between the two tools, including with local saving off; a full reload clears unsaved records. Export before closing an unsaved investigation.
 
@@ -22,7 +22,11 @@ npm run check
 npm run build
 ```
 
-The normal build requires neither a private workspace nor a network connection. It uses the snapshot hash/revision to identify content and prepares lazy topic JSON plus static readable method routes. The Markdown renderer is the same version already used by Astro, explicitly declared as a dependency.
+The normal build requires neither a private workspace nor a network connection. It uses the snapshot hash/revision to identify content and prepares topic JSON plus static readable topic/method routes. Each topic includes its complete technique content in native disclosures, including commands, recognition examples, interpretation and all conditional transitions. The Markdown renderer is the same version already used by Astro, explicitly declared as a dependency.
+
+`src/lib/oscp-navigation.ts` owns concise display labels and starting-capability groups; it does not replace the source titles or content. `MethodEntry` presents recognition, prerequisites, a first check and interpretation before expandable procedures and deeper explanations. `NextRoutes` retains every transition with its trigger and remaining prerequisites. Saving, recording, JSON import/export and temporary command values live in Workspace controls; the saving status and record count remain visible while it is closed. Navigator styles are scoped separately from the attack-path visualizer.
+
+After building, `npm run test:tools` checks every rendered topic for its complete original method text, fenced commands and transition set, and checks all direct method routes open the selected entry.
 
 ### Shared site behavior
 

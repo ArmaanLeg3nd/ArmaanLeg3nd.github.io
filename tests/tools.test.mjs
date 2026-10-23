@@ -4,6 +4,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { freshInvestigation, validateInvestigation, parseInvestigation, serializeInvestigation, addStep, removeStep, getSessionInvestigation, setSessionInvestigation } from '../src/lib/investigation.ts';
 import { substitute, validValue, getSessionCommandValues, setSessionCommandValues } from '../src/lib/oscp-commands.ts';
 import { layoutInvestigation } from '../src/lib/attack-graph.ts';
+import { startingGroups } from '../src/lib/oscp-navigation.ts';
 const snapshot = JSON.parse(readFileSync(new URL('../src/content/oscp.snapshot.json',import.meta.url),'utf8'));
 const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Validate reachability',status:'planned',host:'host-a',identity:'user-a',capability:'',observation:'Synthetic test observation',createdAt:new Date().toISOString() });
 test('snapshot accounts for the entire reviewed inventory and all valid conditional transitions',() => {
@@ -88,4 +89,37 @@ test('generated method and topic routes exist in a complete build',() => {
   if(!existsSync(new URL('../dist/tools/oscp/index.html',import.meta.url))) return;
   for(const m of snapshot.methods) assert.ok(existsSync(new URL(`../dist/tools/oscp/${m.topic}/${m.id}/index.html`,import.meta.url)),m.id);
   for(const t of snapshot.topics) assert.ok(existsSync(new URL(`../dist/tools/oscp/data/${t.id}.json`,import.meta.url)),t.id);
+});
+test('starting capability groups account for every topic without duplication',() => {
+  const ids=startingGroups.flatMap(group => group.items.map(item => item[1]));
+  assert.equal(ids.length,snapshot.topics.length);assert.equal(new Set(ids).size,ids.length);
+  assert.deepEqual([...ids].sort(),snapshot.topics.map(topic => topic.id).sort());
+});
+const decodeHTML = (html) => html.replace(/&#x([0-9a-f]+);/gi,(_,code) => String.fromCodePoint(parseInt(code,16)))
+  .replace(/&#([0-9]+);/g,(_,code) => String.fromCodePoint(+code))
+  .replace(/&(amp|lt|gt|quot|apos);/g,(_,name) => ({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[name]));
+const blocks = markdown => Array.from(markdown.matchAll(/^```[^\n]*\n([\s\S]*?)^```/gm),match => match[1].trimEnd());
+test('inline topic pages retain every method, source command variant, recognition field and transition',() => {
+  let totalMethods=0,totalEdges=0,totalBlocks=0;
+  for(const topic of snapshot.topics) {
+    const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
+    const text=decodeHTML(html),codes=new Set(Array.from(html.matchAll(/<pre\b[^>]*>[\s\S]*?<code\b[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/g),match => decodeHTML(match[1]).trimEnd()));
+    const methods=snapshot.methods.filter(method => method.topic===topic.id);
+    for(const method of methods) {
+      assert.equal((html.match(new RegExp(`data-method-id="${method.id}"`,'g')) || []).length,1,method.id);
+      for(const key of ['title','access','conditions','result','clue','mechanics','example','verify','failure']) assert.ok(text.includes(method[key]),`${method.id}: ${key}`);
+      for(const key of ['where','sample','spot','confirm','enabled','ruledout','unknown']) assert.ok(text.includes(method.recognition[key]),`${method.id}: recognition ${key}`);
+      for(const block of [...blocks(method.procedure),...blocks(method.checks),...blocks(method.recognition.commands)]) {assert.ok(codes.has(block),`${method.id}: missing command variant ${block.slice(0,60)}`);totalBlocks++;}
+      totalMethods++;totalEdges+=method.next.length;
+    }
+    assert.equal((html.match(/data-next-method="/g)||[]).length,methods.reduce((sum,m) => sum+m.next.length,0),topic.id);
+  }
+  assert.equal(totalMethods,166);assert.equal(totalEdges,505);assert.ok(totalBlocks>500);
+});
+test('direct method URLs open the intended technique in its containing family',() => {
+  for(const method of snapshot.methods) {
+    const html=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
+    const tag=html.match(new RegExp(`<details[^>]+data-method-id="${method.id}"[^>]*>`))?.[0];
+    assert.ok(tag && /\bopen(?:[ =>])/.test(tag),method.id);
+  }
 });
