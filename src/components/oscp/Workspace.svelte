@@ -126,7 +126,7 @@
         <MethodEntry method={activeMethod} {lookup} values={activeValues} onselect={selectMethod} onrecord={record} />
       {:else if stage}
         <header class="compact-topic-header"><h1>{stageGuides[stage.id].title}</h1><p>{stageGuides[stage.id].prerequisite}</p></header>
-        <ul class="stage-topic-index">{#each stage.topics as id}{@const item=catalog.topics.find(topic=>topic.id===id)!}<li><a href={topicURL(id)+'#prerequisite-checks'}>{topicLabel(item)} — prerequisite checks →</a><p>{item.access}</p></li>{/each}</ul>
+        <ul class="stage-topic-index">{#each stage.topics as id}{@const item=catalog.topics.find(topic=>topic.id===id)!}<li><a href={topicURL(id)+'#first-pass'}>{topicLabel(item)} — tools & findings →</a><p>{item.access}</p></li>{/each}</ul>
         <p class="index-return"><a href="/tools/oscp/">← All stages and topics</a></p>
       {:else if topic}
         <header class="compact-topic-header" data-reveal><p class="detail-kicker">REFERENCE / {catalog.methods.filter(method=>method.topic===topicId).length} TASKS</p><h1>{topicLabel(topic)}</h1><p>{topic.intro}</p></header>

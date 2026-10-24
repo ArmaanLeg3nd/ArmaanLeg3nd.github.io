@@ -20,7 +20,7 @@ test('plain indexes replace decision maps and expose every stage and topic',() =
     const html=readFileSync(new URL(`../dist${stageURL(stage.id)}index.html`,import.meta.url),'utf8');
     for(const id of stage.topics) {
       assert.ok(home.includes(`href="/tools/oscp/${id}/"`));
-      assert.ok(html.includes(`href="/tools/oscp/${id}/#prerequisite-checks"`));
+      assert.ok(html.includes(`href="/tools/oscp/${id}/#first-pass"`));
     }
     assert.ok(!html.includes('strategy-canvas') && !html.includes('data-map-topic'));
   }
