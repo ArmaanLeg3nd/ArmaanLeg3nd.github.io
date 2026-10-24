@@ -5,8 +5,8 @@
 </script>
 
 <section class="next-routes" id={`next-${method.id}`} aria-label={`Possible next steps for ${method.title}`}>
-  <h2>Where this can lead</h2>
-  <p class="route-instruction">Choose the row matching your evidence. Check its requirements before continuing.</p>
+  <div class="walkthrough-heading"><span aria-hidden="true">03</span><h2>Follow the result</h2></div>
+  <p class="route-instruction">If you observe the finding, check the receiving prerequisite, then open that task. These are alternative paths; do not run every row.</p>
   <div class="finding-actions">
     {#each method.next as edge}
       {@const target = lookup.get(edge.id)!}
@@ -16,4 +16,5 @@
       </article>
     {/each}
   </div>
+  <p class="walkthrough-no-branch">No branch matches? <a href={`/tools/oscp/${method.topic}/`}>Return to this topic’s task map</a> and investigate another clue. Keep unverified results marked as inconclusive.</p>
 </section>

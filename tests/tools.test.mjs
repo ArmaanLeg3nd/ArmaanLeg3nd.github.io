@@ -238,11 +238,28 @@ test('command constraints remain visible and host-location changes separate same
   const unrestricted='##### Baseline\n\n```bash\nfirst-command\n```\n\n<details><summary>Variant</summary>\n\n```bash\nsecond-command\n```\n\n</details>';
   assert.equal(blocks(combinedProcedure(unrestricted)).length,1);
 });
-test('direct task pages show commands before the finding guide and have no task accordion',() => {
+test('every reference page follows investigation command, output decision, procedure and conditional handoff order',() => {
   for(const method of snapshot.methods) {
     const html=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
     assert.ok(html.includes(`<article class="task-reference" id="${method.id}"`),method.id);
-    assert.ok(html.indexOf(`id="execute-${method.id}"`)<html.indexOf(`id="check-${method.id}"`),method.id);
+    const investigation=html.indexOf(`id="check-${method.id}"`),procedure=html.indexOf(`id="execute-${method.id}"`),next=html.indexOf(`id="next-${method.id}"`);
+    assert.ok(investigation<procedure && procedure<next,method.id);
+    assert.ok(html.includes('IF THE CLUE MATCHES') && html.includes('IF THIS RULES OUT THE PATH') && html.includes('IF THE CHECK FAILS / IS UNCLEAR'),method.id);
+    assert.ok(html.indexOf('LOOK FOR · SYNTHETIC EXAMPLE')>investigation && html.indexOf('LOOK FOR · SYNTHETIC EXAMPLE')<procedure,method.id);
+    assert.ok(html.includes('Choose the matching variant, not every variant in sequence.'),method.id);
+    assert.ok(html.includes('No branch matches?'),method.id);
     assert.ok(!/<details class="(?:technique|result-branch)/.test(html),method.id);
+  }
+});
+
+test('walkthroughs separate a recognition clue from a validated result and retain working branch anchors',() => {
+  for(const method of snapshot.methods) {
+    const html=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
+    const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
+    for(const match of html.matchAll(/href="#([^"]+)"/g))assert.ok(ids.has(match[1]),`${method.id}: ${match[1]}`);
+    assert.ok(html.indexOf('Useful result after validation:')>html.indexOf(`id="execute-${method.id}"`),method.id);
+    assert.ok(html.includes(`href="/tools/oscp/${method.topic}/"`),method.id);
+    const checksAreDistinct=method.checks.trim()!==method.recognition.commands.trim();
+    assert.equal(html.includes('Check the missing prerequisite first'),checksAreDistinct,method.id);
   }
 });
