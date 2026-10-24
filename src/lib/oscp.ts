@@ -6,6 +6,7 @@ import { combinedProcedure, procedureNotes } from './oscp-procedure';
 import { buildSearchText } from './oscp-search';
 
 export const catalog: Catalog = {
+  toolbox:snapshot.toolbox, supplementarySource:snapshot.supplementarySource,
   schemaVersion: snapshot.schemaVersion, contentHash: snapshot.contentHash, sourceRevision: snapshot.sourceRevision,
   stages: snapshot.stages, topics: snapshot.topics, chains: snapshot.chains,
   methods: snapshot.methods.map(m => ({ id: m.id, topic: m.topic, title: m.title, family: m.family, clue: m.clue, access: m.access, conditions: m.conditions,

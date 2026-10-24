@@ -58,3 +58,7 @@ export function combinedProcedure(markdown: string, inlineOutcomes = false): str
   const trailing=contextCue(markdown.slice(cursor));
   return groups.map(group => `#### ${group.title}\n\n${group.context ? group.context+'\n\n' : ''}\`\`\`${group.language}\n${group.body}\n\`\`\`${group.outcomes.length ? '\n\n'+group.outcomes.join('\n\n') : ''}`).join('\n\n')+(trailing ? '\n\n'+trailing : '');
 }
+
+export function namespaceProcedure(html:string,methodId:string):string {
+  return html.replace(/<[^>]+>/g,tag=>tag.replace(/\bid="([^"]+)"/g,(_,id)=>`id="procedure-${methodId}-${id}"`).replace(/\bhref="#([^"]+)"/g,(_,id)=>`href="#procedure-${methodId}-${id}"`));
+}

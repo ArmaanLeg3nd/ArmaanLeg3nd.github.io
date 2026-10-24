@@ -11,6 +11,7 @@ export interface Method extends MethodSummary {
   links: { guide: string; procedure: string; sheet: string };
   html: { checks: string; discovery: string; procedure: string; notes: string; baseline: string };
 }
-export interface Catalog { schemaVersion: number; contentHash: string; sourceRevision: string; stages: Stage[]; topics: Topic[]; methods: MethodSummary[]; chains: Record<string,string[]> }
+export interface ToolReference {name:string;method:string;topic:string;url:string;note:string}
+export interface Catalog { toolbox:ToolReference[]; supplementarySource:{name:string;url:string;revision:string}; schemaVersion: number; contentHash: string; sourceRevision: string; stages: Stage[]; topics: Topic[]; methods: MethodSummary[]; chains: Record<string,string[]> }
 export const methodURL = (m: Pick<MethodSummary,'topic'|'id'>) => `/tools/oscp/${m.topic}/${m.id}/`;
 export const topicURL = (id: string) => `/tools/oscp/${id}/`;

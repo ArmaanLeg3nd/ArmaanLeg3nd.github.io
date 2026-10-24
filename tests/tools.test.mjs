@@ -9,6 +9,7 @@ import { startingGroups, investigationSteps, methodLabel } from '../src/lib/oscp
 import { combinedProcedure, procedureNotes } from '../src/lib/oscp-procedure.ts';
 import { stageURL, stageGuides } from '../src/lib/oscp-stages.ts';
 import { annotateCheck } from '../src/lib/oscp-checks.ts';
+import {topicLead,referenceFamilies} from '../src/lib/oscp-reference.ts';
 const snapshot = JSON.parse(readFileSync(new URL('../src/content/oscp.snapshot.json',import.meta.url),'utf8'));
 const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Validate reachability',status:'planned',host:'host-a',identity:'user-a',capability:'',observation:'Synthetic test observation',createdAt:new Date().toISOString() });
 
@@ -20,27 +21,29 @@ test('plain indexes replace decision maps and expose every stage and topic',() =
     const html=readFileSync(new URL(`../dist${stageURL(stage.id)}index.html`,import.meta.url),'utf8');
     for(const id of stage.topics) {
       assert.ok(home.includes(`href="/tools/oscp/${id}/"`));
-      assert.ok(html.includes(`href="/tools/oscp/${id}/#first-pass"`));
+      assert.ok(html.includes(`href="/tools/oscp/${id}/#contents"`));
     }
     assert.ok(!html.includes('strategy-canvas') && !html.includes('data-map-topic'));
   }
   assert.ok(!home.includes('strategy-canvas') && !home.includes('data-stage-choice'));
 });
 
-test('every topic has a prerequisite check and direct procedure link for every method',() => {
+test('every topic is a direct cheatsheet with complete commands and preserved detail links',() => {
   let count=0;
   for(const topic of snapshot.topics) {
     const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
-    assert.ok(html.includes('id="prerequisite-checks"') && !html.includes('data-decision-topic'),topic.id);
-    assert.ok(!html.includes('data-map-method') && !html.includes('checks marked'),topic.id);
-    const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
-    for(const match of html.matchAll(/href="#([^"]+)"/g))assert.ok(ids.has(match[1]),`${topic.id}: ${match[1]}`);
+    assert.ok(html.includes('id="contents"') && html.includes('id="tools-and-scripts"'),topic.id);
+    assert.ok(!html.includes('data-decision-topic') && !html.includes('data-prerequisite='),topic.id);
+    assert.ok(html.indexOf('id="contents"')<html.indexOf('data-reference-method='),topic.id);
+    const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);
+    assert.equal(ids.length,new Set(ids).size,`${topic.id}: duplicate anchor`);
+    for(const match of html.matchAll(/href="#([^"]+)"/g))assert.ok(ids.includes(match[1]),`${topic.id}: ${match[1]}`);
     for(const method of snapshot.methods.filter(method=>method.topic===topic.id)) {
-      assert.equal((html.match(new RegExp(`data-prerequisite="${method.id}"`,'g'))||[]).length,1,method.id);
-      assert.ok(html.includes(`data-check-continue="${method.id}"`) && html.includes(`href="/tools/oscp/${method.topic}/${method.id}/"`),method.id);
-      for(const block of blocks(method.checks))assert.ok(decodeHTML(html).includes(block),`${method.id}: validation command`);
-      for(const block of blocks(method.recognition.commands))assert.ok(decodeHTML(html).includes(block),`${method.id}: discovery command`);
-      assert.ok(decodeHTML(html).includes(method.recognition.ruledout) && decodeHTML(html).includes(method.recognition.unknown),method.id);
+      assert.equal((html.match(new RegExp(`data-reference-method="${method.id}"`,'g'))||[]).length,1,method.id);
+      assert.ok(html.includes(`href="#ref-${method.id}"`) && html.includes(`data-full-checks="${method.id}"`));
+      for(const block of blocks(method.procedure))assert.ok(decodeHTML(html).includes(block),`${method.id}: command preservation`);
+      const detail=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
+      for(const block of [...blocks(method.checks),...blocks(method.recognition.commands)])assert.ok(decodeHTML(detail).includes(block),`${method.id}: full checks preserved`);
       count++;
     }
   }
@@ -192,18 +195,17 @@ test('command presentation preserves every source command in order without varia
   assert.ok(blocks(combined).length<blocks(smb.procedure).length);
   assert.ok(combined.includes('```powershell\n'));
 });
-test('topic outlines index every task once without loading its full reference content',() => {
+test('topic contents index every task once and keep navigation complete',() => {
   let count=0;
   for(const topic of snapshot.topics) {
     assert.equal(investigationSteps[topic.id].length,topic.workflow.length,topic.id);
     const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
-    assert.ok(html.includes('class="topic-outline"') && html.includes('id="investigation-flow"'),topic.id);
+    assert.ok(html.includes('class="cheatsheet-contents"') && html.includes('id="topic-task-index"'),topic.id);
     assert.ok(!html.includes('data-method-id="'),topic.id);
     for(const method of snapshot.methods.filter(method=>method.topic===topic.id)) {
       assert.equal((html.match(new RegExp(`data-task-link="${method.id}"`,'g'))||[]).length,1,method.id);
       assert.ok(decodeHTML(html).includes(methodLabel(method)),method.id);count++;
     }
-    for(const step of topic.workflow) assert.ok(decodeHTML(html).includes(step.label),topic.id);
   }
   assert.equal(count,166);
 });
@@ -303,7 +305,7 @@ test('all topics start with source-owned actionable workflows and valid finding 
   const methods=new Map(snapshot.methods.map(m=>[m.id,m]));
   for(const topic of snapshot.topics) {
     const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
-    assert.ok(html.indexOf('id="first-pass"')<html.indexOf('id="prerequisite-checks"'),topic.id);
+    assert.ok(html.indexOf('id="contents"')<html.indexOf('id="first-pass"'),topic.id);
     assert.ok(!html.includes('Continue checking'),topic.id);
     assert.ok(snapshot.playbooks[topic.id].length>=2,topic.id);
     for(const step of snapshot.playbooks[topic.id]) {
@@ -337,4 +339,34 @@ test('first pass exposes practical collectors and operations instead of only set
   const linux=snapshot.playbooks['linux-privesc'][0];
   assert.equal(linux.findings.find(f=>f.finding.includes('capability')).target,'linux-capabilities');
   assert.equal(linux.findings.find(f=>f.finding.includes('SUID')).target,'linux-suid');
+});
+
+
+test('toolbox covers every topic with valid owning tasks and upstream references',()=>{
+  const methods=new Map(snapshot.methods.map(m=>[m.id,m]));
+  assert.equal(new Set(snapshot.toolbox.map(tool=>tool.topic)).size,15);
+  for(const tool of snapshot.toolbox) {
+    assert.equal(methods.get(tool.method)?.topic,tool.topic);
+    assert.match(tool.url,/^https:\/\//);
+    const html=readFileSync(new URL(`../dist/tools/oscp/${tool.topic}/index.html`,import.meta.url),'utf8');
+    assert.ok(decodeHTML(html).includes(tool.name) && html.includes(tool.url),tool.name);
+    assert.ok(html.includes(`href="#ref-${tool.method}"`));
+  }
+  for(const [name,id] of [['SMBMap','service-smb'],['RunasCs','credential-use'],['LaZagne','windows-secrets']]) {
+    assert.ok(snapshot.toolbox.some(tool=>tool.name===name && tool.method===id));
+    assert.ok(methods.get(id).procedure.toLowerCase().includes(name.toLowerCase()));
+  }
+  assert.ok(methods.get('web-parameters').procedure.includes('-request-proto http'));
+  assert.ok(methods.get('windows-enumerators').procedure.includes('Invoke-PrivescCheck -Report TXT,HTML'));
+  assert.ok(methods.get('service-smb').procedure.includes('enum4linux-ng -A -w DOMAIN'));
+});
+
+
+test('plain operational introductions and collector-first ordering cover all topics',()=>{
+  assert.deepEqual(Object.keys(topicLead).sort(),snapshot.topics.map(t=>t.id).sort());
+  for(const topic of snapshot.topics) {
+    assert.deepEqual(referenceFamilies(topic).flatMap(f=>f.methods).sort(),topic.families.flatMap(f=>f.methods).sort());
+  }
+  assert.ok(referenceFamilies(snapshot.topics.find(t=>t.id==='linux-privesc'))[0].methods.includes('linux-enumerators'));
+  assert.ok(referenceFamilies(snapshot.topics.find(t=>t.id==='windows-privesc'))[0].methods[0]==='windows-enumerators');
 });

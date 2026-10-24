@@ -216,3 +216,30 @@
     .workspace-controls-panel .record-grid { grid-template-columns:1fr; }
   }
 }
+
+/* Plain, long-form reference: direct contents, tool names and visible commands. */
+.cheatsheet-contents,.topic-toolbox,.reference-family,.inline-technique{scroll-margin-top:10.5rem;min-width:0}
+.cheatsheet-contents{border-block:1px solid var(--line);padding:1.1rem 0;margin:1.5rem 0}
+.cheatsheet-contents h2,.topic-toolbox h2{font-size:1.05rem;margin:0 0 .7rem}
+.cheatsheet-contents>ul{columns:2;column-gap:2rem;padding-left:1.2rem}
+.cheatsheet-contents>ul>li{break-inside:avoid;margin:0 0 .9rem}
+.cheatsheet-contents li ul{padding-left:1.1rem;margin-top:.3rem}
+.cheatsheet-contents li li{margin:.3rem 0;font-size:.8rem}
+.contents-family{font-weight:650}
+.topic-toolbox{margin:1.6rem 0 2.5rem}
+.topic-toolbox dl>div{display:grid;grid-template-columns:14rem minmax(0,1fr);gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--line);font-size:.8rem}
+.topic-toolbox dd{margin:0;color:var(--muted)}
+.upstream-link{font: .57rem var(--mono);margin-left:.3rem;color:var(--quiet)}
+.reference-family>h2{border-bottom:1px solid var(--line);padding:.7rem 0;margin:2.5rem 0 1rem;font-size:1.3rem}
+.inline-technique{padding:1rem 0 2rem;border-bottom:1px solid var(--line)}
+.inline-technique>header{display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
+.inline-technique>header h3{font-size:1.2rem;margin:.4rem 0}
+.inline-technique>header>a{font:.6rem var(--mono);white-space:nowrap}
+.inline-technique p,.inline-next{font-size:.82rem;line-height:1.75}
+.inline-needs{color:var(--muted)}
+.inline-next{padding-left:1.1rem}.inline-next li{margin:.55rem 0}
+.inline-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;margin:1.2rem 0 0}
+.inline-actions button{font: .6rem var(--mono);padding:.3rem .5rem}
+.reference-attribution{font-size:.75rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:1rem}
+.legacy-anchor{display:block;scroll-margin-top:10rem}
+@media(max-width:700px){.cheatsheet-contents>ul{columns:1}.topic-toolbox dl>div{grid-template-columns:1fr;gap:.25rem}.inline-technique>header{align-items:flex-start}.inline-technique>header h3{font-size:1.05rem}}

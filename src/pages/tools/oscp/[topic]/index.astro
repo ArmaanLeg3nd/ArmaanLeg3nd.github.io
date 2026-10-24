@@ -1,9 +1,9 @@
 ---
 import ToolLayout from '../../../../layouts/ToolLayout.astro';
 import Workspace from '../../../../components/oscp/Workspace.svelte';
-import { catalog, topicChecks, topicPlaybook } from '../../../../lib/oscp';
+import { catalog, topicMethods, topicPlaybook } from '../../../../lib/oscp';
 export function getStaticPaths() { return catalog.topics.map(topic => ({ params: { topic: topic.id }, props: { topic } })); }
 const { topic } = Astro.props;
-const [checks,playbook]=await Promise.all([topicChecks(topic.id),topicPlaybook(topic.id)]);
+const [methods,playbook]=await Promise.all([topicMethods(topic.id),topicPlaybook(topic.id)]);
 ---
-<ToolLayout title={`${topic.title} | OSCP`} description={topic.intro}><Workspace client:load {catalog} initialTopic={topic.id} initialChecks={checks} initialPlaybook={playbook}/></ToolLayout>
+<ToolLayout title={`${topic.title} | OSCP`} description={topic.intro}><Workspace client:load {catalog} initialTopic={topic.id} initialMethods={methods} initialPlaybook={playbook}/></ToolLayout>
