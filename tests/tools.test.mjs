@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { freshInvestigation, validateInvestigation, parseInvestigation, serializeInvestigation, addStep, removeStep, getSessionInvestigation, setSessionInvestigation } from '../src/lib/investigation.ts';
-import { substitute, validValue, getSessionCommandValues, setSessionCommandValues } from '../src/lib/oscp-commands.ts';
+import { substitute, validValue, unresolvedTokens, getSessionCommandValues, setSessionCommandValues } from '../src/lib/oscp-commands.ts';
+import { buildSearchText, searchMethods } from '../src/lib/oscp-search.ts';
 import { layoutInvestigation } from '../src/lib/attack-graph.ts';
 import { startingGroups, investigationSteps, methodLabel } from '../src/lib/oscp-navigation.ts';
 import { combinedProcedure, procedureNotes } from '../src/lib/oscp-procedure.ts';
@@ -11,7 +12,7 @@ const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Val
 test('snapshot accounts for the entire reviewed inventory and all valid conditional transitions',() => {
   assert.equal(snapshot.methods.length,166); assert.equal(snapshot.topics.length,15); assert.equal(snapshot.stages.length,8);
   assert.equal(snapshot.topics.reduce((sum,t) => sum+t.families.length,0),54);
-  assert.equal(snapshot.methods.reduce((sum,m) => sum+m.next.length,0),505);
+  assert.equal(snapshot.methods.reduce((sum,m) => sum+m.next.length,0),562);
   const ids=new Set(snapshot.methods.map(m => m.id)); assert.equal(ids.size,166);
   for(const m of snapshot.methods) { assert.ok(m.procedure && m.recognition.sample && m.recognition.confirm); for(const edge of m.next) assert.ok(ids.has(edge.id) && edge.when && edge.requires); }
   assert.equal(snapshot.stages.flatMap(s => s.topics).length,15);
@@ -114,7 +115,7 @@ test('focused task pages retain every method, source command, recognition field 
     for(const edge of method.next) assert.ok(text.includes(edge.when) && text.includes(edge.requires),`${method.id}: finding and prerequisites`);
     totalMethods++;totalEdges+=method.next.length;
   }
-  assert.equal(totalMethods,166);assert.equal(totalEdges,505);assert.ok(totalBlocks>500);
+  assert.equal(totalMethods,166);assert.equal(totalEdges,562);assert.ok(totalBlocks>500);
 });
 test('command presentation preserves every source command in order without variant disclosures',() => {
   for(const method of snapshot.methods) {
@@ -156,9 +157,50 @@ test('lookup names are concise and unique within their topic; full usage notes r
     for(const method of methods) assert.ok(methodLabel(method).length<method.title.length,method.id);
   }
   const smb=snapshot.methods.find(method=>method.id==='service-smb');
-  assert.ok(!combinedProcedure(smb.procedure).includes('share-level write access'));
+  assert.ok(!combinedProcedure(smb.procedure).includes('older material may use'));
   assert.ok(procedureNotes(smb.procedure).includes('share-level write access'));
   assert.ok(procedureNotes(smb.procedure).includes('https://') || procedureNotes(smb.procedure).includes('NetExec'));
+});
+
+test('listener and destination ports stay distinct, validated and visibly unresolved until filled',() => {
+  assert.equal(substitute('nc -lvnp LPORT; nc TARGET PORT',{TARGET:'192.0.2.10',PORT:'80',LPORT:'4444'}),'nc -lvnp 4444; nc 192.0.2.10 80');
+  for(const value of ['0','65536','-1','80-90','4444;id'])assert.ok(!validValue('LPORT',value));
+  assert.ok(validValue('LPORT','65535'));
+  assert.deepEqual(unresolvedTokens(substitute('TARGET PORT LHOST LPORT PASSWORD TARGET_FILE SELECT',{TARGET:'192.0.2.10',PORT:'80'})),['LHOST','LPORT','PASSWORD']);
+});
+test('troubleshooting search includes failure and recognition text and ranks exact lookup names first',() => {
+  const methods=snapshot.methods.map(method=>({...method,search:buildSearchText(method)}));
+  assert.equal(searchMethods(methods,'SMB')[0].id,'service-smb');
+  assert.equal(searchMethods(methods,'sudo')[0].id,'linux-sudo');
+  assert.equal(searchMethods(methods,'access denied')[0].id,'service-smb');
+  assert.equal(searchMethods(methods,'NT_STATUS_ACCESS_DENIED')[0].id,'service-smb');
+  assert.equal(searchMethods(methods,'clock skew')[0].id,'domain-state');
+  assert.ok(searchMethods(methods,'wrong principal').some(method=>method.id==='windows-tasks'));
+  assert.ok(searchMethods(methods,'NOPASSWD').some(method=>method.id==='linux-sudo'));
+  assert.equal(searchMethods(methods,'Kerberoasting')[0].id,'kerberos-roast');
+  assert.deepEqual(searchMethods(methods,'LAPS'),[]); // Do not match "collapse".
+  assert.deepEqual(searchMethods(methods,';;;'),[]);
+});
+test('every task has a receiving handoff and is navigable from discovery',() => {
+  const methods=new Map(snapshot.methods.map(method=>[method.id,method]));
+  const incoming=new Set(snapshot.methods.flatMap(method=>method.next.map(edge=>edge.id)));
+  assert.deepEqual(snapshot.methods.filter(method=>!incoming.has(method.id) && method.id!=='path-hosts'),[]);
+  const seen=new Set(),queue=['path-hosts'];
+  while(queue.length){const id=queue.pop();if(seen.has(id))continue;seen.add(id);queue.push(...methods.get(id).next.map(edge=>edge.id));}
+  assert.equal(seen.size,166);
+  for(const [source,target] of [['identify-app','service-ftp'],['identify-app','service-ldap'],['credential-classify','keepass-recovery'],['domain-directory','kerberos-asrep'],['pivot-state','ssh-remote-dynamic']])assert.ok(methods.get(source).next.some(edge=>edge.id===target));
+});
+test('command constraints remain visible and host-location changes separate same-language blocks',() => {
+  const method=snapshot.methods.find(method=>method.id==='ssh-remote-dynamic');
+  const combined=combinedProcedure(method.procedure);
+  assert.ok(combined.includes('Run `ssh -V` on the pivot'));
+  assert.ok(combined.includes('on Kali (the SSH server'));
+  assert.ok(blocks(combined).length>=2);
+  const source='Run on the pivot:\n\n```bash\nfirst-command\n```\n\nRun on Kali:\n\n```bash\nsecond-command\n```';
+  const result=combinedProcedure(source);
+  assert.equal(blocks(result).length,2);assert.ok(result.includes('#### Run on Kali'));
+  const unrestricted='##### Baseline\n\n```bash\nfirst-command\n```\n\n<details><summary>Variant</summary>\n\n```bash\nsecond-command\n```\n\n</details>';
+  assert.equal(blocks(combinedProcedure(unrestricted)).length,1);
 });
 test('direct task pages show commands before the finding guide and have no task accordion',() => {
   for(const method of snapshot.methods) {

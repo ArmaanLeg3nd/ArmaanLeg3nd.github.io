@@ -2,13 +2,13 @@ import snapshot from '../content/oscp.snapshot.json';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import type { Catalog, Method, MethodSummary } from './oscp-types';
 import { combinedProcedure, procedureNotes } from './oscp-procedure';
-import { methodLabel } from './oscp-navigation';
+import { buildSearchText } from './oscp-search';
 
 export const catalog: Catalog = {
   schemaVersion: snapshot.schemaVersion, contentHash: snapshot.contentHash, sourceRevision: snapshot.sourceRevision,
   stages: snapshot.stages, topics: snapshot.topics, chains: snapshot.chains,
   methods: snapshot.methods.map(m => ({ id: m.id, topic: m.topic, title: m.title, family: m.family, clue: m.clue, access: m.access, conditions: m.conditions,
-    search: `${methodLabel(m)} ${m.id} ${m.title} ${m.family} ${m.clue} ${m.access} ${m.conditions} ${Array.from(new Set(m.procedure.split(/\n/).filter(line => !line.startsWith('#') && !line.startsWith('>')).flatMap(line => line.match(/[A-Za-z][A-Za-z0-9_.-]{2,}/g) || []))).join(' ')}`.toLowerCase() }))
+    search: buildSearchText(m) }))
 };
 const cache = new Map<string, Promise<Method[]>>();
 // Content is an allowlisted, reviewed repository snapshot, never user-supplied Markdown.

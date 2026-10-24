@@ -91,6 +91,9 @@
   .command-reference .procedure > pre::before { content:'COMMANDS'; position:absolute; top:1rem; left:1.1rem; font:.55rem var(--mono); color:var(--quiet); letter-spacing:.06em; }
   .command-reference .procedure code { font-size:.76rem; line-height:1.85; }
   .command-reference .procedure code .command-comment { color:var(--muted); }
+  .procedure code .command-placeholder { color:var(--yellow); text-decoration:underline dotted; text-underline-offset:3px; }
+  .command-reference .procedure > blockquote { margin:0; padding:.65rem 1.1rem; border:1px solid var(--line-strong); background:var(--surface-low); color:var(--muted); }
+  .command-reference .procedure > blockquote p,.command-reference .procedure > blockquote li { font-size:.74rem; line-height:1.7; margin:.3rem 0; }
   .reference-findings,.next-routes { padding-top:1.6rem; margin-top:2rem; border-top:1px solid var(--line-strong); }
   .reference-clue { border-left:2px solid var(--cyan); padding-left:.85rem; margin:1rem 0; }
   .finding-label { display:block; color:var(--quiet); font:.55rem var(--mono); margin-bottom:.4rem; }

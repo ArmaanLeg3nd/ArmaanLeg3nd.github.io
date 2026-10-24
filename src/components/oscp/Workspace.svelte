@@ -5,6 +5,7 @@
   import MethodEntry from './MethodEntry.svelte';
   import { methodURL, topicURL, type Catalog, type Method } from '../../lib/oscp-types';
   import { topicLabel, methodLabel, startingGroups, investigationSteps } from '../../lib/oscp-navigation';
+  import { searchMethods } from '../../lib/oscp-search';
   import { connectionFields, validValue, getSessionCommandValues, setSessionCommandValues, type CommandValues, type ConnectionField } from '../../lib/oscp-commands';
 
   let { catalog, initialTopic = '', initialMethod = '', initialMethods = [] }: { catalog: Catalog; initialTopic?: string; initialMethod?: string; initialMethods?: Method[] } = $props();
@@ -25,7 +26,7 @@
   let resume = $state('');
   let panel: InvestigationPanel;
   let controlDetails: HTMLDetailsElement;
-  let results = $derived(query.trim() ? catalog.methods.filter(method => query.toLowerCase().trim().split(/\s+/).every(word => method.search.includes(word))) : []);
+  let results = $derived(query.trim() ? searchMethods(catalog.methods,query) : []);
   let activeValues = $derived(Object.fromEntries(Object.entries(values).filter(([key,value]) => value && validValue(key as ConnectionField,value))) as CommandValues);
 
   async function go(topic = '') {
@@ -82,13 +83,13 @@
 <div class="oscp-workspace navigator-workspace">
   <header class="navigator-toolbar">
     <a class="navigator-brand" href="/tools/oscp/" onclick={event => follow(event)}><span>O/</span> OSCP <small>strategy workspace</small></a>
-    <div class="quick-values" aria-label="Temporary command values">{#each ['TARGET','LHOST','PORT'] as field}<label>{field}<input aria-label={`Quick ${field}`} autocomplete="off" spellcheck="false" placeholder={field} value={values[field as ConnectionField] || ''} aria-invalid={!validValue(field as ConnectionField,values[field as ConnectionField] || '')} oninput={event=>setValue(field as ConnectionField,event.currentTarget.value)} /></label>{/each}</div>
+    <div class="quick-values" aria-label="Temporary command values">{#each ['TARGET','LHOST','PORT','LPORT'] as field}<label>{field === 'PORT' ? 'PORT · destination' : field === 'LPORT' ? 'LPORT · listener' : field}<input aria-label={`Quick ${field}`} autocomplete="off" spellcheck="false" placeholder={field} value={values[field as ConnectionField] || ''} aria-invalid={!validValue(field as ConnectionField,values[field as ConnectionField] || '')} oninput={event=>setValue(field as ConnectionField,event.currentTarget.value)} /></label>{/each}</div>
     <div class="navigator-toolbar-actions"><button class="navigator-menu" aria-expanded={navigationOpen} aria-controls="topic-navigation" onclick={() => navigationOpen=!navigationOpen}>Browse topics</button>
       <details class="workspace-controls" bind:open={controlsOpen} bind:this={controlDetails} onkeydown={event => {if(event.key==='Escape'){controlsOpen=false;controlDetails.querySelector('summary')?.focus();}}}>
         <summary>Workspace controls <span class:saving={savingEnabled}>{savingEnabled ? 'Saving on' : 'Memory only'} · {stepCount} steps</span></summary>
         <div class="workspace-controls-panel">
           <InvestigationPanel bind:this={panel} {catalog} activeMethodId={focusedMethod} ondocumentchange={document => stepCount=document.steps.length} onstatuschange={saving => savingEnabled=saving} />
-          <details class="connection-settings"><summary>Command values <span>{Object.keys(activeValues).length} filled</span></summary><p>Temporary connection values clear on reload. Passwords, hashes and tickets remain placeholders. Check address-family syntax in the selected command.</p><div class="value-fields">{#each connectionFields as field}<label>{field}<input autocomplete="off" spellcheck="false" value={values[field] || ''} oninput={event => setValue(field,event.currentTarget.value)} aria-invalid={!validValue(field,values[field] || '')} />{#if !validValue(field,values[field] || '')}<small>Use an identifier or valid port range; no spaces or shell operators.</small>{/if}</label>{/each}</div><button onclick={clearValues}>Clear values</button></details>
+          <details class="connection-settings"><summary>Command values <span>{Object.keys(activeValues).length} filled</span></summary><p>Temporary connection values clear on reload. Passwords, hashes and tickets remain placeholders. Check address-family syntax in the selected command.</p><div class="value-fields">{#each connectionFields as field}<label>{field === 'PORT' ? 'PORT · destination' : field === 'LPORT' ? 'LPORT · listener' : field}<input aria-label={field} autocomplete="off" spellcheck="false" value={values[field] || ''} oninput={event => setValue(field,event.currentTarget.value)} aria-invalid={!validValue(field,values[field] || '')} />{#if !validValue(field,values[field] || '')}<small>Use an identifier or valid port range; no spaces or shell operators.</small>{/if}</label>{/each}</div><button onclick={clearValues}>Clear values</button></details>
         </div>
       </details>
     </div>
