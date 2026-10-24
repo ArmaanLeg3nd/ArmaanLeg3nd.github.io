@@ -159,19 +159,24 @@
   .task-context p { font-size:.76rem; line-height:1.6; margin:.3rem 0; }
   .task-reference p { font-size:.81rem; line-height:1.8; color:var(--muted); margin:.6rem 0; }
   .task-context strong { color:var(--text); font-weight:500; margin-right:.35rem; }
-  .walkthrough-step { position:relative;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--line-strong); }
-  .reference-findings.walkthrough-investigate { margin-top:1rem;padding-top:1rem; }
-  .walkthrough-heading { display:flex;align-items:center;gap:.7rem;margin:0 0 .8rem; }
-  .walkthrough-heading > span { display:inline-flex;align-items:center;justify-content:center;width:1.7rem;height:1.7rem;flex-shrink:0;border:1px solid var(--line-strong);border-radius:50%;color:var(--cyan-soft);font:.65rem var(--mono); }
-  .walkthrough-heading h2 { margin:0;font-size:1rem;font-weight:500; }
-  .walkthrough-decisions { border-top:1px solid var(--line);margin:1rem 0; }
-  .walkthrough-decision { display:grid;grid-template-columns:10rem minmax(0,1fr);gap:1.1rem;padding:1rem 0;border-bottom:1px solid var(--line); }
-  .walkthrough-decision > .finding-label { margin-top:.35rem;line-height:1.8; }
-  .walkthrough-decision p:first-child { margin-top:0; }
-  .walkthrough-decision a,.walkthrough-no-branch a { font-size:.77rem;line-height:1.8;color:var(--cyan-soft); }
-  .walkthrough-result { margin-top:1.5rem; }
-  .walkthrough-condition { border-left:2px solid var(--cyan);padding-left:.8rem; }
-  .walkthrough-prerequisite h3 { font-size:.85rem;font-weight:500;margin:1.2rem 0 .6rem; }
+  .compact-reference .reference-needs { font-size:.78rem;margin:.75rem 0 1rem; }
+  .compact-reference .reference-needs strong,.reference-result strong { font-weight:500;color:var(--text); }
+  .compact-reference .command-reference .procedure > h4 { padding:0;margin:1.4rem 0 .55rem;border:0;background:transparent;font-size:.9rem; }
+  .compact-reference .command-reference .procedure > pre { border-radius:3px;padding:2.6rem 1rem 1rem;margin:0 0 .8rem; }
+  .compact-reference .command-reference .procedure > pre::before { content:none; }
+  .compact-reference .command-reference .procedure > blockquote { padding:.3rem 0 .3rem .8rem;margin:.65rem 0;border:0;border-left:1px solid var(--line-strong);background:transparent; }
+  .compact-reference .command-reference .procedure > blockquote p { font-size:.76rem; }
+  .reference-result { margin:1rem 0; }
+  .reference-result a,.reference-no-match a { color:var(--cyan-soft); }
+  .compact-reference .next-routes { margin-top:1.25rem;padding-top:1rem; }
+  .reference-branches { padding:0;list-style:none;margin:.5rem 0; }
+  .reference-branches > li { padding:.65rem 0;border-bottom:1px solid var(--line); }
+  .reference-branches > li p { margin:0; }
+  .reference-branches a { color:var(--cyan-soft); }
+  .reference-branches .requires { font-size:.74rem;margin-top:.25rem;color:var(--quiet); }
+  .compact-reference .reference-no-match { font-size:.75rem;margin-top:.85rem; }
+  .compact-reference .task-notes h2 { font-size:1rem;font-weight:500;margin:1.5rem 0 .8rem; }
+  [id^=troubleshoot-] { scroll-margin-top:calc(var(--navigator-top) + 1rem); }
   .task-reference .command-use-cue { font-size:.71rem; color:var(--quiet); }
   .command-use-cue > a { color:var(--cyan-soft); }
   .command-reference,.reference-findings,.next-routes,.task-notes { scroll-margin-top:calc(var(--navigator-top) + 1rem); }
@@ -230,7 +235,6 @@
     .topic-content { max-width:860px; padding:1.5rem 1.25rem 3rem; }
   }
   @media(max-width:480px) {
-    .walkthrough-decision { grid-template-columns:1fr;gap:.35rem; }
     .navigator-toolbar { gap:.5rem; padding-inline:.8rem; }
     .navigator-brand { gap:.5rem; font-size:.75rem; }
     .navigator-brand > span { font-size:1rem; }

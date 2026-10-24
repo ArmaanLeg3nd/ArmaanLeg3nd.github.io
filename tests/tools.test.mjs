@@ -238,28 +238,40 @@ test('command constraints remain visible and host-location changes separate same
   const unrestricted='##### Baseline\n\n```bash\nfirst-command\n```\n\n<details><summary>Variant</summary>\n\n```bash\nsecond-command\n```\n\n</details>';
   assert.equal(blocks(combinedProcedure(unrestricted)).length,1);
 });
-test('every reference page follows investigation command, output decision, procedure and conditional handoff order',() => {
+test('all reference pages put commands first and keep detailed teaching in one closed notes section',() => {
   for(const method of snapshot.methods) {
     const html=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
-    assert.ok(html.includes(`<article class="task-reference" id="${method.id}"`),method.id);
-    const investigation=html.indexOf(`id="check-${method.id}"`),procedure=html.indexOf(`id="execute-${method.id}"`),next=html.indexOf(`id="next-${method.id}"`);
-    assert.ok(investigation<procedure && procedure<next,method.id);
-    assert.ok(html.includes('IF THE CLUE MATCHES') && html.includes('IF THIS RULES OUT THE PATH') && html.includes('IF THE CHECK FAILS / IS UNCLEAR'),method.id);
-    assert.ok(html.indexOf('LOOK FOR · SYNTHETIC EXAMPLE')>investigation && html.indexOf('LOOK FOR · SYNTHETIC EXAMPLE')<procedure,method.id);
-    assert.ok(html.includes('Choose the matching variant, not every variant in sequence.'),method.id);
-    assert.ok(html.includes('No branch matches?'),method.id);
-    assert.ok(!/<details class="(?:technique|result-branch)/.test(html),method.id);
+    const procedure=html.indexOf(`id="execute-${method.id}"`),next=html.indexOf(`id="next-${method.id}"`),notes=html.indexOf(`id="notes-${method.id}"`),recognition=html.indexOf(`id="check-${method.id}"`);
+    assert.ok(procedure<next && next<notes && notes<recognition,method.id);
+    assert.ok(!html.includes('walkthrough-heading') && !html.includes('IF THE CLUE MATCHES'),method.id);
+    const article=html.slice(html.indexOf('data-method-id="'+method.id+'"'));
+    assert.equal((article.match(/<details\b/g)||[]).length,1,method.id);
+    assert.ok(!/<details[^>]*\bopen(?:[ >])/.test(article),method.id);
+    if(blocks(method.procedure).length)assert.ok(html.indexOf('<pre',procedure)<notes,method.id);
+    assert.ok(html.indexOf('SYNTHETIC EXAMPLE OUTPUT')>notes,method.id);
+    assert.ok(html.includes('Explanation &amp; examples') || html.includes('Explanation & examples'),method.id);
+    for(const edge of method.next) {
+      assert.ok(html.includes(`<li data-next-method="${edge.id}">`),method.id);
+      assert.ok(decodeHTML(html.slice(next,notes)).includes(edge.requires),method.id);
+    }
+    const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
+    for(const match of html.matchAll(/href="#([^"]+)"/g))assert.ok(ids.has(match[1]),`${method.id}: ${match[1]}`);
   }
 });
 
-test('walkthroughs separate a recognition clue from a validated result and retain working branch anchors',() => {
+test('inline authored outcomes preserve command order and stay outside code blocks',() => {
   for(const method of snapshot.methods) {
-    const html=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
-    const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
-    for(const match of html.matchAll(/href="#([^"]+)"/g))assert.ok(ids.has(match[1]),`${method.id}: ${match[1]}`);
-    assert.ok(html.indexOf('Useful result after validation:')>html.indexOf(`id="execute-${method.id}"`),method.id);
-    assert.ok(html.includes(`href="/tools/oscp/${method.topic}/"`),method.id);
-    const checksAreDistinct=method.checks.trim()!==method.recognition.commands.trim();
-    assert.equal(html.includes('Check the missing prerequisite first'),checksAreDistinct,method.id);
+    const quick=combinedProcedure(method.procedure,true);
+    let cursor=0;
+    for(const block of blocks(method.procedure)) {
+      const index=quick.indexOf(block,cursor);assert.ok(index>=cursor,method.id);cursor=index+block.length;
+    }
+    assert.ok(!/<\/?(?:details|summary)\b/i.test(quick),method.id);
   }
+  const source='##### Baseline\n\n```bash\nfirst-command\n```\n\n> **Decisive output:** FIRST-RESULT\n\n<details><summary>Different context</summary>\n\n> Requires SECOND-ACCESS\n\n```bash\nsecond-command\n```\n</details>';
+  const quick=combinedProcedure(source,true);
+  assert.ok(quick.indexOf('FIRST-RESULT')>quick.indexOf('first-command'));
+  assert.ok(quick.indexOf('FIRST-RESULT')<quick.indexOf('#### Different context'));
+  assert.ok(!blocks(quick).some(block=>block.includes('FIRST-RESULT')));
+  assert.ok(quick.includes('Requires SECOND-ACCESS'));
 });

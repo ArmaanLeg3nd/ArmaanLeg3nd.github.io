@@ -5,16 +5,12 @@
 </script>
 
 <section class="next-routes" id={`next-${method.id}`} aria-label={`Possible next steps for ${method.title}`}>
-  <div class="walkthrough-heading"><span aria-hidden="true">03</span><h2>Follow the result</h2></div>
-  <p class="route-instruction">If you observe the finding, check the receiving prerequisite, then open that task. These are alternative paths; do not run every row.</p>
-  <div class="finding-actions">
+  <h2>If → then</h2>
+  <ul class="reference-branches">
     {#each method.next as edge}
       {@const target = lookup.get(edge.id)!}
-      <article class="finding-action" data-next-method={edge.id}>
-        <div><span class="finding-label">IF YOU FIND</span><p>{edge.when}</p></div>
-        <div><span class="finding-label">THEN</span><a href={methodURL(target)} onclick={event => onselect(event,target.id)}>{methodLabel(target)} →</a><p class="requires"><strong>Needs:</strong> {edge.requires}</p></div>
-      </article>
+      <li data-next-method={edge.id}><p><span>{edge.when}</span> → <a href={methodURL(target)} onclick={event => onselect(event,target.id)}>{methodLabel(target)}</a></p><p class="requires"><strong>Needs:</strong> {edge.requires}</p></li>
     {/each}
-  </div>
-  <p class="walkthrough-no-branch">No branch matches? <a href={`/tools/oscp/${method.topic}/`}>Return to this topic’s task map</a> and investigate another clue. Keep unverified results marked as inconclusive.</p>
+  </ul>
+  <p class="reference-no-match">No useful finding → <a href={`/tools/oscp/${method.topic}/`}>another task in this topic</a>. Failed check → resolve the failure before ruling out the path.</p>
 </section>
