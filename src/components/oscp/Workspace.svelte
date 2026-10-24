@@ -3,15 +3,14 @@
   import { navigate } from 'astro:transitions/client';
   import InvestigationPanel from './InvestigationPanel.svelte';
   import MethodEntry from './MethodEntry.svelte';
-  import OverviewMap from './OverviewMap.svelte';
-  import DecisionMap from './DecisionMap.svelte';
-  import { stageGuides, stageURL } from '../../lib/oscp-map';
-  import { methodURL, topicURL, type Catalog, type Method } from '../../lib/oscp-types';
+  import PrerequisiteChecks from './PrerequisiteChecks.svelte';
+  import { stageGuides, stageURL } from '../../lib/oscp-stages';
+  import { methodURL, topicURL, type Catalog, type Method, type PrerequisiteCheck } from '../../lib/oscp-types';
   import { topicLabel, methodLabel, investigationSteps } from '../../lib/oscp-navigation';
   import { searchMethods } from '../../lib/oscp-search';
   import { connectionFields, validValue, getSessionCommandValues, setSessionCommandValues, type CommandValues, type ConnectionField } from '../../lib/oscp-commands';
 
-  let { catalog, initialTopic = '', initialStage = '', initialMethod = '', initialMethods = [] }: { catalog: Catalog; initialTopic?: string; initialStage?: string; initialMethod?: string; initialMethods?: Method[] } = $props();
+  let { catalog, initialTopic = '', initialStage = '', initialMethod = '', initialMethods = [], initialChecks = [] }: { catalog: Catalog; initialTopic?: string; initialStage?: string; initialMethod?: string; initialMethods?: Method[]; initialChecks?: PrerequisiteCheck[] } = $props();
   const topicId = untrack(() => initialTopic);
   const methods = untrack(() => initialMethods);
   const lookup = new Map(catalog.methods.map(method => [method.id,method]));
@@ -19,8 +18,6 @@
   const topic = catalog.topics.find(topic => topic.id === topicId);
   const stage = catalog.stages.find(stage => stage.id === initialStage);
   const topicStage = catalog.stages.find(stage => stage.topics.includes(topicId));
-  let mapTopicId = $state(untrack(() => stage?.topics[0] || ''));
-  let mapTopic = $derived(catalog.topics.find(topic => topic.id === mapTopicId));
   let focusedMethod = $state(untrack(() => initialMethod));
   let query = $state('');
   let navigationOpen = $state(false);
@@ -113,36 +110,33 @@
       {#if query.trim()}
         <p class="navigator-result-count" role="status">{results.length} matching methods</p><div class="navigator-results">{#each results as result}<a href={methodURL(result)} onclick={event => selectMethod(event,result.id)}><strong>{methodLabel(result)}</strong><span>{topicLabel(catalog.topics.find(topic=>topic.id===result.topic)!)} · {result.clue}</span></a>{/each}{#if !results.length}<p>Try a shorter clue or a service name.</p>{/if}</div>
       {:else}
-        <a class="navigator-home" class:active={!topicId && !stage} href="/tools/oscp/" onclick={event => follow(event)}>Stage overview ↗</a>
-        <nav class="stage-links" aria-label="Stage maps">{#each catalog.stages as item,index}<a href={stageURL(item.id)} class:active={stage?.id===item.id} aria-current={stage?.id===item.id ? 'page' : undefined}><span>{String(index+1).padStart(2,'0')}</span>{stageGuides[item.id].title}</a>{/each}</nav>
+        <a class="navigator-home" class:active={!topicId && !stage} href="/tools/oscp/" onclick={event => follow(event)}>Reference index ↗</a>
+        <nav class="stage-links" aria-label="Stages">{#each catalog.stages as item,index}<a href={stageURL(item.id)} class:active={stage?.id===item.id} aria-current={stage?.id===item.id ? 'page' : undefined}><span>{String(index+1).padStart(2,'0')}</span>{stageGuides[item.id].title}</a>{/each}</nav>
         <p class="navigator-section-label">QUICK REFERENCE</p>
         <nav class="topic-links" aria-label="Browse by topic">{#each catalog.topics as item}<a class:active={item.id===topicId} aria-current={item.id===topicId ? 'page' : undefined} href={topicURL(item.id)} onclick={event => follow(event,item.id)}>{topicLabel(item)}<span>›</span></a>{/each}</nav>
       {/if}
       <div class="navigator-footer"><span>{catalog.methods.length} methods · 15 topics</span><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Full reference on GitHub ↗</a><span>Study coverage ≠ practical mastery</span></div>
     </aside>
     <main class="workspace-detail topic-content" aria-busy={busy}>
-      <nav class="compact-breadcrumb" aria-label="Workspace breadcrumb"><a href="/tools/">Tools</a><span>/</span><a href="/tools/oscp/" onclick={event => follow(event)}>OSCP</a>{#if topicStage}<span>/</span><a href={stageURL(topicStage.id)}>{stageGuides[topicStage.id].title} map</a>{/if}{#if stage}<span>/</span><span>{stageGuides[stage.id].title} map</span>{/if}{#if topic}<span>/</span><span>{topicLabel(topic)}</span>{/if}</nav>
+      <nav class="compact-breadcrumb" aria-label="Workspace breadcrumb"><a href="/tools/">Tools</a><span>/</span><a href="/tools/oscp/" onclick={event => follow(event)}>OSCP</a>{#if topicStage}<span>/</span><a href={stageURL(topicStage.id)}>{stageGuides[topicStage.id].title}</a>{/if}{#if stage}<span>/</span><span>{stageGuides[stage.id].title}</span>{/if}{#if topic}<span>/</span><span>{topicLabel(topic)}</span>{/if}</nav>
       {#if error}<p class="workspace-error" role="alert">{error}<button onclick={() => go(topicId)}>Retry topic</button></p>{/if}{#if busy}<span class="sr-only" role="status">Opening reference…</span>{/if}
       {#if topic && activeMethod}
         <div class="task-browse-bar"><a href={topicURL(topic.id)} onclick={event=>follow(event,topic.id)}>← All {topicLabel(topic).toLowerCase()} tasks</a><label class="sr-only" for="task-jump">Jump to another task in this topic</label><select id="task-jump" value={activeMethod.id} onchange={event=>{const method=lookup.get(event.currentTarget.value);if(method)void navigate(methodURL(method));}}>{#each topic.families as family}<optgroup label={family.title}>{#each family.methods as id}{@const method=lookup.get(id)!}<option value={id}>{methodLabel(method)}</option>{/each}</optgroup>{/each}</select></div>
         <MethodEntry method={activeMethod} {lookup} values={activeValues} onselect={selectMethod} onrecord={record} />
-      {:else if stage && mapTopic}
-        <header class="compact-topic-header" data-reveal><p class="detail-kicker">STAGE {String(catalog.stages.indexOf(stage)+1).padStart(2,'0')} / DECISION MAP</p><h1>{stageGuides[stage.id].title}</h1><p>{stageGuides[stage.id].prerequisite} Select the finding that matches your evidence, then inspect its receiving prerequisites.</p></header>
-        {#if stage.topics.length>1}<div class="map-topic-picker" aria-label="Choose a topic map">{#each stage.topics as id}{@const item=catalog.topics.find(topic=>topic.id===id)!}<button aria-pressed={mapTopicId===id} onclick={()=>mapTopicId=id} data-map-topic={id}>{topicLabel(item)}</button>{/each}</div>{/if}
-        <nav class="map-section-links" aria-label="Stage page sections"><a href="#decision-map">Decision map ↓</a><a href="#stage-task-index">All topic tasks ↓</a><a href={topicURL(mapTopic.id)}>Full topic reference →</a></nav>
-        {#key mapTopic.id}<div id="decision-map"><DecisionMap {catalog} topic={mapTopic}/></div>{/key}
-        <section class="map-task-index" id="stage-task-index"><h2>All {topicLabel(mapTopic).toLowerCase()} tasks</h2><p>Complete reference for this topic, including alternatives beyond the highlighted branches.</p>{@render taskOutline(mapTopic)}</section>
-        <nav class="map-stage-navigation" aria-label="Other stage maps"><a href="/tools/oscp/">← Stage overview</a>{#each catalog.stages.filter(item=>item.id!==stage.id) as item}<a href={stageURL(item.id)}>{stageGuides[item.id].title} →</a>{/each}</nav>
+      {:else if stage}
+        <header class="compact-topic-header"><h1>{stageGuides[stage.id].title}</h1><p>{stageGuides[stage.id].prerequisite}</p></header>
+        <ul class="stage-topic-index">{#each stage.topics as id}{@const item=catalog.topics.find(topic=>topic.id===id)!}<li><a href={topicURL(id)+'#prerequisite-checks'}>{topicLabel(item)} — prerequisite checks →</a><p>{item.access}</p></li>{/each}</ul>
+        <p class="index-return"><a href="/tools/oscp/">← All stages and topics</a></p>
       {:else if topic}
         <header class="compact-topic-header" data-reveal><p class="detail-kicker">REFERENCE / {catalog.methods.filter(method=>method.topic===topicId).length} TASKS</p><h1>{topicLabel(topic)}</h1><p>{topic.intro}</p></header>
-        <nav class="map-section-links" aria-label="Topic page sections"><a href="#topic-decision-map">Decision map ↓</a><a href="#topic-task-index">All tasks ↓</a><a href="#investigation-flow">Investigation flow ↓</a></nav>
-        <div id="topic-decision-map"><DecisionMap {catalog} {topic}/></div>
-        <div class="map-task-index" id="topic-task-index"><h2>All tasks</h2>{@render taskOutline(topic)}</div>
+        <nav class="reference-section-links" aria-label="Topic page sections"><a href="#prerequisite-checks">Prerequisite checks ↓</a><a href="#topic-task-index">All procedures ↓</a></nav>
+        <PrerequisiteChecks {catalog} {topic} checks={initialChecks} values={activeValues}/>
+        <div class="reference-task-index" id="topic-task-index"><h2>All procedures</h2>{@render taskOutline(topic)}</div>
         <section class="reference-flow" id="investigation-flow"><h2>Investigation flow</h2><p>Follow the steps matching your evidence. Each task keeps its commands, clues and next actions together.</p><ol class="investigation-sequence">{#each topic.workflow as step,index}<li><span class="step-number">{index+1}</span><div><h3>{investigationSteps[topic.id]?.[index] || step.label}</h3><p>{step.label}</p><div class="guide-method-links">{#each step.methods as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event=>selectMethod(event,id)}>{methodLabel(method)} →</a>{/each}</div></div></li>{/each}</ol><details class="sequence-context"><summary>Scope & study context</summary><p><strong>Starting situation:</strong> {topic.start}</p><p><strong>Required access:</strong> {topic.access}</p><p>Study blocks: {topic.blocks}</p></details></section>
       {:else}
-        <header class="compact-topic-header" data-reveal><p class="detail-kicker">HOMEPAGE / STRATEGY OVERVIEW</p><h1>Start from what you have.</h1><p>Choose a stage, inspect its prerequisites, then open its detailed map. Keep the full task notes one step away.</p></header>
+        <header class="compact-topic-header" data-reveal><h1>OSCP exploitation reference</h1><p>Choose a topic, check the relevant conditions, then open its procedure.</p></header>
         <div class="compact-start-actions"><a href={topicURL('discovery')} onclick={event => follow(event,'discovery')}>Start with discovery →</a>{#if resume}<a href={resume}>Resume last location ↗</a>{/if}</div>
-        <OverviewMap stages={catalog.stages}/>
+        <div class="reference-stage-index">{#each catalog.stages as item}<section data-stage-index={item.id}><h2><a href={stageURL(item.id)}>{stageGuides[item.id].title}</a></h2><ul>{#each item.topics as id}{@const entry=catalog.topics.find(topic=>topic.id===id)!}<li><a href={topicURL(id)}>{topicLabel(entry)} →</a><span>{entry.access}</span></li>{/each}</ul></section>{/each}</div>
         <details class="study-reference"><summary>Study order, scope & hypothetical chains</summary><p>Eight study units: discovery/services; web; credentials; public exploits/sessions; Linux/Windows escalation; pivoting/AD/movement; execution diagnostics; integration/evidence. Concept study and practical competence remain separate.</p>{#each Object.entries(catalog.chains) as [title,chain]}<h2>{title} <small>HYPOTHETICAL</small></h2><div class="chain-links">{#each chain as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event => selectMethod(event,id)}>{method.title}</a>{/each}</div>{/each}<p>Built from your reviewed exploitation reference. Dedicated buffer-overflow development is excluded by preparation choice. Existing-exploit adaptation remains covered. <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Check current exam rules ↗</a></p></details>
       {/if}
     </main>

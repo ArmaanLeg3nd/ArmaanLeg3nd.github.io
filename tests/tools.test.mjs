@@ -7,44 +7,65 @@ import { buildSearchText, searchMethods } from '../src/lib/oscp-search.ts';
 import { layoutInvestigation } from '../src/lib/attack-graph.ts';
 import { startingGroups, investigationSteps, methodLabel } from '../src/lib/oscp-navigation.ts';
 import { combinedProcedure, procedureNotes } from '../src/lib/oscp-procedure.ts';
-import { stageURL, stageGuides, topicGuides, smbGuide, methodGates, entryGates } from '../src/lib/oscp-map.ts';
+import { stageURL, stageGuides } from '../src/lib/oscp-stages.ts';
+import { annotateCheck } from '../src/lib/oscp-checks.ts';
 const snapshot = JSON.parse(readFileSync(new URL('../src/content/oscp.snapshot.json',import.meta.url),'utf8'));
 const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Validate reachability',status:'planned',host:'host-a',identity:'user-a',capability:'',observation:'Synthetic test observation',createdAt:new Date().toISOString() });
 
-test('decision maps cover every stage, topic and method with valid receiving prerequisites',() => {
+test('plain indexes replace decision maps and expose every stage and topic',() => {
   assert.deepEqual(Object.keys(stageGuides).sort(),snapshot.stages.map(stage=>stage.id).sort());
-  assert.deepEqual(Object.keys(topicGuides).sort(),snapshot.topics.map(topic=>topic.id).sort());
-  const methods=new Map(snapshot.methods.map(method=>[method.id,method]));
+  const home=readFileSync(new URL('../dist/tools/oscp/index.html',import.meta.url),'utf8');
   for(const stage of snapshot.stages) {
-    const guide=stageGuides[stage.id];assert.ok(guide.title && guide.summary && guide.prerequisite && guide.check);
+    assert.ok(home.includes(`data-stage-index="${stage.id}"`));
     const html=readFileSync(new URL(`../dist${stageURL(stage.id)}index.html`,import.meta.url),'utf8');
-    assert.ok(html.includes('data-decision-topic="'+stage.topics[0]+'"'),stage.id);
-    for(const topic of stage.topics)assert.ok(html.includes(stage.topics.length>1?`data-map-topic="${topic}"`:`data-decision-topic="${topic}"`),topic);
-  }
-  for(const topic of snapshot.topics) {
-    const guide=topicGuides[topic.id];assert.equal(guide.branches.length,3);assert.ok(methods.has(guide.start));
-    const linked=new Set([guide.start,...guide.branches.flatMap(branch=>branch.methods)]);
-    for(const method of snapshot.methods.filter(method=>method.topic===topic.id))assert.ok(linked.has(method.id),`${topic.id}: map omits ${method.id}`);
-    for(const gate of entryGates(topic))assert.ok(gate.label && gate.check);
-    for(const branch of guide.branches) {
-      assert.ok(branch.clue && branch.action && branch.methods.length && branch.gates.length);
-      for(const id of branch.methods) {assert.ok(methods.has(id),id);assert.ok(methodGates(methods.get(id)).every(gate=>gate.check && gate.label),id);}
+    for(const id of stage.topics) {
+      assert.ok(home.includes(`href="/tools/oscp/${id}/"`));
+      assert.ok(html.includes(`href="/tools/oscp/${id}/#prerequisite-checks"`));
     }
-    const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
-    assert.ok(html.includes(`data-decision-topic="${topic.id}"`));assert.ok(html.includes(`id="prerequisites-${topic.id}"`));
+    assert.ok(!html.includes('strategy-canvas') && !html.includes('data-map-topic'));
   }
-  assert.equal(smbGuide.branches.length,3);
-  for(const branch of smbGuide.branches)for(const id of branch.methods)assert.ok(methods.has(id));
-  assert.ok(smbGuide.branches[2].gates[0].check.includes('write access is not execution'));
+  assert.ok(!home.includes('strategy-canvas') && !home.includes('data-stage-choice'));
 });
 
-test('homepage exposes all stages and preserves independent prerequisite inspection',() => {
-  const html=readFileSync(new URL('../dist/tools/oscp/index.html',import.meta.url),'utf8');
-  for(const stage of snapshot.stages)assert.ok(html.includes(`data-stage-choice="${stage.id}"`) && html.includes(`href="${stageURL(stage.id)}"`),stage.id);
-  assert.ok(html.includes('Prerequisites behind the lines'));
-  assert.ok(html.includes('Domain credentials can lead directly into AD'));
-  assert.ok(!html.includes('<details class="entire-map"'));
+test('every topic has a prerequisite check and direct procedure link for every method',() => {
+  let count=0;
+  for(const topic of snapshot.topics) {
+    const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
+    assert.ok(html.includes('id="prerequisite-checks"') && !html.includes('data-decision-topic'),topic.id);
+    assert.ok(!html.includes('data-map-method') && !html.includes('checks marked'),topic.id);
+    const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
+    for(const match of html.matchAll(/href="#([^"]+)"/g))assert.ok(ids.has(match[1]),`${topic.id}: ${match[1]}`);
+    for(const method of snapshot.methods.filter(method=>method.topic===topic.id)) {
+      assert.equal((html.match(new RegExp(`data-prerequisite="${method.id}"`,'g'))||[]).length,1,method.id);
+      assert.ok(html.includes(`data-check-continue="${method.id}"`) && html.includes(`href="/tools/oscp/${method.topic}/${method.id}/"`),method.id);
+      for(const block of blocks(method.checks))assert.ok(decodeHTML(html).includes(block),`${method.id}: validation command`);
+      for(const block of blocks(method.recognition.commands))assert.ok(decodeHTML(html).includes(block),`${method.id}: discovery command`);
+      assert.ok(decodeHTML(html).includes(method.recognition.ruledout) && decodeHTML(html).includes(method.recognition.unknown),method.id);
+      count++;
+    }
+  }
+  assert.equal(count,166);
 });
+
+test('examples are commented with native syntax while unsafe formats stay unchanged',() => {
+  for(const [language,prefix] of [['bash','# '],['powershell','# '],['cmd','REM '],['sql','-- '],['javascript','// ']]) {
+    const source=`\`\`\`${language}\noriginal-command\n\`\`\``;
+    const result=annotateCheck(source,{sample:'SYNTHETIC\nsecond line',meaning:'Short interpretation',confirm:'Exact condition'});
+    assert.equal(result.inline,true,language);assert.ok(result.markdown.includes('original-command\n'),language);
+    const lines=blocks(result.markdown)[0].split('\n').slice(1);
+    assert.ok(lines.every(line=>line.startsWith(prefix)),language);
+    assert.ok(result.markdown.includes(prefix+'Example output (synthetic):'));
+  }
+  for(const language of ['http','text','json','xml','html']) {
+    const source=`\`\`\`${language}\nraw-request-or-client-input\n\`\`\``;
+    assert.deepEqual(annotateCheck(source,{sample:'EXAMPLE'}),{markdown:source,inline:false});
+  }
+  const cmd='```cmd\nwhoami\n```';
+  assert.deepEqual(annotateCheck(cmd,{sample:'data & command'}),{markdown:cmd,inline:false});
+  const mixed='```bash\ncommand-a\n```\n```powershell\ncommand-b\n```';
+  assert.deepEqual(annotateCheck(mixed,{sample:'EXAMPLE'}),{markdown:mixed,inline:false});
+});
+
 test('snapshot accounts for the entire reviewed inventory and all valid conditional transitions',() => {
   assert.equal(snapshot.methods.length,166); assert.equal(snapshot.topics.length,15); assert.equal(snapshot.stages.length,8);
   assert.equal(snapshot.topics.reduce((sum,t) => sum+t.families.length,0),54);

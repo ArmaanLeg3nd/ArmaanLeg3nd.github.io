@@ -1,6 +1,7 @@
 import snapshot from '../content/oscp.snapshot.json';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
-import type { Catalog, Method, MethodSummary } from './oscp-types';
+import type { Catalog, Method, MethodSummary, PrerequisiteCheck } from './oscp-types';
+import { annotateCheck } from './oscp-checks';
 import { combinedProcedure, procedureNotes } from './oscp-procedure';
 import { buildSearchText } from './oscp-search';
 
@@ -11,6 +12,7 @@ export const catalog: Catalog = {
     search: buildSearchText(m) }))
 };
 const cache = new Map<string, Promise<Method[]>>();
+const checkCache = new Map<string,Promise<PrerequisiteCheck[]>>();
 // Content is an allowlisted, reviewed repository snapshot, never user-supplied Markdown.
 const processor = createMarkdownProcessor({ syntaxHighlight: false, smartypants: false });
 async function render(markdown: string) {
@@ -28,3 +30,14 @@ export function topicMethods(id: string): Promise<Method[]> {
   return cache.get(id)!;
 }
 export const findSummary = (id: string): MethodSummary | undefined => catalog.methods.find(m => m.id === id);
+
+export function topicChecks(id:string): Promise<PrerequisiteCheck[]> {
+  if(!checkCache.has(id))checkCache.set(id,Promise.all(snapshot.methods.filter(method=>method.topic===id).map(async method=>{
+    const recognition=annotateCheck(method.recognition.commands,{sample:method.recognition.sample,meaning:method.recognition.spot,confirm:method.recognition.confirm});
+    const validation=method.checks.trim()!==method.recognition.commands.trim() ? annotateCheck(method.checks,{confirm:method.conditions}) : null;
+    return {id:method.id,topic:id,conditions:method.conditions,html:await render(recognition.markdown),inline:recognition.inline,
+      validationHtml:validation ? await render(validation.markdown) : '',validationInline:validation?.inline || false,
+      sample:method.recognition.sample,meaning:method.recognition.spot,confirm:method.recognition.confirm,ruledout:method.recognition.ruledout,unknown:method.recognition.unknown};
+  })));
+  return checkCache.get(id)!;
+}

@@ -2,8 +2,8 @@
 import ToolLayout from '../../../../layouts/ToolLayout.astro';
 import Workspace from '../../../../components/oscp/Workspace.svelte';
 import { catalog } from '../../../../lib/oscp';
-import { stageGuides } from '../../../../lib/oscp-map';
+import { stageGuides } from '../../../../lib/oscp-stages';
 export function getStaticPaths() { return catalog.stages.map(stage => ({params:{stage:stage.id},props:{stage}})); }
 const { stage } = Astro.props;
 ---
-<ToolLayout title={`${stageGuides[stage.id].title} map | OSCP`} description={`Decision map for ${stage.title.toLowerCase()}: recognition clues, prerequisites and linked task notes.`}><Workspace client:load {catalog} initialStage={stage.id}/></ToolLayout>
+<ToolLayout title={`${stageGuides[stage.id].title} | OSCP`} description={`Reference topics for ${stage.title.toLowerCase()}: recognition clues, prerequisites and linked task notes.`}><Workspace client:load {catalog} initialStage={stage.id}/></ToolLayout>
