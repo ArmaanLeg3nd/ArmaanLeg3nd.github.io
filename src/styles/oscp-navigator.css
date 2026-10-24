@@ -72,6 +72,15 @@
   .prerequisite-check .command-comment { color:var(--muted); }
   .check-validation-label { margin-top:1rem;color:var(--text); }
   .reference-task-index { padding-top:1.5rem;border-top:1px solid var(--line-strong);margin-top:2rem; }
+  .first-pass > h2,.prerequisite-checks > h2 { font-size:1.1rem;font-weight:500;margin:1.5rem 0 .7rem; }
+  .first-pass-step { border-top:1px solid var(--line);padding:1rem 0;margin-top:1rem; }
+  .first-pass-step h3 { font-size:.95rem;font-weight:500;margin:.5rem 0 .75rem; }
+  .first-pass p { font-size:.8rem;line-height:1.8;color:var(--muted); }
+  .first-pass a { color:var(--cyan-soft); }.first-pass strong { color:var(--text);font-weight:500; }
+  .first-pass-findings { list-style:none;margin:.8rem 0;padding:0; }.first-pass-findings li { margin:.8rem 0; }
+  .first-pass-findings p { margin:.25rem 0; }.first-pass-findings li p:last-child { font-size:.75rem; }
+  .first-pass-reference { display:flex;flex-wrap:wrap;gap:.6rem 1.3rem; }
+  #first-pass,[id^=first-pass-] { scroll-margin-top:calc(var(--navigator-top) + 1rem); }
   #prerequisite-checks,#topic-task-index,[id^=prerequisite-],[id^=check-family-] { scroll-margin-top:calc(var(--navigator-top) + 1rem); }
   .task-header { margin-bottom:.85rem; }
   .task-reference .detail-kicker { font:.58rem/1.7 var(--mono); margin:0 0 .5rem; }

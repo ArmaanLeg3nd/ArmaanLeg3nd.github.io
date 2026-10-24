@@ -1,6 +1,6 @@
 import snapshot from '../content/oscp.snapshot.json';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
-import type { Catalog, Method, MethodSummary, PrerequisiteCheck } from './oscp-types';
+import type { Catalog, Method, MethodSummary, PrerequisiteCheck, FirstPassStep } from './oscp-types';
 import { annotateCheck } from './oscp-checks';
 import { combinedProcedure, procedureNotes } from './oscp-procedure';
 import { buildSearchText } from './oscp-search';
@@ -30,6 +30,10 @@ export function topicMethods(id: string): Promise<Method[]> {
   return cache.get(id)!;
 }
 export const findSummary = (id: string): MethodSummary | undefined => catalog.methods.find(m => m.id === id);
+export async function topicPlaybook(id:string):Promise<FirstPassStep[]> {
+  const steps=snapshot.playbooks[id as keyof typeof snapshot.playbooks] || [];
+  return Promise.all(steps.map(async step=>({...step,html:await render(step.commands)})));
+}
 
 export function topicChecks(id:string): Promise<PrerequisiteCheck[]> {
   if(!checkCache.has(id))checkCache.set(id,Promise.all(snapshot.methods.filter(method=>method.topic===id).map(async method=>{

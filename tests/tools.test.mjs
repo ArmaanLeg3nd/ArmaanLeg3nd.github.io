@@ -296,3 +296,45 @@ test('inline authored outcomes preserve command order and stay outside code bloc
   assert.ok(!blocks(quick).some(block=>block.includes('FIRST-RESULT')));
   assert.ok(quick.includes('Requires SECOND-ACCESS'));
 });
+
+
+test('all topics start with source-owned actionable workflows and valid finding routes',() => {
+  assert.deepEqual(Object.keys(snapshot.playbooks).sort(),snapshot.topics.map(t=>t.id).sort());
+  const methods=new Map(snapshot.methods.map(m=>[m.id,m]));
+  for(const topic of snapshot.topics) {
+    const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
+    assert.ok(html.indexOf('id="first-pass"')<html.indexOf('id="prerequisite-checks"'),topic.id);
+    assert.ok(!html.includes('Continue checking'),topic.id);
+    assert.ok(snapshot.playbooks[topic.id].length>=2,topic.id);
+    for(const step of snapshot.playbooks[topic.id]) {
+      const owner=methods.get(step.method);assert.ok(owner,step.method);
+      const source=owner.procedure+'\n'+owner.checks;
+      for(const block of blocks(step.commands)) for(const line of block.split('\n').filter(Boolean)) {
+        assert.ok(source.includes(line),`${step.method}: command provenance: ${line}`);
+        assert.ok(decodeHTML(html).includes(line),`${step.method}: visible command: ${line}`);
+      }
+      assert.ok(html.includes(`data-first-pass-method="${step.method}"`));
+      for(const finding of step.findings) {
+        assert.ok(methods.has(finding.target));
+        assert.ok(html.includes(`data-first-pass-target="${finding.target}"`));
+        assert.ok(finding.finding && finding.check);
+      }
+      assert.ok(methods.has(step.fallback.target));
+    }
+  }
+});
+
+test('first pass exposes practical collectors and operations instead of only setup or benchmarks',() => {
+  const text=id=>snapshot.playbooks[id].map(s=>s.commands).join('\n');
+  assert.ok(text('linux-privesc').includes('sh ./linpeas.sh | tee linpeas.txt'));
+  assert.equal((text('linux-privesc').match(/\.\/pspy64/g)||[]).length,1);
+  assert.ok(text('windows-privesc').includes('winPEASx64.exe log'));
+  assert.ok(text('web-mapping').includes('gobuster dir'));
+  assert.ok(text('ad-mapping').includes('SharpHound.exe'));
+  assert.ok(text('discovery').includes('-p-'));
+  assert.ok(text('public-exploits').includes('searchsploit --cve'));
+  assert.ok(text('credentials').includes('hashcat -a 0'));
+  const linux=snapshot.playbooks['linux-privesc'][0];
+  assert.equal(linux.findings.find(f=>f.finding.includes('capability')).target,'linux-capabilities');
+  assert.equal(linux.findings.find(f=>f.finding.includes('SUID')).target,'linux-suid');
+});

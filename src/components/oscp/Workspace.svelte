@@ -4,13 +4,14 @@
   import InvestigationPanel from './InvestigationPanel.svelte';
   import MethodEntry from './MethodEntry.svelte';
   import PrerequisiteChecks from './PrerequisiteChecks.svelte';
+  import FirstPass from './FirstPass.svelte';
   import { stageGuides, stageURL } from '../../lib/oscp-stages';
-  import { methodURL, topicURL, type Catalog, type Method, type PrerequisiteCheck } from '../../lib/oscp-types';
+  import { methodURL, topicURL, type Catalog, type Method, type PrerequisiteCheck, type FirstPassStep } from '../../lib/oscp-types';
   import { topicLabel, methodLabel, investigationSteps } from '../../lib/oscp-navigation';
   import { searchMethods } from '../../lib/oscp-search';
   import { connectionFields, validValue, getSessionCommandValues, setSessionCommandValues, type CommandValues, type ConnectionField } from '../../lib/oscp-commands';
 
-  let { catalog, initialTopic = '', initialStage = '', initialMethod = '', initialMethods = [], initialChecks = [] }: { catalog: Catalog; initialTopic?: string; initialStage?: string; initialMethod?: string; initialMethods?: Method[]; initialChecks?: PrerequisiteCheck[] } = $props();
+  let { catalog, initialTopic = '', initialStage = '', initialMethod = '', initialMethods = [], initialChecks = [], initialPlaybook = [] }: { catalog: Catalog; initialTopic?: string; initialStage?: string; initialMethod?: string; initialMethods?: Method[]; initialChecks?: PrerequisiteCheck[]; initialPlaybook?: FirstPassStep[] } = $props();
   const topicId = untrack(() => initialTopic);
   const methods = untrack(() => initialMethods);
   const lookup = new Map(catalog.methods.map(method => [method.id,method]));
@@ -129,7 +130,8 @@
         <p class="index-return"><a href="/tools/oscp/">← All stages and topics</a></p>
       {:else if topic}
         <header class="compact-topic-header" data-reveal><p class="detail-kicker">REFERENCE / {catalog.methods.filter(method=>method.topic===topicId).length} TASKS</p><h1>{topicLabel(topic)}</h1><p>{topic.intro}</p></header>
-        <nav class="reference-section-links" aria-label="Topic page sections"><a href="#prerequisite-checks">Prerequisite checks ↓</a><a href="#topic-task-index">All procedures ↓</a></nav>
+        <nav class="reference-section-links" aria-label="Topic page sections"><a href="#first-pass">First pass ↓</a><a href="#prerequisite-checks">Technique checks ↓</a><a href="#topic-task-index">All procedures ↓</a></nav>
+        <FirstPass steps={initialPlaybook} {catalog} values={activeValues}/>
         <PrerequisiteChecks {catalog} {topic} checks={initialChecks} values={activeValues}/>
         <div class="reference-task-index" id="topic-task-index"><h2>All procedures</h2>{@render taskOutline(topic)}</div>
         <section class="reference-flow" id="investigation-flow"><h2>Investigation flow</h2><p>Follow the steps matching your evidence. Each task keeps its commands, clues and next actions together.</p><ol class="investigation-sequence">{#each topic.workflow as step,index}<li><span class="step-number">{index+1}</span><div><h3>{investigationSteps[topic.id]?.[index] || step.label}</h3><p>{step.label}</p><div class="guide-method-links">{#each step.methods as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event=>selectMethod(event,id)}>{methodLabel(method)} →</a>{/each}</div></div></li>{/each}</ol><details class="sequence-context"><summary>Scope & study context</summary><p><strong>Starting situation:</strong> {topic.start}</p><p><strong>Required access:</strong> {topic.access}</p><p>Study blocks: {topic.blocks}</p></details></section>
