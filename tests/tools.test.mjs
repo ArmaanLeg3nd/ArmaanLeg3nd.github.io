@@ -7,8 +7,44 @@ import { buildSearchText, searchMethods } from '../src/lib/oscp-search.ts';
 import { layoutInvestigation } from '../src/lib/attack-graph.ts';
 import { startingGroups, investigationSteps, methodLabel } from '../src/lib/oscp-navigation.ts';
 import { combinedProcedure, procedureNotes } from '../src/lib/oscp-procedure.ts';
+import { stageURL, stageGuides, topicGuides, smbGuide, methodGates, entryGates } from '../src/lib/oscp-map.ts';
 const snapshot = JSON.parse(readFileSync(new URL('../src/content/oscp.snapshot.json',import.meta.url),'utf8'));
 const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Validate reachability',status:'planned',host:'host-a',identity:'user-a',capability:'',observation:'Synthetic test observation',createdAt:new Date().toISOString() });
+
+test('decision maps cover every stage, topic and method with valid receiving prerequisites',() => {
+  assert.deepEqual(Object.keys(stageGuides).sort(),snapshot.stages.map(stage=>stage.id).sort());
+  assert.deepEqual(Object.keys(topicGuides).sort(),snapshot.topics.map(topic=>topic.id).sort());
+  const methods=new Map(snapshot.methods.map(method=>[method.id,method]));
+  for(const stage of snapshot.stages) {
+    const guide=stageGuides[stage.id];assert.ok(guide.title && guide.summary && guide.prerequisite && guide.check);
+    const html=readFileSync(new URL(`../dist${stageURL(stage.id)}index.html`,import.meta.url),'utf8');
+    assert.ok(html.includes('data-decision-topic="'+stage.topics[0]+'"'),stage.id);
+    for(const topic of stage.topics)assert.ok(html.includes(stage.topics.length>1?`data-map-topic="${topic}"`:`data-decision-topic="${topic}"`),topic);
+  }
+  for(const topic of snapshot.topics) {
+    const guide=topicGuides[topic.id];assert.equal(guide.branches.length,3);assert.ok(methods.has(guide.start));
+    const linked=new Set([guide.start,...guide.branches.flatMap(branch=>branch.methods)]);
+    for(const method of snapshot.methods.filter(method=>method.topic===topic.id))assert.ok(linked.has(method.id),`${topic.id}: map omits ${method.id}`);
+    for(const gate of entryGates(topic))assert.ok(gate.label && gate.check);
+    for(const branch of guide.branches) {
+      assert.ok(branch.clue && branch.action && branch.methods.length && branch.gates.length);
+      for(const id of branch.methods) {assert.ok(methods.has(id),id);assert.ok(methodGates(methods.get(id)).every(gate=>gate.check && gate.label),id);}
+    }
+    const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
+    assert.ok(html.includes(`data-decision-topic="${topic.id}"`));assert.ok(html.includes(`id="prerequisites-${topic.id}"`));
+  }
+  assert.equal(smbGuide.branches.length,3);
+  for(const branch of smbGuide.branches)for(const id of branch.methods)assert.ok(methods.has(id));
+  assert.ok(smbGuide.branches[2].gates[0].check.includes('write access is not execution'));
+});
+
+test('homepage exposes all stages and preserves independent prerequisite inspection',() => {
+  const html=readFileSync(new URL('../dist/tools/oscp/index.html',import.meta.url),'utf8');
+  for(const stage of snapshot.stages)assert.ok(html.includes(`data-stage-choice="${stage.id}"`) && html.includes(`href="${stageURL(stage.id)}"`),stage.id);
+  assert.ok(html.includes('Prerequisites behind the lines'));
+  assert.ok(html.includes('Domain credentials can lead directly into AD'));
+  assert.ok(!html.includes('<details class="entire-map"'));
+});
 test('snapshot accounts for the entire reviewed inventory and all valid conditional transitions',() => {
   assert.equal(snapshot.methods.length,166); assert.equal(snapshot.topics.length,15); assert.equal(snapshot.stages.length,8);
   assert.equal(snapshot.topics.reduce((sum,t) => sum+t.families.length,0),54);
