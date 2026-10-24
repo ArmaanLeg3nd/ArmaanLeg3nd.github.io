@@ -72,6 +72,36 @@
   .method-family > summary > b { font: .9rem var(--mono); color: var(--cyan); transition: transform var(--motion-duration) var(--motion-ease); }
   .method-family[open] > summary > b { transform: rotate(45deg); }
   .family-methods { padding-bottom: .8rem; }
+  .family-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 1rem 0; }
+  .family-heading h2 { font-size: .9rem; font-weight: 500; margin: 0; }
+  .family-heading > span { color: var(--quiet); font: .55rem var(--mono); }
+  .topic-decision-guide > h2 { font-size: .9rem; font-weight: 500; margin: 0 0 .4rem; }
+  .sequence-intro { color: var(--muted); font-size: .74rem; line-height: 1.7; }
+  .investigation-sequence { list-style: none; padding: 0; margin: 1rem 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+  .investigation-sequence > li { display: grid; grid-template-columns: 1.4rem minmax(0,1fr); gap: .65rem; }
+  .investigation-sequence h3 { margin: 0 0 .25rem; font-size: .78rem; font-weight: 500; }
+  .step-number { display: inline-flex; justify-content: center; align-items: center; width: 1.3rem; height: 1.3rem; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--cyan-soft); font: .6rem var(--mono); flex-shrink: 0; }
+  .sequence-context { border-top: 1px solid var(--line); padding-top: .7rem; }
+  .sequence-context summary { color: var(--muted); font-size: .7rem; }
+  .sequence-context p,.sequence-context li { font-size: .74rem; line-height: 1.8; color: var(--muted); }
+  .read-clue,.command-reference { scroll-margin-top: calc(var(--navigator-top) + .8rem); border-top: 1px solid var(--line); padding-top: 1rem; margin-top: 1rem; }
+  .first-check > h3,.read-clue > h3,.next-routes > h3,.command-reference > h3 { display: flex; align-items: center; gap: .55rem; font-size: .86rem; font-weight: 500; margin: 0 0 .7rem; }
+  .additional-checks h4 { font-size: .74rem; font-weight: 500; color: var(--muted); margin: .85rem 0 .4rem; }
+  .clue-example { border-left: 2px solid var(--cyan); padding-left: .8rem; }
+  .finding-label { display: block; color: var(--quiet); font: .5rem var(--mono); margin-bottom: .35rem; }
+  .finding-interpretation { display: grid; margin: .8rem 0; }
+  .finding-interpretation > div { display: grid; grid-template-columns: 7rem minmax(0,1fr); gap: .7rem; border-top: 1px solid var(--line); padding: .65rem 0; }
+  .finding-interpretation dt { font-size: .7rem; color: var(--muted); }
+  .finding-interpretation > div:first-child dt { color: var(--green); }
+  .finding-interpretation dd { margin: 0; font-size: .74rem; line-height: 1.7; color: var(--muted); }
+  .finding-action { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.3fr); gap: 1rem; padding: .8rem 0; border-top: 1px solid var(--line); }
+  .finding-action p { margin: 0; }
+  .finding-action a { font-size: .77rem; color: var(--cyan-soft); }
+  .finding-action .requires { margin-top: .4rem; font-size: .69rem; }
+  .command-reference .procedure code .command-comment { color: var(--muted); }
+  .starting-groups > article { border: 1px solid var(--line); border-radius: 3px; background: var(--surface-low); padding: .8rem 1rem; }
+  .starting-groups > article > h2 { font-size: .83rem; font-weight: 500; margin: 0 0 .3rem; }
+  .starting-groups > article a { border-top: 1px solid var(--line); }
   .technique { border: 1px solid var(--line); background: var(--surface-low); margin: 0 0 .55rem; border-radius: 3px; scroll-margin-top: calc(var(--navigator-top) + .8rem); }
   .technique[open] { border-color: var(--line-strong); }
   .technique-summary { display: grid; gap: .4rem; list-style: none; padding: .85rem 1rem; }
@@ -163,6 +193,7 @@
     .topic-content { padding: 1rem 1.2rem 2rem; }
   }
   @media(max-width:480px) {
+    .investigation-sequence { grid-template-columns: 1fr; }
     .navigator-toolbar { gap: .5rem; padding-inline: .8rem; }
     .navigator-brand { gap: .5rem; font-size: .75rem; }
     .navigator-brand > span { font-size: 1rem; }
@@ -174,6 +205,8 @@
     .topic-content { padding-inline: .8rem; }
     .applicability > div { grid-template-columns: 1fr; gap: .1rem; }
     .applicability { gap: .65rem; }
+    .finding-action { grid-template-columns: 1fr; gap: .55rem; }
+    .finding-interpretation > div { grid-template-columns: 1fr; gap: .25rem; }
     .technique-summary { padding: .8rem; }
     .technique-body { padding-inline: .8rem; }
     .technique-heading > strong { font-size: .82rem; }

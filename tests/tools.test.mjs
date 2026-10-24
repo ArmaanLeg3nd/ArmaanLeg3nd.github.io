@@ -4,7 +4,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { freshInvestigation, validateInvestigation, parseInvestigation, serializeInvestigation, addStep, removeStep, getSessionInvestigation, setSessionInvestigation } from '../src/lib/investigation.ts';
 import { substitute, validValue, getSessionCommandValues, setSessionCommandValues } from '../src/lib/oscp-commands.ts';
 import { layoutInvestigation } from '../src/lib/attack-graph.ts';
-import { startingGroups } from '../src/lib/oscp-navigation.ts';
+import { startingGroups, investigationSteps } from '../src/lib/oscp-navigation.ts';
+import { combinedProcedure } from '../src/lib/oscp-procedure.ts';
 const snapshot = JSON.parse(readFileSync(new URL('../src/content/oscp.snapshot.json',import.meta.url),'utf8'));
 const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Validate reachability',status:'planned',host:'host-a',identity:'user-a',capability:'',observation:'Synthetic test observation',createdAt:new Date().toISOString() });
 test('snapshot accounts for the entire reviewed inventory and all valid conditional transitions',() => {
@@ -109,12 +110,43 @@ test('inline topic pages retain every method, source command variant, recognitio
       assert.equal((html.match(new RegExp(`data-method-id="${method.id}"`,'g')) || []).length,1,method.id);
       for(const key of ['title','access','conditions','result','clue','mechanics','example','verify','failure']) assert.ok(text.includes(method[key]),`${method.id}: ${key}`);
       for(const key of ['where','sample','spot','confirm','enabled','ruledout','unknown']) assert.ok(text.includes(method.recognition[key]),`${method.id}: recognition ${key}`);
-      for(const block of [...blocks(method.procedure),...blocks(method.checks),...blocks(method.recognition.commands)]) {assert.ok(codes.has(block),`${method.id}: missing command variant ${block.slice(0,60)}`);totalBlocks++;}
+      for(const block of [...blocks(method.procedure),...blocks(method.checks),...blocks(method.recognition.commands)]) {assert.ok([...codes].some(code => code.includes(block)),`${method.id}: missing command variant ${block.slice(0,60)}`);totalBlocks++;}
       totalMethods++;totalEdges+=method.next.length;
     }
     assert.equal((html.match(/data-next-method="/g)||[]).length,methods.reduce((sum,m) => sum+m.next.length,0),topic.id);
   }
   assert.equal(totalMethods,166);assert.equal(totalEdges,505);assert.ok(totalBlocks>500);
+});
+test('command presentation preserves every source command in order without variant disclosures',() => {
+  for(const method of snapshot.methods) {
+    const combined=combinedProcedure(method.procedure);
+    assert.ok(!/<\/?(?:details|summary)\b/i.test(combined),method.id);
+    let cursor=0;
+    for(const block of blocks(method.procedure)) {
+      const index=combined.indexOf(block,cursor);
+      assert.ok(index>=cursor,`${method.id}: missing or reordered source command`);
+      cursor=index+block.length;
+    }
+  }
+  const smb=snapshot.methods.find(method => method.id==='service-smb');
+  const combined=combinedProcedure(smb.procedure);
+  assert.ok(combined.includes('# Baseline: list shares without credentials'));
+  assert.ok(combined.includes('# Variant — recursive retrieval'));
+  assert.ok(blocks(combined).length<blocks(smb.procedure).length);
+  assert.ok(combined.includes('```powershell\n'));
+});
+test('topics have a short complete sequence and techniques keep check-to-action content visible',() => {
+  for(const topic of snapshot.topics) {
+    assert.equal(investigationSteps[topic.id].length,topic.workflow.length,topic.id);
+    const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
+    assert.ok(html.includes('class="investigation-sequence"'),topic.id);
+    // The one optional disclosure per technique holds background, never command variants or next actions.
+    assert.equal((html.match(/<details class="technique-detail mechanics"/g)||[]).length,snapshot.methods.filter(m=>m.topic===topic.id).length);
+    assert.ok(!/<details class="(?:method-family|result-branch|execution-details|full-workflow)/.test(html),topic.id);
+    for(const method of snapshot.methods.filter(m=>m.topic===topic.id)) for(const edge of method.next) {
+      assert.ok(decodeHTML(html).includes(edge.when) && decodeHTML(html).includes(edge.requires),`${method.id}: finding and prerequisites`);
+    }
+  }
 });
 test('direct method URLs open the intended technique in its containing family',() => {
   for(const method of snapshot.methods) {

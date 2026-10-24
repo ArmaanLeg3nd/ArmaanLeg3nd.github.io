@@ -4,7 +4,7 @@
   import InvestigationPanel from './InvestigationPanel.svelte';
   import MethodEntry from './MethodEntry.svelte';
   import { methodURL, topicURL, type Catalog, type Method } from '../../lib/oscp-types';
-  import { topicLabel, methodLabel, startingGroups } from '../../lib/oscp-navigation';
+  import { topicLabel, methodLabel, startingGroups, investigationSteps } from '../../lib/oscp-navigation';
   import { connectionFields, validValue, getSessionCommandValues, setSessionCommandValues, type CommandValues, type ConnectionField } from '../../lib/oscp-commands';
 
   let { catalog, initialTopic = '', initialMethod = '', initialMethods = [] }: { catalog: Catalog; initialTopic?: string; initialMethod?: string; initialMethods?: Method[] } = $props();
@@ -16,7 +16,6 @@
   const stageIndex = catalog.stages.findIndex(stage => stage.topics.includes(topicId));
   let focusedMethod = $state(untrack(() => initialMethod));
   let openedMethods = $state<Record<string,boolean>>(initialMethod ? {[initialMethod]:true} : {});
-  let openedFamilies = $state<Record<number,boolean>>(Object.fromEntries((topic?.families || []).map((family,index) => [index,initialMethod ? family.methods.includes(initialMethod) : index===0])));
   let query = $state('');
   let navigationOpen = $state(false);
   let controlsOpen = $state(false);
@@ -46,7 +45,7 @@
     if(!topic) return;
     const family = topic.families.findIndex(family => family.methods.includes(id));
     if(family<0)return;
-    openedFamilies={...openedFamilies,[family]:true};openedMethods={...openedMethods,[id]:true};focusedMethod=id;
+    openedMethods={...openedMethods,[id]:true};focusedMethod=id;
     query='';navigationOpen=false;
     await tick();
     if(destroyed || !scroll)return;
@@ -70,7 +69,7 @@
   }
   async function selectFamily(event: MouseEvent,index: number) {
     if(event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)return;
-    event.preventDefault();openedFamilies={...openedFamilies,[index]:true};await tick();
+    event.preventDefault();await tick();
     document.getElementById(`family-${topicId}-${index}`)?.scrollIntoView({block:'start',behavior:'instant'});
   }
   async function record(id: string) { focusedMethod=id;controlsOpen=true;await tick();panel.openPanel(); }
@@ -131,22 +130,23 @@
       {#if topic}
         <header class="compact-topic-header" data-reveal><p class="detail-kicker">STAGE {String(stageIndex+1).padStart(2,'0')} / {topic.title}</p><h1>{topicLabel(topic)}</h1><p>{topic.intro}</p></header>
         <section class="topic-decision-guide" aria-label="Where to begin">
-          <div class="guide-first"><span>START HERE</span><h2>{topic.workflow[0].label}</h2><div class="guide-method-links">{#each topic.workflow[0].methods as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event => selectMethod(event,id)}>{methodLabel(method)} →</a>{/each}</div></div>
-          <details class="full-workflow"><summary>Full investigation sequence <span>{topic.workflow.length} steps</span></summary><p><strong>Starting situation:</strong> {topic.start}</p><p><strong>Required access:</strong> {topic.access}</p><ol>{#each topic.workflow as step}<li><strong>{step.label}</strong><div class="guide-method-links">{#each step.methods as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event => selectMethod(event,id)}>{method.title} →</a>{/each}</div></li>{/each}</ol><p class="study-blocks">Study blocks: {topic.blocks}</p></details>
+          <h2>Investigation sequence</h2><p class="sequence-intro">Follow the steps that match what you found. Open a technique for its check, clue and next action.</p>
+          <ol class="investigation-sequence">{#each topic.workflow as step,index}<li><span class="step-number">{index+1}</span><div><h3>{investigationSteps[topic.id]?.[index] || step.label}</h3><div class="guide-method-links">{#each step.methods as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event => selectMethod(event,id)}>{methodLabel(method)} →</a>{/each}</div></div></li>{/each}</ol>
+          <details class="sequence-context"><summary>Detailed scope & checks</summary><p><strong>Starting situation:</strong> {topic.start}</p><p><strong>Required access:</strong> {topic.access}</p><ol>{#each topic.workflow as step}<li>{step.label}</li>{/each}</ol><p>Study blocks: {topic.blocks}</p></details>
         </section>
         <nav class="family-index" aria-label="Method families">{#each topic.families as family,index}<a href={`#family-${topic.id}-${index}`} onclick={event => selectFamily(event,index)}>{family.title}<span>{family.methods.length}</span></a>{/each}</nav>
         <section class="method-browser" aria-label={`Methods for ${topic.title}`}>
           {#each topic.families as family,index}
-            <details class="method-family" id={`family-${topic.id}-${index}`} open={openedFamilies[index]} ontoggle={event => {if(openedFamilies[index]!==event.currentTarget.open)openedFamilies={...openedFamilies,[index]:event.currentTarget.open};}}>
-              <summary><h2>{family.title}</h2><span>{family.methods.length} methods</span><b aria-hidden="true">+</b></summary>
+            <section class="method-family" id={`family-${topic.id}-${index}`}>
+              <header class="family-heading"><h2>{family.title}</h2><span>{family.methods.length} methods</span></header>
               <div class="family-methods">{#each family.methods as id}{@const method=fullMethods.get(id)!}<MethodEntry {method} {lookup} opened={!!openedMethods[id]} values={activeValues} onselect={selectMethod} onopen={methodToggled} onrecord={record} />{/each}</div>
-            </details>
+            </section>
           {/each}
         </section>
       {:else}
         <header class="compact-topic-header" data-reveal><p class="detail-kicker">CHOOSE A STARTING POINT</p><h1>What do you have?</h1><p>Start from your current access. Open a topic, find its recognition clues, then follow the result into the next method.</p></header>
         <div class="compact-start-actions"><a href={topicURL('discovery')} onclick={event => follow(event,'discovery')}>Start with discovery →</a>{#if resume}<a href={resume}>Resume last location ↗</a>{/if}</div>
-        <section class="starting-groups" aria-label="Choose your starting capability">{#each startingGroups as group}<details><summary>{group.title}<span aria-hidden="true">+</span></summary><div>{#each group.items as [label,id]}<a href={topicURL(id)} onclick={event => follow(event,id)}>{label}<span>→ {topicLabel(catalog.topics.find(topic=>topic.id===id)!)}</span></a>{/each}</div></details>{/each}</section>
+        <section class="starting-groups" aria-label="Choose your starting capability">{#each startingGroups as group}<article><h2>{group.title}</h2><div>{#each group.items as [label,id]}<a href={topicURL(id)} onclick={event => follow(event,id)}>{label}<span>→ {topicLabel(catalog.topics.find(topic=>topic.id===id)!)}</span></a>{/each}</div></article>{/each}</section>
         <details class="entire-map"><summary>Browse the entire end-to-end map <span>8 stages · 15 topics</span></summary><div class="compact-stage-map">{#each catalog.stages as stage,index}<article><span>{String(index+1).padStart(2,'0')}</span><div><h2>{stage.title}</h2>{#each stage.topics as id}{@const item=catalog.topics.find(topic=>topic.id===id)!}<a href={topicURL(id)} onclick={event => follow(event,id)}>{item.title} →</a>{/each}</div></article>{/each}</div><p>New identity, privilege, host or route → re-enumerate from that new position.</p></details>
         <details class="study-reference"><summary>Study order, scope & hypothetical chains</summary><p>Eight study units: discovery/services; web; credentials; public exploits/sessions; Linux/Windows escalation; pivoting/AD/movement; execution diagnostics; integration/evidence. Concept study and practical competence remain separate.</p>{#each Object.entries(catalog.chains) as [title,chain]}<h2>{title} <small>HYPOTHETICAL</small></h2><div class="chain-links">{#each chain as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event => selectMethod(event,id)}>{method.title}</a>{/each}</div>{/each}<p>Built from your reviewed exploitation reference. Dedicated buffer-overflow development is excluded by preparation choice. Existing-exploit adaptation remains covered. <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Check current exam rules ↗</a></p></details>
       {/if}

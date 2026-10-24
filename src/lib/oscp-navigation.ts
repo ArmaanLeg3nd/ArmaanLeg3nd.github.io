@@ -16,6 +16,24 @@ const serviceLabels: Record<string,string> = {
 export const topicLabel = (topic: Pick<Topic,'id'|'title'>) => topicLabels[topic.id] || topic.title;
 export const methodLabel = (method: Pick<MethodSummary,'id'|'title'>) => serviceLabels[method.id] || method.title;
 
+export const investigationSteps: Record<string,string[]> = {
+  discovery:['Can I reach it?','Find open ports','Identify what is listening','Record targets worth investigating'],
+  services:['Try the service with the access you have','Look for names, files and configuration','Check database permissions','Follow recovered credentials'],
+  'web-mapping':['Confirm the site and login state','Browse features and inspect requests','Find hidden paths and hostnames','Choose an input or permission to test'],
+  'web-exploitation':['Check file reads and uploads','Test command or SQL influence','Compare access between users and roles','Verify the finding before seeking execution'],
+  credentials:['Identify the material and account','Can it be used directly?','Recover or use the matching credential type','Verify access, then enumerate again'],
+  'public-exploits':['Does the exploit match this system?','Check the script and dependencies','Check architecture and compilation','Match the actual web request'],
+  'sessions-transfers':['Verify your host and identity','Choose a reachable session route','Match the payload and terminal','Transfer a file and verify it'],
+  'linux-privesc':['Inspect your identity and sudo rules','Look for useful secrets','Check privileged programs and writable paths','Find privileged jobs and what they consume','Check containers, mounts and software'],
+  'windows-privesc':['Inspect your token and host','Check service, task and file permissions','Identify the exact execution opportunity','Look for credentials and useful token rights','Check software and drivers'],
+  'ad-mapping':['Confirm domain identity and connectivity','Find users, groups and shares','Inspect service accounts and object rights','Verify a path to another host or identity'],
+  'ad-identities':['Inspect existing tickets and access','Identify available credential sources','Check account flags and service accounts','Match object permissions to an action','Check certificate, delegation and policy paths'],
+  'lateral-movement':['Can your source reach the destination?','Choose the matching credential type','Check remote execution rights','Verify WinRM or RDP access'],
+  pivoting:['Map what the pivot can reach','Choose where the connection starts','Choose a forward, proxy or route','Check names and return connections','Verify each additional hop'],
+  execution:['Identify what will consume the payload','Find the first failing execution step','Check PowerShell and endpoint restrictions','Verify the handler and connection direction'],
+  integration:['Write down the current state','Connect findings to valid next actions','Return to the last working state if stuck','Save evidence and verify the report']
+};
+
 export const startingGroups = [
   {title:'An address or exposed service', items:[['An address or uncertain reachability','discovery'],['A reachable service','services']]},
   {title:'An application or potential exploit', items:[['A web application','web-mapping'],['Suspicious application behavior','web-exploitation'],['A plausible public exploit','public-exploits']]},

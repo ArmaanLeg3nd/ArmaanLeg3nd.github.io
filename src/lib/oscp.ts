@@ -1,6 +1,7 @@
 import snapshot from '../content/oscp.snapshot.json';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import type { Catalog, Method, MethodSummary } from './oscp-types';
+import { combinedProcedure } from './oscp-procedure';
 
 export const catalog: Catalog = {
   schemaVersion: snapshot.schemaVersion, contentHash: snapshot.contentHash, sourceRevision: snapshot.sourceRevision,
@@ -21,7 +22,7 @@ export function topicMethods(id: string): Promise<Method[]> {
   if (!cache.has(id)) cache.set(id, Promise.all(snapshot.methods.filter(m => m.topic === id).map(async m => {
     const baseline = m.procedure.split(/<details\b/i)[0];
     return { ...m, search: catalog.methods.find(x => x.id === m.id)!.search,
-      html: { checks: await render(m.checks), discovery: await render(m.recognition.commands), procedure: await render(m.procedure), baseline: await render(baseline) } };
+      html: { checks: await render(m.checks), discovery: await render(m.recognition.commands), procedure: await render(combinedProcedure(m.procedure)), baseline: await render(baseline) } };
   })));
   return cache.get(id)!;
 }

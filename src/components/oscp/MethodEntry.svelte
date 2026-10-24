@@ -8,11 +8,9 @@
     method: Method; lookup: Map<string,MethodSummary>; opened?: boolean; values: CommandValues;
     onselect: (event: MouseEvent,id: string) => void; onopen: (id:string,open:boolean) => void; onrecord:(id:string) => void;
   } = $props();
-  let element: HTMLDetailsElement;
-  function expandDetails(open: boolean) { element.querySelectorAll<HTMLDetailsElement>('details').forEach(detail => detail.open=open); }
 </script>
 
-<details class="technique" id={method.id} open={opened} bind:this={element} ontoggle={event => onopen(method.id,event.currentTarget.open)} data-method-id={method.id}>
+<details class="technique" id={method.id} open={opened} ontoggle={event => onopen(method.id,event.currentTarget.open)} data-method-id={method.id}>
   <summary class="technique-summary">
     <span class="technique-heading"><strong>{methodLabel(method)}</strong><span class="technique-expand" aria-hidden="true">+</span></span>
     {#if methodLabel(method) !== method.title}<span class="technique-purpose">{method.title}</span>{/if}
@@ -20,27 +18,25 @@
   </summary>
   <div class="technique-body">
     <dl class="applicability"><div><dt>START WITH</dt><dd>{method.access}</dd></div><div><dt>APPLIES WHEN</dt><dd>{method.conditions}</dd></div><div><dt>CAN PRODUCE</dt><dd>{method.result}</dd></div></dl>
-    <nav class="technique-jumps" aria-label={`Sections in ${method.title}`}><a href={`#check-${method.id}`}>First check</a><a href={`#execute-${method.id}`} onclick={() => { const detail=element.querySelector<HTMLDetailsElement>('.execution-details');if(detail)detail.open=true; }}>Commands & variants</a><a href={`#next-${method.id}`}>Next steps ({method.next.length}) ↓</a></nav>
+    <nav class="technique-jumps" aria-label={`Sections in ${method.title}`}><a href={`#check-${method.id}`}>1. Check</a><a href={`#clue-${method.id}`}>2. Read the clue</a><a href={`#next-${method.id}`}>3. Next action</a><a href={`#execute-${method.id}`}>Commands & variants ↓</a></nav>
     <section class="first-check" id={`check-${method.id}`}>
-      <h3>Investigate this first</h3><p>{method.recognition.where}</p><Procedure html={method.html.discovery} {values} />
-      <p class="prerequisite-cue"><strong>Confirm:</strong> {method.recognition.confirm}</p>
-      {#if method.checks !== method.recognition.commands}<details class="technique-detail"><summary>Additional prerequisite checks</summary><Procedure html={method.html.checks} {values} /></details>{/if}
-      <details class="technique-detail recognition-example"><summary>What the clue looks like <span>SYNTHETIC OUTPUT</span></summary><pre class="sample-output"><code>{method.recognition.sample}</code></pre><p>{method.recognition.spot}</p></details>
-      <p class="verify-cue"><strong>Verify:</strong> {method.verify}</p>
+      <h3><span class="step-number">1</span> Run the first check</h3><p>{method.recognition.where}</p><Procedure html={method.html.discovery} {values} />
+      {#if method.checks !== method.recognition.commands}<div class="additional-checks"><h4>Also check the prerequisites</h4><Procedure html={method.html.checks} {values} /></div>{/if}
     </section>
-    <section class="interpretation"><h3>What did you find?</h3><div class="compact-outcomes">
-      <details><summary>Useful finding</summary><p>{method.recognition.enabled}</p></details>
-      <details><summary>Ruled out here</summary><p>{method.recognition.ruledout}</p></details>
-      <details><summary>Inconclusive</summary><p>{method.recognition.unknown}</p></details>
-    </div></section>
-    <div class="technique-reference">
-      <details class="technique-detail execution-details" id={`execute-${method.id}`}><summary>Execution procedure & complete variants <span>COMMANDS</span></summary><p>Use the baseline when the conditions above match. Choose variants by their access, credentials and transport requirements.</p><Procedure html={method.html.procedure} {values} /></details>
-      <details class="technique-detail troubleshooting"><summary>Failure signals & fallback checks</summary><p>{method.failure}</p></details>
-      <details class="technique-detail mechanics"><summary>Mechanics & hypothetical worked example</summary><h3>Why it works</h3><p>{method.mechanics}</p><h3>Worked example — hypothetical</h3><p>{method.example}</p></details>
-    </div>
+    <section class="read-clue" id={`clue-${method.id}`}>
+      <h3><span class="step-number">2</span> Read the clue</h3>
+      <div class="clue-example"><span class="finding-label">EXAMPLE OUTPUT · SYNTHETIC</span><pre class="sample-output"><code>{method.recognition.sample}</code></pre><p><strong>Means:</strong> {method.recognition.spot}</p><p><strong>Check before acting:</strong> {method.recognition.confirm}</p></div>
+      <dl class="finding-interpretation"><div><dt>Useful finding</dt><dd>{method.recognition.enabled}</dd></div><div><dt>Doesn't fit</dt><dd>{method.recognition.ruledout}</dd></div><div><dt>Still unclear</dt><dd>{method.recognition.unknown}</dd></div></dl>
+      <p class="verify-cue"><strong>Verify the result:</strong> {method.verify}</p>
+    </section>
     <NextRoutes {method} {lookup} {onselect} />
+    <section class="command-reference execution-details" id={`execute-${method.id}`}>
+      <h3>Commands & variants</h3><p>Choose the section matching your access and prerequisites. Comments separate alternatives; use the matching section rather than running the whole block. Different shells and client contexts stay separate.</p><Procedure html={method.html.procedure} {values} commented />
+    </section>
+    <p class="failure-cue"><strong>If it fails:</strong> {method.failure}</p>
+    <details class="technique-detail mechanics"><summary>Why it works & worked example</summary><h3>Mechanics</h3><p>{method.mechanics}</p><h3>Hypothetical example</h3><p>{method.example}</p></details>
     <div class="changed-context"><strong>New identity, privilege, host or route?</strong><span>Re-enumerate from that new position.</span><a href="/tools/oscp/discovery/">Revisit discovery ↗</a><a href="/tools/oscp/credentials/">Classify new material ↗</a></div>
-    <div class="technique-utilities"><button class="record-technique" onclick={() => onrecord(method.id)}>Record this technique +</button><a href={methodURL(method)}>Direct method link ↗</a><button onclick={() => expandDetails(true)}>Expand details</button><button onclick={() => expandDetails(false)}>Collapse details</button></div>
+    <div class="technique-utilities"><button class="record-technique" onclick={() => onrecord(method.id)}>Record this technique +</button><a href={methodURL(method)}>Direct method link ↗</a></div>
     <div class="reference-links"><a href={method.links.guide}>Deeper method notes ↗</a><a href={method.links.procedure}>Owning procedure ↗</a><a href={method.links.sheet}>Quick sheet ↗</a></div>
   </div>
 </details>
