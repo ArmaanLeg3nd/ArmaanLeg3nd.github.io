@@ -4,8 +4,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { freshInvestigation, validateInvestigation, parseInvestigation, serializeInvestigation, addStep, removeStep, getSessionInvestigation, setSessionInvestigation } from '../src/lib/investigation.ts';
 import { substitute, validValue, getSessionCommandValues, setSessionCommandValues } from '../src/lib/oscp-commands.ts';
 import { layoutInvestigation } from '../src/lib/attack-graph.ts';
-import { startingGroups, investigationSteps } from '../src/lib/oscp-navigation.ts';
-import { combinedProcedure } from '../src/lib/oscp-procedure.ts';
+import { startingGroups, investigationSteps, methodLabel } from '../src/lib/oscp-navigation.ts';
+import { combinedProcedure, procedureNotes } from '../src/lib/oscp-procedure.ts';
 const snapshot = JSON.parse(readFileSync(new URL('../src/content/oscp.snapshot.json',import.meta.url),'utf8'));
 const step = (id='s1', methodId='path-hosts') => ({ id,methodId,methodTitle:'Validate reachability',status:'planned',host:'host-a',identity:'user-a',capability:'',observation:'Synthetic test observation',createdAt:new Date().toISOString() });
 test('snapshot accounts for the entire reviewed inventory and all valid conditional transitions',() => {
@@ -100,20 +100,19 @@ const decodeHTML = (html) => html.replace(/&#x([0-9a-f]+);/gi,(_,code) => String
   .replace(/&#([0-9]+);/g,(_,code) => String.fromCodePoint(+code))
   .replace(/&(amp|lt|gt|quot|apos);/g,(_,name) => ({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[name]));
 const blocks = markdown => Array.from(markdown.matchAll(/^```[^\n]*\n([\s\S]*?)^```/gm),match => match[1].trimEnd());
-test('inline topic pages retain every method, source command variant, recognition field and transition',() => {
+test('focused task pages retain every method, source command, recognition field and transition',() => {
   let totalMethods=0,totalEdges=0,totalBlocks=0;
-  for(const topic of snapshot.topics) {
-    const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
+  for(const method of snapshot.methods) {
+    const html=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
     const text=decodeHTML(html),codes=new Set(Array.from(html.matchAll(/<pre\b[^>]*>[\s\S]*?<code\b[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/g),match => decodeHTML(match[1]).trimEnd()));
-    const methods=snapshot.methods.filter(method => method.topic===topic.id);
-    for(const method of methods) {
-      assert.equal((html.match(new RegExp(`data-method-id="${method.id}"`,'g')) || []).length,1,method.id);
-      for(const key of ['title','access','conditions','result','clue','mechanics','example','verify','failure']) assert.ok(text.includes(method[key]),`${method.id}: ${key}`);
-      for(const key of ['where','sample','spot','confirm','enabled','ruledout','unknown']) assert.ok(text.includes(method.recognition[key]),`${method.id}: recognition ${key}`);
-      for(const block of [...blocks(method.procedure),...blocks(method.checks),...blocks(method.recognition.commands)]) {assert.ok([...codes].some(code => code.includes(block)),`${method.id}: missing command variant ${block.slice(0,60)}`);totalBlocks++;}
-      totalMethods++;totalEdges+=method.next.length;
-    }
-    assert.equal((html.match(/data-next-method="/g)||[]).length,methods.reduce((sum,m) => sum+m.next.length,0),topic.id);
+    assert.equal((html.match(/data-method-id="/g)||[]).length,1,method.id);
+    assert.ok(html.includes(`data-method-id="${method.id}"`),method.id);
+    for(const key of ['title','access','conditions','result','clue','mechanics','example','verify','failure']) assert.ok(text.includes(method[key]),`${method.id}: ${key}`);
+    for(const key of ['where','sample','spot','confirm','enabled','ruledout','unknown']) assert.ok(text.includes(method.recognition[key]),`${method.id}: recognition ${key}`);
+    for(const block of [...blocks(method.procedure),...blocks(method.checks),...blocks(method.recognition.commands)]) {assert.ok([...codes].some(code => code.includes(block)),`${method.id}: missing command variant ${block.slice(0,60)}`);totalBlocks++;}
+    assert.equal((html.match(/data-next-method="/g)||[]).length,method.next.length,method.id);
+    for(const edge of method.next) assert.ok(text.includes(edge.when) && text.includes(edge.requires),`${method.id}: finding and prerequisites`);
+    totalMethods++;totalEdges+=method.next.length;
   }
   assert.equal(totalMethods,166);assert.equal(totalEdges,505);assert.ok(totalBlocks>500);
 });
@@ -135,23 +134,37 @@ test('command presentation preserves every source command in order without varia
   assert.ok(blocks(combined).length<blocks(smb.procedure).length);
   assert.ok(combined.includes('```powershell\n'));
 });
-test('topics have a short complete sequence and techniques keep check-to-action content visible',() => {
+test('topic outlines index every task once without loading its full reference content',() => {
+  let count=0;
   for(const topic of snapshot.topics) {
     assert.equal(investigationSteps[topic.id].length,topic.workflow.length,topic.id);
     const html=readFileSync(new URL(`../dist/tools/oscp/${topic.id}/index.html`,import.meta.url),'utf8');
-    assert.ok(html.includes('class="investigation-sequence"'),topic.id);
-    // The one optional disclosure per technique holds background, never command variants or next actions.
-    assert.equal((html.match(/<details class="technique-detail mechanics"/g)||[]).length,snapshot.methods.filter(m=>m.topic===topic.id).length);
-    assert.ok(!/<details class="(?:method-family|result-branch|execution-details|full-workflow)/.test(html),topic.id);
-    for(const method of snapshot.methods.filter(m=>m.topic===topic.id)) for(const edge of method.next) {
-      assert.ok(decodeHTML(html).includes(edge.when) && decodeHTML(html).includes(edge.requires),`${method.id}: finding and prerequisites`);
+    assert.ok(html.includes('class="topic-outline"') && html.includes('id="investigation-flow"'),topic.id);
+    assert.ok(!html.includes('data-method-id="'),topic.id);
+    for(const method of snapshot.methods.filter(method=>method.topic===topic.id)) {
+      assert.equal((html.match(new RegExp(`data-task-link="${method.id}"`,'g'))||[]).length,1,method.id);
+      assert.ok(decodeHTML(html).includes(methodLabel(method)),method.id);count++;
     }
+    for(const step of topic.workflow) assert.ok(decodeHTML(html).includes(step.label),topic.id);
   }
+  assert.equal(count,166);
 });
-test('direct method URLs open the intended technique in its containing family',() => {
+test('lookup names are concise and unique within their topic; full usage notes remain available',() => {
+  for(const topic of snapshot.topics) {
+    const methods=snapshot.methods.filter(method=>method.topic===topic.id);
+    assert.equal(new Set(methods.map(methodLabel)).size,methods.length,topic.id);
+    for(const method of methods) assert.ok(methodLabel(method).length<method.title.length,method.id);
+  }
+  const smb=snapshot.methods.find(method=>method.id==='service-smb');
+  assert.ok(!combinedProcedure(smb.procedure).includes('share-level write access'));
+  assert.ok(procedureNotes(smb.procedure).includes('share-level write access'));
+  assert.ok(procedureNotes(smb.procedure).includes('https://') || procedureNotes(smb.procedure).includes('NetExec'));
+});
+test('direct task pages show commands before the finding guide and have no task accordion',() => {
   for(const method of snapshot.methods) {
     const html=readFileSync(new URL(`../dist/tools/oscp/${method.topic}/${method.id}/index.html`,import.meta.url),'utf8');
-    const tag=html.match(new RegExp(`<details[^>]+data-method-id="${method.id}"[^>]*>`))?.[0];
-    assert.ok(tag && /\bopen(?:[ =>])/.test(tag),method.id);
+    assert.ok(html.includes(`<article class="task-reference" id="${method.id}"`),method.id);
+    assert.ok(html.indexOf(`id="execute-${method.id}"`)<html.indexOf(`id="check-${method.id}"`),method.id);
+    assert.ok(!/<details class="(?:technique|result-branch)/.test(html),method.id);
   }
 });

@@ -4,10 +4,10 @@ The public site contains the project index at `/` and `/projects/`, plus interac
 
 ## Interactive tools
 
-- `/tools/oscp/`: starting-capability groups, topic decision guides and inline expandable techniques. Existing direct method URLs open the matching technique within its topic.
+- `/tools/oscp/`: starting-capability groups, compact topic outlines and focused task reference pages. Existing direct method URLs are the canonical task locations.
 - `/tools/attack-path/`: investigation JSON importer, graph, record inspector and connection editor.
 - Both tools share the `oscp-investigation` version 1 JSON format. Saving investigation records is opt-in. Disabling saving retains the previous saved copy until explicitly cleared. Command-value inputs are in memory only and are never exported or stored.
-- The last visited location is saved separately; browsing or expanding techniques does not record investigation outcomes.
+- The last visited location is saved separately; browsing tasks does not record investigation outcomes.
 - Local records are specific to the current origin/browser. Use Export JSON and Import JSON to move between browsers or devices. Keep secrets and real exam material out of notes.
 - The in-memory investigation survives client-side navigation between the two tools, including with local saving off; a full reload clears unsaved records. Export before closing an unsaved investigation.
 
@@ -22,11 +22,13 @@ npm run check
 npm run build
 ```
 
-The normal build requires neither a private workspace nor a network connection. It uses the snapshot hash/revision to identify content and prepares topic JSON plus static readable topic/method routes. Each topic includes its complete technique content. Techniques expand once; checks, example output, interpretation, conditional next actions and commands are then visible. Only background mechanics remain folded. The Markdown renderer is the same version already used by Astro, explicitly declared as a dependency.
+The normal build requires neither a private workspace nor a network connection. It uses the snapshot hash/revision to identify content and prepares topic JSON plus static readable topic/task routes. Topic pages contain a compact family/task outline and the complete investigation flow. Each direct task page renders only that task, with commands first, recognition and conditional next actions below, and full usage notes and explanations available on the same page. The Markdown renderer is the same version already used by Astro, explicitly declared as a dependency.
 
-`src/lib/oscp-navigation.ts` owns concise display labels, short investigation steps and visible starting-capability groups; it does not replace source content. The source investigation sequence remains available under Detailed scope & checks. `MethodEntry` uses Check → Read the clue → Act on the finding, followed by visible command variants. `NextRoutes` shows every transition as a finding/action row with its requirements, without another disclosure. `src/lib/oscp-procedure.ts` consolidates adjacent command blocks using the same language, preserving command bytes and order, with source usage notes as comments. Language changes retain separate blocks; HTTP request bytes retain prose outside their blocks. Comments are visually muted after hydration without changing copied text. Saving, recording, JSON import/export and temporary command values live in Workspace controls; the saving status and record count remain visible while it is closed. Navigator styles are scoped separately from the attack-path visualizer.
+`src/lib/oscp-navigation.ts` owns concise lookup names, short investigation steps and starting-capability groups. Names are presentation aliases; original titles remain in the task, and global search includes aliases, original descriptions and command vocabulary. `MethodEntry` owns one focused reference page. `NextRoutes` retains every finding/action transition and its requirements. `src/lib/oscp-procedure.ts` groups adjacent code blocks sharing a language, with short comments labelling variants while preserving command bytes and order. Full source prose stays in Full notes instead of filling code blocks with explanatory comments. Different execution contexts retain separate blocks; HTTP request bytes retain prose outside their blocks.
 
-After building, `npm run test:tools` checks every rendered topic for its complete original method text, fenced commands and transition set, and checks all direct method routes open the selected entry.
+Temporary TARGET, LHOST and PORT fields are directly available on desktop. All values remain available in Workspace controls on mobile. Saving, recording and JSON import/export use the existing controls; the saving status and record count remain visible while closed. Task selection and cross-topic transitions use real URLs through Astro's ClientRouter. Historical topic/method anchors are redirected to the canonical task. Navigator styles remain scoped separately from the attack-path visualizer.
+
+After building, `npm run test:tools` verifies every topic indexes each task once; each task route retains its complete original method fields, commands and transitions; all source command blocks remain in order; and commands appear before the finding guide. Include browser checks for search aliases, task selection, history, command values/copy, usage-note links, recording and mobile overflow.
 
 ### Shared site behavior
 

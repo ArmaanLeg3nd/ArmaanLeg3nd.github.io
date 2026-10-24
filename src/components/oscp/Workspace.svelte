@@ -11,11 +11,9 @@
   const topicId = untrack(() => initialTopic);
   const methods = untrack(() => initialMethods);
   const lookup = new Map(catalog.methods.map(method => [method.id,method]));
-  const fullMethods = new Map(methods.map(method => [method.id,method]));
+  const activeMethod = methods.find(method => method.id === initialMethod);
   const topic = catalog.topics.find(topic => topic.id === topicId);
-  const stageIndex = catalog.stages.findIndex(stage => stage.topics.includes(topicId));
   let focusedMethod = $state(untrack(() => initialMethod));
-  let openedMethods = $state<Record<string,boolean>>(initialMethod ? {[initialMethod]:true} : {});
   let query = $state('');
   let navigationOpen = $state(false);
   let controlsOpen = $state(false);
@@ -27,7 +25,6 @@
   let resume = $state('');
   let panel: InvestigationPanel;
   let controlDetails: HTMLDetailsElement;
-  let destroyed = false;
   let results = $derived(query.trim() ? catalog.methods.filter(method => query.toLowerCase().trim().split(/\s+/).every(word => method.search.includes(word))) : []);
   let activeValues = $derived(Object.fromEntries(Object.entries(values).filter(([key,value]) => value && validValue(key as ConnectionField,value))) as CommandValues);
 
@@ -41,36 +38,14 @@
     if(event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();void go(topic);
   }
-  async function openTechnique(id: string, scroll = true) {
-    if(!topic) return;
-    const family = topic.families.findIndex(family => family.methods.includes(id));
-    if(family<0)return;
-    openedMethods={...openedMethods,[id]:true};focusedMethod=id;
-    query='';navigationOpen=false;
-    await tick();
-    if(destroyed || !scroll)return;
-    const element=document.getElementById(id);
-    element?.querySelector<HTMLElement>(':scope > summary')?.focus({preventScroll:true});
-    element?.scrollIntoView({block:'start',behavior:'instant'});
-  }
   async function selectMethod(event: MouseEvent,id: string) {
     if(event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)return;
     const method=lookup.get(id);if(!method)return;
     event.preventDefault();
-    if(method.topic===topicId) { await openTechnique(id);return; }
     busy=true;error='';
-    try { await navigate(methodURL(method)+'#'+id); }
+    try { await navigate(methodURL(method)); }
     catch(cause) { error=cause instanceof Error ? cause.message : 'Unable to open this method.'; }
     finally { busy=false; }
-  }
-  function methodToggled(id: string,open: boolean) {
-    if(openedMethods[id]!==open)openedMethods={...openedMethods,[id]:open};
-    if(open)focusedMethod=id;
-  }
-  async function selectFamily(event: MouseEvent,index: number) {
-    if(event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)return;
-    event.preventDefault();await tick();
-    document.getElementById(`family-${topicId}-${index}`)?.scrollIntoView({block:'start',behavior:'instant'});
   }
   async function record(id: string) { focusedMethod=id;controlsOpen=true;await tick();panel.openPanel(); }
   function setValue(key: ConnectionField,value: string) {values={...values,[key]:value};setSessionCommandValues(values);}
@@ -83,26 +58,31 @@
       localStorage.setItem('oscp-navigation-v1',location.pathname);
     }catch{}
     const timer=setTimeout(() => {
-      if(initialMethod && !location.hash)void openTechnique(initialMethod);
-      else if(location.hash) {
-        let id='';try{id=decodeURIComponent(location.hash.slice(1));}catch{}
-        const element=document.getElementById(id);
-        if(element?.closest('.method-browser')) {
-          let parent: HTMLElement|null=element;
-          while(parent && !parent.classList.contains('method-browser')) {if(parent instanceof HTMLDetailsElement)parent.open=true;parent=parent.parentElement;}
-          element.scrollIntoView({block:'start',behavior:'instant'});
-        }
+      if(!location.hash)return;
+      let id='';try{id=decodeURIComponent(location.hash.slice(1));}catch{}
+      // Preserve historical topic anchors by taking them to the canonical task page.
+      if(!activeMethod) {
+        const legacy=catalog.methods.find(method => method.topic===topicId && [method.id,`check-${method.id}`,`clue-${method.id}`,`execute-${method.id}`,`next-${method.id}`].includes(id));
+        if(legacy) { void navigate(methodURL(legacy)+(id===legacy.id ? '' : '#'+(id.startsWith('clue-') ? 'check-'+legacy.id : id)));return; }
+      }
+      const element=document.getElementById(id);
+      if(element) {
+        element.querySelector<HTMLDetailsElement>(':scope > details')?.setAttribute('open','');
+        let parent:HTMLElement|null=element;
+        while(parent) {if(parent instanceof HTMLDetailsElement)parent.open=true;parent=parent.parentElement;}
+        element.scrollIntoView({block:'start',behavior:'instant'});
       }
     },0);
     const outside=(event:PointerEvent) => {if(controlsOpen && !controlDetails.contains(event.target as Node) && !(event.target as Element).closest('.record-technique'))controlsOpen=false;};
     document.addEventListener('pointerdown',outside);
-    return () => {destroyed=true;clearTimeout(timer);document.removeEventListener('pointerdown',outside);};
+    return () => {clearTimeout(timer);document.removeEventListener('pointerdown',outside);};
   });
 </script>
 
 <div class="oscp-workspace navigator-workspace">
   <header class="navigator-toolbar">
     <a class="navigator-brand" href="/tools/oscp/" onclick={event => follow(event)}><span>O/</span> OSCP <small>strategy workspace</small></a>
+    <div class="quick-values" aria-label="Temporary command values">{#each ['TARGET','LHOST','PORT'] as field}<label>{field}<input aria-label={`Quick ${field}`} autocomplete="off" spellcheck="false" placeholder={field} value={values[field as ConnectionField] || ''} aria-invalid={!validValue(field as ConnectionField,values[field as ConnectionField] || '')} oninput={event=>setValue(field as ConnectionField,event.currentTarget.value)} /></label>{/each}</div>
     <div class="navigator-toolbar-actions"><button class="navigator-menu" aria-expanded={navigationOpen} aria-controls="topic-navigation" onclick={() => navigationOpen=!navigationOpen}>Browse topics</button>
       <details class="workspace-controls" bind:open={controlsOpen} bind:this={controlDetails} onkeydown={event => {if(event.key==='Escape'){controlsOpen=false;controlDetails.querySelector('summary')?.focus();}}}>
         <summary>Workspace controls <span class:saving={savingEnabled}>{savingEnabled ? 'Saving on' : 'Memory only'} · {stepCount} steps</span></summary>
@@ -117,7 +97,7 @@
     <aside class="navigator-sidebar" class:mobile-open={navigationOpen} id="topic-navigation" aria-label="Topics and objectives">
       <label class="navigator-search"><span>FIND A CLUE OR METHOD</span><input type="search" bind:value={query} placeholder="Service, clue, tool…" aria-label="Search all strategy methods" /></label>
       {#if query.trim()}
-        <p class="navigator-result-count" role="status">{results.length} matching methods</p><div class="navigator-results">{#each results as result}<a href={methodURL(result)} onclick={event => selectMethod(event,result.id)}><strong>{result.title}</strong><span>{result.clue}</span></a>{/each}{#if !results.length}<p>Try a shorter clue or a service name.</p>{/if}</div>
+        <p class="navigator-result-count" role="status">{results.length} matching methods</p><div class="navigator-results">{#each results as result}<a href={methodURL(result)} onclick={event => selectMethod(event,result.id)}><strong>{methodLabel(result)}</strong><span>{topicLabel(catalog.topics.find(topic=>topic.id===result.topic)!)} · {result.clue}</span></a>{/each}{#if !results.length}<p>Try a shorter clue or a service name.</p>{/if}</div>
       {:else}
         <a class="navigator-home" class:active={!topicId} href="/tools/oscp/" onclick={event => follow(event)}>Where should I start? ↗</a>
         <nav class="topic-links" aria-label="Browse by topic">{#each catalog.topics as item}<a class:active={item.id===topicId} aria-current={item.id===topicId ? 'page' : undefined} href={topicURL(item.id)} onclick={event => follow(event,item.id)}>{topicLabel(item)}<span>›</span></a>{/each}</nav>
@@ -127,22 +107,16 @@
     <main class="workspace-detail topic-content" aria-busy={busy}>
       <nav class="compact-breadcrumb" aria-label="Workspace breadcrumb"><a href="/tools/">Tools</a><span>/</span><a href="/tools/oscp/" onclick={event => follow(event)}>OSCP</a>{#if topic}<span>/</span><span>{topicLabel(topic)}</span>{/if}</nav>
       {#if error}<p class="workspace-error" role="alert">{error}<button onclick={() => go(topicId)}>Retry topic</button></p>{/if}{#if busy}<span class="sr-only" role="status">Opening reference…</span>{/if}
-      {#if topic}
-        <header class="compact-topic-header" data-reveal><p class="detail-kicker">STAGE {String(stageIndex+1).padStart(2,'0')} / {topic.title}</p><h1>{topicLabel(topic)}</h1><p>{topic.intro}</p></header>
-        <section class="topic-decision-guide" aria-label="Where to begin">
-          <h2>Investigation sequence</h2><p class="sequence-intro">Follow the steps that match what you found. Open a technique for its check, clue and next action.</p>
-          <ol class="investigation-sequence">{#each topic.workflow as step,index}<li><span class="step-number">{index+1}</span><div><h3>{investigationSteps[topic.id]?.[index] || step.label}</h3><div class="guide-method-links">{#each step.methods as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event => selectMethod(event,id)}>{methodLabel(method)} →</a>{/each}</div></div></li>{/each}</ol>
-          <details class="sequence-context"><summary>Detailed scope & checks</summary><p><strong>Starting situation:</strong> {topic.start}</p><p><strong>Required access:</strong> {topic.access}</p><ol>{#each topic.workflow as step}<li>{step.label}</li>{/each}</ol><p>Study blocks: {topic.blocks}</p></details>
+      {#if topic && activeMethod}
+        <div class="task-browse-bar"><a href={topicURL(topic.id)} onclick={event=>follow(event,topic.id)}>← All {topicLabel(topic).toLowerCase()} tasks</a><label class="sr-only" for="task-jump">Jump to another task in this topic</label><select id="task-jump" value={activeMethod.id} onchange={event=>{const method=lookup.get(event.currentTarget.value);if(method)void navigate(methodURL(method));}}>{#each topic.families as family}<optgroup label={family.title}>{#each family.methods as id}{@const method=lookup.get(id)!}<option value={id}>{methodLabel(method)}</option>{/each}</optgroup>{/each}</select></div>
+        <MethodEntry method={activeMethod} {lookup} values={activeValues} onselect={selectMethod} onrecord={record} />
+      {:else if topic}
+        <header class="compact-topic-header" data-reveal><p class="detail-kicker">REFERENCE / {catalog.methods.filter(method=>method.topic===topicId).length} TASKS</p><h1>{topicLabel(topic)}</h1><p>{topic.intro}</p></header>
+        {@const first=lookup.get(topic.workflow[0].methods[0])!}<div class="outline-start"><span>Start with <a href={methodURL(first)} onclick={event=>selectMethod(event,first.id)}>{methodLabel(first)} →</a></span><a href="#investigation-flow">Investigation flow ↓</a></div>
+        <section class="topic-outline" aria-label={`Browse ${topicLabel(topic)} tasks`}>
+          {#each topic.families as family,index}<section class="outline-family" id={`family-${topic.id}-${index}`}><h2>{family.title}</h2><ul>{#each family.methods as id}{@const method=lookup.get(id)!}<li><a href={methodURL(method)} onclick={event=>selectMethod(event,id)} data-task-link={id}><span class="outline-task">{methodLabel(method)}</span><span class="outline-clue">{method.clue}</span><span class="outline-arrow" aria-hidden="true">→</span></a></li>{/each}</ul></section>{/each}
         </section>
-        <nav class="family-index" aria-label="Method families">{#each topic.families as family,index}<a href={`#family-${topic.id}-${index}`} onclick={event => selectFamily(event,index)}>{family.title}<span>{family.methods.length}</span></a>{/each}</nav>
-        <section class="method-browser" aria-label={`Methods for ${topic.title}`}>
-          {#each topic.families as family,index}
-            <section class="method-family" id={`family-${topic.id}-${index}`}>
-              <header class="family-heading"><h2>{family.title}</h2><span>{family.methods.length} methods</span></header>
-              <div class="family-methods">{#each family.methods as id}{@const method=fullMethods.get(id)!}<MethodEntry {method} {lookup} opened={!!openedMethods[id]} values={activeValues} onselect={selectMethod} onopen={methodToggled} onrecord={record} />{/each}</div>
-            </section>
-          {/each}
-        </section>
+        <section class="reference-flow" id="investigation-flow"><h2>Investigation flow</h2><p>Follow the steps matching your evidence. Each task keeps its commands, clues and next actions together.</p><ol class="investigation-sequence">{#each topic.workflow as step,index}<li><span class="step-number">{index+1}</span><div><h3>{investigationSteps[topic.id]?.[index] || step.label}</h3><p>{step.label}</p><div class="guide-method-links">{#each step.methods as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event=>selectMethod(event,id)}>{methodLabel(method)} →</a>{/each}</div></div></li>{/each}</ol><details class="sequence-context"><summary>Scope & study context</summary><p><strong>Starting situation:</strong> {topic.start}</p><p><strong>Required access:</strong> {topic.access}</p><p>Study blocks: {topic.blocks}</p></details></section>
       {:else}
         <header class="compact-topic-header" data-reveal><p class="detail-kicker">CHOOSE A STARTING POINT</p><h1>What do you have?</h1><p>Start from your current access. Open a topic, find its recognition clues, then follow the result into the next method.</p></header>
         <div class="compact-start-actions"><a href={topicURL('discovery')} onclick={event => follow(event,'discovery')}>Start with discovery →</a>{#if resume}<a href={resume}>Resume last location ↗</a>{/if}</div>
