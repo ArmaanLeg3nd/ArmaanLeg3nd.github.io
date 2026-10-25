@@ -1,0 +1,27 @@
+---
+import ToolLayout from '../../../../layouts/ToolLayout.astro';
+import { referencePages,renderReference } from '../../../../lib/oscp-full-reference';
+import '../../../../styles/oscp-full-reference.css';
+export function getStaticPaths(){return referencePages.map(page=>({params:{slug:page.slug},props:{page}}));}
+const {page}=Astro.props;
+const html=await renderReference(page);
+---
+<ToolLayout title={`${page.title} | OSCP reference`} description={`Commands, variants, interpretation and next actions for ${page.title}.`}>
+  <main class="full-reference">
+    <p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p>
+    <div class="reference-reading">
+      <nav aria-label="On this page"><strong>On this page</strong><ul>{page.sections.filter(s=>s.level>1).map(s=><li class:list={['level-'+s.level]}><a href={'#'+s.anchor}>{s.title}</a></li>)}</ul></nav>
+      <article class="reference-prose" set:html={html}/>
+    </div>
+  </main>
+</ToolLayout>
+<script>
+  function setupReferenceCopy(){document.querySelectorAll<HTMLButtonElement>('[data-reference-copy]').forEach(button=>{
+    if(button.dataset.ready)return;button.dataset.ready='true';button.addEventListener('click',async()=>{
+      const code=button.parentElement?.querySelector('code');if(!code)return;
+      try{await navigator.clipboard.writeText(code.textContent || '');button.textContent='Copied';}catch{button.textContent='Select and copy';}
+      window.setTimeout(()=>button.textContent='Copy',1600);
+    });
+  });}
+  setupReferenceCopy();document.addEventListener('astro:page-load',setupReferenceCopy);
+</script>

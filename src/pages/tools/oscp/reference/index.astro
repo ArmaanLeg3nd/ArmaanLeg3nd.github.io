@@ -1,0 +1,39 @@
+---
+import ToolLayout from '../../../../layouts/ToolLayout.astro';
+import { referencePages,referenceSectionCount } from '../../../../lib/oscp-full-reference';
+import '../../../../styles/oscp-full-reference.css';
+const stages=[...new Set(referencePages.map(p=>p.stage))];
+---
+<ToolLayout title="Complete operational reference | OSCP" description="Search every operational procedure and task in the exploitation reference.">
+  <main class="full-reference">
+    <p><a href="/tools/oscp/">← OSCP workspace</a></p>
+    <h1>Complete operational reference</h1>
+    <p>Every procedure and task in one index. Search a service, tool, technique or error; open a result at its exact section.</p>
+    <label class="reference-find">Find in the full reference<input id="reference-find" type="search" placeholder="For example: XXE, shadow credentials, mongosh…" /></label>
+    <p id="reference-count" role="status">{referencePages.length} procedures · {referenceSectionCount} headings</p>
+    <div class="reference-index">
+      {stages.map(stage=><section><h2>{stage.replace(/^\d+-/,'').replaceAll('-',' ')}</h2>{referencePages.filter(p=>p.stage===stage).map(page=><article data-reference-entry data-search={page.markdown.toLowerCase()}>
+        <h3><a href={page.url}>{page.title}</a></h3>
+        <ul>{page.sections.filter(s=>s.level>1 && s.title!=='Sources').map(s=><li class:list={['level-'+s.level]} data-reference-section data-search={s.search}><a href={page.url+'#'+s.anchor}>{s.title}</a></li>)}</ul>
+      </article>)}</section>)}
+    </div>
+  </main>
+</ToolLayout>
+<script>
+  function setupReferenceIndex(){
+    const input=document.querySelector<HTMLInputElement>('#reference-find');
+    if(!input || input.dataset.ready)return;input.dataset.ready='true';
+    input.addEventListener('input',()=>{
+      const terms=input.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      let count=0;
+      document.querySelectorAll<HTMLElement>('[data-reference-entry]').forEach(entry=>{
+        entry.querySelectorAll<HTMLElement>('[data-reference-section]').forEach(section=>{section.hidden=!terms.every(term=>section.dataset.search?.includes(term));});
+        entry.hidden=![...entry.querySelectorAll<HTMLElement>('[data-reference-section]')].some(section=>!section.hidden);
+        if(!entry.hidden)count++;
+      });
+      document.querySelectorAll<HTMLElement>('.reference-index > section').forEach(section=>{section.hidden=![...section.querySelectorAll<HTMLElement>('[data-reference-entry]')].some(entry=>!entry.hidden);});
+      const status=document.querySelector('#reference-count');if(status)status.textContent=`${count} matching procedures`;
+    });
+  }
+  setupReferenceIndex();document.addEventListener('astro:page-load',setupReferenceIndex);
+</script>

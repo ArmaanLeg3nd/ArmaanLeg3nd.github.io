@@ -107,6 +107,7 @@
         <p class="navigator-result-count" role="status">{results.length} matching methods</p><div class="navigator-results">{#each results as result}<a href={methodURL(result)} onclick={event => selectMethod(event,result.id)}><strong>{methodLabel(result)}</strong><span>{topicLabel(catalog.topics.find(topic=>topic.id===result.topic)!)} · {result.clue}</span></a>{/each}{#if !results.length}<p>Try a shorter clue or a service name.</p>{/if}</div>
       {:else}
         <a class="navigator-home" class:active={!topicId && !stage} href="/tools/oscp/" onclick={event => follow(event)}>Reference index ↗</a>
+        <a class="navigator-home" href="/tools/oscp/reference/">Search all procedures & variants ↗</a>
         <nav class="stage-links" aria-label="Stages">{#each catalog.stages as item,index}<a href={stageURL(item.id)} class:active={stage?.id===item.id} aria-current={stage?.id===item.id ? 'page' : undefined}><span>{String(index+1).padStart(2,'0')}</span>{stageGuides[item.id].title}</a>{/each}</nav>
         <p class="navigator-section-label">QUICK REFERENCE</p>
         <nav class="topic-links" aria-label="Browse by topic">{#each catalog.topics as item}<a class:active={item.id===topicId} aria-current={item.id===topicId ? 'page' : undefined} href={topicURL(item.id)} onclick={event => follow(event,item.id)}>{topicLabel(item)}<span>›</span></a>{/each}</nav>
@@ -125,14 +126,14 @@
         <p class="index-return"><a href="/tools/oscp/">← All stages and topics</a></p>
       {:else if topic}
         <header class="compact-topic-header" data-reveal><p class="detail-kicker">REFERENCE / {catalog.methods.filter(method=>method.topic===topicId).length} TASKS</p><h1>{topicLabel(topic)}</h1><p>{topicLead[topic.id]}</p></header>
-        <nav class="reference-section-links" aria-label="Topic page sections"><a href="#contents">Contents ↓</a><a href="#tools-and-scripts">Tools & scripts ↓</a><a href="#topic-task-index">Commands ↓</a><a href="#first-pass">First-pass workflow ↓</a></nav>
+        <nav class="reference-section-links" aria-label="Topic page sections"><a href="#contents">Contents ↓</a><a href="#tools-and-scripts">Tools & scripts ↓</a><a href="#topic-task-index">Commands ↓</a><a href="#first-pass">First-pass workflow ↓</a><a href="/tools/oscp/reference/">Full procedure index ↗</a></nav>
         <span id="prerequisite-checks" class="legacy-anchor" aria-hidden="true"></span>
         <TopicReference {topic} {methods} {catalog} values={activeValues} onrecord={record}/>
         <FirstPass steps={initialPlaybook} {catalog} values={activeValues}/>
         <p class="reference-attribution">Additional organization and gap review informed by <a href={catalog.supplementarySource.url}>{catalog.supplementarySource.name} ↗</a>. Tool links open upstream sources.</p>
       {:else}
         <header class="compact-topic-header" data-reveal><h1>OSCP exploitation reference</h1><p>Choose a topic or search a tool. Jump to commands, read the result cue, then follow the matching technique.</p></header>
-        <div class="compact-start-actions"><a href={topicURL('discovery')} onclick={event => follow(event,'discovery')}>Start with discovery →</a>{#if resume}<a href={resume}>Resume last location ↗</a>{/if}</div>
+        <div class="compact-start-actions"><a href={topicURL('discovery')} onclick={event => follow(event,'discovery')}>Start with discovery →</a><a href="/tools/oscp/reference/">Search all procedures & variants →</a>{#if resume}<a href={resume}>Resume last location ↗</a>{/if}</div>
         <div class="reference-stage-index">{#each catalog.stages as item}<section data-stage-index={item.id}><h2><a href={stageURL(item.id)}>{stageGuides[item.id].title}</a></h2><ul>{#each item.topics as id}{@const entry=catalog.topics.find(topic=>topic.id===id)!}<li><a href={topicURL(id)}>{topicLabel(entry)} →</a><span>{entry.access}</span></li>{/each}</ul></section>{/each}</div>
         <details class="study-reference"><summary>Study order, scope & hypothetical chains</summary><p>Eight study units: discovery/services; web; credentials; public exploits/sessions; Linux/Windows escalation; pivoting/AD/movement; execution diagnostics; integration/evidence. Concept study and practical competence remain separate.</p>{#each Object.entries(catalog.chains) as [title,chain]}<h2>{title} <small>HYPOTHETICAL</small></h2><div class="chain-links">{#each chain as id}{@const method=lookup.get(id)!}<a href={methodURL(method)} onclick={event => selectMethod(event,id)}>{method.title}</a>{/each}</div>{/each}<p>Built from your reviewed exploitation reference. Dedicated buffer-overflow development is excluded by preparation choice. Existing-exploit adaptation remains covered. <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Check current exam rules ↗</a></p></details>
       {/if}
