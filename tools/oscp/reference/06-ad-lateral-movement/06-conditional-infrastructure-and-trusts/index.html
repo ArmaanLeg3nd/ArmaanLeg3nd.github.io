@@ -75,10 +75,10 @@ Get-ADTrust -Filter * -Properties * |
 <p><strong>Read → next:</strong> keep trust direction, same-forest versus cross-forest scope, SID filtering, selective authentication, target SPN and the accepted identity separate. A trust object or child-domain admin does not by itself prove a usable forest-compromise chain. Verify name resolution, service reachability and authorization in the destination using the <a href="/tools/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#2-preflight-from-the-actual-source">movement preflight</a>. Trust-key/SID-history forgery and cross-forest coercion are specialized paths, not complete procedures in this playbook.</p>
 </blockquote>
 <h2 id="compact-visual-helpers">Compact visual helpers</h2>
-<p><img src="https://raw.githubusercontent.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/main/diagrams/ad-capability-transitions.png" alt="AD capability transitions"></p>
-<p><a href="https://app.diagrams.net/?url=https%3A%2F%2Fraw.githubusercontent.com%2FArmaanLeg3nd%2FOSCP-Exploitation-Reference%2Fmain%2Fdiagrams%2Fad-capability-transitions.drawio">Edit the capability graph in draw.io</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/diagrams/ad-capability-transitions.drawio">Download editable diagram</a></p>
-<p><img src="https://raw.githubusercontent.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/main/diagrams/ad-credential-routing.png" alt="Match recovered material to a compatible authentication method"></p>
-<p><a href="https://app.diagrams.net/?url=https%3A%2F%2Fraw.githubusercontent.com%2FArmaanLeg3nd%2FOSCP-Exploitation-Reference%2Fmain%2Fdiagrams%2Fad-credential-routing.drawio">Edit credential routing in draw.io</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/diagrams/ad-credential-routing.drawio">Download editable diagram</a></p>
+<p><img src="/tools/oscp/diagrams/ad-capability-transitions.png" alt="AD capability transitions"></p>
+<p><a href="https://app.diagrams.net/?url=https%3A%2F%2Farmaanleg3nd.github.io%2Ftools%2Foscp%2Fdiagrams%2Fad-capability-transitions.drawio">Edit the capability graph in draw.io</a> | <a href="/tools/oscp/diagrams/ad-capability-transitions.drawio">Download editable diagram</a></p>
+<p><img src="/tools/oscp/diagrams/ad-credential-routing.png" alt="Match recovered material to a compatible authentication method"></p>
+<p><a href="https://app.diagrams.net/?url=https%3A%2F%2Farmaanleg3nd.github.io%2Ftools%2Foscp%2Fdiagrams%2Fad-credential-routing.drawio">Edit credential routing in draw.io</a> | <a href="/tools/oscp/diagrams/ad-credential-routing.drawio">Download editable diagram</a></p>
 <h2 id="sources">Sources</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/dnscmd">Microsoft: dnscmd</a></li>
