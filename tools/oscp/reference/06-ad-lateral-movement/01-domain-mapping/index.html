@@ -1,0 +1,587 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Active Directory Domain Mapping."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/01-domain-mapping/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Active Directory Domain Mapping | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Active Directory Domain Mapping."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/01-domain-mapping/"><title>Active Directory Domain Mapping | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-keep-four-maps-not-one-tool-output">1. Keep four maps, not one tool output</a></li><li class="level-2"><a href="#2-establish-identity-domain-dc-dns-and-time">2. Establish identity, domain, DC, DNS and time</a></li><li class="level-3"><a href="#domain-joined-windows-source">Domain-joined Windows source</a></li><li class="level-3"><a href="#kalioff-domain-source">Kali/off-domain source</a></li><li class="level-2"><a href="#3-native-windows-baseline">3. Native Windows baseline</a></li><li class="level-2"><a href="#4-built-in-adsidirectorysearcher-fallback">4. Built-in ADSI/DirectorySearcher fallback</a></li><li class="level-2"><a href="#5-authenticated-ldap-from-kali">5. Authenticated LDAP from Kali</a></li><li class="level-3"><a href="#discover-the-naming-context">Discover the naming context</a></li><li class="level-3"><a href="#users-groups-and-computers">Users, groups and computers</a></li><li class="level-3"><a href="#ldap-failure-router">LDAP failure router</a></li><li class="level-2"><a href="#6-powerview-convenient-manual-breadth">6. PowerView: convenient manual breadth</a></li><li class="level-2"><a href="#7-shares-sysvol-and-netlogon">7. Shares, SYSVOL and NETLOGON</a></li><li class="level-3"><a href="#inventory-then-test-the-object">Inventory, then test the object</a></li><li class="level-2"><a href="#8-service-accounts-and-spns">8. Service accounts and SPNs</a></li><li class="level-2"><a href="#9-directory-acls-and-effective-control">9. Directory ACLs and effective control</a></li><li class="level-2"><a href="#10-host-access-candidates">10. Host-access candidates</a></li><li class="level-2"><a href="#11-sessions-are-volatile-hints">11. Sessions are volatile hints</a></li><li class="level-2"><a href="#12-bloodhound-collect-narrowly-rank-then-validate">12. BloodHound: collect narrowly, rank, then validate</a></li><li class="level-3"><a href="#current-sharphound-ce">Current SharpHound CE</a></li><li class="level-3"><a href="#analyze-in-this-order">Analyze in this order</a></li><li class="level-2"><a href="#13-candidate-ledger-and-path-ranking">13. Candidate ledger and path ranking</a></li><li class="level-2"><a href="#14-failure-routing">14. Failure routing</a></li><li class="level-2"><a href="#15-handoffs">15. Handoffs</a></li><li class="level-2"><a href="#tooling-for-this-section">Tooling for this section</a></li><li class="level-2"><a href="#kerbrute--confirm-candidate-names-before-password-testing">Kerbrute — confirm candidate names before password testing</a></li><li class="level-2"><a href="#rusthound-ce--a-cross-platform-bloodhound-collector">RustHound-CE — a cross-platform BloodHound collector</a></li><li class="level-2"><a href="#gpp-cpassword--recover-a-candidate-from-readable-sysvol-xml">GPP cpassword — recover a candidate from readable SYSVOL XML</a></li><li class="level-2"><a href="#kerberos-clock-skew--compare-utc-and-use-a-working-time-source">Kerberos clock skew — compare UTC and use a working time source</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="active-directory-domain-mapping">Active Directory Domain Mapping</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/06-ad-lateral-movement/README.md">← Stage index</a> | <a href="/tools/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP/Kerberos baseline</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/active-directory.md">AD cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Master_Notes.md#active-directory-attack-reasoning">Master Notes</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/ad-mapping.md">Map Active Directory attack paths</a></p>
+<blockquote>
+<p><strong>Prerequisite:</strong> one authorized domain identity and a route to the required DC/hosts. Record the source host, exact identity, domain FQDN, DNS server, DC FQDN/IP and time state before interpreting failures.</p>
+<p><strong>Coverage:</strong> mapping only. SPNs, ACLs, sessions and credentials are candidate transitions; ticket requests, directory changes, credential access and remote execution belong to the later Stage 06 procedures.</p>
+<p><strong>Exit:</strong> produce a ranked, manually checked map in the form <code>CONTROLLED IDENTITY → EFFECTIVE RELATIONSHIP → OBJECT/HOST → REACHABLE SERVICE → POSSIBLE NEW ACCESS</code>.</p>
+</blockquote>
+<h2 id="1-keep-four-maps-not-one-tool-output">1. Keep four maps, not one tool output</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">IDENTITY MAP: USER/COMPUTER -> DIRECT + NESTED GROUPS -> DIRECTORY RIGHTS
+HOST MAP:     COMPUTER -> OS/ROLE -> LOCAL/REMOTE-ACCESS RIGHTS -> SESSIONS
+ROUTE MAP:    SOURCE -> DNS/KDC/DC/HOST -> REQUIRED PORT/SERVICE
+LEAD MAP:     EVIDENCE -> HYPOTHESIS -> MINIMUM VALIDATION -> NEXT BLOCK
+</code></pre>
+<p>Authentication, authorization, reachability and session presence are independent. A valid LDAP bind does not prove share access; SMB administration on one host does not prove directory privilege; a session edge does not prove retrievable credentials.</p>
+<h2 id="2-establish-identity-domain-dc-dns-and-time">2. Establish identity, domain, DC, DNS and time</h2>
+<h3 id="domain-joined-windows-source">Domain-joined Windows source</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami /all
+echo %USERDNSDOMAIN%
+echo %USERDOMAIN%
+echo %LOGONSERVER%
+nltest /dsgetdc:DOMAIN
+nltest /dclist:DOMAIN
+w32tm /query /status
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+Resolve-DnsName -Type SRV _ldap._tcp.dc._msdcs.DOMAIN
+Resolve-DnsName -Type SRV _kerberos._tcp.DOMAIN
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> domain FQDN, DC FQDN/IP, current user SID/groups, DNS SRV answers and a plausible time source. <code>USERDOMAIN</code> can be a NetBIOS label; prefer the DNS domain for LDAP/Kerberos.</p>
+</blockquote>
+<h3 id="kalioff-domain-source">Kali/off-domain source</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">dig +short SRV _ldap._tcp.dc._msdcs.DOMAIN @DC_IP
+dig +short SRV _kerberos._tcp.DOMAIN @DC_IP
+nxc smb DC_IP -d DOMAIN -u USER -p 'PASSWORD'
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -s base -b '' \
+  defaultNamingContext configurationNamingContext rootDomainNamingContext dnsHostName
+</code></pre>
+<blockquote>
+<p>RootDSE is a directory-server metadata object. Reading it can reveal naming contexts even when anonymous subtree searches are denied. Convert <code>corp.example</code> to <code>DC=corp,DC=example</code>; do not guess the base DN when RootDSE can supply it.</p>
+</blockquote>
+<details>
+<summary><strong>Remote Windows session and double-hop caveat</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami /all
+klist
+dir \\DC_HOST\SYSVOL
+</code></pre>
+<p>A supplied credential may create the remote session without being delegated onward to the DC. If local identity commands work but access to a second host fails, distinguish a WinRM/PowerShell remoting credential-delegation problem from invalid credentials. An interactive RDP session, explicit credentials, <code>/netonly</code> network credentials or an off-domain LDAP client may create a different context; always record which identity is used locally and over the network.</p>
+</details>
+<h2 id="3-native-windows-baseline">3. Native Windows baseline</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">net user /domain
+net user USER /domain
+net group /domain
+net group "Domain Admins" /domain
+net group "GROUP" /domain
+net accounts /domain
+nltest /domain_trusts /all_trusts
+net view /domain
+net view \\DC_HOST
+</code></pre>
+<p>These commands are broadly available but provide partial views. Expand interesting users and groups individually, trace nested groups rather than assuming <code>memberOf</code> is complete, and retain SIDs when names can collide across domains.</p>
+<details>
+<summary><strong>RSAT ActiveDirectory module, only when installed</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-Command -Module ActiveDirectory
+Get-ADDomain
+Get-ADForest
+Get-ADDomainController -Filter *
+Get-ADUser -Filter * -Properties Enabled,Description,MemberOf,ServicePrincipalName,UserPrincipalName,PasswordLastSet,LastLogonDate,AdminCount
+Get-ADGroup -Filter * -Properties GroupScope,GroupCategory,Members,Description
+Get-ADGroupMember -Identity 'GROUP' -Recursive
+Get-ADComputer -Filter * -Properties DNSHostName,OperatingSystem,OperatingSystemVersion,ServicePrincipalName,TrustedForDelegation,LastLogonDate
+Get-ADTrust -Filter *
+</code></pre>
+<p><code>Get-AD*</code> cmdlets require the RSAT ActiveDirectory module. Its absence on a client is normal; use ADSI, LDAP, PowerView or an off-domain client.</p>
+</details>
+<h2 id="4-built-in-adsidirectorysearcher-fallback">4. Built-in ADSI/DirectorySearcher fallback</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$root = [ADSI]'LDAP://RootDSE'
+$base = [ADSI]("LDAP://" + $root.defaultNamingContext)
+$searcher = New-Object System.DirectoryServices.DirectorySearcher($base)
+$searcher.PageSize = 1000
+$searcher.PropertiesToLoad.AddRange(@('samaccountname','userprincipalname','objectsid','memberof','serviceprincipalname','description','useraccountcontrol','pwdlastset','lastlogontimestamp'))
+$searcher.Filter = '(&#x26;(objectCategory=person)(objectClass=user))'
+$searcher.FindAll() | ForEach-Object { $_.Properties }
+</code></pre>
+<p>Change only the filter and requested attributes for another object class:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell"># Groups
+$searcher.Filter = '(objectCategory=group)'
+$searcher.PropertiesToLoad.Clear()
+$searcher.PropertiesToLoad.AddRange(@('samaccountname','objectsid','member','grouptype','description'))
+$searcher.FindAll() | ForEach-Object { $_.Properties }
+
+# Computers
+$searcher.Filter = '(objectCategory=computer)'
+$searcher.PropertiesToLoad.Clear()
+$searcher.PropertiesToLoad.AddRange(@('dnshostname','operatingsystem','operatingsystemversion','serviceprincipalname','useraccountcontrol','lastlogontimestamp'))
+$searcher.FindAll() | ForEach-Object { $_.Properties }
+</code></pre>
+<blockquote>
+<p><code>PageSize = 1000</code> asks for paged results; without paging, the server's result-size limit can silently produce an incomplete inventory. LDAP filters are data selection, not proof of access or exploitability.</p>
+</blockquote>
+<h2 id="5-authenticated-ldap-from-kali">5. Authenticated LDAP from Kali</h2>
+<h3 id="discover-the-naming-context">Discover the naming context</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -s base -b '' \
+  defaultNamingContext configurationNamingContext rootDomainNamingContext dnsHostName
+</code></pre>
+<h3 id="users-groups-and-computers">Users, groups and computers</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user))' \
+  sAMAccountName userPrincipalName objectSid userAccountControl memberOf description servicePrincipalName pwdLastSet lastLogonTimestamp adminCount
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(objectCategory=group)' sAMAccountName objectSid member groupType description
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(objectCategory=computer)' dNSHostName operatingSystem operatingSystemVersion servicePrincipalName userAccountControl lastLogonTimestamp
+</code></pre>
+<details>
+<summary><strong>SPNs, trusts and GPO/OU context</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># SPN-bearing accounts: mapping only; do not request tickets in this block.
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user)(servicePrincipalName=*))' \
+  sAMAccountName servicePrincipalName memberOf userAccountControl pwdLastSet
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Trusted-domain objects
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(objectClass=trustedDomain)' \
+  cn securityIdentifier trustDirection trustType trustAttributes
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># OUs and GPO containers; correlate links before inferring host effect.
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(|(objectClass=organizationalUnit)(objectClass=groupPolicyContainer))' \
+  distinguishedName displayName name gPLink gPOptions
+</code></pre>
+</details>
+<h3 id="ldap-failure-router">LDAP failure router</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Result</th><th>Interpretation</th><th>Next action</th></tr></thead><tbody><tr><td><code>Invalid credentials (49)</code></td><td>Bind identity/secret/context failed; subcodes may refine the cause</td><td>Recheck UPN vs <code>DOMAIN\USER</code>, account state and exact secret; do not infer authorization</td></tr><tr><td><code>Strong(er) authentication required</code> / confidentiality required</td><td>Server policy rejects that bind/transport</td><td>Use the permitted LDAPS/StartTLS or Kerberos/SASL path; do not disable protections</td></tr><tr><td><code>Size limit exceeded</code> or suspiciously round count</td><td>Search is incomplete</td><td>Add paged results and narrow the base/filter</td></tr><tr><td>Referral/partial results</td><td>Search crossed a naming-context boundary</td><td>Query the referred domain/partition or compatible Global Catalog deliberately</td></tr><tr><td>Bind succeeds, search empty</td><td>Wrong base/filter, ACL filtering or genuinely no matches</td><td>Verify RootDSE base, test a known object and request fewer attributes</td></tr><tr><td>Works by IP, Kerberos fails</td><td>Route exists but name/SPN/DNS/time path is wrong</td><td>Use DC FQDN, AD DNS, correct realm and synchronized time</td></tr></tbody></table>
+<h2 id="6-powerview-convenient-manual-breadth">6. PowerView: convenient manual breadth</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-Command -Module PowerView
+Get-Domain
+Get-DomainController
+Get-DomainTrust
+Get-DomainUser | Select-Object samaccountname,userprincipalname,description,memberof,serviceprincipalname
+Get-DomainGroup
+Get-DomainGroupMember -Identity 'GROUP' -Recurse
+Get-DomainComputer | Select-Object dnshostname,operatingsystem,operatingsystemversion
+Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof
+</code></pre>
+<p>The original PowerSploit repository is archived. Course examples and forks may use legacy aliases such as <code>Get-NetUser</code>, <code>Get-NetGroup</code>, <code>Get-NetComputer</code> or <code>Get-NetDomainTrust</code>. Inspect <code>Get-Command</code>/<code>Get-Help</code> for the exact copy present rather than mixing generations.</p>
+<h2 id="7-shares-sysvol-and-netlogon">7. Shares, SYSVOL and NETLOGON</h2>
+<h3 id="inventory-then-test-the-object">Inventory, then test the object</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">net view \\DC_HOST
+dir \\DC_HOST\SYSVOL
+dir \\DC_HOST\NETLOGON
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nxc smb DC_IP -d DOMAIN -u USER -p 'PASSWORD' --shares
+smbclient -L //DC_IP -U 'DOMAIN/USER'
+smbclient //DC_IP/SYSVOL -U 'DOMAIN/USER' -c 'recurse ON; ls'
+smbclient //DC_IP/SHARE -U 'DOMAIN/USER'
+</code></pre>
+<p>Inside <code>smbclient</code>, use <code>ls</code>, <code>cd</code>, <code>get FILE</code> and a harmless approved <code>put</code> only when write validation is needed. Share listing, share connection, file read and file write are separate permissions.</p>
+<p>Inspect authorized readable policy/logon/deployment paths for scripts, configurations, backups, connection strings and legacy Group Policy Preferences XML containing <code>cpassword</code>. Selectively retrieve relevant files; do not bulk-copy a share merely because it is readable. A discovered secret returns to the credential-classification procedure.</p>
+<h2 id="8-service-accounts-and-spns">8. Service accounts and SPNs</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">setspn -Q */*
+setspn -L ACCOUNT
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof,useraccountcontrol,pwdlastset
+</code></pre>
+<p>Record <code>account → service class/host/port → groups → password age/encryption/delegation clues → reachable service</code>. An SPN means the account represents a Kerberos service identity; it does not mean the password is weak, the service is reachable or the account is privileged. Ticket acquisition/cracking is Block 11.</p>
+<h2 id="9-directory-acls-and-effective-control">9. Directory ACLs and effective control</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight|WriteProperty|Self' } |
+  Select-Object ObjectDN,IdentityReference,ActiveDirectoryRights,ObjectAceType,AceType,IsInherited,InheritanceType
+</code></pre>
+<p>If <code>IdentityReference</code> is an unresolved SID, resolve it and trace whether the controlled user reaches it through direct or nested group membership.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Candidate right</th><th>Possible transition to validate later</th><th>Missing proof now</th></tr></thead><tbody><tr><td><code>GenericAll</code></td><td>Broad object modification</td><td>Controlled trustee, target object class, applicable deny/inheritance and useful change</td></tr><tr><td><code>GenericWrite</code> / <code>WriteProperty</code></td><td>Change one or more writable attributes</td><td>Exact attribute/object GUID and a transition that consumes it</td></tr><tr><td><code>WriteOwner</code></td><td>Become owner</td><td>Ability to change the DACL afterward and use the resulting right</td></tr><tr><td><code>WriteDacl</code></td><td>Add an ACE</td><td>Effective write-DACL right, planned narrow ACE and restoration</td></tr><tr><td><code>AllExtendedRights</code> / <code>ForceChangePassword</code></td><td>Extended operation such as reset where applicable</td><td>Object class, exact extended right and downstream usefulness</td></tr><tr><td><code>Self</code> / validated write</td><td>Add self/member or another validated attribute where schema permits</td><td>Correct validated-write GUID and target type</td></tr><tr><td>GPO/OU control</td><td>Affect linked computers/users</td><td>Writable GPO component, effective link/scope, refresh/trigger and target placement</td></tr></tbody></table>
+<p>An ACE is one rule. Effective access depends on trustee/group nesting, allow/deny semantics, inheritance, object-specific GUIDs and security descriptor scope. Do not perform the modification in this mapping block.</p>
+<h2 id="10-host-access-candidates">10. Host-access candidates</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Find-LocalAdminAccess
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD'
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<p><code>Find-LocalAdminAccess</code> is a broad candidate generator and can be noisy or blocked by firewall/RPC controls. Validate a selected host with the service you may actually use. NetExec's <code>(Pwn3d!)</code> indicates administrative SMB context according to that tool; it does not establish RDP, WinRM, WMI/DCOM or directory rights. RDP, WinRM, SMB/service control and WMI/DCOM each have different ports, services, policies and authorization.</p>
+<h2 id="11-sessions-are-volatile-hints">11. Sessions are volatile hints</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-NetSession -ComputerName COMPUTER -Verbose
+Get-NetLoggedon -ComputerName COMPUTER
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">PsLoggedOn.exe \\COMPUTER
+</code></pre>
+<p><code>Get-NetSession</code> relies on workstation/session enumeration APIs that modern Windows may restrict. PsLoggedOn combines Registry profile evidence with <code>NetSessionEnum</code>; remote Registry access and sufficient rights are relevant, and querying can itself create a network-session entry. Therefore:</p>
+<ul>
+<li>empty/denied is <strong>inconclusive</strong>, not proof of no users;</li>
+<li>a session is a time-sensitive observation, not a durable ACL;</li>
+<li>a session matters only if the current identity can reach/control that host and a later credential/ticket technique applies;</li>
+<li>session presence does not prove credentials are resident, accessible or reusable.</li>
+</ul>
+<h2 id="12-bloodhound-collect-narrowly-rank-then-validate">12. BloodHound: collect narrowly, rank, then validate</h2>
+<h3 id="current-sharphound-ce">Current SharpHound CE</h3>
+<p>Low-noise directory baseline that avoids contacting every workstation:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">.\SharpHound.exe --CollectionMethods DCOnly --OutputDirectory .\bh --ZipFileName domain-dconly.zip
+</code></pre>
+<p>Add host facts only when they can answer the next question:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">.\SharpHound.exe --CollectionMethods LocalGroup --ComputerFile .\candidate-hosts.txt --OutputDirectory .\bh --ZipFileName candidate-localgroups.zip
+.\SharpHound.exe --CollectionMethods Session --ComputerFile .\candidate-hosts.txt --Loop --LoopDuration 00:10:00 --OutputDirectory .\bh --ZipFileName candidate-sessions.zip
+</code></pre>
+<p>SharpHound with no collection flag uses its broader default, including directory data plus local-group/session attempts. <code>All</code> performs every supported method; it is not the first response to an unanswered narrow question. Import the output ZIP into a compatible BloodHound CE deployment and verify node/edge counts and ingestion errors.</p>
+<details>
+<summary><strong>Collector variants and compatibility</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell"># Inspect the actual collector before using copied syntax.
+.\SharpHound.exe --help
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Community Linux collector; flags and output compatibility vary by release.
+bloodhound-python --help
+bloodhound-python -u USER -p 'PASSWORD' -d DOMAIN -ns DC_IP -dc DC_HOST -c All --zip
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell"># Legacy/course PowerShell collector; use only with a compatible legacy deployment.
+Import-Module .\SharpHound.ps1
+Invoke-BloodHound -CollectionMethod All -OutputDirectory .\bh -ZipFileName legacy.zip
+</code></pre>
+<p>Use the collector version intended for the BloodHound deployment. <code>bloodhound-python</code>, legacy SharpHound PowerShell and current SharpHound CE are alternatives with different schemas/features, not interchangeable command spellings.</p>
+</details>
+<h3 id="analyze-in-this-order">Analyze in this order</h3>
+<ol>
+<li>Mark only identities/hosts actually controlled. A low-privilege session on a host does not make the host itself fully owned.</li>
+<li>Inspect the controlled principal's direct and nested group memberships and outbound object-control edges.</li>
+<li>Inspect reachable computers where it has local admin, RDP, WinRM/DCOM or other applicable rights.</li>
+<li>Inspect high-value goals and shortest paths only as hypothesis generation.</li>
+<li>Classify each selected edge:
+<ul>
+<li>directory/static-ish: group, ACL, GPO, OU, trust;</li>
+<li>host-derived: local group or user right;</li>
+<li>volatile: session;</li>
+<li>route-dependent: the required host/service must be reachable now.</li>
+</ul>
+</li>
+<li>Reproduce the minimum important relationship manually before handing it to Block 11 or 12.</li>
+</ol>
+<h2 id="13-candidate-ledger-and-path-ranking">13. Candidate ledger and path ranking</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">ID | CONTROLLED PRINCIPAL | RELATIONSHIP | TARGET | SOURCE EVIDENCE
+   | EFFECTIVE? | ROUTE/SERVICE | VOLATILITY | EXPECTED TRANSITION
+   | MINIMUM VALIDATION | STATUS | NEXT BLOCK
+</code></pre>
+<p>Rank candidates by:</p>
+<ol>
+<li>confidence that the relationship is effective;</li>
+<li>deterministic value of the resulting identity/access;</li>
+<li>route and service availability;</li>
+<li>stability versus volatile session timing;</li>
+<li>reversibility and impact;</li>
+<li>number of unsupported assumptions.</li>
+</ol>
+<p>Prefer a validated readable share/credential clue or direct object right over a multi-edge path built from stale sessions and unreachable hosts.</p>
+<h2 id="14-failure-routing">14. Failure routing</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Most likely layer</th><th>Next test</th></tr></thead><tbody><tr><td>DC IP reachable, domain names fail</td><td>DNS/name layer</td><td>Query AD DNS SRV/A records; use FQDN; check source resolver</td></tr><tr><td>Kerberos fails while SMB/LDAP by IP works</td><td>Name/SPN/time/KDC route</td><td>FQDN, realm, clock, UDP/TCP 88 and ticket state</td></tr><tr><td>Domain identity works locally but not from remote shell to DC</td><td>Credential delegation/double hop</td><td><code>klist</code>, SYSVOL access, explicit/off-domain context</td></tr><tr><td>LDAP bind succeeds but results are incomplete</td><td>Search scope/paging/ACL</td><td>RootDSE base, paging, known-object query, requested attributes</td></tr><tr><td>Share appears but files deny access</td><td>Object authorization</td><td>Enter share and test exact directory/file; separate read from write</td></tr><tr><td><code>Find-LocalAdminAccess</code> returns nothing</td><td>Enumeration limitation or no rights</td><td>Test one evidence-backed host/service manually</td></tr><tr><td>Session enumeration is empty/denied</td><td>API/rights/firewall/time limitation</td><td>Treat inconclusive; retry only where host access/value supports it</td></tr><tr><td>BloodHound path exists but host is unreachable</td><td>Route/service layer</td><td>Move to <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/07-pivoting-tunneling/README.md">Stage 07</a> before identity attacks</td></tr><tr><td>BloodHound import is empty/odd</td><td>Collection/schema/ingest issue</td><td>Inspect collector logs/ZIP, domain/DNS, method and version compatibility</td></tr><tr><td>ACL appears powerful but cannot be tied to current user</td><td>Trustee/nesting/scope problem</td><td>Resolve SID, nested groups, deny/inheritance and target object GUID</td></tr></tbody></table>
+<h2 id="15-handoffs">15. Handoffs</h2>
+<ul>
+<li>SPN, roastable/no-preauth candidate, useful ACL/GPO right, readable secret or privileged-host credential opportunity → <a href="/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">identity transitions and object control</a>, <a href="/tools/oscp/reference/06-ad-lateral-movement/02-credential-access/">credential access</a>, or <a href="/tools/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">object control</a>.</li>
+<li>Password/hash/ticket plus validated host authorization → <a href="/tools/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">lateral movement</a>.</li>
+<li>Required internal host/service unreachable → <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/07-pivoting-tunneling/README.md">pivoting and tunneling</a>.</li>
+<li>Any new identity, host, route, subnet or domain → repeat the relevant mapping branches.</li>
+</ul>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Choose it when</th><th>Requirements</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td><code>whoami</code>, <code>net</code>, <code>nltest</code>, <code>setspn</code>, DNS/time tools</td><td>Always on a domain Windows source</td><td>Domain context; command availability varies</td><td>Sections 2–3 and 8</td><td>Exact identity/domain/DC/group/SPN facts</td><td>Partial output; use LDAP/ADSI for breadth</td></tr><tr><td>ADSI/DirectorySearcher</td><td>RSAT/PowerView is absent</td><td>Windows PowerShell/.NET and DC reachability</td><td>Section 4</td><td>Paged objects with requested attributes</td><td>1000-ish limit/empty output: paging, base, filter or rights</td></tr><tr><td><code>ldapsearch</code></td><td>Off-domain/raw LDAP control is useful</td><td>DC FQDN/IP, base DN, credentials for subtree queries</td><td>Section 5</td><td>Successful bind and complete paged results</td><td>Error 49, stronger auth, referral or size limit</td></tr><tr><td>PowerView</td><td>Fast manual AD relationship queries</td><td>Known script/version and Windows PowerShell</td><td>Section 6</td><td>Named object/group/ACL/host candidates</td><td>Archived/fork syntax and blocked APIs require native fallback</td></tr><tr><td>NetExec</td><td>Validate SMB identity, shares or selected admin candidate</td><td>Kali, route to service, credentials</td><td><code>nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares</code></td><td>Auth line, share rights, optional SMB admin marker</td><td>SMB result does not prove other protocols</td></tr><tr><td><code>smbclient</code></td><td>Manually inspect a specific share/object</td><td>SMB route and credentials</td><td><code>smbclient //TARGET/SHARE -U 'DOMAIN/USER'</code></td><td>Exact list/read/write result</td><td>Listing and file access can differ</td></tr><tr><td>PsLoggedOn</td><td>Check one justified host for users</td><td>Windows binary; remote Registry/session access</td><td><code>PsLoggedOn.exe \\COMPUTER</code></td><td>Local-profile/network-session entries</td><td>Access/Remote Registry limitations; query adds an artifact</td></tr><tr><td>SharpHound CE + BloodHound CE</td><td>Graph directory/host relationships</td><td>Compatible collector/deployment, DNS/DC route, authorized collection</td><td><code>SharpHound.exe --CollectionMethods DCOnly ...</code></td><td>Ingested nodes/edges and candidate paths</td><td>Collection errors, stale sessions, incompatible schema</td></tr><tr><td><code>bloodhound-python</code> / LDAPDomainDump</td><td>Linux-side fallback/reporting</td><td>Kali packages, LDAP/DNS route, credentials, compatible output expectations</td><td>Inspect <code>--help</code>; use only the needed collection/report</td><td>Directory relationships/HTML or BloodHound output</td><td>Feature/schema differences from SharpHound CE</td></tr></tbody></table>
+<h2 id="kerbrute--confirm-candidate-names-before-password-testing">Kerbrute — confirm candidate names before password testing</h2>
+<p>Use with the real domain and reachable KDC. Names generated from emails/wordlists remain candidates until verified.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">kerbrute userenum -d DOMAIN --dc DC_IP --delay 1000 -o valid-users.txt users.txt
+
+# A separate password test, only after reading lockout policy and attempt history
+kerbrute passwordspray -d DOMAIN --dc DC_IP --delay 1000 --safe \
+  users.txt 'PASSWORD'
+</code></pre>
+<p>Read: a valid principal is not a valid password or host access. Password pre-auth failures can count toward lockout; <code>--safe</code> stops on a reported lock but does not guarantee that no lockout occurs. Confirm a reported login with the relevant SMB/WinRM/LDAP client and keep the account scope explicit. DNS, time and a correct realm remain prerequisites.</p>
+<p>Sources: <a href="https://github.com/ropnop/kerbrute">upstream 1</a>.</p>
+<h2 id="rusthound-ce--a-cross-platform-bloodhound-collector">RustHound-CE — a cross-platform BloodHound collector</h2>
+<p>Use a compatible RustHound-CE build when collecting directory relationships from Linux or when a SharpHound binary is unsuitable. CE output belongs in BloodHound CE, not Legacy.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">rusthound-ce -d DOMAIN -u 'USER@DOMAIN' -p 'PASSWORD' -f DC_HOST -z
+
+# When the directory requires LDAPS and the TLS/name prerequisites are met
+rusthound-ce -d DOMAIN -u 'USER@DOMAIN' -p 'PASSWORD' -f DC_HOST --ldaps -z
+</code></pre>
+<p>Read: import the generated archive, identify the exact useful edge and verify its underlying permission or host access. Directory collection does not establish a live privileged session on a workstation. LDAP/TLS, DNS or credential errors must be repaired before treating an incomplete graph as evidence of no path.</p>
+<p>Sources: <a href="https://github.com/g0h4n/RustHound-CE/blob/main/HELP.md">upstream 1</a>.</p>
+<h2 id="gpp-cpassword--recover-a-candidate-from-readable-sysvol-xml">GPP cpassword — recover a candidate from readable SYSVOL XML</h2>
+<p>Use when an accessible preference XML contains a <code>cpassword</code> attribute. Search the SYSVOL files actually read/downloaded with the accepted account.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">grep -Rni 'cpassword' ./sysvol
+gpp-decrypt 'C_PASSWORD'
+</code></pre>
+<p>Read: keep the XML's username, host/policy scope and path beside the recovered value. Old preference files can contain stale credentials. Validate the matching account on a relevant service; a decrypted string is not proof of current domain or local-admin access. A modern domain need not contain these older preference secrets.</p>
+<p>Sources: <a href="https://www.kali.org/tools/gpp-decrypt/">upstream 1</a>.</p>
+<h2 id="kerberos-clock-skew--compare-utc-and-use-a-working-time-source">Kerberos clock skew — compare UTC and use a working time source</h2>
+<p>Use when tickets fail with a skew error or the DC/workstation clock comparison is inconsistent. A timezone label is not the UTC clock value.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">date -u
+nmap -Pn -p 445 --script smb2-time DC_IP
+
+# If this DC is a confirmed reachable NTP source, correct the attack workstation
+sudo ntpdate -u DC_IP
+date -u
+</code></pre>
+<p>Read: retry the same ticket/service request after verifying the actual UTC difference. If the clock jumps back, identify the competing host/VM/time-sync source instead of repeatedly changing timezone settings. NTP silence can be filtering or an unavailable time service; it is not evidence that the KDC's displayed time was wrong.</p>
+<p>Sources: <a href="https://nmap.org/nsedoc/scripts/smb2-time.html">upstream 1</a> · <a href="https://www.kali.org/tools/ntpsec/">upstream 2</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 22, pp705–757.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/4412170923924-OSCP-Exam-FAQ">OffSec OSCP Exam FAQ</a></li>
+<li><a href="https://bloodhound.specterops.io/collect-data/ce-collection/sharphound">SpecterOps SharpHound CE</a> and <a href="https://bloodhound.specterops.io/collect-data/ce-collection/sharphound-flags">collection flags</a></li>
+<li><a href="https://learn.microsoft.com/windows/win32/adsi/rootdse">Microsoft RootDSE</a> and <a href="https://learn.microsoft.com/dotnet/api/system.directoryservices.directorysearcher">DirectorySearcher</a></li>
+<li><a href="https://learn.microsoft.com/sysinternals/downloads/psloggedon">Microsoft PsLoggedOn</a></li>
+<li><a href="https://www.netexec.wiki/smb-protocol/enumeration/enumerate-shares-and-access">NetExec share enumeration</a> and <a href="https://www.netexec.wiki/ldap-protocol/query-ldap">LDAP query</a></li>
+<li><a href="https://www.openldap.org/doc/admin24/guide.pdf">OpenLDAP Administrator's Guide</a></li>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon">PowerSploit PowerView (archived)</a></li>
+<li><a href="https://lizajose.github.io/getSH/ad">getSH Active Directory route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">Hexdump Active Directory module</a> and <a href="https://github.com/LeonardoE95/OSCP/blob/main/cheatsheet.org">consolidated cheatsheet</a>. The live AD module was still a <code>TODO</code> when checked; its minimal legacy collection cues were independently updated against current SharpHound documentation.</li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

@@ -1,0 +1,454 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Integrated Attack Tracking and Evidence."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Integrated Attack Tracking and Evidence | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Integrated Attack Tracking and Evidence."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/"><title>Integrated Attack Tracking and Evidence | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#establish-the-operating-contract">Establish the operating contract</a></li><li class="level-2"><a href="#maintain-a-live-state-map">Maintain a live state map</a></li><li class="level-2"><a href="#run-the-attack-as-a-state-machine">Run the attack as a state machine</a></li><li class="level-3"><a href="#keep-two-queues">Keep two queues</a></li><li class="level-2"><a href="#rank-candidate-paths">Rank candidate paths</a></li><li class="level-2"><a href="#standalone-attack-workflow">Standalone attack workflow</a></li><li class="level-2"><a href="#assumed-breach-ad-workflow">Assumed-breach AD workflow</a></li><li class="level-2"><a href="#capture-every-state-transition">Capture every state transition</a></li><li class="level-2"><a href="#save-tool-output-deliberately">Save tool output deliberately</a></li><li class="level-2"><a href="#proofevidence-checkpoint">Proof/evidence checkpoint</a></li><li class="level-2"><a href="#public-exploit-evidence">Public exploit evidence</a></li><li class="level-2"><a href="#reproduction-path-template">Reproduction-path template</a></li><li class="level-2"><a href="#dead-end-recovery">Dead-end recovery</a></li><li class="level-2"><a href="#build-the-report-from-transitions">Build the report from transitions</a></li><li class="level-2"><a href="#final-pdf-and-archive-validation">Final PDF and archive validation</a></li><li class="level-2"><a href="#final-quality-checks">Final quality checks</a></li><li class="level-2"><a href="#tooling-for-this-section">Tooling for this section</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="integrated-attack-tracking-and-evidence">Integrated Attack Tracking and Evidence</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/08-evidence-reporting/README.md">← Stage index</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/evidence-reporting.md">Quick sheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Master_Notes.md#evidence-and-reproducibility">Master Notes</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/integration.md">Complete attacks and retain reproducible evidence</a></p>
+<blockquote>
+<p><strong>Goal:</strong> finish an unfamiliar scoped target by keeping the current attack state, candidate paths and required evidence synchronized. This is the integration procedure for the earlier stages; it does not replace their service- and technique-specific procedures.</p>
+</blockquote>
+<h2 id="establish-the-operating-contract">Establish the operating contract</h2>
+<p>Before interacting with a target, record:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">scope and explicit exclusions
+objective and required evidence
+starting identity/credential and whether it is local, domain or application scoped
+source host, interface, route and DNS context
+allowed/restricted tools and the current Metasploit target decision
+case directory and note/evidence locations
+cleanup or restoration obligations
+</code></pre>
+<p>An interesting vulnerability is not automatically the objective. The attack is complete only when the required access or privilege is verified and the reproduction/evidence chain is retained.</p>
+<p>Create a private case workspace using target-neutral names until the real scope is known:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">mkdir -p case/{00-admin,01-scans,02-services,03-web,04-exploits,05-loot,06-sessions,07-screenshots,08-report}
+touch case/00-admin/{scope.md,state.md,credentials.md,routes.md,hypotheses.md,transitions.md}
+</code></pre>
+<p>Do not put exam or private target material in a public repository.</p>
+<h2 id="maintain-a-live-state-map">Maintain a live state map</h2>
+<p>Keep target-specific values in a private case/lab record, not this public repository.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">HOSTS
+- host/IP | role | reachable from | open services | evidence file
+
+IDENTITIES
+- local/domain identity | credential type | validated services | privilege | source
+
+ROUTES
+- source -> listener/tunnel -> pivot -> destination | DNS point | callback path
+
+HYPOTHESES
+- observation | hypothesis | prerequisite | next discriminating test | status
+
+TRANSITIONS
+- old state -> action -> new access/identity/route | decisive output | evidence
+
+EVIDENCE COVERAGE
+- objective | reproduction complete? | identity/IP proof? | screenshot? | panel/task state
+</code></pre>
+<p>Label each claim <code>observed</code>, <code>inferred</code>, <code>possible</code>, <code>confirmed</code>, <code>disproven</code> or <code>inconclusive</code>. Close a path only with a test that addressed its prerequisite; do not confuse a tool error with a disproven attack hypothesis.</p>
+<h2 id="run-the-attack-as-a-state-machine">Run the attack as a state machine</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observe
+→ Enumerate
+→ Interpret
+→ Hypothesize
+→ Validate prerequisite
+→ Exploit the confirmed primitive
+→ Verify the new state
+→ Re-enumerate from that state
+→ Escalate, move or pivot
+→ Capture evidence and cleanup
+</code></pre>
+<p>The sequence is a loop, not a one-time checklist. A state change routes work back to the relevant earlier stage:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>New state</th><th>Mandatory re-entry</th></tr></thead><tbody><tr><td>Hostname, address, interface, listener or route</td><td>Discovery and service identification from the source position that can reach it</td></tr><tr><td>Credential, key, hash or ticket</td><td>Classify identity/material, validate compatible access, then authenticated enumeration</td></tr><tr><td>Application role/session</td><td>Revisit the same application and objects through the new authorization view</td></tr><tr><td>Command execution or shell</td><td>Verify host/identity/network, repair the session, transfer only what is needed, start local enumeration</td></tr><tr><td>Administrator/root/SYSTEM</td><td>Re-enumerate protected files, credentials, services, sessions, routes and domain context</td></tr><tr><td>Domain identity/group/right</td><td>Rebuild reachable host/service/object paths and validate the specific right</td></tr><tr><td>Pivot or proxy</td><td>Repeat discovery from the new vantage point; separately design callback and delivery routes</td></tr></tbody></table>
+<h3 id="keep-two-queues">Keep two queues</h3>
+<p>The <strong>coverage queue</strong> prevents missed surfaces:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">host/source position → endpoint → confirmed application → required enumeration → state
+</code></pre>
+<p>The <strong>hypothesis queue</strong> prevents random exploitation:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">observation → possible transition → prerequisite → cheapest discriminating test
+→ decisive success/failure → next action
+</code></pre>
+<p>Do not spend the whole assessment deepening one hypothesis while high-value coverage remains unknown. Conversely, do not keep scanning after a confirmed path only to avoid validating it.</p>
+<h2 id="rank-candidate-paths">Rank candidate paths</h2>
+<p>Create one card per distinct mechanism:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observation:
+Desired state transition:
+Required prerequisites:
+Already confirmed:
+Still unknown:
+Cheapest discriminating test:
+Success means:
+Failure means:
+Noise/change/cleanup:
+Handoff if successful:
+Status/evidence:
+</code></pre>
+<p>Rank without false numerical precision:</p>
+<ol>
+<li><strong>Confirmed prerequisite, direct objective transition.</strong> Test first.</li>
+<li><strong>Strong observation, one cheap missing prerequisite.</strong> Validate next.</li>
+<li><strong>Useful information path.</strong> Prefer when it can unlock several branches.</li>
+<li><strong>Multiple unsupported assumptions or disruptive action.</strong> Defer.</li>
+<li><strong>Disproven prerequisite.</strong> Close until new evidence changes it.</li>
+</ol>
+<p>Evidence strength overrides technique popularity. Prefer low-cost tests that split plausible explanations and create reusable information. A path that succeeds only after several unverified assumptions is not yet a high-priority path.</p>
+<h2 id="standalone-attack-workflow">Standalone attack workflow</h2>
+<p>Use the earlier procedure linked at each transition; the integration layer owns order and state:</p>
+<ol>
+<li>Record scope, objective, source position and evidence requirements.</li>
+<li>Establish TCP coverage, bounded UDP coverage and confirmed application identities.</li>
+<li>Enumerate every confirmed service in its anonymous/current context; map web requests, hosts, parameters, content and roles.</li>
+<li>Search files, configuration, repositories and application data for identities or prerequisites.</li>
+<li>Build candidate cards for manual application weaknesses, compatible credentials and exact public-exploit prerequisites.</li>
+<li>Validate one prerequisite at a time and prove the smallest useful effect.</li>
+<li>Convert execution into a verified session; record host, identity, privilege, interfaces and routes.</li>
+<li>Capture the initial-access transition and any required unprivileged objective before changing state.</li>
+<li>Enumerate local privilege paths as controlled object → effective permission → privileged consumer → trigger → effect.</li>
+<li>Verify the elevated identity, capture required evidence, re-enumerate protected context and remove exercise artifacts.</li>
+<li>Reconstruct the ordered reproduction path while the commands and assumptions are still known.</li>
+</ol>
+<p>Failure at a step returns to its owning block. Do not skip service enumeration because one banner suggests a CVE, and do not start privilege escalation before proving which host and identity the shell represents.</p>
+<h2 id="assumed-breach-ad-workflow">Assumed-breach AD workflow</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">starting credential
+→ local/domain identity + DNS/time/DC context
+→ reachable host/service map
+→ users/groups/computers/shares/SPNs/ACLs/sessions
+→ ranked identity or host transition
+→ compatible password/hash/ticket use
+→ verified session/new identity
+→ re-enumeration
+→ route/movement to next host
+→ higher domain privilege/objective
+</code></pre>
+<p>Keep five variables together for every edge:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">controlled identity
+effective group/right
+target object or host
+required protocol/route
+resulting identity/access
+</code></pre>
+<p>BloodHound and enumerators generate candidate edges. Validate the underlying group membership, ACL, session, service right, route and authentication material before acting. After every new identity or host session, repeat authenticated enumeration rather than continuing from the old authorization view.</p>
+<p>For multihop work, maintain a route diagram and a separate callback diagram. A route that permits an operator tool to reach a service does not prove that a payload can return to its handler.</p>
+<h2 id="capture-every-state-transition">Capture every state transition</h2>
+<p>Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">date -Is
+hostname
+id
+ip addr
+ip route
+</code></pre>
+<p>Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">echo %DATE% %TIME%
+hostname
+whoami /all
+ipconfig /all
+route print
+</code></pre>
+<p>For each access or escalation, retain:</p>
+<ol>
+<li>the observation that selected the path;</li>
+<li>the exact command/request with secrets redacted in the reusable copy;</li>
+<li>relevant output or response;</li>
+<li>host and identity verification;</li>
+<li>the effect/new capability;</li>
+<li>cleanup/restoration; and</li>
+<li>the next re-enumeration result.</li>
+</ol>
+<p>Use a compact transition packet:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">time/timezone | source host/interface | target host/service | starting identity
+observation | prerequisite | exact action | decisive output
+new identity/access/route | evidence files | cleanup | next re-enumeration
+</code></pre>
+<p>Capture the transition when it happens. Reconstructing it later risks losing a required token, request, route, working directory, listener or source identity.</p>
+<h2 id="save-tool-output-deliberately">Save tool output deliberately</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">mkdir -p evidence/nmap evidence/web evidence/loot evidence/screenshots
+nmap -Pn -sV -sC -p PORTS TARGET -oA evidence/nmap/TARGET-services
+script -q -f evidence/session.txt
+</code></pre>
+<p>Run <code>exit</code> when finished so the transcript closes and flushes. Do not record unrelated secrets in a broad transcript.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Start-Transcript -Path .\evidence\powershell-session.txt
+# commands
+Stop-Transcript
+</code></pre>
+<p>Hash important transferred or generated artifacts:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sha256sum FILE | tee FILE.sha256
+</code></pre>
+<p>Never publish credentials, flags, target IPs, full private transcripts or copyrighted course text to this repository.</p>
+<h2 id="proofevidence-checkpoint">Proof/evidence checkpoint</h2>
+<p>Current official exam guidance requires proof-file content to be displayed from its original location in an interactive target shell and included in a screenshot with the target IP. The control-panel submission is separate and must occur before the exam ends. Recheck the guide immediately before an exam because these rules can change.</p>
+<p>Linux example layout:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hostname; id; ip addr
+cat /root/proof.txt
+</code></pre>
+<p>Windows example layout:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">hostname &#x26; whoami &#x26; ipconfig
+type C:\Users\Administrator\Desktop\proof.txt
+</code></pre>
+<p>Use the actual objective-provided path and required identity. Do not use AI on actual exam targets, proofs or reports; the current guide prohibits AI chatbots during the exam.</p>
+<h2 id="public-exploit-evidence">Public exploit evidence</h2>
+<p>For an unmodified exploit, retain its source URL rather than pasting pages of code. For a modified exploit, retain:</p>
+<ul>
+<li>original URL and version/commit;</li>
+<li>local modified copy;</li>
+<li>a focused diff/highlight of changes;</li>
+<li>why each change was necessary;</li>
+<li>build/interpreter command and dependencies;</li>
+<li>payload-generation command, if any; and</li>
+<li>exact execution and result verification.</li>
+</ul>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">git diff --no-index original.py modified.py > exploit-changes.diff
+sha256sum original.py modified.py
+</code></pre>
+<h2 id="reproduction-path-template">Reproduction-path template</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-markdown">### Objective / result
+
+**Starting state:** source host, network position and identity.
+
+1. Observation and evidence.
+2. Enumeration command/request and decisive output.
+3. Vulnerability/prerequisite validation.
+4. Exploitation command/request, including required listener/route.
+5. Session verification: host, identity and privilege.
+6. Escalation evidence and final verification.
+7. Cleanup/restoration.
+
+**Artifacts:** screenshots, saved output, hashes and exploit source/diff.
+</code></pre>
+<p>Write steps in execution order. Explain why a command was needed and what the output established; a transcript alone is not a report.</p>
+<h2 id="dead-end-recovery">Dead-end recovery</h2>
+<p>Treat stagnation as a state problem, not an instruction to try more commands. Warning signs include unchanged evidence, repeated disproven tests, increasingly exotic mechanisms, tool switching without a new hypothesis, and work whose success would not advance the objective.</p>
+<p>When progress stalls:</p>
+<ol>
+<li>Freeze the current host/identity/route/credential map.</li>
+<li>Mark each path with the last decisive result.</li>
+<li>Recheck scan/service/application coverage and authenticated views.</li>
+<li>Separate environment/tool failure from a disproven prerequisite.</li>
+<li>Choose the cheapest test that can change the decision.</li>
+<li>Switch paths when the expected information gain is higher.</li>
+<li>Return only when new evidence changes an assumption.</li>
+</ol>
+<p>Use this failure router:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Classification</th><th>Next action</th></tr></thead><tbody><tr><td>Tool cannot reach any known-good endpoint</td><td>Environment/route failure</td><td>Repair source interface, proxy, DNS or tool configuration</td></tr><tr><td>Test did not exercise the claimed prerequisite</td><td>Inconclusive</td><td>Replace it with a discriminating test</td></tr><tr><td>Exact prerequisite is absent</td><td>Disproven path</td><td>Close the card until state changes</td></tr><tr><td>Authentication works but action is denied</td><td>Authorization boundary</td><td>Enumerate service/object rights under that identity</td></tr><tr><td>New credential or route exists but old enumeration is unchanged</td><td>Stale state</td><td>Re-enumerate from the new identity/vantage point</td></tr><tr><td>Many weak possibilities, no decisive observation</td><td>Coverage gap</td><td>Return to surface/service/application enumeration</td></tr></tbody></table>
+<h2 id="build-the-report-from-transitions">Build the report from transitions</h2>
+<p>For every achieved objective, the report path should read:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">starting state and scope
+→ decisive enumeration
+→ prerequisite/vulnerability validation
+→ exact exploitation action
+→ session/identity verification
+→ privilege or movement transition
+→ final objective evidence
+→ cleanup/restoration
+</code></pre>
+<p>Include only enough non-decisive enumeration to make the selection understandable. Screenshots need captions and nearby interpretation; they do not replace commands or prose. Raw transcripts are supporting artifacts, not the final narrative.</p>
+<p>Current official exam grading follows the target order used in the report. Keep target/objective labels aligned with the control panel and place each target's complete chain together.</p>
+<h2 id="final-pdf-and-archive-validation">Final PDF and archive validation</h2>
+<p>Recheck the current guide immediately before a mock or exam. The current baseline is one PDF inside a non-password-protected <code>.7z</code>, exact case-sensitive filenames and an archive no larger than 200 MB:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">7z a OSCP-OS-XXXXX-Exam-Report.7z OSCP-OS-XXXXX-Exam-Report.pdf
+7z l OSCP-OS-XXXXX-Exam-Report.7z
+7z t OSCP-OS-XXXXX-Exam-Report.7z
+md5sum OSCP-OS-XXXXX-Exam-Report.7z
+</code></pre>
+<p>Windows hash fallback for a local rehearsal:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-FileHash -Algorithm MD5 -LiteralPath '.\OSCP-OS-XXXXX-Exam-Report.7z'
+</code></pre>
+<p>Inspect every exported PDF page before archiving. Confirm that code is not clipped, screenshots remain readable, captions match the correct target and the archive contains only the required PDF. Required scripts and PoCs belong as text inside that PDF, not as extra archive members. The current guide recommends creating/uploading from Kali and warns of a Windows 11 archive compatibility issue. Compare the local MD5 with the upload site's value, click the final submission control and retain the acknowledgement.</p>
+<p>The official Word or LibreOffice template is the reliable baseline. A Markdown/Pandoc pipeline, including Hexdump's <code>report/</code> generator, is a viable alternative only after a complete dummy export/archive rehearsal; do not install or debug a new report stack during an assessment.</p>
+<h2 id="final-quality-checks">Final quality checks</h2>
+<ul>
+<li>Commands are copyable and placeholders/secrets are resolved in the private report.</li>
+<li>Screenshots are legible and show required identity/IP/proof context.</li>
+<li>Every claim is supported by nearby evidence.</li>
+<li>Target order and objective labels match the control panel.</li>
+<li>Exploit modifications and payload-generation steps are documented.</li>
+<li>The final PDF is visually reviewed after export.</li>
+<li>Archive name/format/size and upload hash match current official requirements.</li>
+</ul>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool or utility</th><th>Purpose</th><th>Required context</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td>Plain Markdown/editor</td><td>Portable live state and reproduction notes</td><td>Private case directory</td><td>Six ledgers and transition packets above</td><td>Current state and next action can be recovered without memory</td><td>Notes contain commands but no interpretation/state</td></tr><tr><td>Nmap <code>-oA</code> and client-native output options</td><td>Preserve raw enumeration evidence</td><td>Authorized scoped target</td><td>Save output beside target/service record</td><td>Raw and human-readable result exists</td><td>Terminal-only output cannot be reconstructed reliably</td></tr><tr><td><code>script</code> / PowerShell transcript</td><td>Record interactive command sequences</td><td>Local shell; avoid recording unrelated secrets</td><td><code>script -q -f evidence/session.txt</code> / <code>Start-Transcript</code></td><td>Timestamped command/output stream</td><td>Transcript is not a report and may omit GUI/HTTP state</td></tr><tr><td>Screenshot utility</td><td>Capture required visual proof and decisive GUI/request state</td><td>Readable display and private storage</td><td>Capture one objective/context per image</td><td>Legible proof, IP, identity/context as required</td><td>Cropped, unreadable or wrong-host image</td></tr><tr><td><code>sha256sum</code> / <code>Get-FileHash</code></td><td>Integrity for artifacts and evidence</td><td>Local files</td><td>Hash original/modified/transferred files</td><td>Matching expected digest</td><td>A hash does not establish exploit success</td></tr><tr><td>Official Word/LibreOffice template</td><td>Baseline report composition/export</td><td>Template and tested local editor</td><td>Export dummy report to PDF before assessment</td><td>Visually correct PDF</td><td>Broken code wrapping/images after export</td></tr><tr><td><code>7z</code> plus <code>md5sum</code>/<code>Get-FileHash</code></td><td>Package and verify final report</td><td>Final reviewed PDF and exact OSID naming</td><td>Commands above</td><td>One PDF, archive test succeeds, local/upload MD5 match</td><td>Wrong name, extra files, password or size over limit</td></tr></tbody></table>
+<p>No new attack tool is required for Block 15. The value comes from disciplined state/evidence handling around the tools already taught.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200 Chapter 27 pp. 963–1017, especially pp. 963–968 and 1015–1016; Chapter 5 pp. 94–113.</li>
+<li><a href="https://lizajose.github.io/getSH/home">getSH Home and AD flow</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Current OSCP+ exam guide</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360046787731-OSCP-Reporting-Requirements">Current OSCP+ reporting requirements</a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/report">Hexdump report workflow</a>: optional Markdown/Org → Pandoc/LaTeX → PDF/7z path; use only after local rehearsal.</li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

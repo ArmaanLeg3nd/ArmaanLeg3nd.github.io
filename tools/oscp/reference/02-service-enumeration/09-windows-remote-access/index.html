@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Windows Remote-Access Validation."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/09-windows-remote-access/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Windows Remote-Access Validation | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Windows Remote-Access Validation."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/09-windows-remote-access/"><title>Windows Remote-Access Validation | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#rdp-baseline-authentication-only-check">RDP baseline: authentication-only check</a></li><li class="level-2"><a href="#winrm-baseline-interactive-session">WinRM baseline: interactive session</a></li><li class="level-2"><a href="#vnc">VNC</a></li><li class="level-2"><a href="#telnet">Telnet</a></li><li class="level-2"><a href="#gnu-inetutils-telnetd--conditional-authentication-bypass-check">GNU Inetutils telnetd — conditional authentication-bypass check</a></li></ul></nav><article class="reference-prose"><h1 id="windows-remote-access-validation">Windows Remote-Access Validation</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/02-service-enumeration/README.md">← Stage index</a> · <a href="/tools/oscp/reference/03-initial-access/01-rdp-access/">RDP access procedure</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/service-opportunities.md#windows-remote-access">Cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/services.md">Extract opportunities from services</a></p>
+<blockquote>
+<p><strong>Recognize:</strong> RDP commonly uses TCP/3389; WinRM commonly uses 5985/HTTP and 5986/HTTPS. <strong>Goal:</strong> determine whether one known credential is accepted in the correct local/domain context and whether it is authorized for a usable session.</p>
+</blockquote>
+<h2 id="rdp-baseline-authentication-only-check">RDP baseline: authentication-only check</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /d:DOMAIN /auth-only /cert:ignore
+</code></pre>
+<p>Some distributions expose the binary as <code>xfreerdp</code>. Omit <code>/d:DOMAIN</code> for the intended local-account context; use <code>/u:TARGET\\USER</code> if needed to make that context explicit.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> successful authentication-only validation supports that the credential is accepted for RDP/NLA. It does not prove an interactive desktop will be granted under every policy/session condition.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — open an RDP desktop</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /d:DOMAIN /dynamic-resolution /cert:ignore
+</code></pre>
+<p>Let FreeRDP prompt for the password. <code>/cert:ignore</code> suppresses certificate validation and is suitable only in the controlled lab context; it removes server-identity protection.</p>
+</details>
+<details>
+<summary><strong>Variant — identify RDP security requirements</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -p 3389 --script rdp-enum-encryption,rdp-ntlm-info TARGET
+</code></pre>
+<p>This can disclose supported security layers, NLA and NTLM host/domain clues. It does not validate a credential.</p>
+</details>
+<h2 id="winrm-baseline-interactive-session">WinRM baseline: interactive session</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">evil-winrm -i TARGET -u USER
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">evil-winrm -i TARGET -u 'DOMAIN\\USER'
+</code></pre>
+<p>Omitting <code>-p</code> makes the established Ruby client prompt for the password.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> an interactive PowerShell prompt establishes WinRM authorization. Immediately verify identity and host context with <code>whoami</code>, <code>hostname</code> and <code>Get-NetIPAddress</code>.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — WinRM over HTTPS</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">evil-winrm -i TARGET -u USER -S -P 5986
+</code></pre>
+<p>Check <code>evil-winrm -h</code> because the established Ruby client and newer <code>evil-winrm-py</code> use different long-option spelling. Do not assume a copied command matches the installed implementation.</p>
+</details>
+<details>
+<summary><strong>Variant — Windows PowerShell remoting</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$cred = Get-Credential
+Enter-PSSession -ComputerName TARGET -Credential $cred
+</code></pre>
+<p>PowerShell remoting uses the configured WinRM endpoint. Local trusted-host, Kerberos/name-resolution and endpoint authorization settings can fail independently of password validity.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> certificate warnings are different from authentication failure. RDP errors can reflect NLA, account context, expired/locked accounts or missing logon rights. WinRM <code>401</code> supports authentication/authorization failure; <code>WinRM cannot process the request</code> can be name resolution, trusted-host, listener or transport context. Valid SMB credentials do not guarantee RDP or WinRM rights.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> after a session, re-enumerate identity, groups, privileges, files, local services/listeners and routes. Password spraying, pass-the-hash and ticket use belong to later credential/AD blocks.</p>
+</blockquote>
+<h2 id="vnc">VNC</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sV --script vnc-info -p PORT TARGET
+vncviewer TARGET:PORT
+</code></pre>
+<blockquote>
+<p>VNC may expose a desktop without Windows logon semantics; the VNC server's authentication and the resulting OS session identity are separate. Use <code>realvnc-auth-bypass</code> or password testing only for a confirmed compatible product and explicit authorized objective, then verify the desktop identity.</p>
+</blockquote>
+<h2 id="telnet">Telnet</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sV -p PORT TARGET
+nc -nv TARGET PORT
+telnet TARGET PORT
+</code></pre>
+<blockquote>
+<p>Telnet is plaintext and may expose a banner/login prompt. Validate only legitimately acquired credentials; do not make <code>telnet-brute</code> a baseline. After login, verify host and identity because appliance/application shells can differ from an OS shell. Source supplement: reviewed getSH Nmap VNC/Telnet blocks.</p>
+</blockquote>
+<h2 id="gnu-inetutils-telnetd--conditional-authentication-bypass-check">GNU Inetutils telnetd — conditional authentication-bypass check</h2>
+<p>Use only after identifying the affected GNU Inetutils telnetd/login chain and its patch status. CVE-2026-24061 concerns how a supplied USER value reaches login; it does not apply to every Telnet server. Distribution backports matter.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Client supports sending the autologin USER environment value
+USER='-f root' telnet -a TARGET PORT
+</code></pre>
+<p>Read: if a shell is obtained, verify hostname and id. A prompt or echoed username is not root access. A different daemon, fixed build, client negotiation mismatch or a rejected USER value → return to service identification. The affected upstream range and distribution fixes must be checked against the advisory rather than inferred from port 23.</p>
+<p>Sources: <a href="https://security-tracker.debian.org/tracker/CVE-2026-24061">upstream 1</a>.</p></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

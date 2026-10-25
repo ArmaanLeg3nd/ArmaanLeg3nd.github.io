@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Database Enumeration and Privilege Boundaries."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/08-databases/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Database Enumeration and Privilege Boundaries | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Database Enumeration and Privilege Boundaries."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/08-databases/"><title>Database Enumeration and Privilege Boundaries | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#mysql--mariadb">MySQL / MariaDB</a></li><li class="level-2"><a href="#microsoft-sql-server">Microsoft SQL Server</a></li><li class="level-2"><a href="#postgresql">PostgreSQL</a></li><li class="level-2"><a href="#redis">Redis</a></li><li class="level-2"><a href="#oracle-tnssid-triage">Oracle TNS/SID triage</a></li><li class="level-2"><a href="#mongodb--inspect-readable-databases-with-mongosh">MongoDB — inspect readable databases with mongosh</a></li><li class="level-2"><a href="#sqlite--inspect-a-recovered-application-database">SQLite — inspect a recovered application database</a></li></ul></nav><article class="reference-prose"><h1 id="database-enumeration-and-privilege-boundaries">Database Enumeration and Privilege Boundaries</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/02-service-enumeration/README.md">← Stage index</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/service-opportunities.md#databases">Cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/services.md">Extract opportunities from services</a></p>
+<blockquote>
+<p><strong>Recognize:</strong> common ports include MSSQL 1433, MySQL/MariaDB 3306 and PostgreSQL 5432, but instances can use other ports. <strong>Goal:</strong> establish database identity, authentication context, databases/schemas/tables, granted rights, useful data, server-side file access and command execution only where explicit privileges permit it.</p>
+</blockquote>
+<p>Database administrator and operating-system administrator are different identities. Server-side file/program features act in the database server's filesystem and service-account context, not Kali's.</p>
+<h2 id="mysql--mariadb">MySQL / MariaDB</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">mysql -h TARGET -P PORT -u USER -p
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">SELECT VERSION(), USER(), CURRENT_USER();
+SHOW DATABASES;
+SHOW GRANTS;
+USE DATABASE;
+SHOW TABLES;
+DESCRIBE TABLE;
+SELECT * FROM TABLE LIMIT 20;
+SELECT @@secure_file_priv;
+</code></pre>
+<blockquote>
+<p><strong>Interpret:</strong> <code>USER()</code> shows the presented client identity; <code>CURRENT_USER()</code> shows the account used for privilege checking. <code>secure_file_priv</code> restricts server-side import/export: a directory constrains it, an empty value is unrestricted by that variable, and <code>NULL</code> disables these operations. The <code>FILE</code> privilege is still required.</p>
+</blockquote>
+<details>
+<summary><strong>MySQL variant — validate server-side file read/write prerequisites</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">SELECT LOAD_FILE('/path/on/database/server');
+SELECT 'probe' INTO OUTFILE '/allowed/server/path/probe.txt';
+</code></pre>
+<p>Use only an authorized harmless path. <code>LOAD_FILE</code> returning <code>NULL</code> is ambiguous among missing file, permissions, size, FILE privilege and <code>secure_file_priv</code>. <code>INTO OUTFILE</code> will not overwrite an existing file. A written file becomes execution only if another privileged component consumes it.</p>
+</details>
+<h2 id="microsoft-sql-server">Microsoft SQL Server</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-mssqlclient 'USER@TARGET'
+impacket-mssqlclient 'DOMAIN/USER@TARGET' -windows-auth
+</code></pre>
+<p>Let the tool prompt for the password. At the SQL prompt:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">SELECT @@VERSION;
+SELECT SYSTEM_USER;
+SELECT IS_SRVROLEMEMBER('sysadmin');
+SELECT name FROM sys.databases;
+USE DATABASE;
+SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES;
+SELECT TOP 20 * FROM SCHEMA.TABLE;
+</code></pre>
+<blockquote>
+<p><strong>Interpret:</strong> <code>IS_SRVROLEMEMBER('sysadmin')</code> returns <code>1</code>, <code>0</code> or <code>NULL</code>; <code>NULL</code> is not success. Impacket also exposes helpers such as <code>enum_impersonate</code> and <code>xp_cmdshell</code> depending on version and rights.</p>
+</blockquote>
+<details>
+<summary><strong>MSSQL variant — command-execution boundary</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">EXEC xp_cmdshell 'whoami';
+</code></pre>
+<p><code>xp_cmdshell</code> is disabled by default on new installations. Enabling it generally requires high privilege and changes server configuration; do not enable it merely to enumerate. When available, a sysadmin's child process normally runs as the SQL Server service account; an authorized non-sysadmin may use a configured proxy. Verify returned identity before choosing the next action.</p>
+</details>
+<h2 id="postgresql">PostgreSQL</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">psql -h TARGET -p PORT -U USER -d postgres
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">\conninfo
+\l
+\du
+\dn
+\dt *.*
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">SELECT version(), current_user, session_user;
+SELECT rolname, rolsuper, rolcreaterole, rolcreatedb
+FROM pg_roles;
+</code></pre>
+<details>
+<summary><strong>PostgreSQL variant — server file/program privilege boundary</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">SELECT pg_has_role(current_user, 'pg_read_server_files', 'member');
+SELECT pg_has_role(current_user, 'pg_write_server_files', 'member');
+SELECT pg_has_role(current_user, 'pg_execute_server_program', 'member');
+</code></pre>
+<p>Server-side <code>COPY ... FROM/TO 'file'</code> uses the PostgreSQL server's filesystem and service identity. <code>COPY ... PROGRAM</code> executes on the server and requires superuser or the corresponding predefined role. Client-side <code>\copy</code> reads/writes the client filesystem and is not the same primitive.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> connection refusal/timeout is network or listener context; login rejection is authentication/context; an empty database list may be visibility limits; object denial is authorization. Query only bounded rows first. Never assume that reading application credentials or obtaining database admin implies OS execution.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> identify application accounts, hashes/credentials, paths and linked systems; record the precise grant enabling any file or execution primitive; validate recovered credentials in the later credential block and re-enumerate after any identity change.</p>
+</blockquote>
+<h2 id="redis">Redis</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sV --script redis-info -p PORT TARGET
+redis-cli -h TARGET -p PORT PING
+redis-cli -h TARGET -p PORT INFO
+redis-cli -h TARGET -p PORT ACL WHOAMI
+redis-cli -h TARGET -p PORT ACL LIST
+</code></pre>
+<p>Authenticated when a password is legitimately known:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">redis-cli -h TARGET -p PORT --askpass
+</code></pre>
+<blockquote>
+<p><code>PONG</code> proves an accessible Redis command surface, not write/file/execution permission. Check ACLs, mode, bind/protected-mode and persistence/module configuration before reasoning about an effect. Do not run <code>CONFIG SET</code>, write keys or load modules during enumeration.</p>
+</blockquote>
+<h2 id="oracle-tnssid-triage">Oracle TNS/SID triage</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sV --script oracle-tns-version -p 1521 TARGET
+nmap -Pn --script oracle-sid-brute -p 1521 TARGET
+</code></pre>
+<blockquote>
+<p>A discovered SID/service name is a namespace clue, not credentials. Continue with an installed Oracle client only when a legitimate identity is available; preserve listener/version/SID evidence and do not treat a conventional port as Oracle proof. Source supplement: reviewed getSH Nmap Oracle block.</p>
+</blockquote>
+<h2 id="mongodb--inspect-readable-databases-with-mongosh">MongoDB — inspect readable databases with mongosh</h2>
+<p>Use when the service is MongoDB, commonly TCP/27017. Current installations use <code>mongosh</code>; the old <code>mongo</code> binary may be absent.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Reachable service without known credentials
+mongosh --host TARGET --port PORT
+
+# Known account; -p prompts rather than storing the password in the command
+mongosh --host TARGET --port PORT -u USER -p --authenticationDatabase admin
+</code></pre>
+<p>Inside mongosh, choose the real database/collection:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-javascript">show dbs
+use DATABASE
+show collections
+db.getCollection('COLLECTION').find().limit(5)
+db.getCollection('users').findOne({username: 'USER'})
+</code></pre>
+<p>Read: returned documents prove that identity can read those collections. An empty database list can reflect authorization, not an empty server. Classify recovered secrets and use the matching service. Login/operator injection is an application query issue, distinct from direct DB access. Do not overwrite account records just because the repo contains an update example.</p>
+<p>Sources: <a href="https://www.mongodb.com/docs/mongodb-shell/">upstream 1</a>.</p>
+<h2 id="sqlite--inspect-a-recovered-application-database">SQLite — inspect a recovered application database</h2>
+<p>Use when a downloaded/local application file is SQLite. It is a file format, not a remote listener.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">file app.db
+sqlite3 -readonly app.db
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">.tables
+.schema users
+PRAGMA table_info(users);
+SELECT * FROM users LIMIT 5;
+.quit
+</code></pre>
+<p>Read: identify the schema and credential format before choosing a recovery mode. Keep the database's provenance and any required WAL/SHM companions; a locked/incomplete copy can give misleading results. Recovered passwords/hashes → the credential procedure, not an assumption of OS or domain access.</p>
+<p>Sources: <a href="https://www.sqlite.org/cli.html">upstream 1</a>.</p></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

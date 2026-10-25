@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Scanner Alternatives and Web Baseline Checks."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/01-discovery-scanning/07-scanner-alternatives/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Scanner Alternatives and Web Baseline Checks | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Scanner Alternatives and Web Baseline Checks."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/01-discovery-scanning/07-scanner-alternatives/"><title>Scanner Alternatives and Web Baseline Checks | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#rustscan-fast-tcp-discovery-nmap-interpretation">RustScan: fast TCP discovery, Nmap interpretation</a></li><li class="level-2"><a href="#masscan-raw-packet-discovery-then-validation">Masscan: raw-packet discovery, then validation</a></li><li class="level-2"><a href="#unknown-port-discrimination">Unknown-port discrimination</a></li><li class="level-2"><a href="#nse-candidate-checks">NSE candidate checks</a></li><li class="level-2"><a href="#nikto-bounded-web-server-candidate-generation">Nikto: bounded web-server candidate generation</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="scanner-alternatives-and-web-baseline-checks">Scanner Alternatives and Web Baseline Checks</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/01-discovery-scanning/README.md">← Stage index</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/discovery-scanning.md">Discovery cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Master_Notes.md">Master Notes</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/discovery.md">Discover attack surfaces</a></p>
+<blockquote>
+<p><strong>Use when:</strong> Nmap remains the interpretation baseline, but a faster TCP discovery pass or a bounded web-server check is useful. These tools generate candidates; Nmap/manual protocol checks confirm them.</p>
+</blockquote>
+<h2 id="rustscan-fast-tcp-discovery-nmap-interpretation">RustScan: fast TCP discovery, Nmap interpretation</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> RustScan and Nmap on Kali; direct TCP reachability. <strong>Coverage:</strong> only the explicit TCP range. <strong>Decisive output:</strong> a discovered port that Nmap can reproduce and identify.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">rustscan -a TARGET -r 1-65535 --ulimit 5000 -- \
+  -Pn -sV -sC -oA rustscan-followup
+</code></pre>
+<p>If the target or network becomes unstable, lower concurrency rather than trusting an empty result. RustScan does not replace UDP work and does not prove that closed/filtered ports were tested with the same semantics as Nmap.</p>
+<details>
+<summary><strong>Bounded first 1,000 TCP ports</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">rustscan -a TARGET -r 1-1000 --ulimit 5000 -- \
+  -Pn -sV -sC -oA rustscan-1000
+</code></pre>
+<blockquote>
+<p>Use only for a quick selection. It is not full TCP coverage and is not equivalent to Nmap's default top-1,000 selection.</p>
+</blockquote>
+</details>
+<h2 id="masscan-raw-packet-discovery-then-validation">Masscan: raw-packet discovery, then validation</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> root/raw-packet access and a directly routed target. <strong>Choose it:</strong> for a large authorized address/port space where discovery speed matters. <strong>Failure cue:</strong> high loss or inconsistent results at the chosen rate.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo masscan TARGET -p1-65535 --rate 500 -oL masscan-open.txt
+</code></pre>
+<p>Treat each hit as a candidate and recheck with Nmap:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">PORTS=$(awk '$1 == "open" &#x26;&#x26; $2 == "tcp" {print $3}' masscan-open.txt \
+  | sort -nu | paste -sd,)
+test -n "$PORTS" &#x26;&#x26; sudo nmap -Pn -sV -sC -p "$PORTS" TARGET -oA masscan-verified
+</code></pre>
+<p>Masscan's raw-packet model is not suitable through a TCP SOCKS proxy. A rate that overwhelms the path can create false negatives and disrupt the lab; record the rate with the result.</p>
+<h2 id="unknown-port-discrimination">Unknown-port discrimination</h2>
+<p>Start passively or with protocol-appropriate probes. Do not spray arbitrary strings at a stateful or destructive service.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sV --version-all -p PORT TARGET -oN port-PORT-version.txt
+nmap --script-help banner
+nmap -Pn --script=banner -p PORT TARGET -oN port-PORT-banner.txt
+nc -nv TARGET PORT
+openssl s_client -connect TARGET:PORT -servername HOSTNAME
+curl -vk --max-time 10 https://TARGET:PORT/
+</code></pre>
+<blockquote>
+<p><strong>Next action:</strong> route application evidence to the matching Stage 02 page. If TLS succeeds but HTTP does not, preserve the certificate names and protocol evidence instead of labelling it HTTPS.</p>
+</blockquote>
+<h2 id="nse-candidate-checks">NSE candidate checks</h2>
+<p>Inspect a script before selecting it:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap --script-help SCRIPT_NAME
+grep -i 'SCRIPT_NAME' /usr/share/nmap/scripts/script.db
+</code></pre>
+<p>Run a named script against a confirmed service/port:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sV --script SCRIPT_NAME -p PORT TARGET -oN nse-SCRIPT_NAME.txt
+</code></pre>
+<p>The broad <code>vuln</code> category is candidate generation and can be intrusive or misleading. If its use is justified in the authorized lab, restrict it to identified ports and manually validate every result:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sV --script vuln -p PORTS TARGET -oN nse-vuln-candidates.txt
+</code></pre>
+<p>Avoid <code>*brute*</code> categories as a default; first establish exact service, known test identities, lockout/rate limits and explicit authorization.</p>
+<h2 id="nikto-bounded-web-server-candidate-generation">Nikto: bounded web-server candidate generation</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> an identified HTTP(S) endpoint. <strong>Choose it:</strong> after manual baselining to identify common files, headers and server misconfiguration candidates. <strong>Decisive output:</strong> a finding manually reproduced with the same host, path and authentication context.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nikto -h http://TARGET:PORT -output nikto-TARGET-PORT.txt
+</code></pre>
+<details>
+<summary><strong>HTTPS, host name and tuning variants</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nikto -h https://HOSTNAME:PORT -output nikto-HOSTNAME-PORT.txt
+nikto -h http://TARGET:PORT -vhost HOSTNAME -output nikto-vhost.txt
+nikto -h http://TARGET:PORT -Tuning 123b -output nikto-focused.txt
+</code></pre>
+<blockquote>
+<p>Tuning codes are version-sensitive. Inspect <code>nikto -H</code> / local documentation before relying on a copied code set.</p>
+</blockquote>
+</details>
+<p>Nikto is explicitly listed as allowed by the current OffSec exam guide, but its findings remain scanner candidates. Recheck the guide before an exam and manually validate anything that affects an attack decision.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://lizajose.github.io/getSH/scan">getSH Scan route</a>, reviewed at source commit <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://nmap.org/book/man-version-detection.html">Nmap service/version detection</a></li>
+<li><a href="https://github.com/bee-san/RustScan">RustScan usage</a></li>
+<li><a href="https://github.com/robertdavidgraham/masscan">Masscan README</a></li>
+<li><a href="https://github.com/sullo/nikto/wiki">Nikto documentation</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Current OSCP+ exam guide</a></li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

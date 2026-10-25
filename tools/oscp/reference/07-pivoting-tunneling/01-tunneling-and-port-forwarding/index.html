@@ -1,0 +1,800 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Tunneling and Port Forwarding."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Tunneling and Port Forwarding | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Tunneling and Port Forwarding."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/"><title>Tunneling and Port Forwarding | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-draw-the-route-before-choosing-a-command">1. Draw the route before choosing a command</a></li><li class="level-2"><a href="#2-discover-the-pivots-network-position">2. Discover the pivot&#39;s network position</a></li><li class="level-2"><a href="#3-choose-the-smallest-compatible-route">3. Choose the smallest compatible route</a></li><li class="level-2"><a href="#4-socat-fixed-tcp-relay">4. Socat fixed TCP relay</a></li><li class="level-2"><a href="#5-openssh-forwarding">5. OpenSSH forwarding</a></li><li class="level-3"><a href="#51-local-forward-listener-on-the-ssh-client">5.1 Local forward: listener on the SSH client</a></li><li class="level-3"><a href="#52-dynamic-forward-socks-listener-on-the-ssh-client">5.2 Dynamic forward: SOCKS listener on the SSH client</a></li><li class="level-3"><a href="#53-remote-forward-listener-on-the-ssh-server">5.3 Remote forward: listener on the SSH server</a></li><li class="level-3"><a href="#54-remote-dynamic-forward-socks-listener-on-the-ssh-server">5.4 Remote dynamic forward: SOCKS listener on the SSH server</a></li><li class="level-3"><a href="#55-ssh-jump-and-proxy-command">5.5 SSH jump and proxy command</a></li><li class="level-2"><a href="#6-proxychains-and-socks-aware-clients">6. ProxyChains and SOCKS-aware clients</a></li><li class="level-2"><a href="#7-sshuttle-transparent-selected-subnet-route">7. sshuttle transparent selected-subnet route</a></li><li class="level-2"><a href="#8-windows-forwarding-alternatives">8. Windows forwarding alternatives</a></li><li class="level-3"><a href="#81-built-in-openssh-client">8.1 Built-in OpenSSH client</a></li><li class="level-3"><a href="#82-plink">8.2 Plink</a></li><li class="level-3"><a href="#83-netsh-portproxy">8.3 Netsh portproxy</a></li><li class="level-2"><a href="#9-chisel-httpwebsocket-tunnel">9. Chisel HTTP/WebSocket tunnel</a></li><li class="level-3"><a href="#91-reverse-socks-pivot-initiates-outward">9.1 Reverse SOCKS: pivot initiates outward</a></li><li class="level-3"><a href="#92-reverse-fixed-tcp-forward">9.2 Reverse fixed TCP forward</a></li><li class="level-3"><a href="#93-forward-socks-when-the-client-is-on-the-tool-side">9.3 Forward SOCKS when the client is on the tool side</a></li><li class="level-3"><a href="#94-current-udp-aware-mode">9.4 Current UDP-aware mode</a></li><li class="level-3"><a href="#95-chisel-failure-cues">9.5 Chisel failure cues</a></li><li class="level-2"><a href="#10-ligolo-ng-routed-pivot">10. Ligolo-ng routed pivot</a></li><li class="level-3"><a href="#101-proxy-and-agent">10.1 Proxy and agent</a></li><li class="level-3"><a href="#102-current-managed-interface-and-route">10.2 Current managed interface and route</a></li><li class="level-3"><a href="#103-pivot-loopback-services">10.3 Pivot loopback services</a></li><li class="level-3"><a href="#104-callback-or-file-server-listener-on-the-agent">10.4 Callback or file-server listener on the agent</a></li><li class="level-2"><a href="#11-dns-and-kerberos-across-pivots">11. DNS and Kerberos across pivots</a></li><li class="level-2"><a href="#12-callback-and-delivery-routing">12. Callback and delivery routing</a></li><li class="level-2"><a href="#13-multi-hop-routes">13. Multi-hop routes</a></li><li class="level-2"><a href="#14-dns-tunneling-with-dnscat2">14. DNS tunneling with dnscat2</a></li><li class="level-2"><a href="#15-failure-router">15. Failure router</a></li><li class="level-2"><a href="#16-verification-and-cleanup">16. Verification and cleanup</a></li><li class="level-2"><a href="#tooling-for-this-section">Tooling for this section</a></li><li class="level-2"><a href="#exam-restriction">Exam restriction</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="tunneling-and-port-forwarding">Tunneling and Port Forwarding</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/07-pivoting-tunneling/README.md">← Stage index</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/pivoting.md">Quick sheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Master_Notes.md#tunnels-and-network-reachability">Master Notes</a> | <a href="/tools/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral movement</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/pivoting.md">Reach internal services</a></p>
+<blockquote>
+<p><strong>Selection rule:</strong> required application flow → reachable tunnel transport → pivot egress → client compatibility → return path.</p>
+<p><strong>Exit:</strong> a protocol-appropriate client reaches the intended internal endpoint through a documented route; DNS/SPN behavior and any callback route are independently verified.</p>
+</blockquote>
+<h2 id="1-draw-the-route-before-choosing-a-command">1. Draw the route before choosing a command</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">APPLICATION TOOL
+  -> local listener / SOCKS endpoint / TUN route
+  -> tunnel transport endpoint
+  -> pivot exit
+  -> internal destination service
+
+CALLBACK TARGET
+  -> pivot listener or routable address
+  -> relay/tunnel
+  -> final listener
+</code></pre>
+<p>Record:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">TOOL_HOST -> ENTRY_SOCKET/ROUTE -> TRANSPORT -> PIVOT -> DESTINATION
+application protocol | TCP/UDP | initiator | bind address | DNS point
+credential/SPN name | callback route | privilege | cleanup objects
+</code></pre>
+<p>Do not use “pivot works” as a single state. Confirm these layers separately:</p>
+<ol>
+<li>the tunnel process started;</li>
+<li>its listener/transport connection exists;</li>
+<li>the pivot can reach the intended destination socket;</li>
+<li>the local route, forward or proxy points at the right exit;</li>
+<li>the application actually uses that path;</li>
+<li>name resolution and authentication match the application;</li>
+<li>a callback, if required, has its own return path.</li>
+</ol>
+<h2 id="2-discover-the-pivots-network-position">2. Discover the pivot's network position</h2>
+<p>Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">id
+ip -brief address
+ip route
+ip neigh
+ss -lntup
+cat /etc/resolv.conf
+</code></pre>
+<p>Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">whoami /all
+ipconfig /all
+route print
+arp -a
+netstat -ano
+</code></pre>
+<p>PowerShell selected endpoints:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-NetIPConfiguration
+Get-NetRoute -AddressFamily IPv4 | Sort-Object DestinationPrefix,RouteMetric
+Get-NetTCPConnection -State Listen
+Get-DnsClientServerAddress -AddressFamily IPv4
+</code></pre>
+<blockquote>
+<p>An interface or route proves a possible network position, not destination reachability. Validate one justified socket from the pivot before building a tunnel.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -nvz -w 3 INTERNAL_HOST INTERNAL_PORT
+curl -v --connect-timeout 5 http://INTERNAL_HOST:INTERNAL_PORT/
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Test-NetConnection INTERNAL_HOST -Port INTERNAL_PORT
+</code></pre>
+<h2 id="3-choose-the-smallest-compatible-route">3. Choose the smallest compatible route</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Need</th><th>Baseline</th><th>Choose when</th><th>Main limitation</th></tr></thead><tbody><tr><td>One TCP service through an SSH pivot</td><td>SSH local forward</td><td>Kali can initiate SSH to pivot</td><td>One destination socket per forward</td></tr><tr><td>Many TCP destinations through SSH pivot</td><td>SSH dynamic forward</td><td>Kali can initiate SSH to pivot</td><td>SOCKS/client compatibility</td></tr><tr><td>Pivot can connect outward but inbound access is blocked</td><td>SSH remote or remote-dynamic forward</td><td>Pivot has OpenSSH client and can reach Kali SSH</td><td>Kali SSH policy; OpenSSH version for remote dynamic</td></tr><tr><td>SSH hop directly to internal SSH</td><td><code>ProxyJump</code></td><td>Both pivot and destination provide SSH</td><td>SSH-only path</td></tr><tr><td>Simple Linux TCP relay</td><td>Socat</td><td>Binary already exists and listener can be exposed</td><td>Clear TCP relay; no authentication/encryption</td></tr><tr><td>Transparent selected subnets through SSH</td><td>sshuttle</td><td>Suitable SSH server with Python; local privileges</td><td>TCP/DNS-oriented, local firewall changes</td></tr><tr><td>Windows SSH-based forward</td><td>Built-in <code>ssh.exe</code> or Plink</td><td>Compatible client exists and outbound SSH works</td><td>Server policy and credential/host-key handling</td></tr><tr><td>Windows native fixed TCP relay</td><td><code>netsh interface portproxy</code></td><td>Elevated token; target modification acceptable</td><td>TCP only; firewall/IP Helper/stateful cleanup</td></tr><tr><td>Outbound HTTP/WebSocket-shaped tunnel</td><td>Chisel</td><td>Pivot can run matching binary and reach server</td><td>Client/server compatibility and proxy/client transport limits</td></tr><tr><td>Routed access for ordinary clients</td><td>Ligolo-ng</td><td>Agent can reach proxy and TUN/route setup is possible</td><td>Userland stack is not identical to direct raw networking</td></tr><tr><td>DNS is the only viable egress</td><td>dnscat2</td><td>DNS path plus authoritative/direct server control</td><td>Slow/noisy, infrastructure and client required</td></tr></tbody></table>
+<p>Prefer one explicit forward for one known service. Use SOCKS when several TCP endpoints must be explored. Use a routed pivot when many ordinary tools must operate without proxy wrappers. Do not add a multi-host route when command execution directly on the pivot is sufficient.</p>
+<h2 id="4-socat-fixed-tcp-relay">4. Socat fixed TCP relay</h2>
+<p>On a Linux pivot, expose one internal TCP service:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">socat -ddd TCP-LISTEN:LOCAL_PORT,bind=PIVOT_REACHABLE_IP,reuseaddr,fork \
+  TCP:INTERNAL_HOST:INTERNAL_PORT
+</code></pre>
+<p>Loopback-only relay for another local tunnel stage:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">socat -ddd TCP-LISTEN:LOCAL_PORT,bind=127.0.0.1,reuseaddr,fork \
+  TCP:INTERNAL_HOST:INTERNAL_PORT
+</code></pre>
+<p>Verify the listener on the pivot with <code>ss -lntp | grep LOCAL_PORT</code>. Run <code>nc -nvz PIVOT_REACHABLE_IP LOCAL_PORT</code> from the intended client to test client-to-pivot reachability. These checks run on different machines:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ss -lntp | grep LOCAL_PORT
+nc -nvz PIVOT_REACHABLE_IP LOCAL_PORT
+</code></pre>
+<blockquote>
+<p><code>fork</code> handles multiple connections. <code>reuseaddr</code> eases rebinding after restart. Socat does not add authentication or encryption to this relay; bind narrowly and remove the process when finished. A listener can exist even when the pivot-to-destination connection fails.</p>
+</blockquote>
+<h2 id="5-openssh-forwarding">5. OpenSSH forwarding</h2>
+<p>Add reliability and attributable failure to transport-only sessions:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">-N
+-o ExitOnForwardFailure=yes
+-o ServerAliveInterval=30
+-o ServerAliveCountMax=3
+</code></pre>
+<p><code>ExitOnForwardFailure</code> proves requested listening sockets were established. It does not prove the final destination is reachable through them.</p>
+<h3 id="51-local-forward-listener-on-the-ssh-client">5.1 Local forward: listener on the SSH client</h3>
+<p>Run on Kali when Kali can SSH to the pivot:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -N \
+  -L 127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT \
+  -p SSH_PORT USER@PIVOT \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>Use the listener as though it were the internal service:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -nvz 127.0.0.1 LOCAL_PORT
+curl -v http://127.0.0.1:LOCAL_PORT/
+</code></pre>
+<blockquote>
+<p>The SSH server/pivot resolves and connects to <code>INTERNAL_HOST</code>. Bind to <code>127.0.0.1</code> unless another authorized local host must use the forward; <code>-g</code> or a non-loopback bind expands exposure.</p>
+</blockquote>
+<h3 id="52-dynamic-forward-socks-listener-on-the-ssh-client">5.2 Dynamic forward: SOCKS listener on the SSH client</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -N -D 127.0.0.1:1080 -p SSH_PORT USER@PIVOT \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>OpenSSH acts as a SOCKS4/5 server. The pivot makes destination connections selected by each SOCKS request.</p>
+<h3 id="53-remote-forward-listener-on-the-ssh-server">5.3 Remote forward: listener on the SSH server</h3>
+<p>Run on a pivot that can initiate an SSH connection back to Kali:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -N \
+  -R 127.0.0.1:KALI_PORT:INTERNAL_HOST:INTERNAL_PORT \
+  -p KALI_SSH_PORT KALI_USER@LHOST \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>Kali then uses:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nc -nvz 127.0.0.1 KALI_PORT
+</code></pre>
+<blockquote>
+<p>The SSH client/pivot connects to <code>INTERNAL_HOST</code>. <code>AllowTcpForwarding</code> and server policy must permit the forward. A non-loopback remote bind additionally depends on <code>GatewayPorts</code>; do not assume <code>0.0.0.0</code> was honored.</p>
+</blockquote>
+<h3 id="54-remote-dynamic-forward-socks-listener-on-the-ssh-server">5.4 Remote dynamic forward: SOCKS listener on the SSH server</h3>
+<p>Run on the pivot:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -N -R 127.0.0.1:1080 -p KALI_SSH_PORT KALI_USER@LHOST \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>The SOCKS listener appears on Kali and destination connections exit through the pivot. Remote dynamic forwarding requires OpenSSH 7.6 or later on the client that issues <code>-R</code>. Run <code>ssh -V</code> on the pivot (the SSH client). Run <code>ss -lntp | grep 1080</code> on Kali (the SSH server hosting the SOCKS listener). These checks run on different machines; do not paste both into one terminal:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -V
+ss -lntp | grep 1080
+</code></pre>
+<h3 id="55-ssh-jump-and-proxy-command">5.5 SSH jump and proxy command</h3>
+<p>Direct SSH through an SSH pivot:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -J PIVOT_USER@PIVOT TARGET_USER@INTERNAL_HOST
+</code></pre>
+<p>SSH through an existing SOCKS5 endpoint with Ncat:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -o ProxyCommand='ncat --proxy-type socks5 --proxy 127.0.0.1:1080 %h %p' \
+  TARGET_USER@INTERNAL_HOST
+</code></pre>
+<p><code>%h</code> and <code>%p</code> are replaced with the destination host and port. Prefer this native proxy route when ProxyChains interposition is unreliable.</p>
+<details>
+<summary><strong>Use an SSH configuration for repeated access</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sshconfig">Host pivot
+  HostName PIVOT
+  User PIVOT_USER
+
+Host internal
+  HostName INTERNAL_HOST
+  User TARGET_USER
+  ProxyJump pivot
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh internal
+scp FILE internal:DESTINATION_PATH
+</code></pre>
+</details>
+<h2 id="6-proxychains-and-socks-aware-clients">6. ProxyChains and SOCKS-aware clients</h2>
+<p>Use a task-specific configuration rather than repeatedly editing a shared global file:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">strict_chain
+proxy_dns
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+
+[ProxyList]
+socks5 127.0.0.1 1080
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">proxychains4 -q -f ./proxychains-pivot.conf curl http://INTERNAL_HOST:PORT/
+proxychains4 -q -f ./proxychains-pivot.conf nmap -sT -Pn -n -p PORTS INTERNAL_HOST
+proxychains4 -q -f ./proxychains-pivot.conf impacket-smbclient \
+  'DOMAIN/USER:PASSWORD@INTERNAL_HOST'
+</code></pre>
+<p>Constraints:</p>
+<ul>
+<li>ProxyChains hooks socket calls in dynamically linked programs; some static binaries, scripts, child processes or dynamically loaded modules bypass or break the hook.</li>
+<li>ProxyChains supports TCP only. It does not proxy UDP, ICMP, SYN scans or pcap-based discovery.</li>
+<li>For Nmap use <code>-sT -Pn -n</code> with a focused port list. Proxy scanning is slow and is not a replacement for discovery from the pivot.</li>
+<li><code>proxy_dns</code> moves supported hostname resolution through the proxy, but application behavior varies. <code>-n</code> prevents Nmap's local reverse lookups.</li>
+<li>Prefer an application's native proxy option when available.</li>
+</ul>
+<p>Native examples:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl --socks5-hostname 127.0.0.1:1080 http://INTERNAL_HOST:PORT/
+ncat --proxy-type socks5 --proxy 127.0.0.1:1080 INTERNAL_HOST INTERNAL_PORT
+</code></pre>
+<h2 id="7-sshuttle-transparent-selected-subnet-route">7. sshuttle transparent selected-subnet route</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo sshuttle --dns \
+  -r SSH_USER@PIVOT:SSH_PORT \
+  INTERNAL_SUBNET ANOTHER_SUBNET
+</code></pre>
+<p>Through a previously established local forward to the SSH pivot:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo sshuttle --dns \
+  -r SSH_USER@127.0.0.1:LOCAL_SSH_PORT \
+  INTERNAL_SUBNET
+</code></pre>
+<blockquote>
+<p>sshuttle is useful when many TCP clients need transparent access. It requires privileges and firewall/redirection support on the client; the remote side needs a compatible Python execution path. It is not a general layer-2 VPN and does not make arbitrary raw-packet or UDP behavior equivalent to direct routing. Record the selected subnets so existing VPN routes are not accidentally captured.</p>
+</blockquote>
+<h2 id="8-windows-forwarding-alternatives">8. Windows forwarding alternatives</h2>
+<h3 id="81-built-in-openssh-client">8.1 Built-in OpenSSH client</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">where ssh.exe
+ssh.exe -V
+ssh.exe -N -R 127.0.0.1:1080 KALI_USER@LHOST -p KALI_SSH_PORT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30
+</code></pre>
+<p>The same <code>-L</code>, <code>-D</code>, <code>-R</code>, <code>ProxyJump</code> and <code>ProxyCommand</code> concepts apply to current Windows OpenSSH. Remote dynamic forwarding depends on the client version.</p>
+<h3 id="82-plink">8.2 Plink</h3>
+<p>Remote fixed forward from Windows to Kali:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">plink.exe -ssh -N -batch -hostkey "HOST_KEY_FINGERPRINT" ^
+  -l KALI_USER -pwfile C:\PATH\kali-password.txt ^
+  -R 127.0.0.1:KALI_PORT:INTERNAL_HOST:INTERNAL_PORT ^
+  -P KALI_SSH_PORT LHOST
+</code></pre>
+<p>Local dynamic SOCKS on Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">plink.exe -ssh -N -batch -hostkey "HOST_KEY_FINGERPRINT" ^
+  -l SSH_USER -pwfile C:\PATH\ssh-password.txt ^
+  -D 127.0.0.1:1080 -P SSH_PORT PIVOT
+</code></pre>
+<blockquote>
+<p>Current Plink supports <code>-L</code>, <code>-R</code> and <code>-D</code>, but not OpenSSH's remote-dynamic shorthand. <code>-batch</code> prevents an unseen prompt from hanging; pair it with a verified <code>-hostkey</code>. <code>-pwfile</code> avoids a literal password in the command line but creates a sensitive file that must be protected and removed. Prefer a key or existing authenticated context where feasible.</p>
+</blockquote>
+<h3 id="83-netsh-portproxy">8.3 Netsh portproxy</h3>
+<p>Elevated Windows shell:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">netsh interface portproxy add v4tov4 ^
+  listenaddress=PIVOT_REACHABLE_IP listenport=LOCAL_PORT ^
+  connectaddress=INTERNAL_HOST connectport=INTERNAL_PORT
+
+netsh interface portproxy show all
+netstat -ano -p tcp | findstr ":LOCAL_PORT"
+</code></pre>
+<p>If the existing firewall policy does not already allow the listener and a change is authorized:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">netsh advfirewall firewall add rule name="OSCP Pivot LOCAL_PORT" ^
+  dir=in action=allow protocol=TCP localport=LOCAL_PORT
+</code></pre>
+<p>Cleanup:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">netsh interface portproxy delete v4tov4 ^
+  listenaddress=PIVOT_REACHABLE_IP listenport=LOCAL_PORT
+
+netsh advfirewall firewall delete rule name="OSCP Pivot LOCAL_PORT"
+</code></pre>
+<blockquote>
+<p><code>portproxy</code> requires an elevated token, forwards TCP rather than UDP, modifies persistent host configuration and may depend on the IP Helper service. A stored rule or listening socket still does not prove the destination is reachable. Record and remove both the proxy and any firewall rule.</p>
+</blockquote>
+<h2 id="9-chisel-httpwebsocket-tunnel">9. Chisel HTTP/WebSocket tunnel</h2>
+<h3 id="91-reverse-socks-pivot-initiates-outward">9.1 Reverse SOCKS: pivot initiates outward</h3>
+<p>On Kali:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">chisel server --reverse --port CHISEL_PORT
+</code></pre>
+<p>Record the server fingerprint. On the pivot:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">chisel client --fingerprint 'SERVER_FINGERPRINT' \
+  LHOST:CHISEL_PORT R:127.0.0.1:1080:socks
+</code></pre>
+<p><code>R:socks</code> is the shorter equivalent using the default server-side <code>127.0.0.1:1080</code> listener. Traffic sent to Kali's SOCKS listener exits through the Chisel client/pivot.</p>
+<h3 id="92-reverse-fixed-tcp-forward">9.2 Reverse fixed TCP forward</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Kali
+chisel server --reverse --port CHISEL_PORT
+
+# Pivot: expose an internal service on Kali loopback
+chisel client --fingerprint 'SERVER_FINGERPRINT' LHOST:CHISEL_PORT \
+  R:127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT
+</code></pre>
+<h3 id="93-forward-socks-when-the-client-is-on-the-tool-side">9.3 Forward SOCKS when the client is on the tool side</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Pivot/server side
+chisel server --socks5 --port CHISEL_PORT
+
+# Kali/client side
+chisel client --fingerprint 'SERVER_FINGERPRINT' PIVOT:CHISEL_PORT \
+  127.0.0.1:1080:socks
+</code></pre>
+<h3 id="94-current-udp-aware-mode">9.4 Current UDP-aware mode</h3>
+<p>Current upstream Chisel distinguishes:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">socks / R:socks       -> SOCKS5 TCP CONNECT only
+udpsocks / R:udpsocks -> TCP CONNECT plus SOCKS5 UDP ASSOCIATE
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Requires compatible current peers
+chisel client --fingerprint 'SERVER_FINGERPRINT' \
+  LHOST:CHISEL_PORT R:127.0.0.1:1080:udpsocks
+</code></pre>
+<blockquote>
+<p>This does not make ProxyChains UDP-capable—ProxyChains remains TCP-only. The UDP application must support SOCKS5 UDP ASSOCIATE, or another compatible adapter must be used. Current Chisel peers, TCP and UDP firewall access to the SOCKS listener, and its documented association/fragmentation limits all matter.</p>
+</blockquote>
+<h3 id="95-chisel-failure-cues">9.5 Chisel failure cues</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">chisel --version
+chisel server --help
+chisel client --help
+ss -lntp
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cue</th><th>Interpretation</th></tr></thead><tbody><tr><td>No connection at server</td><td>Pivot egress, address, listener or WebSocket/proxy path</td></tr><tr><td>HTTP reaches server but upgrade fails</td><td>Intermediary may block WebSocket upgrade</td></tr><tr><td><code>exec format error</code></td><td>Wrong OS/architecture</td></tr><tr><td>Missing GLIBC/version symbol</td><td>Build/runtime incompatibility; choose a compatible official build</td></tr><tr><td>Fingerprint mismatch</td><td>Wrong server or changed key; do not bypass verification blindly</td></tr><tr><td>SOCKS listener exists but endpoint fails</td><td>Pivot-to-destination or application/proxy compatibility</td></tr><tr><td>TCP works but UDP fails</td><td>Ordinary <code>socks</code>, old peer, UDP bind/firewall or unsupported client</td></tr></tbody></table>
+<h2 id="10-ligolo-ng-routed-pivot">10. Ligolo-ng routed pivot</h2>
+<h3 id="101-proxy-and-agent">10.1 Proxy and agent</h3>
+<p>On Kali:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">./proxy -selfcert -laddr 0.0.0.0:LIGOLO_PORT
+</code></pre>
+<p>In the proxy console, obtain the fingerprint:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">certificate_fingerprint
+</code></pre>
+<p>On the pivot:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">./agent -connect LHOST:LIGOLO_PORT -accept-fingerprint CERT_FINGERPRINT
+</code></pre>
+<p><code>-ignore-cert</code> is a controlled-lab/debug fallback, not the baseline.</p>
+<h3 id="102-current-managed-interface-and-route">10.2 Current managed interface and route</h3>
+<p>In the Ligolo console:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">interface_create --name ligolo
+session
+ifconfig
+interface_add_route --name ligolo --route INTERNAL_SUBNET
+tunnel_start --tun ligolo
+</code></pre>
+<p>Manual Linux alternative:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo ip tuntap add user "$USER" mode tun ligolo
+sudo ip link set ligolo up
+sudo ip route add INTERNAL_SUBNET dev ligolo
+</code></pre>
+<p>Then use normal clients:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ip route get INTERNAL_HOST
+nmap -sT -Pn -n -p PORTS INTERNAL_HOST
+curl -v http://INTERNAL_HOST:PORT/
+</code></pre>
+<blockquote>
+<p>Ligolo translates connections through a userland network stack. Ordinary TCP clients generally work without ProxyChains, but raw-packet assumptions, ICMP details and some UDP behavior can differ from direct access. Use connect-based validation first.</p>
+</blockquote>
+<h3 id="103-pivot-loopback-services">10.3 Pivot loopback services</h3>
+<p>Ligolo maps its special <code>240.0.0.0/4</code> range to the selected agent's loopback. Add one narrow route:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo ip route add 240.0.0.1/32 dev ligolo
+nmap -sT -Pn -n -p PORTS 240.0.0.1
+</code></pre>
+<p>Use this only when the desired service is bound to <code>127.0.0.1</code> on the agent.</p>
+<h3 id="104-callback-or-file-server-listener-on-the-agent">10.4 Callback or file-server listener on the agent</h3>
+<p>In the selected Ligolo session:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">listener_add --addr 0.0.0.0:PIVOT_PORT --to 127.0.0.1:KALI_PORT --tcp
+listener_list
+</code></pre>
+<p>Kali listener:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ncat -lvn 127.0.0.1 KALI_PORT
+</code></pre>
+<p>An internal target connects to <code>PIVOT_REACHABLE_IP:PIVOT_PORT</code>; Ligolo relays it to Kali's loopback listener. Cleanup:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">listener_stop LISTENER_ID
+</code></pre>
+<h2 id="11-dns-and-kerberos-across-pivots">11. DNS and Kerberos across pivots</h2>
+<ul>
+<li>Decide whether the application resolves the name locally, ProxyChains intercepts it, the SOCKS exit resolves it, or the pivot's configured resolver handles it.</li>
+<li>Use numeric addresses for route validation; then restore the confirmed hostname when the application protocol requires it.</li>
+<li>Kerberos needs an SPN-compatible hostname, realm/KDC route and correct time. A working IP connection does not prove Kerberos naming works.</li>
+<li>A temporary host mapping is acceptable only for a confirmed in-scope address/name pair and must be recorded.</li>
+</ul>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">getent hosts INTERNAL_FQDN
+curl --socks5-hostname 127.0.0.1:1080 http://INTERNAL_FQDN:PORT/
+klist
+KRB5_TRACE=/dev/stderr kvno cifs/TARGET_HOST
+</code></pre>
+<p>The first command checks Kali's normal resolver. The <code>curl</code> form deliberately delegates the destination hostname through SOCKS. Do not assume a generic resolver utility will be intercepted by ProxyChains: NSS implementation and process behavior vary.</p>
+<p>For Impacket, preserve the target hostname while routing to an IP when the tool supports it:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP \
+  'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<h2 id="12-callback-and-delivery-routing">12. Callback and delivery routing</h2>
+<p>A forward path and callback path are different graphs:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Kali -> tunnel -> internal service       # access path
+internal target -> pivot -> Kali listener # callback path
+</code></pre>
+<p>Options:</p>
+<ol>
+<li>make the callback directly to an address the internal host already reaches;</li>
+<li>expose a listener on the pivot and relay it to Kali;</li>
+<li>use a Ligolo agent listener or SSH/Chisel remote forward;</li>
+<li>choose a non-callback technique such as authenticated remote execution.</li>
+</ol>
+<p>Fixed SSH callback relay, run from the pivot:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ssh -N -g -L 0.0.0.0:PIVOT_PORT:127.0.0.1:KALI_PORT \
+  KALI_USER@LHOST -o ExitOnForwardFailure=yes
+</code></pre>
+<p>This creates the listener on the SSH client/pivot and makes the destination connection from Kali's SSH server to Kali loopback. <code>-g</code> permits other hosts to use the pivot-side local forward. Verify the actual bind with <code>ss</code>; do not infer it from command syntax.</p>
+<p>Also route payload delivery separately. An internal host may reach the pivot but not Kali's HTTP server; relay the delivery service or serve from the pivot when justified.</p>
+<h2 id="13-multi-hop-routes">13. Multi-hop routes</h2>
+<p>For every additional hop, write another complete segment:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Kali -> tunnel A -> PIVOT_A -> tunnel B -> PIVOT_B -> INTERNAL_HOST:PORT
+</code></pre>
+<p>Rules:</p>
+<ul>
+<li>validate one hop before adding the next;</li>
+<li>avoid overlapping local/VPN/internal routes;</li>
+<li>use unique listener and SOCKS ports;</li>
+<li>record which session owns each route;</li>
+<li>ensure the deeper agent/client can reach the upstream listener;</li>
+<li>re-evaluate DNS and callback direction at every hop;</li>
+<li>prefer a routed method for several deep services instead of stacking many opaque wrappers.</li>
+</ul>
+<p>An upstream tunnel failure invalidates every deeper observation. Do not troubleshoot target credentials until the complete path is restored.</p>
+<h2 id="14-dns-tunneling-with-dnscat2">14. DNS tunneling with dnscat2</h2>
+<p>Use only when ordinary transports are unavailable and DNS is demonstrably permitted. This is a conditional advanced route, but it remains in the current official BOK.</p>
+<p>Prerequisites:</p>
+<ul>
+<li>command execution sufficient to run a compatible client;</li>
+<li>either authoritative control/NS delegation for <code>TUNNEL_DOMAIN</code> or direct UDP/53 reachability to the server;</li>
+<li>a resolver chain that forwards the chosen domain externally;</li>
+<li>permission to bind/listen on the required DNS port;</li>
+<li>tolerance for low throughput and conspicuous DNS patterns.</li>
+</ul>
+<p>Authoritative-domain mode:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">dnscat2-server --secret=SHARED_SECRET TUNNEL_DOMAIN
+</code></pre>
+<p>Client:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">./dnscat --secret=SHARED_SECRET TUNNEL_DOMAIN
+</code></pre>
+<p>Direct DNS-server mode shown by the server's own usage output:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">./dnscat --dns server=DNS_SERVER,port=53 --secret=SHARED_SECRET
+</code></pre>
+<p>Server console:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">windows
+window -i SESSION_ID
+help
+</code></pre>
+<blockquote>
+<p>A DNS query reaching the server proves only the resolver path. Match the pre-shared secret or independently verify the negotiated authentication string. Cache, recursion, EDNS, TCP fallback, DNS security controls and response-size limits can affect the channel. DNS tunneling is not DNS spoofing; spoofing remains prohibited by the current exam guide.</p>
+</blockquote>
+<h2 id="15-failure-router">15. Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Evidence</th><th>Failing layer</th><th>Next decision</th></tr></thead><tbody><tr><td>Pivot cannot reach destination</td><td>Internal route/firewall/service</td><td>Fix or choose another pivot before tunneling</td></tr><tr><td>Tunnel client cannot reach server</td><td>Transport/egress/listener</td><td>Test the exact server address/port from pivot</td></tr><tr><td>SSH says forwarding disabled</td><td>Server policy</td><td>Use an authorized alternative; do not keep changing client flags</td></tr><tr><td>Local/remote port does not bind</td><td>Address in use, privilege or bind policy</td><td>Inspect listeners and <code>ExitOnForwardFailure</code> output</td></tr><tr><td>Listener exists; simple TCP test fails</td><td>Pivot-to-destination or wrong destination</td><td>Test from pivot and inspect tunnel logs</td></tr><tr><td>Simple TCP works; application fails</td><td>Client/protocol/authentication</td><td>Check native proxy support, hostname/SPN and application prerequisites</td></tr><tr><td>ProxyChains shows no hook/connection</td><td>Static/incompatible client or config</td><td>Use native proxy option, explicit forward or routed pivot</td></tr><tr><td>Nmap through SOCKS finds nothing</td><td>Wrong scan type/discovery/DNS/latency</td><td>Use focused <code>-sT -Pn -n</code>; verify with Ncat/curl</td></tr><tr><td>Kerberos works by IP only for TCP, auth fails</td><td>DNS/SPN/KDC/time</td><td>Separate route address from service hostname</td></tr><tr><td>Forward access works; callback absent</td><td>Reverse path/listener bind</td><td>Draw target-to-listener route independently</td></tr><tr><td>Chisel starts but server sees nothing</td><td>Egress/URL/WebSocket/binary execution</td><td>Capture stderr and inspect transport</td></tr><tr><td>Ligolo session exists; route misses tunnel</td><td>OS route/interface/session</td><td>Check route selection and selected agent/tunnel</td></tr><tr><td>TCP works, UDP fails</td><td>Tool/client transport limitation</td><td>Identify a genuine UDP-capable path; do not assume SOCKS/ProxyChains</td></tr><tr><td>DNS queries never reach authority</td><td>Delegation/resolver/egress</td><td>Prove the DNS path before debugging dnscat2 crypto</td></tr><tr><td>Deep route suddenly fails everywhere</td><td>Upstream tunnel/session</td><td>Repair from the first hop outward</td></tr></tbody></table>
+<h2 id="16-verification-and-cleanup">16. Verification and cleanup</h2>
+<p>Kali/Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ss -lntup
+ip -brief address
+ip route
+ps -ef | grep -E '[s]sh .*-[LDR]|[c]hisel|[l]igolo|[s]ocat|[s]shuttle'
+</code></pre>
+<p>Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">netstat -ano
+tasklist
+netsh interface portproxy show all
+netsh advfirewall firewall show rule name="OSCP Pivot LOCAL_PORT"
+</code></pre>
+<p>Record:</p>
+<ul>
+<li>exact process/command and version;</li>
+<li>bind address and port;</li>
+<li>transport direction and initiator;</li>
+<li>pivot and destination;</li>
+<li>routes/name mappings/configuration files added;</li>
+<li>simple TCP proof and final application proof;</li>
+<li>callback proof where applicable;</li>
+<li>cleanup command and result.</li>
+</ul>
+<p>Stop tunnel processes and remove TUN routes, Ligolo listeners, temporary mappings, password files, Netsh rules and firewall exceptions after the authorized task.</p>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Purpose</th><th>Required context</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td><code>ip</code>/<code>route</code>/<code>ss</code>/<code>netstat</code></td><td>Discover and verify each hop</td><td>Shell on relevant host</td><td>Sections 2 and 16</td><td>Correct route and listener</td><td>Listener exists on wrong interface</td></tr><tr><td>Ncat/curl/Test-NetConnection</td><td>Prove one socket</td><td>Route from test source</td><td>Sections 2 and 16</td><td>TCP handshake/application response</td><td>Complex tool fails before baseline proof</td></tr><tr><td>Socat</td><td>Simple fixed TCP relay</td><td>Binary and bind permission</td><td>Section 4</td><td>Listener plus remote connection</td><td>Clear relay exposed too broadly</td></tr><tr><td>OpenSSH</td><td>Fixed, dynamic, remote and jump routes</td><td>SSH authentication/policy</td><td>Section 5</td><td>Requested listener and successful client flow</td><td>Forwarding or bind denied</td></tr><tr><td>ProxyChains</td><td>Wrap compatible TCP clients</td><td>SOCKS endpoint + dynamic linking</td><td>Section 6</td><td>Connection log through proxy</td><td>UDP/raw/static client unsupported</td></tr><tr><td>sshuttle</td><td>Transparent selected-subnet TCP/DNS route</td><td>SSH, client privileges, remote Python</td><td>Section 7</td><td>Ordinary client reaches selected subnet</td><td>Route collision/firewall backend issue</td></tr><tr><td>Windows <code>ssh.exe</code>/Plink</td><td>SSH forwards from Windows</td><td>Client present and server reachable</td><td>Section 8</td><td>Kali/Windows listener established</td><td>Hidden host-key/password prompt</td></tr><tr><td>Netsh portproxy</td><td>Native Windows fixed TCP relay</td><td>Elevated token</td><td>Section 8</td><td>Stored rule + listener + remote flow</td><td>Firewall/IP Helper/destination failure</td></tr><tr><td>Chisel</td><td>HTTP/WebSocket reverse SOCKS/forwards</td><td>Compatible binary and egress</td><td>Section 9</td><td>Session + SOCKS/forward listener</td><td>WebSocket, fingerprint or runtime error</td></tr><tr><td>Ligolo-ng</td><td>Routed access and agent listeners</td><td>Agent/proxy + TUN route</td><td>Section 10</td><td>OS route and ordinary client flow</td><td>Wrong session/interface/route</td></tr><tr><td>dnscat2</td><td>Conditional DNS channel</td><td>Resolver/authority or direct DNS path</td><td>Section 14</td><td>Authenticated encrypted session</td><td>DNS never reaches server</td></tr></tbody></table>
+<p>Package names and command behavior vary. Check local <code>--help</code>/versions before use. Do not install tooling or alter host/network configuration without scope and authorization.</p>
+<h2 id="exam-restriction">Exam restriction</h2>
+<p>The current OSCP+ exam guide explicitly states that Metasploit cannot be used for pivoting because that would involve more than one target. The current guide does not individually approve every other tool; the learner remains responsible for restrictions and must recheck the guide before a mock or exam.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 19 pp. 583–629 and Chapter 20 pp. 630–652.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a> and <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">current exam guide</a></li>
+<li><a href="https://man.openbsd.org/ssh">OpenSSH client manual</a></li>
+<li><a href="http://www.dest-unreach.org/socat/doc/socat.html">Socat documentation</a></li>
+<li><a href="https://github.com/rofl0r/proxychains-ng">ProxyChains-NG</a></li>
+<li><a href="https://github.com/sshuttle/sshuttle">sshuttle</a></li>
+<li><a href="https://the.earth.li/~sgtatham/putty/latest/htmldoc/Chapter7.html">PuTTY/Plink manual</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/administration/windows-commands/netsh-interface">Microsoft Netsh interface/portproxy</a></li>
+<li><a href="https://github.com/jpillora/chisel">Chisel</a></li>
+<li><a href="https://docs.ligolo.ng/Quickstart/">Ligolo-ng quickstart</a>, <a href="https://docs.ligolo.ng/Listeners/">listeners</a> and <a href="https://docs.ligolo.ng/Localhost/">agent loopback access</a></li>
+<li><a href="https://github.com/iagox86/dnscat2">dnscat2</a></li>
+<li><a href="https://lizajose.github.io/getSH/useful-stuff?section=tunneling">getSH tunneling route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP">Hexdump OSCP repository</a> and <a href="https://github.com/LeonardoE95/yt-en">Port Forwarding and Pivoting video index</a>. The upstream module provides the four SSH-forwarding categories; current syntax and tool behavior above were checked independently.</li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

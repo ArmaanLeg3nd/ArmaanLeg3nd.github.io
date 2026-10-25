@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for LDAP and Kerberos Enumeration."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/11-ldap-kerberos/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="LDAP and Kerberos Enumeration | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for LDAP and Kerberos Enumeration."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/02-service-enumeration/11-ldap-kerberos/"><title>LDAP and Kerberos Enumeration | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#baseline-discover-naming-contexts">Baseline: discover naming contexts</a></li><li class="level-2"><a href="#anonymous-directory-search">Anonymous directory search</a></li><li class="level-2"><a href="#authenticated-search">Authenticated search</a></li><li class="level-2"><a href="#kerberos-prerequisites-before-an-attack">Kerberos prerequisites before an attack</a></li><li class="level-2"><a href="#handoff">Handoff</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="ldap-and-kerberos-enumeration">LDAP and Kerberos Enumeration</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/02-service-enumeration/README.md">← Stage index</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/06-ad-lateral-movement/README.md">AD procedures</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/service-opportunities.md">Service cheatsheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/services.md">Extract opportunities from services</a></p>
+<blockquote>
+<p><strong>Recognition:</strong> LDAP commonly appears on TCP/389 or TCP/636; Global Catalog on TCP/3268 or 3269; Kerberos on TCP/UDP 88. Applications may listen elsewhere, so follow protocol evidence rather than port labels.</p>
+</blockquote>
+<h2 id="baseline-discover-naming-contexts">Baseline: discover naming contexts</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> LDAP reachability. <strong>Coverage:</strong> RootDSE only; this can work even when directory searches require authentication. <strong>Decisive output:</strong> <code>defaultNamingContext</code> and <code>dnsHostName</code>.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://TARGET:389 -s base -b '' \
+  defaultNamingContext rootDomainNamingContext configurationNamingContext dnsHostName
+</code></pre>
+<p>Convert <code>DC=corp,DC=example</code> into <code>corp.example</code> for DNS/Kerberos work. Preserve the server's exact hostname because Kerberos is name-sensitive.</p>
+<details>
+<summary><strong>LDAPS and certificate-name inspection</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">openssl s_client -connect TARGET:636 -servername DC_HOST &#x3C;/dev/null
+ldapsearch -x -LLL -H ldaps://DC_HOST:636 -s base -b '' defaultNamingContext dnsHostName
+</code></pre>
+<blockquote>
+<p>A certificate can disclose domain/DC names. A TLS validation error is a client trust/name issue, not proof that LDAP is unavailable.</p>
+</blockquote>
+</details>
+<h2 id="anonymous-directory-search">Anonymous directory search</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> known base DN and server permitting anonymous search. <strong>Failure cue:</strong> <code>Inappropriate authentication</code> or <code>Insufficient access</code> closes only the anonymous path.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_IP:389 -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user))' \
+  sAMAccountName userPrincipalName memberOf description
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_IP:389 -b 'DC=DOMAIN,DC=TLD' \
+  '(objectClass=group)' cn member description
+</code></pre>
+<h2 id="authenticated-search">Authenticated search</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> a valid directory identity. <strong>Decisive output:</strong> objects/attributes unavailable anonymously. Avoid placing a real password in shell history when an interactive prompt is available.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 \
+  -D 'USER@DOMAIN.TLD' -W -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user))' \
+  sAMAccountName userPrincipalName memberOf description servicePrincipalName userAccountControl
+</code></pre>
+<details>
+<summary><strong>Search computers, groups and SPN-bearing accounts separately</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN.TLD' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(objectClass=computer)' \
+  dNSHostName operatingSystem operatingSystemVersion servicePrincipalName
+
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN.TLD' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(objectClass=group)' cn member
+
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN.TLD' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(&#x26;(objectCategory=person)(servicePrincipalName=*))' \
+  sAMAccountName servicePrincipalName memberOf
+</code></pre>
+</details>
+<h2 id="kerberos-prerequisites-before-an-attack">Kerberos prerequisites before an attack</h2>
+<p>Kerberos failures are often name/time/route failures rather than credential failures. Establish:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">getent hosts DC_HOST
+nc -nvz DC_IP 88
+date -u
+nmap -Pn -sV -p 88,389,445,464,636,3268,3269 DC_IP -oN dc-services.txt
+</code></pre>
+<blockquote>
+<p><strong>Interpretation:</strong> resolve <code>DOMAIN</code> and <code>DC_HOST</code> consistently, keep clock skew within Kerberos tolerance, and ensure the KDC is reached through the selected route. <code>KDC_ERR_C_PRINCIPAL_UNKNOWN</code> points to identity/domain naming; <code>KRB_AP_ERR_SKEW</code> points to time; <code>KDC_ERR_PREAUTH_FAILED</code> normally points to authentication material.</p>
+</blockquote>
+<h2 id="handoff">Handoff</h2>
+<ul>
+<li>New users, groups, computers, SPNs or domain names → <a href="/tools/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">domain mapping</a>.</li>
+<li>A user confirmed without preauthentication → <a href="/tools/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and identity transitions</a>.</li>
+<li>Valid credentials → rerun authenticated LDAP plus SMB/share/remote-access enumeration.</li>
+<li>Certificate templates/AD CS clues → <a href="/tools/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">AD CS and object-control abuse</a>.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://lizajose.github.io/getSH/common-services?service=ldap">getSH Common Services: LDAP</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://www.openldap.org/software/man.cgi?query=ldapsearch&#x26;sektion=1">OpenLDAP ldapsearch manual</a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">Hexdump Active Directory modules</a></li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

