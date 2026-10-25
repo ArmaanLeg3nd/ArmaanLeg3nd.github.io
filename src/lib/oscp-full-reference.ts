@@ -18,7 +18,7 @@ export async function renderReference(page:typeof referencePages[number]) {
       const resolved=new URL(target,'https://reference.invalid/'+page.path);
       const path=decodeURIComponent(resolved.pathname.slice(1));
       const local=referencePages.find(item=>item.path===path);
-      const url=local ? local.url+resolved.hash : (image ? rawRoot : publicRoot)+path+resolved.hash;
+      const url=path.startsWith('diagrams/') ? '/tools/oscp/'+path : local ? local.url+resolved.hash : (image ? rawRoot : publicRoot)+path+resolved.hash;
       return `${image}[${label}](${url})`;
     });
   }).join('\n');
