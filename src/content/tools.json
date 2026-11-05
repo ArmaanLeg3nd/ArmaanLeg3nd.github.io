@@ -1,11 +1,27 @@
 [
   {
+    "id": "oscp-plain",
+    "title": "OSCP plain reference",
+    "href": "/oscp/",
+    "category": "Reference",
+    "summary": "A simple light reference with blue links, complete notes and a persistent hierarchical index.",
+    "facts": [
+      "Plain pages",
+      "Fixed index",
+      "Full reference"
+    ]
+  },
+  {
     "id": "oscp",
     "title": "OSCP strategy workspace",
     "href": "/tools/oscp/",
     "category": "Security methodology",
     "summary": "Navigate from discovery to evidence. Recognition clues, prerequisite checks, complete commands, and conditional next steps.",
-    "facts": ["Recognition", "Commands", "Next decisions"]
+    "facts": [
+      "Recognition",
+      "Commands",
+      "Next decisions"
+    ]
   },
   {
     "id": "attack-path",
@@ -13,6 +29,10 @@
     "href": "/tools/attack-path/",
     "category": "Path & evidence",
     "summary": "Turn recorded investigation steps into a connected path. Import JSON, inspect evidence, and distinguish outcomes and return loops.",
-    "facts": ["JSON exchange", "Explicit transitions", "Local first"]
+    "facts": [
+      "JSON exchange",
+      "Explicit transitions",
+      "Local first"
+    ]
   }
 ]

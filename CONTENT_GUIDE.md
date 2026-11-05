@@ -63,3 +63,21 @@ The site is hosted at https://armaanleg3nd.github.io/ from the `active-ghub-page
 Publish by copying a verified build into a clean checkout of `active-ghub-page`, committing it, and pushing normally. Keep the existing branch history; no force push is needed. To roll back, revert the deployment commit on that branch.
 
 `node scripts/prepare-pages.mjs` prepares `dist/` in the existing `.deploy/` checkout after it has been fetched/fast-forwarded to `origin/active-ghub-page`. It refuses a dirty or unexpected target, preserves Git metadata, and removes only obsolete tracked build files. Review the resulting diff, commit it, then push `HEAD:active-ghub-page` normally.
+
+## Plain OSCP reference
+
+`/oscp/` is a separate light-only reference with a white background, serif text, blue underlined links and a fixed hierarchical index. It does not import BaseLayout, the themed styles, ClientRouter or browser JavaScript. The current document's heading levels appear first in the index; the complete directory hierarchy is below. At narrow widths the index remains fixed above the document with independent scrolling.
+
+`src/content/oscp-plain.snapshot.json` pins the tracked public README, notes, procedures and cheatsheets from the exploitation-reference repository. It includes the focused AD Notes library. Public Markdown links are rewritten to plain routes, including exact heading fragments; diagram assets are copied to `public/oscp/diagrams/`. Commands are never rewritten. Source-only files and unrelated external links retain their public URLs.
+
+After updating public reference content:
+
+```powershell
+node scripts/sync-oscp-plain.mjs <public-reference-checkout>
+npm run check
+npm run build
+npm run test:plain
+npm run test:tools
+```
+
+The normal build uses the pinned snapshot and needs neither the private course workspace nor network access. The plain tests verify complete page coverage, untouched command text, heading targets, public-source link rewriting, diagram files and the absence of the themed shell or browser scripts. Verify the fixed index and heading jumps in desktop and narrow browser viewports when layout CSS changes. Publish through the existing GitHub Pages process above.
