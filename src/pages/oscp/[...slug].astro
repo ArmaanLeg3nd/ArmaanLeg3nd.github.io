@@ -18,6 +18,7 @@ const contents=renderPageIndex(page,headings);
   <a class="skip" href="#document">Skip to document</a>
   <aside id="reference-index">
    <p><strong><a href="/oscp/">OSCP Reference</a></strong></p>
+   <details class="reference-find"><summary>Find a section</summary><form id="reference-search" role="search" action="#"><label for="reference-query">Number, tool, field or error</label><input id="reference-query" type="search" maxlength="160" autocomplete="off" /><button type="submit">Find</button></form><p id="reference-search-status" role="status" aria-live="polite"></p><ol id="reference-results" hidden></ol><noscript>Use your browser’s Find command or the chapter index.</noscript></details>
    <nav aria-label="Reference index" set:html={navigation} />
    <hr /><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p>
   </aside>
@@ -25,8 +26,12 @@ const contents=renderPageIndex(page,headings);
   <main id="document" tabindex="-1"><article set:html={html} /><hr /><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main>
  </body>
 </html>
+<script>import "../../scripts/oscp-plain-client.ts";</script>
 <style is:global>
  :root {color-scheme:light}
+ .reference-find{margin:.5rem 0;font-size:14px}.reference-find label{display:block}.reference-find input{box-sizing:border-box;max-width:100%;width:100%}.reference-find ol{padding-left:1.2rem}.reference-find li{margin:.4rem 0}
+ [data-command-context]{font-size:.9em;border-left:2px solid #aaa;padding-left:.6rem} [data-command-context] p{margin:.4rem 0}
+ #page-index [aria-current="location"]{font-weight:bold;background:#ffffcc}
  html {background:white;color:black;scroll-padding-top:1rem}
  body {margin:0;font:17px/1.5 "Times New Roman",Times,serif}
  a,a:visited {color:#0000ee;text-decoration:underline}

@@ -1,5 +1,6 @@
 import snapshot from '../content/oscp-plain.snapshot.json' with {type:'json'};
 import {createMarkdownProcessor} from '@astrojs/markdown-remark';
+import {glossaryLinks,methodContext} from './oscp-study.ts';
 import {chapters,describe,escape,numberMarkup,resultRoutes} from './oscp-numbering.ts';
 
 export const plainPages=snapshot.pages;
@@ -7,7 +8,8 @@ export type PlainPage=typeof plainPages[number];
 export interface Heading {depth:number;slug:string;text:string;number?:string}
 interface IndexNode {key:string;title:string;url?:string;children:IndexNode[];depth?:number}
 const byPath=new Map(plainPages.map(page=>[page.path,page]));
-const processor=createMarkdownProcessor({syntaxHighlight:false,smartypants:false});
+const processor=createMarkdownProcessor({syntaxHighlight:false,smartypants:false,rehypePlugins:[glossaryLinks]});
+const plainProcessor=createMarkdownProcessor({syntaxHighlight:false,smartypants:false});
 const cache=new Map<string,Promise<{html:string;headings:Heading[]}>>();
 const publicRoots=['https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/','https://raw.githubusercontent.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/main/'];
 export function plainURL(page:PlainPage){return '/oscp/'+(page.slug?page.slug+'/':'');}
@@ -29,9 +31,10 @@ async function compile(page:PlainPage) {
    if(fence)return line;
    return line.replace(/(!?)\[([^\]]*)\]\(([^)]+)\)/g,(_all,image,label,target)=>image+'['+label+']('+localTarget(target,page.path)+')');
  }).join('\n');
- const result=await (await processor).render(markdown);
+ const result=await (await (page.path.endsWith('/glossary.md')?plainProcessor:processor)).render(markdown);
  if(/<(?:script|iframe|object|embed|style|form|input)\b|<[^>]+\son\w+\s*=|<[^>]+(?:href|src)=["']\s*(?:javascript|data):/i.test(result.code))throw new Error('Active reference markup: '+page.path);
- return numberMarkup(resultRoutes(result.code,page),page,result.metadata.headings);
+ const numbered=numberMarkup(resultRoutes(result.code,page),page,result.metadata.headings);
+ return {...numbered,html:methodContext(numbered.html,page.path)};
 }
 export function renderPlain(page:PlainPage) {
  if(!cache.has(page.path))cache.set(page.path,compile(page));
@@ -57,7 +60,7 @@ function list(nodes:IndexNode[],active:string):string {
    const isCurrent=node.url===active;
    const hasCurrent=(entry:IndexNode):boolean=>entry.url===active||entry.children.some(hasCurrent);
    const label=node.url?'<a href="'+escape(node.url)+'"'+(isCurrent?' aria-current="page"':'')+'>'+escape(node.title)+'</a>':escape(node.title);
-   return '<li>'+(node.children.length&&node.depth===undefined?'<details'+(hasCurrent(node)?' open':'')+'><summary>'+label+'</summary>'+list(node.children,active)+'</details>':label+(node.children.length?list(node.children,active):''))+'</li>';
+   return '<li>'+(node.children.length&&node.depth===undefined?'<details data-section="'+node.key+'"'+(hasCurrent(node)?' open':'')+'><summary>'+label+'</summary>'+list(node.children,active)+'</details>':label+(node.children.length?list(node.children,active):''))+'</li>';
  }).join('')+'</ul>';
 }
 export function renderIndex(current:PlainPage,_headings:Heading[]) {return list(indexTree(),plainURL(current));}

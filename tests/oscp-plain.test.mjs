@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {searchReference,validNavigationState} from '../src/lib/oscp-plain-search.ts';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 import {plainPages,plainURL,renderPlain,renderIndex,renderPageIndex,localTarget} from '../src/lib/oscp-plain.ts';
@@ -17,7 +18,7 @@ test('plain section covers every pinned document, without the themed shell',()=>
     assert.ok(html.includes('aria-label="Reference index"') && html.includes('id="document"'),page.path);
     assert.ok(html.includes('color-scheme') && html.includes('position:fixed'),page.path);
     assert.ok(!html.includes('ClientRouter') && !html.includes('tools-surface') && !html.includes('data-theme='),page.path);
-    assert.ok(!/<script\b/.test(html),page.path+': no browser JS required');
+    assert.ok(html.includes('id="reference-search"')&&html.includes('<noscript>'),page.path+': progressive search fallback');
   }
 });
 
@@ -115,4 +116,48 @@ test('conditional link numbers match the actual receiving method heading',async(
    links++;
  }
  assert.ok(links>400,'complete conditional link coverage');
+});
+
+test('search finds exact numbers, fields and failures without altering destinations',()=>{
+ const entries=JSON.parse(readFileSync(new URL('../dist/oscp/search.json',import.meta.url),'utf8'));
+ assert.ok(entries.length>1000);
+ assert.equal(searchReference(entries,'6.2.2.3')[0].number,'6.2.2.3');
+ assert.ok(searchReference(entries,'ObjectAceType').length>0);
+ assert.ok(searchReference(entries,'NT_STATUS_ACCESS_DENIED').length>0);
+ assert.equal(searchReference(entries,'').length,0);
+ assert.equal(searchReference(entries,'x'.repeat(161)).length,0);
+ for(const result of searchReference(entries,'SPN'))assert.ok(result.url.startsWith('/oscp/')&&result.url.includes('#'));
+});
+
+test('navigation memory accepts only bounded UI state',()=>{
+ const state=validNavigationState({open:{'6.2':true,secret:'PASSWORD'},left:20,right:{'/oscp/notes/ad-investigation/shares/':80,'https://other.test/':30},query:'SECRET',token:'SECRET'});
+ assert.deepEqual(state.open,{'6.2':true});
+ assert.deepEqual(state.right,{'/oscp/notes/ad-investigation/shares/':80});
+ assert.ok(!JSON.stringify(state).includes('SECRET'));
+ assert.equal(validNavigationState(null).left,0);
+ assert.equal(validNavigationState({left:-4}).left,0);
+});
+
+test('glossary links and contextual aids do not modify executable code',async()=>{
+ let panels=0,terms=0;
+ for(const page of plainPages) {
+   const {html}=await renderPlain(page);
+   panels+=(html.match(/data-command-context=/g)||[]).length;
+   terms+=(html.match(/class="glossary-term"/g)||[]).length;
+   for(const block of html.matchAll(/<pre[\s\S]*?<\/pre>/g))assert.ok(!block[0].includes('class="glossary-term"'),page.path);
+ }
+ assert.equal(panels,166);
+ assert.ok(terms>100);
+});
+
+test('AD support includes matched output cases, stop rules and unanswered practice',()=>{
+ const snapshot=JSON.parse(readFileSync(new URL('../src/content/oscp-plain.snapshot.json',import.meta.url),'utf8'));
+ for(const key of ['users','shares','spns','acl','bloodhound']) {
+   const page=snapshot.pages.find(p=>p.path==='notes/ad-investigation/'+key+'.md');
+   for(const label of ['Expected — raw evidence','Interesting — raw evidence','Failed / inconclusive — raw evidence','Normalized observations','Stop when','Revisit only when'])assert.ok(page.markdown.includes(label),key+': '+label);
+ }
+ for(const key of ['glossary','method-choice','worked-chain','practice-cases','notes-feedback'])assert.ok(snapshot.pages.some(p=>p.path==='notes/ad-investigation/'+key+'.md'),key);
+ const practice=snapshot.pages.find(p=>p.path==='notes/ad-investigation/practice-cases.md').markdown;
+ assert.equal((practice.match(/## 6\.6\.4\.\d Case/g)||[]).length,5);
+ assert.ok(!practice.includes('Correct answer:')&&!practice.includes('Solution:'));
 });
