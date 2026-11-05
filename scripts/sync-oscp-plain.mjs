@@ -13,6 +13,7 @@ const git = (...args) => execFileSync('git',['-C',repo,...args],{encoding:'utf8'
 const tracked = git('ls-files','-z').split('\0').filter(Boolean);
 const paths = tracked.filter(path => path === 'README.md' || /^(notes|reference|cheatsheets)\/.*\.md$/.test(path));
 const pages = [];
+const sections = JSON.parse(await readFile(resolve(repo,'notes/ad-investigation/sections.json'),'utf8'));
 for (const path of paths) {
   const markdown = (await readFile(resolve(repo,path),'utf8')).replace(/\r\n/g,'\n');
   const title = markdown.match(/^# (.+)$/m)?.[1];
@@ -30,6 +31,6 @@ for (const asset of assets) {
 }
 const contentHash = createHash('sha256').update(JSON.stringify(pages)).digest('hex');
 await writeFile(resolve(root,'src/content/oscp-plain.snapshot.json'),JSON.stringify({
-  schemaVersion:1, sourceRevision:git('rev-parse','HEAD'),contentHash,assets,pages
+  schemaVersion:1, sections, sourceRevision:git('rev-parse','HEAD'),contentHash,assets,pages
 })+'\n');
 console.log('Pinned '+pages.length+' plain documents and '+assets.length+' diagram assets; '+contentHash.slice(0,12));

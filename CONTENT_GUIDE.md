@@ -66,7 +66,7 @@ Publish by copying a verified build into a clean checkout of `active-ghub-page`,
 
 ## Plain OSCP reference
 
-`/oscp/` is a separate light-only reference with a white background, serif text, blue underlined links and a fixed hierarchical index. It does not import BaseLayout, the themed styles, ClientRouter or browser JavaScript. The current document's heading levels appear first in the index; the complete directory hierarchy is below. At narrow widths the index remains fixed above the document with independent scrolling.
+`/oscp/` is a separate light-only reference with a white background, serif text, blue underlined links and a fixed hierarchical index. It does not import BaseLayout, the themed styles, ClientRouter or browser JavaScript. The left index contains numbered chapters and section pages only. The current page's numbered contents and variants stay in a separate fixed index on the right. On narrow screens both indexes occupy independently scrolling columns above the document.
 
 `src/content/oscp-plain.snapshot.json` pins the tracked public README, notes, procedures and cheatsheets from the exploitation-reference repository. It includes the focused AD Notes library. Public Markdown links are rewritten to plain routes, including exact heading fragments; diagram assets are copied to `public/oscp/diagrams/`. Commands are never rewritten. Source-only files and unrelated external links retain their public URLs.
 
@@ -81,3 +81,5 @@ npm run test:tools
 ```
 
 The normal build uses the pinned snapshot and needs neither the private course workspace nor network access. The plain tests verify complete page coverage, untouched command text, heading targets, public-source link rewriting, diagram files and the absence of the themed shell or browser scripts. Verify the fixed index and heading jumps in desktop and narrow browser viewports when layout CSS changes. Publish through the existing GitHub Pages process above.
+
+Numbering follows the eight study units; chapter 0 holds shared orientation, 9 holds operational procedures and 10 holds cheatsheets. The AD section catalogue is authored in the public reference's notes/ad-investigation/sections.json. src/lib/oscp-numbering.ts numbers the remaining rendered resources while retaining original IDs and command text. Authored variants and comment-labelled command variants become numbered child sections. Method handoffs use the existing reviewed when/requires transitions, with one exact numbered receiving section per condition. Old URLs and original anchors remain valid.
