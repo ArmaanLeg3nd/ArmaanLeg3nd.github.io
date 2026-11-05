@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>HTTP and Web Application Mapping — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/reference/02-service-enumeration/10-http-web-mapping/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#baseline-the-application-identity">Baseline the application identity</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#manual-behavior-map">Manual behavior map</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#inspect-exposed-artifacts">Inspect exposed artifacts</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#discover-files-and-directories">Discover files and directories</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#discover-virtual-hosts">Discover virtual hosts</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#discover-parameters-and-object-values">Discover parameters and object values</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#map-api-methods-schema-and-authorization">Map API methods, schema and authorization</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#exit-and-handoffs">Exit and handoffs</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#wfuzz-alternative-for-paths-and-form-values">wfuzz alternative for paths and form values</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#http-proxy-variables--control-which-client-request-goes-through-burp">HTTP proxy variables — control which client request goes through Burp</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#extract-candidate-paths-from-a-downloaded-javascript-file">Extract candidate paths from a downloaded JavaScript file</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/#sources">Sources</a></li></ul></details><ul><li><details open><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details open><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/" aria-current="page">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="http-and-web-application-mapping">HTTP and Web Application Mapping</h1>
+<p><a href="/oscp/reference/02-service-enumeration/">← Stage index</a> · <a href="/oscp/cheatsheets/web-mapping/">Quick sheet</a> · <a href="/oscp/notes/Master_Notes/#web-behavior-to-access">Mechanics</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></p>
+<blockquote>
+<p><strong>Use when:</strong> an HTTP(S) endpoint must become a route, request, role, object and input map before exploitation.</p>
+</blockquote>
+<blockquote>
+<p><strong>Enter with:</strong> <code>SOURCE -> TARGET | tcp PORT | HTTP/TLS evidence | hostname clues | coverage limit</code>.</p>
+</blockquote>
+<h2 id="baseline-the-application-identity">Baseline the application identity</h2>
+<pre><code class="language-bash">curl -skL -D headers.txt -o body.html http://TARGET:PORT/
+curl -sk -o /dev/null -w 'code=%{http_code} bytes=%{size_download} type=%{content_type} redirect=%{redirect_url}\n' http://TARGET:PORT/
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> record the scheme, hostname/<code>Host</code> header, port, redirects, page title, certificate names, server/framework clues and whether the view is anonymous or authenticated.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — explicit virtual-host candidate</strong></summary>
+<pre><code class="language-bash">curl -sk -H 'Host: CANDIDATE.DOMAIN' http://TARGET:PORT/
+</code></pre>
+<p>Compare it with a random hostname. A different status alone is weak evidence; compare body, length, title and redirects.</p>
+</details>
+<details>
+<summary><strong>Variant — preserve cookies and follow redirects</strong></summary>
+<pre><code class="language-bash">curl -skL -c cookies.txt -b cookies.txt http://TARGET:PORT/PATH
+</code></pre>
+<p>Use a separate cookie jar per identity. Do not mix anonymous, ordinary-user and administrator evidence.</p>
+</details>
+<details>
+<summary><strong>Variant — replay through Burp Community</strong></summary>
+<pre><code class="language-bash">curl -sk -x http://127.0.0.1:8080 http://TARGET:PORT/PATH
+</code></pre>
+<p>Confirm the proxy listener is active on <code>127.0.0.1:8080</code>. Use <code>-k</code> only for the controlled lab because it disables destination-certificate verification.</p>
+</details>
+<h2 id="manual-behavior-map">Manual behavior map</h2>
+<p>For every visible function, capture one unchanged request in Burp Proxy history, send it to Repeater and record:</p>
+<pre><code class="language-text">METHOD PATH | CONTENT-TYPE | ACCESS CONTEXT/ROLE
+INPUT LOCATION + NAME | BASELINE VALUE
+STATUS | LENGTH/HASH | REDIRECT | MARKER/ERROR/TIME
+OBJECT/FUNCTION SELECTED | NEXT ONE-VARIABLE TEST
+</code></pre>
+<p>Check login/registration/reset, profiles/objects, search/filter/pagination, download/export/preview, upload/import, administration and every JavaScript API call.</p>
+<blockquote>
+<p><strong>Next:</strong> a browser-side restriction is not server authorization. Replay the raw request and change one field, object reference, method or access-context element at a time.</p>
+</blockquote>
+<h2 id="inspect-exposed-artifacts">Inspect exposed artifacts</h2>
+<pre><code class="language-bash">curl -sk http://TARGET:PORT/robots.txt
+curl -sk http://TARGET:PORT/sitemap.xml
+curl -sk http://TARGET:PORT/.git/HEAD
+curl -sk http://TARGET:PORT/openapi.json
+curl -sk http://TARGET:PORT/swagger.json
+</code></pre>
+<p>Also inspect HTML comments, hidden inputs, form actions, linked JavaScript, route strings, source-map references, cookies and response headers.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> a path, parameter, API schema, object identifier, component or secret-bearing artifact that creates a specific next request. Source disclosure is not command execution.</p>
+</blockquote>
+<h2 id="discover-files-and-directories">Discover files and directories</h2>
+<p>Request a random nonexistent path first and record its status, length and body marker.</p>
+<pre><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w /usr/share/wordlists/dirb/common.txt -t 10 -o gobuster-root.txt
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> manually verified routes including useful <code>200</code>, redirect, <code>401</code>, <code>403</code> and <code>405</code> responses.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — technology-aware extensions</strong></summary>
+<pre><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w WORDLIST -x php,txt,bak,old,zip -t 10 -o gobuster-ext.txt
+</code></pre>
+<p>Choose extensions from observed stack evidence; do not spray every extension.</p>
+</details>
+<details>
+<summary><strong>Variant — authenticated discovery</strong></summary>
+<pre><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w WORDLIST -c 'SESSION=VALUE' -H 'Authorization: Bearer TOKEN' -t 10 -o gobuster-auth.txt
+</code></pre>
+<p>Use only the cookie or header that applies. An expired session can turn every result into the same login redirect.</p>
+</details>
+<details>
+<summary><strong>Variant — filter a confirmed wildcard body length</strong></summary>
+<pre><code class="language-bash">gobuster dir -u http://TARGET:PORT/ -w WORDLIST --exclude-length NOISE_LENGTH -t 10 -o gobuster-filtered.txt
+</code></pre>
+<p>Filtering without first confirming the noise response can hide a real path.</p>
+</details>
+<h2 id="discover-virtual-hosts">Discover virtual hosts</h2>
+<pre><code class="language-bash">gobuster vhost -u http://DOMAIN:PORT/ --append-domain -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -o vhosts.txt
+</code></pre>
+<p>Alternative with automatic calibration:</p>
+<pre><code class="language-bash">ffuf -w WORDLIST -u http://TARGET:PORT/ -H 'Host: FUZZ.DOMAIN' -ac -o ffuf-vhosts.json
+</code></pre>
+<blockquote>
+<p><strong>Failure cue:</strong> uniform status/length may be the default vhost. Compare each candidate with a random host header before adding it to the application map.</p>
+</blockquote>
+<h2 id="discover-parameters-and-object-values">Discover parameters and object values</h2>
+<p>GET parameter names:</p>
+<pre><code class="language-bash">ffuf -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -u 'http://TARGET:PORT/PATH?FUZZ=test' -ac -o params-get.json
+</code></pre>
+<p>POST form parameter names:</p>
+<pre><code class="language-bash">ffuf -w WORDLIST -u http://TARGET:PORT/PATH -X POST -H 'Content-Type: application/x-www-form-urlencoded' -d 'known=value&#x26;FUZZ=test' -ac -o params-post.json
+</code></pre>
+<p>Object values with an authenticated API:</p>
+<pre><code class="language-bash">ffuf -w NUMBERS -u 'http://TARGET:PORT/api/objects/FUZZ' -H 'Authorization: Bearer TOKEN' -mc all -fc 404 -o object-values.json
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> a manually reproduced parameter or value that changes application behavior. Tool outliers are candidates, not confirmed access-control flaws.</p>
+</blockquote>
+<details>
+<summary><strong>ffuf — preserve a captured authenticated request</strong></summary>
+<p>Save a working raw request from the proxy as request.txt, retain its Host/cookie/body, and put FUZZ at the single parameter name/value or path being tested. Replay it once manually first. The request file does not specify TLS: choose the transport explicitly.</p>
+<pre><code class="language-bash"># HTTPS request, including its original method and session headers
+ffuf -request request.txt -request-proto https -w WORDLIST -mc all -ac -t 10 -o request-https.json
+
+# Plain HTTP request: otherwise ffuf defaults to HTTPS
+ffuf -request request.txt -request-proto http -w WORDLIST -mc all -ac -t 10 -o request-http.json
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> compare an outlier's status/length/body with a known missing value, then replay that exact request. A login redirect for every value → refresh the session before continuing. A one-time CSRF token → repair token handling; the saved-request flag does not refresh it automatically.</p>
+</blockquote>
+<p><a href="https://github.com/ffuf/ffuf/wiki/Home#request-configuration">ffuf request configuration</a>.</p>
+</details>
+<h2 id="map-api-methods-schema-and-authorization">Map API methods, schema and authorization</h2>
+<pre><code class="language-bash">curl -ski http://TARGET:PORT/api/v1/PATH
+curl -ski -X OPTIONS http://TARGET:PORT/api/v1/PATH
+curl -ski -X POST -H 'Content-Type: application/json' -d '{"username":"TEST_USER","password":"TEST_PASSWORD"}' http://TARGET:PORT/api/v1/login
+</code></pre>
+<blockquote>
+<p><strong>Interpretation:</strong> <code>405</code> can establish that a route exists but rejects the method. Validation errors can reveal required fields. A token establishes only the authorization demonstrated by a later request.</p>
+</blockquote>
+<p>Build a matrix across anonymous, user A, user B and administrator contexts where available:</p>
+<pre><code class="language-text">PATH | METHOD | IDENTITY/ROLE | OBJECT/PROPERTY | RESULT | NEXT
+</code></pre>
+<h2 id="exit-and-handoffs">Exit and handoffs</h2>
+<blockquote>
+<p><strong>Exit condition:</strong> each interesting function has a baseline request, access context, controllable input, expected result, observed difference and cheapest next test.</p>
+</blockquote>
+<ul>
+<li>file/path selector -> <a href="/oscp/reference/03-initial-access/02-web-file-handling/">file handling attacks</a>;</li>
+<li>shell/diagnostic or database-backed input -> <a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">command and SQL injection</a>;</li>
+<li>object/role/property or browser-script context -> <a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">access control and XSS</a>;</li>
+<li>product/plugin/version exploit candidate -> Block 6 public-exploit adaptation;</li>
+<li>new credential -> Block 5 credential handling and authenticated re-enumeration;</li>
+<li>verified server command execution -> Block 7 session handling.</li>
+</ul>
+<h2 id="wfuzz-alternative-for-paths-and-form-values">wfuzz alternative for paths and form values</h2>
+<p>Use when wfuzz is the available/familiar client for the same controlled-response test. Choose a nonexistent control first; preserve the actual Host and authenticated session.</p>
+<pre><code class="language-bash"># Paths; hiding 404s is appropriate only after checking the site's failure behavior
+wfuzz -c -z file,WORDLIST --hc 404 -u 'http://TARGET:PORT/FUZZ'
+
+# A form value in a working authenticated request
+wfuzz -c -z file,WORDLIST -b 'session=COOKIE' \
+  -d 'name=FUZZ' --hc 404 -u 'http://TARGET:PORT/PATH'
+</code></pre>
+<p>Read: status/length/body outliers need manual replay. Uniform redirects, wildcard bodies or expired cookies → fix the response/session controls before expanding the list. The presence of an outlier is not a vulnerability result.</p>
+<p>Sources: <a href="https://github.com/xmendez/wfuzz">upstream 1</a>.</p>
+<h2 id="http-proxy-variables--control-which-client-request-goes-through-burp">HTTP proxy variables — control which client request goes through Burp</h2>
+<p>Use when a client honors HTTP proxy environment variables. Keeping them on a single invocation avoids accidentally proxying later unrelated traffic.</p>
+<pre><code class="language-bash">http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080 \
+  curl -i http://TARGET:PORT/PATH
+
+# Explicit proxy and empty bypass list for a request that otherwise skips the proxy
+curl --proxy http://127.0.0.1:8080 --noproxy '' -i http://TARGET:PORT/PATH
+</code></pre>
+<p>Read: confirm the request in Burp history before trusting the replay. HTTP proxy settings do not tunnel arbitrary SMB/Kerberos traffic. For HTTPS, the client's certificate trust still matters; distinguish a local proxy/TLS error from an application response.</p>
+<p>Sources: <a href="https://curl.se/docs/manpage.html">upstream 1</a>.</p>
+<h2 id="extract-candidate-paths-from-a-downloaded-javascript-file">Extract candidate paths from a downloaded JavaScript file</h2>
+<p>Use after reading an actual application JS file. This is a quick string candidate pass; it does not execute the script or understand its routing logic.</p>
+<pre><code class="language-bash">curl -f http://TARGET:PORT/PATH/app.js -o app.js
+python3 -c 'import re; print("\n".join(sorted(set(re.findall(r"/[A-Za-z0-9_./-]+",open("app.js").read())))))' > js-paths.txt
+</code></pre>
+<p>Read: inspect the list and surrounding source for the correct hostname, API prefix, method, parameter names and required session. Comments, regular expressions and third-party URLs can create false candidates. Replay an observed function before turning strings into a fuzzing list; remove anything outside the assigned scope.</p>
+<p>Sources: <a href="https://portswigger.net/web-security/api-testing">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<p>Supplied PEN-200 Ch 8, pp201-231; <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/web">Hexdump web modules</a>; <a href="https://portswigger.net/burp/documentation/desktop/tools/proxy">Burp Proxy</a>; <a href="https://curl.se/docs/manpage.html">curl</a>; <a href="https://github.com/OJ/gobuster">Gobuster</a>; <a href="https://github.com/ffuf/ffuf">ffuf</a>.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

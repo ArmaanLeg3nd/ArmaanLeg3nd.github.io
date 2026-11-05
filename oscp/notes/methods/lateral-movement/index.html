@@ -1,0 +1,1050 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Move to another host — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/lateral-movement/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/lateral-movement/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#test-the-destination-from-the-real-source">Test the destination from the real source</a></li><li><a href="/oscp/notes/methods/lateral-movement/#match-password-hash-key-or-ticket-to-the-client">Match password, hash, key or ticket to the client</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/lateral-movement/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/lateral-movement/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/lateral-movement/#match-route-destination-service-and-effective-authorization">Match route, destination service and effective authorization</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#select-password-nt-hash-key-to-ticket-or-ticket-authentication">Select password, NT hash, key-to-ticket or ticket authentication</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-1">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#pass-the-hash">Pass-the-Hash</a></li><li><a href="/oscp/notes/methods/lateral-movement/#overpass-the-hash--key-to-ticket">Overpass-the-Hash / key-to-ticket</a></li><li><a href="/oscp/notes/methods/lateral-movement/#pass-the-ticket">Pass-the-Ticket</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#execute-through-uploaded-service-creation-using-psexec">Execute through uploaded service creation using PsExec</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-2">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#execute-commands-through-service-command-lines-and-smb-output">Execute commands through service command lines and SMB output</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-3">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#execute-through-remote-task-scheduler">Execute through remote Task Scheduler</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-4">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#execute-through-wmi-or-native-cim-over-dcom">Execute through WMI or native CIM over DCOM</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-5">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#execute-through-an-authorized-dcom-application-object">Execute through an authorized DCOM application object</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-6">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#use-winrm-winrs-or-powershell-remoting">Use WinRM, WinRS or PowerShell remoting</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-7">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-7">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-7">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-7">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-7">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-7">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#evil-winrm">Evil-WinRM</a></li><li><a href="/oscp/notes/methods/lateral-movement/#native-winrs">Native WinRS</a></li><li><a href="/oscp/notes/methods/lateral-movement/#powershell-remoting">PowerShell remoting</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-7">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-7">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-7">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-7">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#obtain-an-authorized-rdp-interactive-session">Obtain an authorized RDP interactive session</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#1-purpose-and-result-8">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#2-recognition-clues-8">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#find-the-clue-from-your-starting-access-8">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#3-prerequisites-8">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/lateral-movement/#5-why-it-works-8">5. Why it works</a></li><li><a href="/oscp/notes/methods/lateral-movement/#6-execute-and-choose-variants-8">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/lateral-movement/#baseline-prompt-for-the-password">Baseline: prompt for the password</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#7-worked-example--hypothetical-8">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/lateral-movement/#8-verify-the-result-8">8. Verify the result</a></li><li><a href="/oscp/notes/methods/lateral-movement/#9-failure-and-fallback-8">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/lateral-movement/#10-next-transitions-8">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/lateral-movement/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/" aria-current="page">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="move-to-another-host">Move to another host</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>Select credential type → accepted authentication → reachable service → service authorization → execution effect. Hash/ticket use is an authentication dimension; SMB, tasks, WMI, WinRM and RDP are different access mechanisms.</p>
+<p><strong>Speedrun blocks:</strong> 12; consumes routes from 13. <strong>Documented methods:</strong> 9.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="test-the-destination-from-the-real-source">Test the destination from the real source</h3>
+<p>A working password on one service does not establish execution permission on another host.</p>
+<pre><code class="language-bash">nmap -Pn -sT -p 135,445,3389,5985,5986 TARGET
+getent hosts TARGET_HOST
+</code></pre>
+<ul>
+<li><strong>If WinRM is reachable and the account has endpoint rights:</strong> Use the WinRM procedure and verify the resulting token. → <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>.</li>
+<li><strong>If SMB/RPC is reachable and service-control rights are confirmed:</strong> Use the service-execution procedure with a separate output path. → <a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>.</li>
+<li><strong>Otherwise:</strong> Only the listener is reachable: inspect actual endpoint authorization before selecting an execution tool. → <a href="/oscp/notes/methods/lateral-movement/#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a>.</li>
+</ul>
+<h3 id="match-password-hash-key-or-ticket-to-the-client">Match password, hash, key or ticket to the client</h3>
+<p>Use the existing Impacket/NetExec protocol-specific examples; do not treat successful authentication as remote execution.</p>
+<pre><code class="language-bash">klist
+getent hosts TARGET_HOST
+date -u
+</code></pre>
+<ul>
+<li><strong>If Accepted authentication plus remote service rights:</strong> Check share/SCM permissions and output reachability. → <a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>.</li>
+<li><strong>If WMI/task rights with RPC/DCOM connectivity:</strong> Check the exact namespace/task authorization and output channel. → <a href="/oscp/notes/methods/lateral-movement/#move-wmi">Execute through WMI or native CIM over DCOM</a>.</li>
+<li><strong>Otherwise:</strong> The artifact is rejected: recheck identity scope, material format, service name and transport. → <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start with material tied to a known identity and a destination candidate; neither valid authentication nor remote execution rights are assumed.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>Check the destination from the actual source, including dynamic RPC and names: <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</li>
+<li>Classify password, NT hash, long-term key or service-scoped ticket: <a href="/oscp/notes/methods/lateral-movement/#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a>.</li>
+<li>Match effective service/task/WMI authorization to its separate output path: <a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>; <a href="/oscp/notes/methods/lateral-movement/#move-smbexec">Execute commands through service command lines and SMB output</a>; <a href="/oscp/notes/methods/lateral-movement/#move-tasks">Execute through remote Task Scheduler</a>; <a href="/oscp/notes/methods/lateral-movement/#move-wmi">Execute through WMI or native CIM over DCOM</a>.</li>
+<li>Check endpoint or remote-interactive rights for WinRM/RDP and verify the resulting token: <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>; <a href="/oscp/notes/methods/lateral-movement/#move-rdp">Obtain an authorized RDP interactive session</a>.</li>
+</ol>
+<p>PowerView examples require a reviewed compatible script in the current authenticated directory context. Check the loaded copy rather than mixing legacy/fork parameter names; the directory-mapping entry includes native, ADSI and LDAP alternatives.</p>
+<pre><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-Command -Module PowerView
+</code></pre>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>Route, authorization and authentication material:</strong> <a href="#move-preflight">Match route, destination service and effective authorization</a>, <a href="#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a>.</li>
+<li><strong>Service and scheduled-task execution:</strong> <a href="#move-services">Execute through uploaded service creation using PsExec</a>, <a href="#move-smbexec">Execute commands through service command lines and SMB output</a>, <a href="#move-tasks">Execute through remote Task Scheduler</a>.</li>
+<li><strong>Management protocol execution:</strong> <a href="#move-wmi">Execute through WMI or native CIM over DCOM</a>, <a href="#move-dcom">Execute through an authorized DCOM application object</a>, <a href="#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>.</li>
+<li><strong>Interactive access:</strong> <a href="#move-rdp">Obtain an authorized RDP interactive session</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#move-preflight">Match route, destination service and effective authorization</a></td><td>A credential appears valid but the destination's usable access is unknown</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>Real source-to-service route, correct identity context and protocol-specific execution/logon rights</td><td>A selected movement method and a decision-changing preflight result</td></tr><tr><td><a href="#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a></td><td>A password, actual NT hash, AES/NT long-term key or ticket is available</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>Credential type accepted by the chosen protocol/client, correct identity/domain, naming/time and destination authorization</td><td>A compatible authenticated service operation using the available material</td></tr><tr><td><a href="#move-services">Execute through uploaded service creation using PsExec</a></td><td>A destination grants administrative-share write and service-control rights</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>SMB/SCM reachability, writable required share, effective service-creation/start rights and an accepted password/hash or supported Kerberos context</td><td>A service-backed remote execution channel with verified resulting identity</td></tr><tr><td><a href="#move-smbexec">Execute commands through service command lines and SMB output</a></td><td>SCM rights and SMB output access exist but an uploaded service binary is unsuitable</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>Accepted authentication, service create/start rights and the selected output-share/server path</td><td>A remote command result through service-based execution</td></tr><tr><td><a href="#move-tasks">Execute through remote Task Scheduler</a></td><td>The identity has remote task rights and a compatible output path</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>Task Scheduler RPC reachability, effective task-creation rights and the required administrative output access</td><td>A verified one-shot remote task command effect</td></tr><tr><td><a href="#move-wmi">Execute through WMI or native CIM over DCOM</a></td><td>A destination exposes WMI/DCOM and the identity has useful namespace/process rights</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>RPC endpoint mapper plus negotiated dynamic ports; effective WMI/DCOM rights; the selected output path may additionally need SMB</td><td>A remote process effect and, when available, retrieved command output</td></tr><tr><td><a href="#move-dcom">Execute through an authorized DCOM application object</a></td><td>A usable remote COM application and effective activation/method rights</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>RPC/dynamic-port route, allowed DCOM activation and application method, supported authentication and target component</td><td>A verified remote application-mediated process effect</td></tr><tr><td><a href="#move-winrm">Use WinRM, WinRS or PowerShell remoting</a></td><td>A WinRM listener and a candidate endpoint-authorized account</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>Reachable HTTP(S) listener, accepted authentication and endpoint/session configuration permissions; hash/ticket support depends on client/context</td><td>A verified remote command session under the endpoint-authorized identity</td></tr><tr><td><a href="#move-rdp">Obtain an authorized RDP interactive session</a></td><td>RDP is reachable and the identity may have remote-interactive logon rights</td><td>Identified authentication material, destination service reachability and a candidate authorized identity</td><td>Allowed account/session policy and compatible client/NLA/TLS; hash-based Restricted Admin has additional supported-policy/admin requirements</td><td>A verified remote-interactive desktop/logon context</td></tr></tbody></table>
+<p><a id="move-preflight"></a></p>
+<h2 id="match-route-destination-service-and-effective-authorization">Match route, destination service and effective authorization</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#1-choose-by-credential-and-service">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#2-preflight-from-the-actual-source">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#3-validate-authentication-separately-from-execution">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#9-local-versus-domain-identity-and-remote-uac">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#10-output-channels-session-0-and-double-hop">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#12-after-movement">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>A selected movement method and a decision-changing preflight result.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>A credential appears valid but the destination's usable access is unknown.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use the discovered destination name/address and known credential record, then inspect the selected service ports from the actual direct or established pivot source.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nmap -Pn -sT -p 135,445,3389,5985,5986 TARGET
+getent hosts TARGET_HOST
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">445/tcp open microsoft-ds
+135/tcp open msrpc
+5985/tcp filtered wsman
+</code></pre>
+<p><strong>Recognize this detail:</strong> SMB/RPC are transport candidates while WinRM is not yet reachable; dynamic RPC and authorization are still untested.</p>
+<p><strong>Still missing before method selection:</strong> Probe the destination from the real source. Check DNS/service names and each required SMB/RPC/WinRM endpoint, then test effective service authorization. An open port and an accepted password do not establish a working remote execution method.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>One compatible service accepts the identity and authorized operation: choose that movement mechanism.</td></tr><tr><td>Ruled out in this context</td><td>The intended protocol is conclusively unavailable from this source: reject that route/service combination.</td></tr><tr><td>Inconclusive</td><td>Open 135 does not settle dynamic RPC; an SMB admin indicator does not settle WMI/WinRM/RDP.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> Real source-to-service route, correct identity context and protocol-specific execution/logon rights.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nmap -Pn -sT -p 135,445,3389,5985,5986 TARGET
+getent hosts TARGET_HOST
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>SMB authentication, SCM/WMI rights, WinRM endpoint rights and RDP logon rights are different. Local-account remote filtering and second-hop delegation can change an otherwise valid credential's effect.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Material</th><th>Compatible starting paths</th><th>Important boundary</th></tr></thead><tbody><tr><td>Password</td><td>SMB/SCM, WMI/DCOM, WinRM/WinRS, RDP</td><td>Correct password does not grant the required logon or execution right</td></tr><tr><td>NT hash</td><td>NTLM-capable SMB/WMI/WinRM; RDP only through Restricted Admin where supported</td><td>Net-NTLM and DCC2 are not reusable NT hashes</td></tr><tr><td>TGT/ccache</td><td>Kerberos-capable tool using target FQDN/SPN</td><td>Ticket identity, realm, lifetime, DNS and KDC route must match</td></tr><tr><td>TGS</td><td>Only the named <code>SERVICE/HOST</code> and compatible client</td><td>A CIFS ticket does not authorize WinRM, WMI or RDP</td></tr><tr><td>AES/NT long-term key</td><td>Request a TGT, then use Kerberos</td><td>RC4/NT-key requests can fail where RC4 is disabled</td></tr><tr><td>Local-account password/hash</td><td>NTLM or RDP in the target's local account context</td><td>Remote UAC/account restrictions commonly filter non-RID-500 local administrators</td></tr></tbody></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Reachable service</th><th>Common execution/access mechanisms</th><th>Usual authorization</th></tr></thead><tbody><tr><td>SMB 445 + SCM/RPC</td><td>PsExec, SMBExec, service creation</td><td>Administrative share plus SCM/service rights</td></tr><tr><td>RPC endpoint mapper 135 + dynamic RPC; often SMB for output</td><td>WMIExec, native CIM/WMI, DCOM</td><td>Remote WMI/DCOM rights, commonly an effective administrator token</td></tr><tr><td>Task Scheduler RPC plus SMB output</td><td>ATExec</td><td>Remote task creation and administrative output access</td></tr><tr><td>WinRM 5985/5986</td><td>WinRS, PowerShell remoting, Evil-WinRM</td><td>Enabled endpoint and endpoint/session authorization</td></tr><tr><td>RDP 3389</td><td>FreeRDP, MSTSC</td><td>Remote-interactive logon right; Restricted Admin requires administrator access</td></tr></tbody></table>
+<p>Directly routed source:</p>
+<pre><code class="language-bash">nmap -Pn -sT -sV -p 135,139,445,3389,5985,5986 TARGET -oN movement-preflight.txt
+getent hosts TARGET_HOST
+date -u
+</code></pre>
+<p>Windows source:</p>
+<pre><code class="language-powershell">Resolve-DnsName TARGET_HOST
+Test-NetConnection TARGET_HOST -Port 445
+Test-NetConnection TARGET_HOST -Port 5985
+Test-NetConnection TARGET_HOST -Port 3389
+w32tm /query /status
+</code></pre>
+<p>Port 135 alone does not prove WMI/DCOM viability because RPC commonly negotiates a dynamic high port. When the destination is reachable only through a pivot, perform these checks through the established Block 13 route and respect the client/proxy's transport limits.</p>
+<p>Record:</p>
+<pre><code class="language-text">SOURCE POSITION -> TARGET FQDN/IP -> ROUTE -> SERVICE/PORT
+-> CREDENTIAL TYPE -> LOCAL/DOMAIN IDENTITY -> EXPECTED RIGHT
+-> CHOSEN METHOD -> EXPECTED EFFECT
+</code></pre>
+<p>NetExec can classify a selected SMB credential:</p>
+<pre><code class="language-bash"># Domain password
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD'
+
+# Domain NT hash
+nxc smb TARGET -d DOMAIN -u USER -H NT_HASH
+
+# Target-local account
+nxc smb TARGET -u Administrator -H NT_HASH --local-auth
+
+# Prove only share access
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<blockquote>
+<p>A successful login proves SMB authentication. <code>(Pwn3d!)</code> is NetExec's SMB administrative-context indicator, not proof that WinRM, RDP, WMI or every SMB execution method will succeed.</p>
+</blockquote>
+<p>For one justified execution proof:</p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' -x "hostname &#x26; whoami" --exec-method wmiexec
+</code></pre>
+<p>Current NetExec can select <code>wmiexec</code>, <code>atexec</code> or <code>smbexec</code>; without an explicit method it may fail over between them. Use a forced method when diagnosing prerequisites so the result remains attributable.</p>
+<pre><code class="language-text">DOMAIN\USER  -> domain identity; evaluate target-local group/right
+TARGET\USER  -> SAM identity on that target
+./USER        -> tool-specific local-account selection
+</code></pre>
+<p>Common failure pattern:</p>
+<ol>
+<li>a local account authenticates over SMB;</li>
+<li>Windows issues a filtered remote token;</li>
+<li><code>ADMIN$</code>, SCM or WMI administrative operations fail.</li>
+</ol>
+<p>Do not “fix” this by changing <code>LocalAccountTokenFilterPolicy</code> during an attack workflow. Use a method already permitted by the target's configuration, the built-in Administrator where legitimately obtained and applicable, RDP if authorized, or another mapped identity.</p>
+<p>Remote process creation, stdout retrieval and an interactive shell are separate states:</p>
+<pre><code class="language-text">AUTHENTICATED
+-> REMOTE OPERATION AUTHORIZED
+-> PROCESS/TASK/SERVICE CREATED
+-> COMMAND EFFECT OCCURRED
+-> OUTPUT RETURNED OR CALLBACK CONNECTED
+-> USABLE SESSION
+</code></pre>
+<ul>
+<li>PsExec returns named-pipe I/O through its service.</li>
+<li>WMIExec normally redirects output to an SMB share.</li>
+<li>SMBExec redirects command output while repeatedly creating services.</li>
+<li>ATExec writes output under <code>ADMIN$\Temp</code>.</li>
+<li>Native WMI/DCOM may return only a PID/return value; verify a harmless file or another bounded effect.</li>
+<li>WMI/DCOM/service processes commonly run in session 0, so a GUI is not visible to the logged-on user.</li>
+<li>WinRM creates a remote shell/runspace and returns structured or text output.</li>
+</ul>
+<p>A WinRM/PowerShell session on HOST_A may not possess delegable credentials for HOST_B. That “double hop” is a credential-context problem, not proof that HOST_B or the password is wrong. Prefer executing from the source that actually holds the credential/ticket rather than enabling broad delegation.</p>
+<pre><code class="language-cmd">hostname
+whoami /all
+ipconfig /all
+route print
+netstat -ano
+klist
+</code></pre>
+<p>Re-enumerate:</p>
+<ol>
+<li>local privilege and accessible credential sources;</li>
+<li>domain groups, ACLs, shares and host rights under the new identity;</li>
+<li>logged-on sessions and service accounts;</li>
+<li>interfaces, routes, DNS, listeners and internal reachability;</li>
+<li>the next evidence-backed host/identity transition.</li>
+</ol>
+<p>Do not overwrite the earlier state. Record the source host, credential form, authentication protocol, execution method, returned identity and side effects.</p>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: a credential authenticates to SMB but WMI fails. Test: check RPC endpoint/dynamic-port reachability and authorization. Illustrative output: TCP/445 works but negotiated RPC is blocked. Interpretation: choose a reachable authorized SMB method or repair the route.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Record exact source, credential type, destination name/service and successfully permitted operation.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>Do not infer every service works from an administrative SMB indicator. Separate authentication, route, execution and output-channel failures.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>; <a href="/oscp/notes/methods/lateral-movement/#move-wmi">Execute through WMI or native CIM over DCOM</a>; <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>; <a href="/oscp/notes/methods/lateral-movement/#move-rdp">Obtain an authorized RDP interactive session</a>; <a href="/oscp/notes/methods/lateral-movement/#move-tasks">Execute through remote Task Scheduler</a>; <a href="/oscp/notes/methods/lateral-movement/#move-dcom">Execute through an authorized DCOM application object</a>.</p>
+<p><a id="move-auth-material"></a></p>
+<h2 id="select-password-nt-hash-key-to-ticket-or-ticket-authentication">Select password, NT hash, key-to-ticket or ticket authentication</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#8-pass-the-hash-overpass-the-hash-and-pass-the-ticket">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>A compatible authenticated service operation using the available material.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>A password, actual NT hash, AES/NT long-term key or ticket is available.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Return to the credential source and inspect format, identity and ticket service scope before selecting a remote protocol.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">klist
+getent hosts TARGET_HOST
+date -u
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Available cache: cifs/TARGET_HOST@REALM
+No TGT present
+Target hostname: resolves through selected route
+</code></pre>
+<p><strong>Recognize this detail:</strong> The cache permits investigating a matching CIFS action, not arbitrary WinRM or a new TGS without a TGT/KDC route.</p>
+<p><strong>Still missing before method selection:</strong> Match NTLM versus Kerberos support, account/domain, key/encryption policy, name/time and destination rights.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The selected client/service accepts the exact material and action: use that method.</td></tr><tr><td>Ruled out in this context</td><td>Only a challenge response is available for a direct NT-hash client: reject the type mismatch.</td></tr><tr><td>Inconclusive</td><td>An unlabelled hash or unknown ticket lifetime requires classification first.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> Credential type accepted by the chosen protocol/client, correct identity/domain, naming/time and destination authorization.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">klist
+getent hosts TARGET_HOST
+date -u
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>Pass-the-Hash uses NTLM key material; Overpass-the-Hash/key-to-ticket requests Kerberos credentials; Pass-the-Ticket uses an existing ticket. They do not grant the same services without their own rights and scope.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<h5 id="pass-the-hash">Pass-the-Hash</h5>
+<pre><code class="language-text">NT HASH -> NTLM CHALLENGE/RESPONSE -> TARGET SERVICE
+</code></pre>
+<p>PtH requires an NTLM-capable service, a valid account context and the service-specific right. SMB share access may work without administrative execution; PsExec/WMIExec/SMBExec usually need administrative rights. Remote UAC commonly filters non-built-in local administrators. Domain accounts in the target Administrators group traditionally receive a full remote token, but newer Administrator Protection policy can change that result—trust the observed target token and method-specific authorization.</p>
+<h5 id="overpass-the-hash--key-to-ticket">Overpass-the-Hash / key-to-ticket</h5>
+<p>Mimikatz network-credential context:</p>
+<pre><code class="language-text">sekurlsa::pth /user:USER /domain:DOMAIN /ntlm:NT_HASH /run:powershell.exe
+</code></pre>
+<p>Rubeus TGT request:</p>
+<pre><code class="language-cmd">Rubeus.exe asktgt /user:USER /domain:DOMAIN /rc4:NT_HASH /dc:DC_HOST /ptt
+klist
+</code></pre>
+<p>AES alternative:</p>
+<pre><code class="language-cmd">Rubeus.exe asktgt /user:USER /domain:DOMAIN /aes256:AES256_KEY /dc:DC_HOST /ptt
+</code></pre>
+<p>Trigger a Kerberos service request with the hostname, then inspect:</p>
+<pre><code class="language-cmd">dir \\TARGET_HOST\C$
+klist
+</code></pre>
+<blockquote>
+<p>In a Mimikatz <code>sekurlsa::pth</code> process, <code>whoami</code> can still show the original local process token while network authentication uses the supplied identity. Validate the ticket's client and the remote result rather than treating local <code>whoami</code> as the network identity.</p>
+</blockquote>
+<h5 id="pass-the-ticket">Pass-the-Ticket</h5>
+<p>Windows:</p>
+<pre><code class="language-cmd">Rubeus.exe ptt /ticket:ticket.kirbi
+klist
+</code></pre>
+<pre><code class="language-text">kerberos::ptt ticket.kirbi
+</code></pre>
+<p>Linux:</p>
+<pre><code class="language-bash">export KRB5CCNAME="$PWD/ticket.ccache"
+klist
+impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<p>A TGS must name the selected service/hostname. A TGT can request a suitable TGS only while valid and when the KDC is reachable. Ticket import is not lateral movement until the destination accepts it and produces the intended authorized effect.</p>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: an NT hash works for NTLM SMB but an RC4 TGT request fails. Test: inspect domain encryption policy and available key types. Illustrative output: RC4 is disabled. Interpretation: use an allowed existing service route or a supported AES/key/password transition.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Verify exact material type, represented network identity and successful destination action.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>Wrong ticket service, RC4 policy, time skew, IP-only SPN naming or local/domain mismatch can invalidate one variant while another remains viable.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>; <a href="/oscp/notes/methods/lateral-movement/#move-wmi">Execute through WMI or native CIM over DCOM</a>; <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>; <a href="/oscp/notes/methods/ad-identities/#kerberos-tickets">Inventory, convert and import tickets in the correct logon context</a>.</p>
+<p><a id="move-services"></a></p>
+<h2 id="execute-through-uploaded-service-creation-using-psexec">Execute through uploaded service creation using PsExec</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#impacket-psexec">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#sysinternals-psexec-from-windows">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>A service-backed remote execution channel with verified resulting identity.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>A destination grants administrative-share write and service-control rights.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From an accepted SMB identity inspect the required administrative share and the separate ability to create/start services on that host.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Authentication: accepted
+ADMIN$: READ,WRITE
+SCM create/start: not yet verified
+</code></pre>
+<p><strong>Recognize this detail:</strong> Administrative-share control is one PsExec prerequisite, not proof of every service/pipe operation.</p>
+<p><strong>Still missing before method selection:</strong> Validate actual SCM rights, binary compatibility, service start and named-pipe path; check the final execution identity.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>All share/SCM/pipe conditions hold and remote effect is observed: use the service-upload method.</td></tr><tr><td>Ruled out in this context</td><td>ADMIN$ is unwritable or SCM creation is denied: reject this specific PsExec route.</td></tr><tr><td>Inconclusive</td><td>A tool's admin label alone leaves exact method authorization unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> SMB/SCM reachability, writable required share, effective service-creation/start rights and an accepted password/hash or supported Kerberos context.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>PsExec creates a service and communicates through its service/pipes. Its service execution identity can differ from the authenticated account; the official Windows tool and Impacket implementation have distinct artifacts/options.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<pre><code class="language-bash"># Password
+impacket-psexec 'DOMAIN/USER:PASSWORD@TARGET'
+
+# NT hash / Pass-the-Hash
+impacket-psexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p><strong>Need:</strong> SMB 445/139, writable administrative share and Service Control Manager rights. Impacket uploads a RemCom service binary, creates/starts a service and communicates over named pipes. Verify the returned identity; the service context is commonly SYSTEM.</p>
+</blockquote>
+<p>Kerberos cache:</p>
+<pre><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-psexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<p>The target parameter uses the hostname matching the CIFS/HOST SPN; <code>-target-ip</code> separates connection routing from Kerberos naming.</p>
+<pre><code class="language-cmd">PsExec64.exe -accepteula \\TARGET_HOST -u DOMAIN\USER -p PASSWORD cmd.exe
+</code></pre>
+<blockquote>
+<p>The official PsExec binary is not built into Windows. It requires remote administrative access and creates the PSEXESVC service/artifacts. Avoid putting real passwords in retained shell history; an existing authorized network credential context is preferable.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: the identity can write the required administrative share and create services. Test: execute a minimal hostname/identity command. Illustrative output: the service channel returns SYSTEM on the intended host. Interpretation: verify token/network state and re-enumerate.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Verify destination and represented execution identity, not only service creation or tool success.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>Share write, SCM access, service start, endpoint controls and pipe communication can fail independently.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/ad-identities/#ad-lsass">Obtain accessible live logon-session credential material</a>; <a href="/oscp/notes/methods/lateral-movement/#move-smbexec">Execute commands through service command lines and SMB output</a>.</p>
+<p><a id="move-smbexec"></a></p>
+<h2 id="execute-commands-through-service-command-lines-and-smb-output">Execute commands through service command lines and SMB output</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#smbexec">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>A remote command result through service-based execution.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>SCM rights and SMB output access exist but an uploaded service binary is unsuitable.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect known administrative SMB/SCM context and the output-share path when a service-command mechanism is preferable to binary upload.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">ADMIN$: accessible
+Accepted identity: DOMAIN\USER
+Service-command and output retrieval: verify separately
+</code></pre>
+<p><strong>Recognize this detail:</strong> A share and possible service rights suggest the command-line service route, whose output still has its own access path.</p>
+<p><strong>Still missing before method selection:</strong> Confirm service create/start, exact output mode/share and command effect independently from retrieved stdout.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The service command executes and its selected output is available: choose SMBExec.</td></tr><tr><td>Ruled out in this context</td><td>SCM creation is denied: reject service-command execution despite SMB login.</td></tr><tr><td>Inconclusive</td><td>No stdout may be output-share failure rather than failed process execution.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> Accepted authentication, service create/start rights and the selected output-share/server path.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>SMBExec uses service command lines and file/share output rather than PsExec's uploaded RemCom binary. It still creates services and needs its documented output path.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<pre><code class="language-bash">impacket-smbexec 'DOMAIN/USER:PASSWORD@TARGET'
+impacket-smbexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p>SMBExec creates temporary services whose command lines redirect output through a share. It does not use the same uploaded RemCom binary as PsExec, but it still requires SCM/service rights and produces substantial service/event artifacts.</p>
+</blockquote>
+<details>
+<summary><strong>Kerberos and alternate output modes</strong></summary>
+<pre><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-smbexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+
+# SHARE is default; SERVER starts a local SMB server and needs permission to bind locally.
+impacket-smbexec -mode SHARE -share C$ 'DOMAIN/USER:PASSWORD@TARGET'
+</code></pre>
+</details>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: service control is allowed while a binary-upload approach is blocked. Test: select the supported service-command mechanism and verify output. Illustrative output: hostname/whoami returns through the chosen share. Interpretation: retain the effect and destination identity.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Verify command effect separately from successful output retrieval and remove created artifacts as appropriate.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>Missing output can coexist with successful execution. Check service event/effect and share permissions before changing payloads.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>; <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<p><a id="move-tasks"></a></p>
+<h2 id="execute-through-remote-task-scheduler">Execute through remote Task Scheduler</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#atexec">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>A verified one-shot remote task command effect.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>The identity has remote task rights and a compatible output path.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use destination RPC/SMB evidence and effective administrative/task rights to investigate Task Scheduler as a one-shot execution consumer.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
+Test-NetConnection TARGET -Port 445
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">135: reachable
+445: reachable
+Remote task creation and output ACLs: not yet known
+</code></pre>
+<p><strong>Recognize this detail:</strong> The required network services are candidates; a task cannot be assumed creatable from port results.</p>
+<p><strong>Still missing before method selection:</strong> Check negotiated RPC reachability, task-create permission, actual principal and administrative output channel.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Task creation/execution and the bounded effect are verified: choose ATExec.</td></tr><tr><td>Ruled out in this context</td><td>The account lacks remote task rights: reject this method while retaining other service access.</td></tr><tr><td>Inconclusive</td><td>A task-run request accepted without process/effect evidence is inconclusive.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> Task Scheduler RPC reachability, effective task-creation rights and the required administrative output access.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
+Test-NetConnection TARGET -Port 445
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>Remote task creation and file-based output retrieval are separate operations. ATExec is not a full interactive shell; task principal and execution result must be checked.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<pre><code class="language-bash">impacket-atexec 'DOMAIN/USER:PASSWORD@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
+impacket-atexec -hashes :NT_HASH 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
+</code></pre>
+<blockquote>
+<p>ATExec creates and deletes a scheduled task and normally retrieves output from <code>ADMIN$\Temp</code>. It is a one-shot command mechanism, not an interactive shell; task-scheduler RPC and administrative share access must both work.</p>
+</blockquote>
+<p>Kerberos:</p>
+<pre><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-atexec -k -no-pass -dc-ip DC_IP 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
+</code></pre>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: the identity can create tasks on the destination. Test: run a bounded hostname/identity command and inspect output. Illustrative output: the correct host responds under the task principal. Interpretation: decide whether one-shot execution is sufficient or a session is needed.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Verify the actual task effect/principal and destination, not task registration alone.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>Dynamic RPC filtering, task authorization or denied output share can break different phases.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<p><a id="move-wmi"></a></p>
+<h2 id="execute-through-wmi-or-native-cim-over-dcom">Execute through WMI or native CIM over DCOM</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#impacket-wmiexec">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#native-powershell-cim-over-dcom">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>A remote process effect and, when available, retrieved command output.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>A destination exposes WMI/DCOM and the identity has useful namespace/process rights.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Investigate WMI from RPC/service inventory and exact account rights; keep process creation and SMB-based output retrieval as separate legs.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
+Test-NetConnection TARGET -Port 445
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Endpoint mapper: reachable
+SMB output path: reachable
+Dynamic RPC and WMI namespace rights: unknown
+</code></pre>
+<p><strong>Recognize this detail:</strong> Port 135 and an output route justify further checks but do not prove a WMI process can be created.</p>
+<p><strong>Still missing before method selection:</strong> Validate dynamic ports, DCOM/WMI authorization, native CIM transport choice and actual effect.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Authorized process creation plus a working observation/output path exists: use WMI/CIM.</td></tr><tr><td>Ruled out in this context</td><td>The required namespace/activation permission is denied: reject that identity's WMI route.</td></tr><tr><td>Inconclusive</td><td>Execution may succeed with failed output retrieval; inspect a controlled effect before concluding.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> RPC endpoint mapper plus negotiated dynamic ports; effective WMI/DCOM rights; the selected output path may additionally need SMB.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
+Test-NetConnection TARGET -Port 445
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>WMI can create a process while SMB output retrieval fails. Modern CIM defaults can use WSMan, so select the documented DCOM session option when that transport is intended.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+<pre><code class="language-bash">impacket-wmiexec 'DOMAIN/USER:PASSWORD@TARGET'
+impacket-wmiexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p>WMIExec creates processes through WMI/DCOM. Its normal output channel uses SMB and defaults to <code>ADMIN$</code>; therefore a WMI process may run even when output retrieval fails. <code>-nooutput</code> or <code>-silentcommand</code> changes that evidence channel.</p>
+</blockquote>
+<p>Kerberos with separate name and route:</p>
+<pre><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
+impacket-wmiexec -k -no-pass -dc-ip DC_IP -target-ip TARGET_IP 'DOMAIN/USER@TARGET_HOST'
+</code></pre>
+<details>
+<summary><strong>One command, no SMB output</strong></summary>
+<pre><code class="language-bash">impacket-wmiexec -nooutput 'DOMAIN/USER:PASSWORD@TARGET' "cmd.exe /c echo MOVEMENT_OK > C:\Windows\Temp\movement-proof.txt"
+</code></pre>
+<p>Verify the harmless artifact through an independently authorized channel. No returned stdout is expected.</p>
+</details>
+<pre><code class="language-powershell">$Credential = Get-Credential 'DOMAIN\USER'
+$Options = New-CimSessionOption -Protocol Dcom
+$Session = New-CimSession -ComputerName TARGET_HOST -Credential $Credential -SessionOption $Options
+
+Invoke-CimMethod -CimSession $Session -ClassName Win32_Process -MethodName Create -Arguments @{
+  CommandLine = 'cmd.exe /c hostname > C:\Windows\Temp\movement-proof.txt'
+}
+
+Remove-CimSession $Session
+</code></pre>
+<blockquote>
+<p><code>ReturnValue = 0</code> and a process ID confirm process creation, not its final effect. WMI-created processes run in session 0; GUI programs will not appear on an interactive desktop.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: WMIExec appears to hang after process creation. Test: check the controlled effect independently and inspect SMB output access. Illustrative output: the process ran but the share read was denied. Interpretation: execution is proven; repair the output channel or use another observation.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Verify destination process/effect and execution identity separately from captured stdout.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>Port 135 alone is insufficient. Distinguish RPC route, namespace permission, output share and local token filtering.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>; <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>; <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>.</p>
+<p><a id="move-dcom"></a></p>
+<h2 id="execute-through-an-authorized-dcom-application-object">Execute through an authorized DCOM application object</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#dcom-mmc-method">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>A verified remote application-mediated process effect.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>A usable remote COM application and effective activation/method rights.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use the target's RPC and administration evidence to investigate a specific supported COM application, rather than treating DCOM as a universal shell.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">RPC endpoint mapper: reachable
+Candidate application: MMC20.Application.1
+Activation/method authorization: not yet known
+</code></pre>
+<p><strong>Recognize this detail:</strong> A named application and route form a candidate; component availability and allowed activation/method remain separate.</p>
+<p><strong>Still missing before method selection:</strong> Check dynamic RPC, actual class/rights, authentication/tool support, method and verifiable output/effect.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended authorized application method produces the remote effect: choose this DCOM route.</td></tr><tr><td>Ruled out in this context</td><td>The component is absent or activation is denied: reject that class-based chain.</td></tr><tr><td>Inconclusive</td><td>A created COM object without command/effect evidence leaves execution unproved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> RPC/dynamic-port route, allowed DCOM activation and application method, supported authentication and target component.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 135
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>A DCOM application can expose a method that launches commands under its authorized context. Session 0 can hide graphical output, so use a verifiable process/file/command effect.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<p>Current Windows token:</p>
+<pre><code class="language-powershell">$Type = [type]::GetTypeFromProgID('MMC20.Application.1','TARGET_HOST')
+$Object = [Activator]::CreateInstance($Type)
+$Object.Document.ActiveView.ExecuteShellCommand(
+  'cmd.exe',
+  $null,
+  '/c hostname > C:\Windows\Temp\movement-proof.txt',
+  '7'
+)
+</code></pre>
+<p>Impacket with password or NT hash:</p>
+<pre><code class="language-bash">impacket-dcomexec 'DOMAIN/USER:PASSWORD@TARGET'
+impacket-dcomexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+</code></pre>
+<blockquote>
+<p>Current Impacket <code>dcomexec</code> explicitly rejects Kerberos for its supported MMC/Shell DCOM objects because they do not accept the required HOST ticket. Use <code>wmiexec -k</code> when Kerberos command execution is required. DCOM class availability, RPC reachability and launch/access permissions vary.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: an MMC object can be activated remotely. Test: invoke the documented minimal command and observe its output/effect. Illustrative output: a target-side marker appears while no desktop window is visible. Interpretation: session isolation explains the missing GUI.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Verify the actual destination effect and identity; COM object creation alone does not prove command execution.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>Component absence, activation rights, modern DCOM hardening or unsupported client Kerberos can block this route.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>; <a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a>.</p>
+<p><a id="move-winrm"></a></p>
+<h2 id="use-winrm-winrs-or-powershell-remoting">Use WinRM, WinRS or PowerShell remoting</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#6-winrm-winrs-and-powershell-remoting">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-7">1. Purpose and result</h3>
+<p>A verified remote command session under the endpoint-authorized identity.</p>
+<h3 id="2-recognition-clues-7">2. Recognition clues</h3>
+<p>A WinRM listener and a candidate endpoint-authorized account.</p>
+<h4 id="find-the-clue-from-your-starting-access-7">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Check observed WinRM listeners from the real source and relate the identity to the configured endpoint/session authorization.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 5985
+Test-NetConnection TARGET -Port 5986
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">5985: reachable
+SMB credential: accepted
+WinRM endpoint authorization: unknown
+</code></pre>
+<p><strong>Recognize this detail:</strong> A reachable endpoint plus a known credential is a candidate, not proof the account may enter that remoting session.</p>
+<p><strong>Still missing before method selection:</strong> Verify accepted authentication, correct name/TLS context, endpoint rights and any second-hop requirements.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The endpoint opens the intended session and identity is verified: choose WinRM/WinRS/remoting.</td></tr><tr><td>Ruled out in this context</td><td>A valid account is denied the endpoint: reject that session configuration for this identity.</td></tr><tr><td>Inconclusive</td><td>Second-hop resource failure does not disprove the first WinRM authentication.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<h3 id="3-prerequisites-7">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> Reachable HTTP(S) listener, accepted authentication and endpoint/session configuration permissions; hash/ticket support depends on client/context.</p>
+<h3 id="4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 5985
+Test-NetConnection TARGET -Port 5986
+</code></pre>
+<h3 id="5-why-it-works-7">5. Why it works</h3>
+<p>WinRM authentication is separate from endpoint authorization and delegated second-hop credentials. Evil-WinRM, WinRS and native remoting expose related services with different client features.</p>
+<h3 id="6-execute-and-choose-variants-7">6. Execute and choose variants</h3>
+<h5 id="evil-winrm">Evil-WinRM</h5>
+<pre><code class="language-bash"># Password; omit -p to prompt where supported
+evil-winrm -i TARGET_HOST -u USER -p 'PASSWORD'
+
+# NT hash
+evil-winrm -i TARGET_HOST -u USER -H NT_HASH
+
+# HTTPS listener
+evil-winrm -i TARGET_HOST -u USER -p 'PASSWORD' -S -P 5986
+</code></pre>
+<p>Current Evil-WinRM ticket-file support:</p>
+<pre><code class="language-bash">evil-winrm -i TARGET_FQDN -r DOMAIN -K USER.ccache --spn HTTP
+</code></pre>
+<blockquote>
+<p><strong>Need:</strong> reachable 5985/5986, an enabled WinRM/PowerShell endpoint and endpoint authorization. The identity is commonly an administrator or a member of the applicable remote-management group, but endpoint SDDL/policy is decisive. Kerberos requires the FQDN/SPN, realm/KDC configuration and a compatible ticket.</p>
+</blockquote>
+<h5 id="native-winrs">Native WinRS</h5>
+<pre><code class="language-cmd">winrs /r:TARGET_HOST /u:DOMAIN\USER /p:PASSWORD "cmd /c hostname &#x26; whoami"
+</code></pre>
+<p>To avoid retaining a password on the command line, use the current authorized Windows credential context where possible:</p>
+<pre><code class="language-cmd">winrs /r:TARGET_HOST "cmd /c hostname &#x26; whoami"
+</code></pre>
+<blockquote>
+<p>WinRS uses WinRM. A non-administrator can require <code>/noprofile</code> depending on endpoint configuration. <code>/allowdelegate</code> affects onward credential use and is not a default fix for the double-hop problem.</p>
+</blockquote>
+<h5 id="powershell-remoting">PowerShell remoting</h5>
+<pre><code class="language-powershell">Test-WSMan TARGET_HOST
+$Credential = Get-Credential 'DOMAIN\USER'
+
+Invoke-Command -ComputerName TARGET_HOST -Credential $Credential -ScriptBlock {
+  hostname
+  whoami /all
+}
+
+$Session = New-PSSession -ComputerName TARGET_HOST -Credential $Credential
+Enter-PSSession -Session $Session
+</code></pre>
+<blockquote>
+<p>A hostname normally supports Negotiate/Kerberos in a domain. An IP address requires explicit credentials and generally HTTPS or a tightly scoped TrustedHosts configuration. Do not weaken global TrustedHosts merely to hide DNS/SPN mistakes.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-7">7. Worked example — hypothetical</h3>
+<p>Observation: domain credentials work over SMB. Test: check the WinRM endpoint and rights. Illustrative output: an authenticated PowerShell session opens, but access to a second network resource fails. Interpretation: investigate double-hop delegation, not the original password.</p>
+<h3 id="8-verify-the-result-7">8. Verify the result</h3>
+<p>Verify hostname, whoami /all and the actual session configuration/rights.</p>
+<h3 id="9-failure-and-fallback-7">9. Failure and fallback</h3>
+<p>Authentication denial, endpoint denial, TLS/name mismatch and second-hop failure require different fixes.</p>
+<h3 id="10-next-transitions-7">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/ad-identities/#ad-lsass">Obtain accessible live logon-session credential material</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<p><a id="move-rdp"></a></p>
+<h2 id="obtain-an-authorized-rdp-interactive-session">Obtain an authorized RDP interactive session</h2>
+<p><strong>Blocks:</strong> 12; consumes routes from 13. <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#7-rdp">Operational procedure</a> | <a href="/oscp/reference/03-initial-access/01-rdp-access/">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-8">1. Purpose and result</h3>
+<p>A verified remote-interactive desktop/logon context.</p>
+<h3 id="2-recognition-clues-8">2. Recognition clues</h3>
+<p>RDP is reachable and the identity may have remote-interactive logon rights.</p>
+<h4 id="find-the-clue-from-your-starting-access-8">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Check the destination RDP endpoint and use actual group/logon-policy evidence for the candidate identity; determine whether password or Restricted Admin is intended.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 3389
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">3389: reachable
+Candidate identity: DOMAIN\USER
+Remote-interactive logon right: not yet confirmed
+</code></pre>
+<p><strong>Recognize this detail:</strong> RDP transport does not grant desktop access; Restricted Admin/hash use has additional requirements.</p>
+<p><strong>Still missing before method selection:</strong> Check NLA/TLS, identity qualification, logon authorization and the chosen authentication mode.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The authorized interactive logon opens under the verified token: choose RDP.</td></tr><tr><td>Ruled out in this context</td><td>The account lacks the required logon right or the hash route lacks Restricted Admin support: reject that variant.</td></tr><tr><td>Inconclusive</td><td>A generic connection error requires separating client/protocol/policy before judging the credential.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<h3 id="3-prerequisites-8">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> Identified authentication material, destination service reachability and a candidate authorized identity. <strong>Required conditions:</strong> Allowed account/session policy and compatible client/NLA/TLS; hash-based Restricted Admin has additional supported-policy/admin requirements.</p>
+<h3 id="4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 3389
+</code></pre>
+<h3 id="5-why-it-works-8">5. Why it works</h3>
+<p>RDP is an access method, not automatic local elevation. Restricted Admin/hash use and ordinary password logon have different requirements and network credential behavior.</p>
+<h3 id="6-execute-and-choose-variants-8">6. Execute and choose variants</h3>
+<p>Check the installed binary name:</p>
+<pre><code class="language-bash">command -v xfreerdp3 || command -v xfreerdp
+</code></pre>
+<p>Password:</p>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET_HOST /d:DOMAIN /u:USER /p:'PASSWORD' /cert:ignore /dynamic-resolution +clipboard
+</code></pre>
+<p>Older packages may expose the same syntax through <code>xfreerdp</code>.</p>
+<p>NT hash:</p>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET_HOST /d:DOMAIN /u:USER /pth:NT_HASH /cert:ignore /dynamic-resolution
+</code></pre>
+<blockquote>
+<p>FreeRDP's <code>/pth</code> uses Restricted Admin mode. The target must support/permit that mode and the identity must be an administrator; ordinary Remote Desktop Users membership is not sufficient for Restricted Admin. Password-based RDP instead needs the Remote Desktop service, NLA compatibility and the effective “Allow log on through Remote Desktop Services” right without a deny override.</p>
+</blockquote>
+<p>Native client:</p>
+<pre><code class="language-cmd">mstsc.exe /v:TARGET_HOST
+mstsc.exe /restrictedAdmin /v:TARGET_HOST
+</code></pre>
+<p>Ordinary RDP can place reusable user credentials in the destination's LSASS. Restricted Admin avoids sending those reusable credentials but prevents ordinary onward access as that user; treat the resulting session's network identity separately.</p>
+<blockquote>
+<p><strong>Purpose:</strong> use a validated identity with Remote Desktop logon rights to establish a Windows desktop and verify the resulting source position.</p>
+</blockquote>
+<h5 id="baseline-prompt-for-the-password">Baseline: prompt for the password</h5>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /dynamic-resolution /cert:ignore
+</code></pre>
+<p>Some Kali releases expose <code>xfreerdp</code> instead of <code>xfreerdp3</code>; check <code>command -v xfreerdp3 xfreerdp</code> and the selected binary's <code>/help</code> output.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> a usable desktop establishes a remote session. Open PowerShell or Command Prompt and verify <code>whoami</code>, <code>hostname</code> and <code>ipconfig</code> before treating commands as target-origin execution.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — domain identity</strong></summary>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /d:DOMAIN /dynamic-resolution /cert:ignore
+</code></pre>
+<p>Local and domain accounts with the same username are different identities. Make the intended context explicit when results differ.</p>
+</details>
+<details>
+<summary><strong>Variant — authentication only</strong></summary>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /d:DOMAIN /auth-only /cert:ignore
+</code></pre>
+<p>This tests authentication without opening the UI. Success does not guarantee that all session policies or desktop initialization will permit a full session.</p>
+</details>
+<details>
+<summary><strong>Variant — explicit password</strong></summary>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET /u:USER '/p:PASSWORD' /dynamic-resolution /cert:ignore
+</code></pre>
+<p>Prefer prompting because command-line passwords can enter shell history and process listings.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> a certificate warning is not a credential result. NLA/security negotiation, account context, authentication, Remote Desktop logon rights and an already occupied/restricted session can fail separately. <code>/cert:ignore</code> is appropriate only for the controlled lab context because it removes certificate identity validation.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next:</strong> after verifying the host and identity, enumerate groups/privileges, files, local services/listeners and routes from the new source position.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-8">7. Worked example — hypothetical</h3>
+<p>Observation: a domain user is in the destination's RDP access group. Test: perform a correctly qualified login. Illustrative output: a desktop opens under a non-admin token. Interpretation: establish host/token state and inspect the new access context.</p>
+<h3 id="8-verify-the-result-8">8. Verify the result</h3>
+<p>Verify destination, user/token and permitted desktop actions; keep credentials out of reusable screenshots/notes.</p>
+<h3 id="9-failure-and-fallback-8">9. Failure and fallback</h3>
+<p>A valid password can still lack logon rights. NLA, TLS, domain qualification and Restricted Admin policy are separate conditions.</p>
+<h3 id="10-next-transitions-8">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-secrets">Recover Windows application, history and stored-credential artifacts</a>; <a href="/oscp/notes/methods/lateral-movement/#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 Ch 24 pp793–812. <a href="https://github.com/fortra/impacket/tree/master/examples">Impacket examples</a>, <a href="https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/ps-remoting-security-considerations">PowerShell remoting</a>, <a href="https://github.com/FreeRDP/FreeRDP/wiki/CommandLineInterface">FreeRDP</a>.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

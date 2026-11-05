@@ -1,0 +1,660 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Attack Strategy Map — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/Attack_Strategy_Map/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#discover-the-clue-before-choosing-a-method">Discover the clue before choosing a method</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#start-from-your-current-capability">Start from your current capability</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#all-objectives-and-methods">All objectives and methods</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#discover-attack-surfaces">Discover attack surfaces</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#source-and-reachability">Source and reachability</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#transport-coverage-and-application-identity">Transport coverage and application identity</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#evidence-and-re-enumeration">Evidence and re-enumeration</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#extract-opportunities-from-services">Extract opportunities from services</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#file-and-shell-access">File and shell access</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#identity-and-configuration-disclosure">Identity and configuration disclosure</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#database-privileges-and-primitives">Database privileges and primitives</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#remote-access-and-uncommon-applications">Remote access and uncommon applications</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#map-useful-web-behavior">Map useful web behavior</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#application-identity-and-hosts">Application identity and hosts</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#functions-artifacts-and-content">Functions, artifacts and content</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#inputs-objects-and-apis">Inputs, objects and APIs</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#turn-application-weaknesses-into-access">Turn application weaknesses into access</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#file-read-and-interpreted-inclusion">File read and interpreted inclusion</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#file-writes-and-consuming-handlers">File writes and consuming handlers</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#command-and-database-injection">Command and database injection</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#application-authorization-and-browser-context">Application authorization and browser context</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#product-features-and-server-side-requests">Product features and server-side requests</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#recover-and-use-authentication-material">Recover and use authentication material</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#classification-and-online-use">Classification and online use</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#offline-recovery-and-protected-files">Offline recovery and protected files</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#typed-windowsdomain-material">Typed Windows/domain material</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#select-and-adapt-public-exploits">Select and adapt public exploits</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#selection-and-local-runtime">Selection and local runtime</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#native-and-web-adaptation">Native and web adaptation</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#establish-sessions-and-move-files">Establish sessions and move files</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#execution-and-connection-direction">Execution and connection direction</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#payload-and-terminal-compatibility">Payload and terminal compatibility</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#file-transport-and-integrity">File transport and integrity</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#escalate-privileges-on-linux">Escalate privileges on Linux</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#identity-permissions-and-secret-sources">Identity, permissions and secret sources</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#delegated-and-executable-privilege">Delegated and executable privilege</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#privileged-consumers-and-resolution">Privileged consumers and resolution</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#daemon-mount-and-software-routes">Daemon, mount and software routes</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#candidate-generation">Candidate generation</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#escalate-privileges-on-windows">Escalate privileges on Windows</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#token-acl-and-credential-state">Token, ACL and credential state</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#services-and-privileged-consumers">Services and privileged consumers</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#installer-and-token-backed-operations">Installer and token-backed operations</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#software-and-candidate-generation">Software and candidate generation</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#map-active-directory-attack-paths">Map Active Directory attack paths</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#domain-context-and-directory-objects">Domain context and directory objects</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#artifacts-and-service-identities">Artifacts and service identities</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#effective-rights-host-access-and-path-ranking">Effective rights, host access and path ranking</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#gain-a-more-useful-domain-identity">Gain a more useful domain identity</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#host-credential-sources">Host credential sources</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#password-derived-ticket-recovery">Password-derived ticket recovery</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#ticket-capabilities">Ticket capabilities</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#object-backed-identity-changes-and-replication">Object-backed identity changes and replication</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#conditional-policy-delegation-and-certificate-paths">Conditional policy, delegation and certificate paths</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#move-to-another-host">Move to another host</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#route-authorization-and-authentication-material">Route, authorization and authentication material</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#service-and-scheduled-task-execution">Service and scheduled-task execution</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#management-protocol-execution">Management protocol execution</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#interactive-access">Interactive access</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#reach-internal-services">Reach internal services</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#network-position-and-fixed-relays">Network position and fixed relays</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#ssh-listener-direction-and-proxy-access">SSH listener direction and proxy access</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#transparent-and-windows-forwarding">Transparent and Windows forwarding</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#alternative-carriers-and-routed-agents">Alternative carriers and routed agents</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#names-return-paths-and-multiple-hops">Names, return paths and multiple hops</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#resolve-payload-execution-obstacles">Resolve payload execution obstacles</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#client-side-delivery-and-interaction">Client-side delivery and interaction</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#format-parser-and-control-boundaries">Format, parser and control boundaries</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#handlers-framework-state-and-callbacks">Handlers, framework state and callbacks</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#complete-attacks-and-retain-reproducible-evidence">Complete attacks and retain reproducible evidence</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#state-chain-selection-and-recovery">State, chain selection and recovery</a></li><li><a href="/oscp/notes/Attack_Strategy_Map/#transition-evidence-and-reporting">Transition evidence and reporting</a></li></ul></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#follow-the-result-into-the-next-method">Follow the result into the next method</a><ul><li><a href="/oscp/notes/Attack_Strategy_Map/#paper-based-chain-rehearsal">Paper-based chain rehearsal</a></li></ul></li><li><a href="/oscp/notes/Attack_Strategy_Map/#study-order-and-boundaries">Study order and boundaries</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/" aria-current="page">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="attack-strategy-map">Attack Strategy Map</h1>
+<p><a href="/oscp/">Main index</a> | <a href="/oscp/notes/Speedrun_Breakdown/">Study sequence</a> | <a href="/oscp/notes/Master_Notes/">Shared concepts</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>Choose an objective, compare the methods by their prerequisites, then open a self-contained entry. Each entry explains how to find its enabling conditions, why it works, how to execute and verify it, how failures change the decision, and which methods its result can unlock.</p>
+<p>The map contains <strong>166 documented methods across 15 topic guides</strong>, accounting for all 15 speedrun blocks and the eight grouped study units. Counts describe this preparation inventory, not every vulnerability or environment-specific chain that can exist.</p>
+<h2 id="discover-the-clue-before-choosing-a-method">Discover the clue before choosing a method</h2>
+<p>For Active Directory, start with <a href="/oscp/notes/ad-investigation/">AD Notes</a>: focused questions, investigation locations, annotated synthetic observations, expected behavior and the missing checks before choosing an attack.</p>
+<p>Follow starting access → investigation location → discovery action → illustrative evidence → recognition → missing-condition checks → method selection. Each entry distinguishes enabled-after-validation, ruled-out and inconclusive examples.</p>
+<p>Begin with the topic workflow when you do not yet have a useful clue:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Starting investigation</th><th>Discovery workflow</th></tr></thead><tbody><tr><td>Discover attack surfaces</td><td><a href="/oscp/notes/methods/discovery/#discovery-workflow">Where to start</a></td></tr><tr><td>Extract opportunities from services</td><td><a href="/oscp/notes/methods/services/#discovery-workflow">Where to start</a></td></tr><tr><td>Map useful web behavior</td><td><a href="/oscp/notes/methods/web-mapping/#discovery-workflow">Where to start</a></td></tr><tr><td>Turn application weaknesses into access</td><td><a href="/oscp/notes/methods/web-exploitation/#discovery-workflow">Where to start</a></td></tr><tr><td>Recover and use authentication material</td><td><a href="/oscp/notes/methods/credentials/#discovery-workflow">Where to start</a></td></tr><tr><td>Select and adapt public exploits</td><td><a href="/oscp/notes/methods/public-exploits/#discovery-workflow">Where to start</a></td></tr><tr><td>Establish sessions and move files</td><td><a href="/oscp/notes/methods/sessions-transfers/#discovery-workflow">Where to start</a></td></tr><tr><td>Escalate privileges on Linux</td><td><a href="/oscp/notes/methods/linux-privesc/#discovery-workflow">Where to start</a></td></tr><tr><td>Escalate privileges on Windows</td><td><a href="/oscp/notes/methods/windows-privesc/#discovery-workflow">Where to start</a></td></tr><tr><td>Map Active Directory attack paths</td><td><a href="/oscp/notes/methods/ad-mapping/#discovery-workflow">Where to start</a></td></tr><tr><td>Gain a more useful domain identity</td><td><a href="/oscp/notes/methods/ad-identities/#discovery-workflow">Where to start</a></td></tr><tr><td>Move to another host</td><td><a href="/oscp/notes/methods/lateral-movement/#discovery-workflow">Where to start</a></td></tr><tr><td>Reach internal services</td><td><a href="/oscp/notes/methods/pivoting/#discovery-workflow">Where to start</a></td></tr><tr><td>Resolve payload execution obstacles</td><td><a href="/oscp/notes/methods/execution/#discovery-workflow">Where to start</a></td></tr><tr><td>Complete attacks and retain reproducible evidence</td><td><a href="/oscp/notes/methods/integration/#discovery-workflow">Where to start</a></td></tr></tbody></table>
+<p>Test discovery and prerequisite reasoning with the <a href="/oscp/notes/Recognition_Practice/">unanswered recognition cases</a> before consulting the explanations.</p>
+<h2 id="start-from-your-current-capability">Start from your current capability</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>What you have or need</th><th>Open</th></tr></thead><tbody><tr><td>An address, uncertain reachability, or incomplete port coverage</td><td><a href="/oscp/notes/methods/discovery/">Discovery</a></td></tr><tr><td>A reachable service and an anonymous or authenticated access context</td><td><a href="/oscp/notes/methods/services/">Service opportunities</a></td></tr><tr><td>A website with unexplored requests, roles, files or APIs</td><td><a href="/oscp/notes/methods/web-mapping/">Web mapping</a></td></tr><tr><td>A suspicious application behavior or a read/write/injection primitive</td><td><a href="/oscp/notes/methods/web-exploitation/">Web exploitation</a></td></tr><tr><td>A password, key, hash, captured response or ticket</td><td><a href="/oscp/notes/methods/credentials/">Credentials</a></td></tr><tr><td>A component with a plausible public exploit</td><td><a href="/oscp/notes/methods/public-exploits/">Exploit adaptation</a></td></tr><tr><td>Command execution, a limited session, or a file that must move</td><td><a href="/oscp/notes/methods/sessions-transfers/">Sessions and transfers</a></td></tr><tr><td>A Linux foothold</td><td><a href="/oscp/notes/methods/linux-privesc/">Linux privilege escalation</a></td></tr><tr><td>A Windows foothold</td><td><a href="/oscp/notes/methods/windows-privesc/">Windows privilege escalation</a></td></tr><tr><td>A domain identity with unknown rights and relationships</td><td><a href="/oscp/notes/methods/ad-mapping/">AD mapping</a></td></tr><tr><td>A credential source or effective domain-object right</td><td><a href="/oscp/notes/methods/ad-identities/">AD identity transitions</a></td></tr><tr><td>Authentication material and a destination host</td><td><a href="/oscp/notes/methods/lateral-movement/">Lateral movement</a></td></tr><tr><td>A service behind another host, or a broken return path</td><td><a href="/oscp/notes/methods/pivoting/">Pivoting</a></td></tr><tr><td>A delivered artifact or payload that does not produce its expected effect</td><td><a href="/oscp/notes/methods/execution/">Execution troubleshooting</a></td></tr><tr><td>Competing paths, stalled progress, or evidence/reporting work</td><td><a href="/oscp/notes/methods/integration/">Integration and evidence</a></td></tr></tbody></table>
+<h2 id="all-objectives-and-methods">All objectives and methods</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Topic</th><th>Blocks</th><th align="right">Methods</th></tr></thead><tbody><tr><td><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></td><td>1; revisit after new routes or hosts</td><td align="right">7</td></tr><tr><td><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></td><td>2; authenticated re-enumeration throughout</td><td align="right">15</td></tr><tr><td><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></td><td>3</td><td align="right">6</td></tr><tr><td><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></td><td>4</td><td align="right">19</td></tr><tr><td><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></td><td>5; recurring identity thread</td><td align="right">10</td></tr><tr><td><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></td><td>6; relevant 14</td><td align="right">4</td></tr><tr><td><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></td><td>7; transfers support 5–14</td><td align="right">12</td></tr><tr><td><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></td><td>8</td><td align="right">16</td></tr><tr><td><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></td><td>9</td><td align="right">13</td></tr><tr><td><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></td><td>10; Block 13 route fundamentals first</td><td align="right">7</td></tr><tr><td><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></td><td>11; credential classification in 5</td><td align="right">18</td></tr><tr><td><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></td><td>12; consumes routes from 13</td><td align="right">9</td></tr><tr><td><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></td><td>13; study fundamentals before 10–12</td><td align="right">16</td></tr><tr><td><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></td><td>14; used throughout 4, 6, 7 and 12–13</td><td align="right">9</td></tr><tr><td><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></td><td>15</td><td align="right">5</td></tr></tbody></table>
+<h3 id="discover-attack-surfaces">Discover attack surfaces</h3>
+<h4 id="source-and-reachability">Source and reachability</h4>
+<ul>
+<li><a href="/oscp/notes/methods/discovery/#path-hosts">Validate the source path and discover hosts</a></li>
+<li><a href="/oscp/notes/methods/discovery/#windows-discovery">Enumerate reachable endpoints from a Windows source</a></li>
+</ul>
+<h4 id="transport-coverage-and-application-identity">Transport coverage and application identity</h4>
+<ul>
+<li><a href="/oscp/notes/methods/discovery/#tcp-coverage">Discover TCP ports with SYN or connect scans</a></li>
+<li><a href="/oscp/notes/methods/discovery/#udp-coverage">Probe UDP and resolve ambiguous silence</a></li>
+<li><a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a></li>
+<li><a href="/oscp/notes/methods/discovery/#unknown-port">Discriminate unknown listeners and use scanner alternatives</a></li>
+</ul>
+<h4 id="evidence-and-re-enumeration">Evidence and re-enumeration</h4>
+<ul>
+<li><a href="/oscp/notes/methods/discovery/#result-validation">Validate uncertain results and rebuild the service queue</a></li>
+</ul>
+<h3 id="extract-opportunities-from-services">Extract opportunities from services</h3>
+<h4 id="file-and-shell-access">File and shell access</h4>
+<ul>
+<li><a href="/oscp/notes/methods/services/#service-ftp">Use anonymous or authenticated FTP file access</a></li>
+<li><a href="/oscp/notes/methods/services/#service-smb">Enumerate SMB/RPC shares, files and identities</a></li>
+<li><a href="/oscp/notes/methods/services/#service-nfs">Inspect RPC/NFS exports and effective file identity</a></li>
+<li><a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a></li>
+</ul>
+<h4 id="identity-and-configuration-disclosure">Identity and configuration disclosure</h4>
+<ul>
+<li><a href="/oscp/notes/methods/services/#service-dns">Expand names through DNS records and zone transfers</a></li>
+<li><a href="/oscp/notes/methods/services/#service-snmp">Extract configuration and process information through SNMP</a></li>
+<li><a href="/oscp/notes/methods/services/#service-smtp">Enumerate SMTP identities and accessible mailbox protocols</a></li>
+<li><a href="/oscp/notes/methods/services/#service-ldap">Discover LDAP naming contexts and authenticated search</a></li>
+</ul>
+<h4 id="database-privileges-and-primitives">Database privileges and primitives</h4>
+<ul>
+<li><a href="/oscp/notes/methods/services/#service-mysql">Use MySQL/MariaDB data and file primitives</a></li>
+<li><a href="/oscp/notes/methods/services/#service-mssql">Use SQL Server rights, impersonation and command facilities</a></li>
+<li><a href="/oscp/notes/methods/services/#service-postgres">Use PostgreSQL data and privileged program execution</a></li>
+<li><a href="/oscp/notes/methods/services/#service-redis">Inspect Redis access and persistence boundaries</a></li>
+<li><a href="/oscp/notes/methods/services/#service-oracle">Triage Oracle listener and database identity</a></li>
+</ul>
+<h4 id="remote-access-and-uncommon-applications">Remote access and uncommon applications</h4>
+<ul>
+<li><a href="/oscp/notes/methods/services/#service-remote">Validate RDP, WinRM, VNC and Telnet access contexts</a></li>
+<li><a href="/oscp/notes/methods/services/#service-sip-irc">Investigate SIP/IRC identity and configuration clues</a></li>
+</ul>
+<h3 id="map-useful-web-behavior">Map useful web behavior</h3>
+<h4 id="application-identity-and-hosts">Application identity and hosts</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-mapping/#web-identity">Establish scheme, host, redirects and request state</a></li>
+<li><a href="/oscp/notes/methods/web-mapping/#web-vhosts">Discover virtual hosts and hostname-selected applications</a></li>
+</ul>
+<h4 id="functions-artifacts-and-content">Functions, artifacts and content</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-mapping/#web-behavior">Map functions, roles and normal requests manually</a></li>
+<li><a href="/oscp/notes/methods/web-mapping/#web-artifacts">Inspect source, backups, configuration and repository artifacts</a></li>
+<li><a href="/oscp/notes/methods/web-mapping/#web-content">Discover directories and files with controlled response filtering</a></li>
+</ul>
+<h4 id="inputs-objects-and-apis">Inputs, objects and APIs</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-mapping/#web-parameters">Map parameters, API methods, objects and writable properties</a></li>
+</ul>
+<h3 id="turn-application-weaknesses-into-access">Turn application weaknesses into access</h3>
+<h4 id="file-read-and-interpreted-inclusion">File read and interpreted inclusion</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-traversal">Read files through directory traversal</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-php-source">Disclose PHP source through an inclusion wrapper</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-lfi-log">Turn controlled local file content into inclusion execution</a></li>
+</ul>
+<h4 id="file-writes-and-consuming-handlers">File writes and consuming handlers</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-upload">Establish upload acceptance, storage and retrieval</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-upload-exec">Execute an uploaded file through a compatible handler</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-upload-path">Use upload path control to reach a useful consumer</a></li>
+</ul>
+<h4 id="command-and-database-injection">Command and database injection</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-command">Prove visible or blind operating-system command injection</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#sql-influence">Establish SQL query influence and DBMS context</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#sql-auth">Test a SQL-backed authentication bypass</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#sql-union">Extract data through UNION and visible SQL results</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#sql-blind">Infer SQL data through boolean or time-based differences</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#sql-os">Convert database rights into a file or operating-system effect</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#sql-oob">Conditional: validate an out-of-band SQL request channel</a></li>
+</ul>
+<h4 id="application-authorization-and-browser-context">Application authorization and browser context</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-idor">Cross an object-ownership boundary</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-authz">Cross role, function or session authorization boundaries</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-mass-assignment">Modify a protected property through excessive writable fields</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-xss">Execute browser code and validate a useful same-origin action</a></li>
+</ul>
+<h4 id="product-features-and-server-side-requests">Product features and server-side requests</h4>
+<ul>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-cms">Use WordPress component evidence and authorized administration features</a></li>
+<li><a href="/oscp/notes/methods/web-exploitation/#web-ssrf">Use server-side requests to inspect reachable internal behavior</a></li>
+</ul>
+<h3 id="recover-and-use-authentication-material">Recover and use authentication material</h3>
+<h4 id="classification-and-online-use">Classification and online use</h4>
+<ul>
+<li><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a></li>
+<li><a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a></li>
+</ul>
+<h4 id="offline-recovery-and-protected-files">Offline recovery and protected files</h4>
+<ul>
+<li><a href="/oscp/notes/methods/credentials/#offline-recovery">Recover passwords with feasible dictionary, rule and mask attacks</a></li>
+<li><a href="/oscp/notes/methods/credentials/#keepass-recovery">Recover a protected KeePass database password</a></li>
+<li><a href="/oscp/notes/methods/credentials/#ssh-key">Inspect and recover SSH private-key access</a></li>
+<li><a href="/oscp/notes/methods/credentials/#linux-hashes">Recover Linux account passwords from matched records</a></li>
+</ul>
+<h4 id="typed-windowsdomain-material">Typed Windows/domain material</h4>
+<ul>
+<li><a href="/oscp/notes/methods/credentials/#nt-hash">Recover or reuse an NT password hash</a></li>
+<li><a href="/oscp/notes/methods/credentials/#netntlm-recovery">Recover a password from a captured NTLM response</a></li>
+<li><a href="/oscp/notes/methods/credentials/#dcc2-recovery">Recover a password from cached domain logon verifiers</a></li>
+<li><a href="/oscp/notes/methods/credentials/#ticket-use">Classify tickets and use a compatible cache</a></li>
+</ul>
+<h3 id="select-and-adapt-public-exploits">Select and adapt public exploits</h3>
+<h4 id="selection-and-local-runtime">Selection and local runtime</h4>
+<ul>
+<li><a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a></li>
+<li><a href="/oscp/notes/methods/public-exploits/#exploit-runtime">Audit a PoC and reproduce its interpreter/dependency environment</a></li>
+</ul>
+<h4 id="native-and-web-adaptation">Native and web adaptation</h4>
+<ul>
+<li><a href="/oscp/notes/methods/public-exploits/#exploit-compile">Compile and minimally adapt an existing native or memory-corruption PoC</a></li>
+<li><a href="/oscp/notes/methods/public-exploits/#exploit-web">Repair a web PoC using the real HTTP transaction</a></li>
+</ul>
+<h3 id="establish-sessions-and-move-files">Establish sessions and move files</h3>
+<h4 id="execution-and-connection-direction">Execution and connection direction</h4>
+<ul>
+<li><a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#session-reverse">Connect a Linux reverse shell through an available interpreter</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#session-windows">Use Windows authenticated access or a PowerShell command channel</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#session-bind">Use a bind shell when the target can accept inbound connections</a></li>
+</ul>
+<h4 id="payload-and-terminal-compatibility">Payload and terminal compatibility</h4>
+<ul>
+<li><a href="/oscp/notes/methods/sessions-transfers/#payload-generate">Generate a payload matching OS, process, format and handler</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#session-tty">Repair a limited Linux terminal</a></li>
+</ul>
+<h4 id="file-transport-and-integrity">File transport and integrity</h4>
+<ul>
+<li><a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#transfer-scp">Copy files through an authenticated SSH service</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#transfer-smb">Move Windows files through an authenticated SMB share</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#transfer-stream">Stream a file over a direct TCP connection</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#transfer-text">Move a small artifact through a text-only channel</a></li>
+<li><a href="/oscp/notes/methods/sessions-transfers/#transfer-ftp">Use a temporary FTP transfer as a constrained fallback</a></li>
+</ul>
+<h3 id="escalate-privileges-on-linux">Escalate privileges on Linux</h3>
+<h4 id="identity-permissions-and-secret-sources">Identity, permissions and secret sources</h4>
+<ul>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a></li>
+</ul>
+<h4 id="delegated-and-executable-privilege">Delegated and executable privilege</h4>
+<ul>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-preload">Load a controlled library through a permitted sudo environment</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-capabilities">Use a file capability that enables a specific privileged operation</a></li>
+</ul>
+<h4 id="privileged-consumers-and-resolution">Privileged consumers and resolution</h4>
+<ul>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-path">Hijack an unqualified helper through controlled PATH resolution</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-wildcard">Turn wildcard-expanded filenames into privileged command options</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-library">Control a privileged program's shared-library resolution</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-policy">Change a writable account or privilege-policy file</a></li>
+</ul>
+<h4 id="daemon-mount-and-software-routes">Daemon, mount and software routes</h4>
+<ul>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-containers">Use privileged group, daemon or container-management control</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-mounts">Exploit a permission-backed mount, NFS mapping or local service</a></li>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-kernel">Select an evidence-matched Linux software or kernel exploit</a></li>
+</ul>
+<h4 id="candidate-generation">Candidate generation</h4>
+<ul>
+<li><a href="/oscp/notes/methods/linux-privesc/#linux-enumerators">Use enumeration tools to generate manually testable candidates</a></li>
+</ul>
+<h3 id="escalate-privileges-on-windows">Escalate privileges on Windows</h3>
+<h4 id="token-acl-and-credential-state">Token, ACL and credential state</h4>
+<ul>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-acl">Prove effective file, registry and service-object permissions</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-secrets">Recover Windows application, history and stored-credential artifacts</a></li>
+</ul>
+<h4 id="services-and-privileged-consumers">Services and privileged consumers</h4>
+<ul>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-service-binary">Replace a privileged service binary or consumed file</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-unquoted">Exploit an unquoted service path with a writable earlier prefix</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-dll">Control a privileged DLL, helper or configuration load</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-tasks">Control scheduled tasks, startup files or autostart consumers</a></li>
+</ul>
+<h4 id="installer-and-token-backed-operations">Installer and token-backed operations</h4>
+<ul>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-installer">Validate elevated installer policy and administrative-token context</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-backup">Use backup privilege to obtain protected local credential material</a></li>
+</ul>
+<h4 id="software-and-candidate-generation">Software and candidate generation</h4>
+<ul>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-kernel">Select a matching application, driver or kernel exploit</a></li>
+<li><a href="/oscp/notes/methods/windows-privesc/#windows-enumerators">Turn automated Windows findings into manually verified candidates</a></li>
+</ul>
+<h3 id="map-active-directory-attack-paths">Map Active Directory attack paths</h3>
+<h4 id="domain-context-and-directory-objects">Domain context and directory objects</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a></li>
+<li><a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a></li>
+</ul>
+<h4 id="artifacts-and-service-identities">Artifacts and service identities</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-mapping/#domain-shares">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a></li>
+<li><a href="/oscp/notes/methods/ad-mapping/#domain-spns">Identify service accounts and SPNs worth investigating</a></li>
+</ul>
+<h4 id="effective-rights-host-access-and-path-ranking">Effective rights, host access and path ranking</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a></li>
+<li><a href="/oscp/notes/methods/ad-mapping/#domain-hosts">Validate host access and volatile session candidates</a></li>
+<li><a href="/oscp/notes/methods/ad-mapping/#domain-graph">Collect focused BloodHound data and validate an attack path</a></li>
+</ul>
+<h3 id="gain-a-more-useful-domain-identity">Gain a more useful domain identity</h3>
+<h4 id="host-credential-sources">Host credential sources</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-lsass">Obtain accessible live logon-session credential material</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-sam">Extract local account hashes from matched SAM and SYSTEM</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-security">Extract LSA secrets and cached-domain verifiers</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-dpapi">Use Credential Manager and DPAPI with the protecting context</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-ntds">Parse an offline domain database or select a justified remote collection path</a></li>
+</ul>
+<h4 id="password-derived-ticket-recovery">Password-derived ticket recovery</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-identities/#kerberos-asrep">Request AS-REP material for an account without preauthentication</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#kerberos-roast">Request a selected service ticket for offline service-account recovery</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-targeted-roast">Create a temporary SPN through an effective object right</a></li>
+</ul>
+<h4 id="ticket-capabilities">Ticket capabilities</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-identities/#kerberos-tickets">Inventory, convert and import tickets in the correct logon context</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#kerberos-silver">Forge a service-scoped ticket from the correct service key</a></li>
+</ul>
+<h4 id="object-backed-identity-changes-and-replication">Object-backed identity changes and replication</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-password-reset">Reset a target account password through a validated directory right</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-group-control">Add a controlled identity to a group through effective membership rights</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-owner-dacl">Convert ownership or DACL control into a narrower useful right</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-dcsync">Use validated directory replication rights for bounded credential proof</a></li>
+</ul>
+<h4 id="conditional-policy-delegation-and-certificate-paths">Conditional policy, delegation and certificate paths</h4>
+<ul>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-gpo">Conditional: trace GPO control to privileged policy consumption</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-delegation">Conditional: use a validated delegation or RBCD relationship</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#ad-certificates">Conditional: validate an AD CS enrollment-to-authentication path</a></li>
+<li><a href="/oscp/notes/methods/ad-identities/#kerberos-golden">Conditional: understand a realm-wide TGT forgery from KRBTGT material</a></li>
+</ul>
+<h3 id="move-to-another-host">Move to another host</h3>
+<h4 id="route-authorization-and-authentication-material">Route, authorization and authentication material</h4>
+<ul>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a></li>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a></li>
+</ul>
+<h4 id="service-and-scheduled-task-execution">Service and scheduled-task execution</h4>
+<ul>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a></li>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-smbexec">Execute commands through service command lines and SMB output</a></li>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-tasks">Execute through remote Task Scheduler</a></li>
+</ul>
+<h4 id="management-protocol-execution">Management protocol execution</h4>
+<ul>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-wmi">Execute through WMI or native CIM over DCOM</a></li>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-dcom">Execute through an authorized DCOM application object</a></li>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a></li>
+</ul>
+<h4 id="interactive-access">Interactive access</h4>
+<ul>
+<li><a href="/oscp/notes/methods/lateral-movement/#move-rdp">Obtain an authorized RDP interactive session</a></li>
+</ul>
+<h3 id="reach-internal-services">Reach internal services</h3>
+<h4 id="network-position-and-fixed-relays">Network position and fixed relays</h4>
+<ul>
+<li><a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#fixed-forward">Relay a single TCP service through a fixed forward</a></li>
+</ul>
+<h4 id="ssh-listener-direction-and-proxy-access">SSH listener direction and proxy access</h4>
+<ul>
+<li><a href="/oscp/notes/methods/pivoting/#ssh-local">Forward a selected service through an SSH client-side listener</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#ssh-dynamic">Provide SOCKS access through SSH dynamic forwarding</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#ssh-remote">Expose an SSH-client-side destination through a server-side remote listener</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#ssh-remote-dynamic">Expose a server-side SOCKS proxy through remote dynamic SSH forwarding</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#proxy-clients">Use ProxyChains, native SOCKS clients and SSH jump paths appropriately</a></li>
+</ul>
+<h4 id="transparent-and-windows-forwarding">Transparent and Windows forwarding</h4>
+<ul>
+<li><a href="/oscp/notes/methods/pivoting/#sshuttle-route">Route a selected subnet through sshuttle</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#windows-forward">Forward from Windows with OpenSSH, Plink or Netsh</a></li>
+</ul>
+<h4 id="alternative-carriers-and-routed-agents">Alternative carriers and routed agents</h4>
+<ul>
+<li><a href="/oscp/notes/methods/pivoting/#chisel-reverse">Use a reverse Chisel SOCKS or fixed TCP tunnel</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#chisel-forward">Use forward Chisel SOCKS and version-supported UDP routing</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#ligolo-route">Route a selected internal subnet through Ligolo-ng</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#pivot-dns-tunnel">Conditional: tunnel through controlled DNS infrastructure</a></li>
+</ul>
+<h4 id="names-return-paths-and-multiple-hops">Names, return paths and multiple hops</h4>
+<ul>
+<li><a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a></li>
+<li><a href="/oscp/notes/methods/pivoting/#pivot-multihop">Compose multiple pivots and validate every connection leg</a></li>
+</ul>
+<h3 id="resolve-payload-execution-obstacles">Resolve payload execution obstacles</h3>
+<h4 id="client-side-delivery-and-interaction">Client-side delivery and interaction</h4>
+<ul>
+<li><a href="/oscp/notes/methods/execution/#execution-office">Use a gated Office macro delivery chain</a></li>
+<li><a href="/oscp/notes/methods/execution/#execution-library">Use a Windows Library/WebDAV/shortcut chain with explicit interaction</a></li>
+</ul>
+<h4 id="format-parser-and-control-boundaries">Format, parser and control boundaries</h4>
+<ul>
+<li><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a></li>
+<li><a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a></li>
+<li><a href="/oscp/notes/methods/execution/#execution-powershell">Distinguish PowerShell policy, language mode and protected execution layers</a></li>
+<li><a href="/oscp/notes/methods/execution/#execution-controls">Interpret endpoint-control evidence and select a justified alternative</a></li>
+</ul>
+<h4 id="handlers-framework-state-and-callbacks">Handlers, framework state and callbacks</h4>
+<ul>
+<li><a href="/oscp/notes/methods/execution/#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a></li>
+<li><a href="/oscp/notes/methods/execution/#execution-framework">Use a framework module with explicit target and feature constraints</a></li>
+<li><a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a></li>
+</ul>
+<h3 id="complete-attacks-and-retain-reproducible-evidence">Complete attacks and retain reproducible evidence</h3>
+<h4 id="state-chain-selection-and-recovery">State, chain selection and recovery</h4>
+<ul>
+<li><a href="/oscp/notes/methods/integration/#attack-state">Maintain state and select the next evidence-producing test</a></li>
+<li><a href="/oscp/notes/methods/integration/#attack-chains">Integrate a standalone or assumed-breach AD attack</a></li>
+<li><a href="/oscp/notes/methods/integration/#attack-recovery">Recover from dead ends without repeating disproven paths</a></li>
+</ul>
+<h4 id="transition-evidence-and-reporting">Transition evidence and reporting</h4>
+<ul>
+<li><a href="/oscp/notes/methods/integration/#attack-evidence">Capture state-transition, proof and exploit-adaptation evidence</a></li>
+<li><a href="/oscp/notes/methods/integration/#attack-report">Build and validate the report and submission artifacts</a></li>
+</ul>
+<h2 id="follow-the-result-into-the-next-method">Follow the result into the next method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Observed result</th><th>What must still be proved</th><th>Next objective</th></tr></thead><tbody><tr><td>New hostname, interface, listener or subnet</td><td>Scope, source position and reachability</td><td>Discovery and service enumeration</td></tr><tr><td>Readable configuration, repository history or file</td><td>Artifact type, account context and whether its value is current</td><td>Credential classification and compatible reuse</td></tr><tr><td>File write or upload</td><td>Executing consumer, file interpretation, permissions and trigger</td><td>Web execution or local escalation</td></tr><tr><td>Command execution</td><td>Host, identity, output channel and connection direction</td><td>Session establishment and transfer</td></tr><tr><td>Higher local privilege</td><td>Effective token/UID and additional readable credential sources</td><td>Credential access and re-enumeration</td></tr><tr><td>New domain identity or directory right</td><td>Effective right on the exact object and the resulting service authorization</td><td>AD identity transitions or lateral movement</td></tr><tr><td>Successful authentication</td><td>Destination-specific execution/logon rights</td><td>Compatible remote service method</td></tr><tr><td>New route or proxy</td><td>Destination service reachability, name resolution and callback path</td><td>Re-enumerate from the new vantage point</td></tr></tbody></table>
+<h3 id="paper-based-chain-rehearsal">Paper-based chain rehearsal</h3>
+<ul>
+<li>
+<p><strong>Linux standalone:</strong> <a href="/oscp/notes/methods/discovery/#path-hosts">Validate the source path and discover hosts</a> → <a href="/oscp/notes/methods/discovery/#tcp-coverage">Discover TCP ports with SYN or connect scans</a> → <a href="/oscp/notes/methods/web-mapping/#web-identity">Establish scheme, host, redirects and request state</a> → <a href="/oscp/notes/methods/web-mapping/#web-behavior">Map functions, roles and normal requests manually</a> → <a href="/oscp/notes/methods/web-exploitation/#web-traversal">Read files through directory traversal</a> → <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a> → <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a> → <a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a> → <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a> → <a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a> → <a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>.</p>
+</li>
+<li>
+<p><strong>Windows standalone:</strong> <a href="/oscp/notes/methods/discovery/#path-hosts">Validate the source path and discover hosts</a> → <a href="/oscp/notes/methods/discovery/#tcp-coverage">Discover TCP ports with SYN or connect scans</a> → <a href="/oscp/notes/methods/web-mapping/#web-identity">Establish scheme, host, redirects and request state</a> → <a href="/oscp/notes/methods/web-mapping/#web-behavior">Map functions, roles and normal requests manually</a> → <a href="/oscp/notes/methods/web-exploitation/#web-upload">Establish upload acceptance, storage and retrieval</a> → <a href="/oscp/notes/methods/web-exploitation/#web-upload-exec">Execute an uploaded file through a compatible handler</a> → <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a> → <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a> → <a href="/oscp/notes/methods/windows-privesc/#windows-service-config">Change a privileged service's executable configuration</a> → <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+</li>
+<li>
+<p><strong>AD roast and movement:</strong> <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a> → <a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a> → <a href="/oscp/notes/methods/ad-identities/#kerberos-roast">Request a selected service ticket for offline service-account recovery</a> → <a href="/oscp/notes/methods/credentials/#offline-recovery">Recover passwords with feasible dictionary, rule and mask attacks</a> → <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a> → <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a> → <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a> → <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a> → <a href="/oscp/notes/methods/windows-privesc/#windows-token">Select a privilege-backed impersonation or object-control route</a> → <a href="/oscp/notes/methods/ad-identities/#ad-lsass">Obtain accessible live logon-session credential material</a> → <a href="/oscp/notes/methods/credentials/#nt-hash">Recover or reuse an NT password hash</a> → <a href="/oscp/notes/methods/lateral-movement/#move-auth-material">Select password, NT hash, key-to-ticket or ticket authentication</a> → <a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>.</p>
+</li>
+<li>
+<p><strong>AD replication and evidence:</strong> <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a> → <a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a> → <a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a> → <a href="/oscp/notes/methods/ad-identities/#ad-dcsync">Use validated directory replication rights for bounded credential proof</a> → <a href="/oscp/notes/methods/integration/#attack-evidence">Capture state-transition, proof and exploit-adaptation evidence</a> → <a href="/oscp/notes/methods/integration/#attack-report">Build and validate the report and submission artifacts</a>.</p>
+</li>
+<li>
+<p><strong>Pivoted domain access:</strong> <a href="/oscp/notes/methods/pivoting/#pivot-state">Discover pivot interfaces, routes and internal service context</a> → <a href="/oscp/notes/methods/pivoting/#ligolo-route">Route a selected internal subnet through Ligolo-ng</a> → <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a> → <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a> → <a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a> → <a href="/oscp/notes/methods/ad-mapping/#domain-graph">Collect focused BloodHound data and validate an attack path</a> → <a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a> → <a href="/oscp/notes/methods/ad-identities/#ad-group-control">Add a controlled identity to a group through effective membership rights</a> → <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>.</p>
+</li>
+<li>
+<p><strong>Execution and callback repair:</strong> <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a> → <a href="/oscp/notes/methods/sessions-transfers/#session-reverse">Connect a Linux reverse shell through an available interpreter</a> → <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a> → <a href="/oscp/notes/methods/execution/#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a> → <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+</li>
+</ul>
+<p>At every arrow identify the produced capability and the next method's missing prerequisite. An expected result in these examples is hypothetical, not recorded lab evidence.</p>
+<h2 id="study-order-and-boundaries">Study order and boundaries</h2>
+<p>Use Units 1–8 in the <a href="/oscp/notes/Speedrun_Breakdown/#grouped-study-sequence">speedrun study sequence</a>: Blocks 1+2; 3+4; 5; 6+7; 8 then 9; 13 fundamentals then 10→11→12; remaining 14; and 15. Relevant execution diagnostics recur throughout.</p>
+<p>Core methods follow the established OSCP preparation route. AD CS, delegation/RBCD, broader GPO/ticket-forging branches and less-common service/tunnel options retain their explicit conditional context. Their prerequisites must be verified before selecting them.</p>
+<p>Dedicated buffer-overflow and shellcode development remain excluded by learner choice; selecting, compiling and adapting an existing memory-corruption PoC remains covered. Commercial/mass vulnerability scanners, automatic exploitation and prohibited spoofing workflows are not operational exam paths. Some course topics therefore have recognition-only or conditional treatment. Read the current <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">official exam guide</a> before choosing restricted framework features; the <a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">Body of Knowledge</a> describes competencies separately from tool permission.</p>
+<p>Concept study includes the worked commands and reasoning here. Practical exploitation and independent retests follow the learner's explicit closure of the concept phase. Study coverage is separate from practical competence.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

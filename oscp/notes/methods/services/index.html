@@ -1,0 +1,1738 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Extract opportunities from services — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/services/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/services/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/services/#try-smb-with-the-actual-access-context">Try SMB with the actual access context</a></li><li><a href="/oscp/notes/methods/services/#query-exposed-names-and-configuration">Query exposed names and configuration</a></li><li><a href="/oscp/notes/methods/services/#inspect-database-identity-and-grants">Inspect database identity and grants</a></li></ul></li><li><a href="/oscp/notes/methods/services/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/services/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/services/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/services/#use-anonymous-or-authenticated-ftp-file-access">Use anonymous or authenticated FTP file access</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-anonymous-access">Baseline: anonymous access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#enumerate-smbrpc-shares-files-and-identities">Enumerate SMB/RPC shares, files and identities</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-1">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-list-shares-without-credentials">Baseline: list shares without credentials</a></li><li><a href="/oscp/notes/methods/services/#netbios-names-before-smb-enumeration">NetBIOS names before SMB enumeration</a></li><li><a href="/oscp/notes/methods/services/#smbrpc-rid-lookups-when-a-normal-user-listing-is-denied">SMB/RPC RID lookups when a normal user listing is denied</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#inspect-rpcnfs-exports-and-effective-file-identity">Inspect RPC/NFS exports and effective file identity</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-2">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-list-rpc-services-and-exports">Baseline: list RPC services and exports</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#use-ssh-passwords-keys-and-forwarding-capable-access">Use SSH passwords, keys and forwarding-capable access</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-3">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-validate-one-known-identity">Baseline: validate one known identity</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#expand-names-through-dns-records-and-zone-transfers">Expand names through DNS records and zone transfers</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-4">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-query-the-target-dns-server-directly">Baseline: query the target DNS server directly</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#extract-configuration-and-process-information-through-snmp">Extract configuration and process information through SNMP</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-5">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-find-a-read-community-then-walk">Baseline: find a read community, then walk</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#enumerate-smtp-identities-and-accessible-mailbox-protocols">Enumerate SMTP identities and accessible mailbox protocols</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-6">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-banner-and-capabilities">Baseline: banner and capabilities</a></li><li><a href="/oscp/notes/methods/services/#pop3-and-imap-handoff">POP3 and IMAP handoff</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#discover-ldap-naming-contexts-and-authenticated-search">Discover LDAP naming contexts and authenticated search</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-7">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-7">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-7">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-7">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-7">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-7">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#baseline-discover-naming-contexts">Baseline: discover naming contexts</a></li><li><a href="/oscp/notes/methods/services/#anonymous-directory-search">Anonymous directory search</a></li><li><a href="/oscp/notes/methods/services/#authenticated-search">Authenticated search</a></li><li><a href="/oscp/notes/methods/services/#kerberos-prerequisites-before-an-attack">Kerberos prerequisites before an attack</a></li><li><a href="/oscp/notes/methods/services/#handoff">Handoff</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-7">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-7">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-7">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-7">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#use-mysqlmariadb-data-and-file-primitives">Use MySQL/MariaDB data and file primitives</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-8">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-8">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-8">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-8">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-8">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-8">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-8">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-8">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-8">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-8">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#use-sql-server-rights-impersonation-and-command-facilities">Use SQL Server rights, impersonation and command facilities</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-9">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-9">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-9">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-9">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-9">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-9">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-9">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-9">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-9">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-9">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#use-postgresql-data-and-privileged-program-execution">Use PostgreSQL data and privileged program execution</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-10">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-10">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-10">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-10">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-10">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-10">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-10">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-10">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-10">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-10">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#inspect-redis-access-and-persistence-boundaries">Inspect Redis access and persistence boundaries</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-11">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-11">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-11">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-11">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-11">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-11">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-11">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-11">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-11">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-11">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#triage-oracle-listener-and-database-identity">Triage Oracle listener and database identity</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-12">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-12">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-12">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-12">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-12">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-12">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-12">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-12">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-12">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-12">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#validate-rdp-winrm-vnc-and-telnet-access-contexts">Validate RDP, WinRM, VNC and Telnet access contexts</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-13">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-13">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-13">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-13">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-13">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-13">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-13">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#rdp-baseline-authentication-only-check">RDP baseline: authentication-only check</a></li><li><a href="/oscp/notes/methods/services/#winrm-baseline-interactive-session">WinRM baseline: interactive session</a></li><li><a href="/oscp/notes/methods/services/#vnc">VNC</a></li><li><a href="/oscp/notes/methods/services/#telnet">Telnet</a></li><li><a href="/oscp/notes/methods/services/#gnu-inetutils-telnetd--conditional-authentication-bypass-check">GNU Inetutils telnetd — conditional authentication-bypass check</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-13">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-13">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-13">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-13">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#investigate-sipirc-identity-and-configuration-clues">Investigate SIP/IRC identity and configuration clues</a><ul><li><a href="/oscp/notes/methods/services/#1-purpose-and-result-14">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/services/#2-recognition-clues-14">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/services/#find-the-clue-from-your-starting-access-14">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/services/#3-prerequisites-14">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/services/#4-discover-and-verify-prerequisites-14">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/services/#5-why-it-works-14">5. Why it works</a></li><li><a href="/oscp/notes/methods/services/#6-execute-and-choose-variants-14">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/services/#sip">SIP</a></li><li><a href="/oscp/notes/methods/services/#irc">IRC</a></li></ul></li><li><a href="/oscp/notes/methods/services/#7-worked-example--hypothetical-14">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/services/#8-verify-the-result-14">8. Verify the result</a></li><li><a href="/oscp/notes/methods/services/#9-failure-and-fallback-14">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/services/#10-next-transitions-14">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/services/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/" aria-current="page">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="extract-opportunities-from-services">Extract opportunities from services</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>A service can disclose names, files, rights or execution. Test authentication, read, write and execution separately. A write becomes an execution path only when a useful consumer and trigger exist.</p>
+<p><strong>Speedrun blocks:</strong> 2; authenticated re-enumeration throughout. <strong>Documented methods:</strong> 15.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="try-smb-with-the-actual-access-context">Try SMB with the actual access context</h3>
+<p>Use the anonymous form first when no credentials exist; use the authenticated variant when an identity is available.</p>
+<pre><code class="language-bash">smbclient -N -L //TARGET
+</code></pre>
+<ul>
+<li><strong>If A readable share contains config, backups or keys:</strong> Read the exact file and record its source before testing any recovered value. → <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>.</li>
+<li><strong>If A working domain identity:</strong> Enumerate domain shares with that identity; share listing alone is not file access. → <a href="/oscp/notes/methods/ad-mapping/#domain-shares">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a>.</li>
+<li><strong>Otherwise:</strong> SMB is denied: inspect another discovered protocol, not repeated guesses against the same identity. → <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</li>
+</ul>
+<h3 id="query-exposed-names-and-configuration">Query exposed names and configuration</h3>
+<p>Use only an observed/assigned community and the correct SNMP version; preserve the returned OIDs.</p>
+<pre><code class="language-bash">snmpwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1.1
+</code></pre>
+<ul>
+<li><strong>If Process arguments or configuration contain an account value:</strong> Classify its account scope and format. → <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>.</li>
+<li><strong>If A hostname or directory-service clue:</strong> Resolve it through the relevant name service. → <a href="/oscp/notes/methods/services/#service-dns">Expand names through DNS records and zone transfers</a>.</li>
+<li><strong>Otherwise:</strong> No useful SNMP response: return to the confirmed service list and choose its native client. → <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</li>
+</ul>
+<h3 id="inspect-database-identity-and-grants">Inspect database identity and grants</h3>
+<p>Use this branch only for confirmed SQL Server with an accepted login. Other database clients are separate procedures.</p>
+<pre><code class="language-sql">SELECT SYSTEM_USER, ORIGINAL_LOGIN(), @@VERSION;
+SELECT IS_SRVROLEMEMBER('sysadmin');
+</code></pre>
+<ul>
+<li><strong>If A permitted impersonation or command facility:</strong> Check the effective login and the exact enabled operation before attempting an OS effect. → <a href="/oscp/notes/methods/services/#service-mssql">Use SQL Server rights, impersonation and command facilities</a>.</li>
+<li><strong>If MySQL/MariaDB identified instead of SQL Server:</strong> Use the MySQL/MariaDB grants and file rules rather than SQL Server syntax. → <a href="/oscp/notes/methods/services/#service-mysql">Use MySQL/MariaDB data and file primitives</a>.</li>
+<li><strong>Otherwise:</strong> Login succeeds but the action is denied: inspect grants under the same identity. → <a href="/oscp/notes/methods/services/#service-mssql">Use SQL Server rights, impersonation and command facilities</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start with application evidence from discovery; anonymous access, valid credentials and useful rights are separate questions.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>Use the matching protocol client and establish which identity the service accepts: <a href="/oscp/notes/methods/services/#service-ftp">Use anonymous or authenticated FTP file access</a>; <a href="/oscp/notes/methods/services/#service-smb">Enumerate SMB/RPC shares, files and identities</a>; <a href="/oscp/notes/methods/services/#service-ssh">Use SSH passwords, keys and forwarding-capable access</a>.</li>
+<li>Investigate names, account clues and configuration with the available service context: <a href="/oscp/notes/methods/services/#service-dns">Expand names through DNS records and zone transfers</a>; <a href="/oscp/notes/methods/services/#service-snmp">Extract configuration and process information through SNMP</a>; <a href="/oscp/notes/methods/services/#service-smtp">Enumerate SMTP identities and accessible mailbox protocols</a>; <a href="/oscp/notes/methods/services/#service-ldap">Discover LDAP naming contexts and authenticated search</a>.</li>
+<li>For databases inspect the current identity and grants before file or execution hypotheses: <a href="/oscp/notes/methods/services/#service-mysql">Use MySQL/MariaDB data and file primitives</a>; <a href="/oscp/notes/methods/services/#service-mssql">Use SQL Server rights, impersonation and command facilities</a>; <a href="/oscp/notes/methods/services/#service-postgres">Use PostgreSQL data and privileged program execution</a>.</li>
+<li>Retrieve relevant artifacts, classify credentials, and re-enumerate with any new accepted identity: <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>.</li>
+</ol>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>File and shell access:</strong> <a href="#service-ftp">Use anonymous or authenticated FTP file access</a>, <a href="#service-smb">Enumerate SMB/RPC shares, files and identities</a>, <a href="#service-nfs">Inspect RPC/NFS exports and effective file identity</a>, <a href="#service-ssh">Use SSH passwords, keys and forwarding-capable access</a>.</li>
+<li><strong>Identity and configuration disclosure:</strong> <a href="#service-dns">Expand names through DNS records and zone transfers</a>, <a href="#service-snmp">Extract configuration and process information through SNMP</a>, <a href="#service-smtp">Enumerate SMTP identities and accessible mailbox protocols</a>, <a href="#service-ldap">Discover LDAP naming contexts and authenticated search</a>.</li>
+<li><strong>Database privileges and primitives:</strong> <a href="#service-mysql">Use MySQL/MariaDB data and file primitives</a>, <a href="#service-mssql">Use SQL Server rights, impersonation and command facilities</a>, <a href="#service-postgres">Use PostgreSQL data and privileged program execution</a>, <a href="#service-redis">Inspect Redis access and persistence boundaries</a>, <a href="#service-oracle">Triage Oracle listener and database identity</a>.</li>
+<li><strong>Remote access and uncommon applications:</strong> <a href="#service-remote">Validate RDP, WinRM, VNC and Telnet access contexts</a>, <a href="#service-sip-irc">Investigate SIP/IRC identity and configuration clues</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#service-ftp">Use anonymous or authenticated FTP file access</a></td><td>An FTP banner or accessible listing</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Anonymous login allowed or a valid FTP identity; data-channel connectivity and object-specific read/write rights</td><td>Retrieved files, configuration or a verified writable location</td></tr><tr><td><a href="#service-smb">Enumerate SMB/RPC shares, files and identities</a></td><td>SMB/RPC endpoints, domain clues or new credentials</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Reachable SMB/RPC; anonymous, guest, local or domain context must be explicit; share and filesystem ACLs both matter</td><td>Domain/user clues, readable files or object-specific writable access</td></tr><tr><td><a href="#service-nfs">Inspect RPC/NFS exports and effective file identity</a></td><td>RPC/NFS listeners or export information</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Reachable RPC/NFS transports, permitted client address and an export whose UID/GID mapping grants relevant access</td><td>Readable files or a controlled write with established identity semantics</td></tr><tr><td><a href="#service-ssh">Use SSH passwords, keys and forwarding-capable access</a></td><td>An SSH service and a known password, private key or agent context</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Compatible authentication method, correct user, accepted key policy and the requested shell/subsystem permission</td><td>An authenticated shell, subsystem or forwarding capability with verified identity</td></tr><tr><td><a href="#service-dns">Expand names through DNS records and zone transfers</a></td><td>A DNS server, domain name or host aliases</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Reachable DNS transport and relevant authoritative zone; AXFR requires an allowed TCP zone transfer</td><td>Hostnames, address relationships and possibly a zone inventory</td></tr><tr><td><a href="#service-snmp">Extract configuration and process information through SNMP</a></td><td>UDP/161 evidence or an exposed management plane</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>An accepted read community or SNMPv3 identity/security level; transport and view permissions</td><td>Host, interface, software or process/configuration clues from permitted OID branches</td></tr><tr><td><a href="#service-smtp">Enumerate SMTP identities and accessible mailbox protocols</a></td><td>SMTP capabilities or mail-related account clues</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Reachable SMTP/POP3/IMAP service; enumeration or mailbox access must be enabled for the selected context</td><td>Validated mail capabilities, possible usernames or authenticated mailbox artifacts</td></tr><tr><td><a href="#service-ldap">Discover LDAP naming contexts and authenticated search</a></td><td>LDAP/Kerberos listeners or a probable AD domain</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Reachable directory; anonymous query permission or valid bind identity; required signing/TLS and naming context</td><td>A directory base DN and permitted account/group/computer attributes</td></tr><tr><td><a href="#service-mysql">Use MySQL/MariaDB data and file primitives</a></td><td>A MySQL-compatible service and valid application/database credentials</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Database authentication and exact schema/file privileges; secure_file_priv and server filesystem identity constrain file actions</td><td>Useful data or a permission-backed server-side file operation</td></tr><tr><td><a href="#service-mssql">Use SQL Server rights, impersonation and command facilities</a></td><td>SQL Server credentials or a Windows identity accepted by the database</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Correct SQL versus Windows authentication; database role and configuration must permit the requested operation</td><td>Database data, a more useful SQL security context or verified server command execution</td></tr><tr><td><a href="#service-postgres">Use PostgreSQL data and privileged program execution</a></td><td>PostgreSQL access or an application connection string</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Accepted connection/database role; COPY PROGRAM needs the corresponding server privilege and an executable OS context</td><td>Database information or a verified privilege-backed OS effect</td></tr><tr><td><a href="#service-redis">Inspect Redis access and persistence boundaries</a></td><td>A Redis listener or application cache credentials</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Reachability and accepted authentication/ACL commands; persistence writes need CONFIG rights, destination permissions and a consumer</td><td>Useful accessible keys or a precisely bounded persistence/file-write candidate</td></tr><tr><td><a href="#service-oracle">Triage Oracle listener and database identity</a></td><td>An Oracle TNS listener or connection descriptor</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Correct service/SID, reachable database transport and valid database credentials for authenticated work</td><td>A confirmed listener/service context and permission-scoped database access</td></tr><tr><td><a href="#service-remote">Validate RDP, WinRM, VNC and Telnet access contexts</a></td><td>An exposed remote-access application and compatible known credentials</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Enabled destination service, matching authentication and protocol-specific logon/session rights</td><td>A verified remote session or a precise authentication/authorization failure</td></tr><tr><td><a href="#service-sip-irc">Investigate SIP/IRC identity and configuration clues</a></td><td>A confirmed SIP or IRC application</td><td>A confirmed reachable application; anonymous context or one identified credential</td><td>Application-specific request format; permitted registration/channel/configuration access</td><td>Service capabilities, identity clues or an evidence-matched exploit candidate</td></tr></tbody></table>
+<p><a id="service-ftp"></a></p>
+<h2 id="use-anonymous-or-authenticated-ftp-file-access">Use anonymous or authenticated FTP file access</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/01-ftp/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>Retrieved files, configuration or a verified writable location.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>An FTP banner or accessible listing.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> After identifying FTP, test the allowed anonymous context or one known credential and inspect its directory namespace.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">curl -v ftp://TARGET/
+curl -v --user 'USER:PASSWORD' ftp://TARGET/
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">230 Login successful
+LIST: application.conf; backups/
+RETR application.conf: 226 Transfer complete
+</code></pre>
+<p><strong>Recognize this detail:</strong> A listing identifies candidate artifacts; a completed RETR with recognizable bytes establishes read access.</p>
+<p><strong>Still missing before method selection:</strong> Validate the account context, file contents, data-channel reachability and any separate write/consumer conditions.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The relevant file is readable and contains a current typed secret: follow credential classification.</td></tr><tr><td>Ruled out in this context</td><td>Anonymous login is denied: rule out anonymous access, retaining authenticated FTP as a separate possibility.</td></tr><tr><td>Inconclusive</td><td>Login works but data transfer hangs: inspect active/passive data routing before concluding file access is denied.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Anonymous login allowed or a valid FTP identity; data-channel connectivity and object-specific read/write rights.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">curl -v ftp://TARGET/
+curl -v --user 'USER:PASSWORD' ftp://TARGET/
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>FTP authentication and directory listing do not guarantee downloads or uploads. Passive/active data channels can fail independently of the control connection; uploaded bytes need a separate execution consumer.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> FTP usually appears on TCP/21, but trust an FTP banner or protocol response on any port. <strong>Goal:</strong> determine authentication, listable/readable content and effective write locations.</p>
+</blockquote>
+<h5 id="baseline-anonymous-access">Baseline: anonymous access</h5>
+<pre><code class="language-bash">ftp TARGET
+</code></pre>
+<p>At the prompts, try user <code>anonymous</code> and an email-like password. Then:</p>
+<pre><code class="language-text">status
+pwd
+ls -la
+binary
+get FILE
+quit
+</code></pre>
+<p>If login succeeds but listing/transfer fails, use the client's <code>passive</code> command to toggle data-channel mode and retry once before changing credentials.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> code <code>230</code> accepts the login; directory listings and successful <code>RETR</code> establish read access. Inspect downloaded backups, configuration, keys and source locally. Store target artifacts outside this public repository.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — authenticated FTP</strong></summary>
+<pre><code class="language-bash">ftp TARGET
+</code></pre>
+<p>Enter <code>USER</code> and the password when prompted. Enumerate from the authenticated root again; it may expose a different namespace than anonymous access.</p>
+</details>
+<details>
+<summary><strong>Variant — curl listing, download and bounded write test</strong></summary>
+<pre><code class="language-bash">curl --list-only ftp://TARGET/
+curl -o FILE ftp://TARGET/path/FILE
+curl --user USER ftp://TARGET/
+curl --user USER -o FILE ftp://TARGET/path/FILE
+curl --user USER --upload-file ./probe.txt ftp://TARGET/path/probe.txt
+</code></pre>
+<p>Omit <code>--user</code> for anonymous access. Let curl prompt for an authenticated password instead of placing it in shell history. Upload only a harmless uniquely named probe when write validation is necessary and authorized; remove it through the FTP client after the test.</p>
+</details>
+<details>
+<summary><strong>Variant — focused Nmap helpers</strong></summary>
+<pre><code class="language-bash">nmap -sV -p PORT --script ftp-anon,ftp-syst TARGET
+</code></pre>
+<p><code>ftp-anon</code> checks anonymous login and may flag writable entries; <code>ftp-syst</code> asks for server/system information. Manually confirm useful access with a protocol client.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> <code>530</code> means that login was rejected, not that FTP has no other usable identity. A listing failure after <code>230</code> may be a data-channel/passive-mode or authorization problem. A successful upload proves write access only; it does not prove that a web server, scheduled task or privileged process consumes that file.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> inspect recovered files; record exact read/write boundaries; validate any new credential once against its likely service; send a writable-consumer hypothesis to the appropriate web, execution or privilege-escalation block.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: anonymous login succeeds. Test: list and download one relevant readable configuration. Illustrative output: an application username is present. Interpretation: classify its credential context and test only a compatible service.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Retrieve recognizable bytes or independently verify an uploaded canary; distinguish listing, read and write rights.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>Login succeeds but transfers hang: diagnose the data path. A writable upload directory alone does not establish command execution.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/web-mapping/#web-artifacts">Inspect source, backups, configuration and repository artifacts</a>; <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>.</p>
+<p><a id="service-smb"></a></p>
+<h2 id="enumerate-smbrpc-shares-files-and-identities">Enumerate SMB/RPC shares, files and identities</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>Domain/user clues, readable files or object-specific writable access.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>SMB/RPC endpoints, domain clues or new credentials.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Start from confirmed SMB and explicitly compare anonymous versus a known authenticated context, then open a relevant named share.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">smbclient -L //TARGET -N
+smbclient -L //TARGET -U 'DOMAIN/USER'
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Sharename       Type
+SHARE           Disk
+NETLOGON        Disk
+</code></pre>
+<p><strong>Recognize this detail:</strong> A share name supplies a filesystem investigation target; listing it does not prove read, write or service creation.</p>
+<p><strong>Still missing before method selection:</strong> Connect to the named share under the identity that listed it, then ls/get the exact object. Listing a share does not prove read or write. For a write candidate, verify the path operation and identify a separate execution consumer before treating it as access.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A relevant configuration can be retrieved: inspect its account/secret context.</td></tr><tr><td>Ruled out in this context</td><td>The authenticated account cannot read that object: discard the read path for this identity, not all SMB opportunities.</td></tr><tr><td>Inconclusive</td><td>Login succeeds but listing fails: check a justified known share path and separate share/NTFS authorization.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Reachable SMB/RPC; anonymous, guest, local or domain context must be explicit; share and filesystem ACLs both matter.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">smbclient -L //TARGET -N
+smbclient -L //TARGET -U 'DOMAIN/USER'
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>Session establishment, share enumeration, filesystem rights and remote execution are separate authorization layers. A credential change can reveal entirely new shares and files.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> direct-hosted SMB commonly uses TCP/445; NetBIOS session service commonly uses TCP/139; MS-RPC endpoint mapping commonly uses TCP/135. They are related Windows surfaces but not interchangeable. <strong>Goal:</strong> distinguish null, guest and authenticated contexts; enumerate shares, files, users, groups, domain/workgroup clues and actual permissions.</p>
+</blockquote>
+<h5 id="baseline-list-shares-without-credentials">Baseline: list shares without credentials</h5>
+<pre><code class="language-bash">smbclient -N -L //TARGET
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> a share list proves that this access context can enumerate names. It does not prove access to share contents. <code>NT_STATUS_ACCESS_DENIED</code> means this context was denied; repeat after obtaining a legitimate credential.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — authenticated share listing and connection</strong></summary>
+<pre><code class="language-bash">smbclient -L //TARGET -U 'DOMAIN/USER'
+smbclient //TARGET/SHARE -U 'DOMAIN/USER'
+smbclient -L //TARGET -U 'TARGET/USER'
+smbclient -L //TARGET -U 'guest%'
+</code></pre>
+<p>The first two forms use a domain identity, the third makes a local target account explicit, and the fourth tests a guest account with an empty password. Let the client prompt for non-empty passwords. Inside the share:</p>
+<pre><code class="language-text">pwd
+ls
+allinfo FILE
+get FILE
+mkdir probe-dir
+rmdir probe-dir
+exit
+</code></pre>
+<p>Use a harmless uniquely named directory only when write permission must be verified. A successful create/remove establishes share-level write access, not code execution.</p>
+</details>
+<details>
+<summary><strong>Variant — recursive retrieval</strong></summary>
+<pre><code class="language-bash">smbclient //TARGET/SHARE -U 'DOMAIN/USER' -c 'recurse ON;prompt OFF;mget *'
+</code></pre>
+<p>Run from a dedicated local evidence directory and review expected volume first. Search downloaded configuration, scripts, backups, keys and unattended-install files locally; never publish recovered data.</p>
+</details>
+<details>
+<summary><strong>Variant — RPC null or authenticated session</strong></summary>
+<pre><code class="language-bash">rpcclient -U '' -N TARGET
+rpcclient -U 'DOMAIN/USER' TARGET
+</code></pre>
+<p>Useful interactive queries:</p>
+<pre><code class="language-text">srvinfo
+enumdomains
+enumdomusers
+enumdomgroups
+queryuser RID
+netshareenumall
+quit
+</code></pre>
+<p>Null-session denial is common on modern systems. Authenticated output must be labelled with the identity that produced it.</p>
+</details>
+<details>
+<summary><strong>Variant — fast permission summary and consolidated candidates</strong></summary>
+<pre><code class="language-bash">nxc smb TARGET -u USER -p PASSWORD --shares
+enum4linux-ng -A TARGET
+</code></pre>
+<p>NetExec (<code>nxc</code>) is the current command name on recent Kali releases; older material may use <code>crackmapexec</code>. These tools consolidate candidates. Confirm useful shares and files with <code>smbclient</code> or native access.</p>
+</details>
+<details>
+<summary><strong>Variant — protocol, signing and time clues</strong></summary>
+<pre><code class="language-bash">nmap -p 139,445 --script smb-protocols,smb2-security-mode,smb2-time TARGET
+</code></pre>
+<p>Signing and dialect results affect later relay/exploit decisions but are not vulnerabilities by themselves. The older <code>smb-os-discovery</code> script depends on SMBv1 behavior and may not identify modern hosts reliably.</p>
+</details>
+<details>
+<summary><strong>Variant — Windows built-ins</strong></summary>
+<pre><code class="language-powershell">net view \\TARGET /all
+Get-ChildItem \\TARGET\SHARE
+Get-Content \\TARGET\SHARE\FILE
+</code></pre>
+<p>These use the current Windows logon context unless alternate credentials or mappings are established. An existing connection to the same server under another identity can cause credential-conflict errors.</p>
+</details>
+<details>
+<summary><strong>SMBMap — map rights, then read one useful file</strong></summary>
+<p>Use from Kali when SMB is reachable. Choose the same domain/local identity that worked with smbclient. Suppress write probes when inventorying reads; this means a writable label is not being tested here.</p>
+<pre><code class="language-bash"># Known domain account: enumerate share access without creating a probe file
+smbmap -H TARGET -d DOMAIN -u USER -p 'PASSWORD' --no-write-check
+
+# Inspect the selected share to a bounded depth
+smbmap -H TARGET -d DOMAIN -u USER -p 'PASSWORD' -r 'SHARE' --depth 2 --no-write-check
+
+# Download the specific file found above
+smbmap -H TARGET -d DOMAIN -u USER -p 'PASSWORD' --download 'SHARE\PATH\FILE' --no-write-check
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> a listed file must still be readable under this identity. A downloaded config/backup → classify its credential material, then test only the relevant account/service. A denied share → try another listed share or a newly obtained identity; do not infer a host-wide denial.</p>
+</blockquote>
+<p><a href="https://github.com/ShawnDEvans/smbmap">SMBMap upstream</a>. For broader SMB/RPC collection, use the existing enum4linux-ng baseline; authenticate explicitly when credentials exist:</p>
+<pre><code class="language-bash"># No credentials: anonymous RPC/SMB candidates
+enum4linux-ng -A TARGET
+
+# Known identity: domain objects visible to this account
+enum4linux-ng -A -w DOMAIN -u USER -p 'PASSWORD' TARGET
+</code></pre>
+<blockquote>
+<p><strong>Next:</strong> validate returned users/groups/shares with rpcclient or smbclient. A collector can return partial data despite a successful login.</p>
+</blockquote>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> distinguish connection failure, authentication failure, share enumeration denial and file authorization denial. A share named <code>IPC$</code> is not a general file share. Guest acceptance may look like success while returning a restricted namespace. A share marked writable still needs a consumer/trigger before it becomes an execution path.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> inspect readable content, record per-share rights, validate names/domain clues, and re-run authenticated enumeration whenever identity changes. Move file-consumer hypotheses to web/execution/escalation and signing/relay hypotheses to the later credential/AD blocks.</p>
+</blockquote>
+<h5 id="netbios-names-before-smb-enumeration">NetBIOS names before SMB enumeration</h5>
+<p>Use when UDP/137 or SMB suggests Windows names but DNS/domain identity is unclear.</p>
+<pre><code class="language-bash"># Ask the assigned host for its NetBIOS names
+nbtscan TARGET
+nmblookup -A TARGET
+</code></pre>
+<p>Read: a machine name and group/domain label are leads. A workgroup label does not prove AD membership. Resolve the returned name and use the SMB/LDAP checks with the accepted identity. No reply can mean filtering or disabled NetBIOS while TCP/445 still works.</p>
+<p>Sources: <a href="https://www.kali.org/tools/nbtscan/">upstream 1</a>.</p>
+<h5 id="smbrpc-rid-lookups-when-a-normal-user-listing-is-denied">SMB/RPC RID lookups when a normal user listing is denied</h5>
+<p>Use when the accepted identity can translate SIDs but cannot list the directory directly. Keep the queried host/domain and a bounded RID range explicit.</p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --rid-brute 4000
+</code></pre>
+<p>Read: classify returned SID types—users, groups and machine accounts are different objects. The upper bound is coverage, not proof that higher RIDs contain nothing. A resolved name is not a password, service authorization or successful logon. Prefer the existing native directory/RPC listing when it is available; do not infer no accounts from a single denied enumeration method.</p>
+<p>Sources: <a href="https://www.netexec.wiki/smb-protocol/enumeration/enumerate-users-by-bruteforcing-rid">upstream 1</a>.</p>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: anonymous share listing is denied but a recovered domain credential works. Test: open one relevant share and retrieve a configuration. Illustrative output: a service account secret appears. Interpretation: record its identity and re-enter credential validation.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Prove the specific share/object action; a successful login or administrative indicator does not establish every remote-execution route.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>Access denied after login usually means authorization/context. Test local/domain qualification and the exact object rather than repeating passwords.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-shares">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a>; <a href="/oscp/notes/methods/lateral-movement/#move-services">Execute through uploaded service creation using PsExec</a>.</p>
+<p><a id="service-nfs"></a></p>
+<h2 id="inspect-rpcnfs-exports-and-effective-file-identity">Inspect RPC/NFS exports and effective file identity</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>Readable files or a controlled write with established identity semantics.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>RPC/NFS listeners or export information.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Follow RPC/NFS discovery with export inspection, then examine actual ownership/mapping on an allowed mount.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">rpcinfo -p TARGET
+showmount -e TARGET
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">100003  3  tcp  NFS_PORT  nfs
+Export list for TARGET:
+/EXPORT CLIENT_SCOPE
+</code></pre>
+<p><strong>Recognize this detail:</strong> An export lists a filesystem candidate and client policy; it does not establish file access or trusted UID 0.</p>
+<p><strong>Still missing before method selection:</strong> Use the owning procedure to verify NFS version, allowed client, numeric identity mapping, read/write and squash/mount policy.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The relevant mapped identity can read configuration: retrieve and classify its useful artifacts.</td></tr><tr><td>Ruled out in this context</td><td>The export permits a different client scope: rule out this source's mount route.</td></tr><tr><td>Inconclusive</td><td>Empty showmount can miss NFSv4 context; confirm version/export behavior before declaring no NFS access.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Reachable RPC/NFS transports, permitted client address and an export whose UID/GID mapping grants relevant access.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">rpcinfo -p TARGET
+showmount -e TARGET
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>NFS authorization can depend on numeric IDs and export options. root_squash prevents remote UID 0 from automatically becoming server root; no_root_squash alone still needs a useful consumer or execution path.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> rpcbind commonly appears on TCP/UDP 111 and NFS on TCP/UDP 2049, with additional dynamically assigned RPC ports. <strong>Goal:</strong> find exports, allowed client ranges and effective UID/GID-based permissions.</p>
+</blockquote>
+<h5 id="baseline-list-rpc-services-and-exports">Baseline: list RPC services and exports</h5>
+<pre><code class="language-bash">rpcinfo -p TARGET
+showmount -e TARGET
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> <code>rpcinfo</code> maps RPC programs to versions/transports/ports. <code>showmount -e</code> returns exports and apparent allowed clients, but NFSv4-only servers may not expose the mount service and <code>showmount</code> completeness varies by implementation.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — Nmap without mounting</strong></summary>
+<pre><code class="language-bash">nmap -sV -p 111,2049 --script nfs-showmount,nfs-ls,nfs-statfs TARGET
+</code></pre>
+<p>The scripts can list exports, file attributes and access flags. Confirm access manually when a finding matters.</p>
+</details>
+<details>
+<summary><strong>Variant — mount read-only first</strong></summary>
+<pre><code class="language-bash">sudo mkdir -p /mnt/nfs-audit
+sudo mount -t nfs -o ro,vers=3,nolock TARGET:/EXPORT /mnt/nfs-audit
+find /mnt/nfs-audit -maxdepth 3 -ls
+sudo umount /mnt/nfs-audit
+</code></pre>
+<p>If version 3 fails and version 4 is advertised, retry with <code>-o ro,vers=4</code>. NFSv4 may present a pseudo-filesystem whose export path differs from <code>showmount</code> output.</p>
+</details>
+<details>
+<summary><strong>Variant — inspect numeric ownership</strong></summary>
+<pre><code class="language-bash">ls -lan /mnt/nfs-audit
+find /mnt/nfs-audit -maxdepth 3 -type f -readable -ls
+</code></pre>
+<p>NFS commonly authorizes Unix identities by numeric UID/GID. A matching local username is irrelevant if its number differs. <code>root_squash</code> usually maps remote UID 0 to an unprivileged identity; <code>no_root_squash</code> is dangerous but still requires a useful writable object and privileged consumption path.</p>
+</details>
+<details>
+<summary><strong>Variant — bounded write verification</strong></summary>
+<pre><code class="language-bash">sudo mount -t nfs -o rw,vers=3,nolock TARGET:/EXPORT /mnt/nfs-audit
+touch /mnt/nfs-audit/probe-file
+ls -ln /mnt/nfs-audit/probe-file
+rm /mnt/nfs-audit/probe-file
+sudo umount /mnt/nfs-audit
+</code></pre>
+<p>Use a unique harmless name only when write validation is needed and authorized. Record the resulting numeric owner/group. Success proves write in that directory, not execution or privileged ownership.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> <code>showmount</code> failure does not rule out NFSv4. <code>access denied by server</code> can mean export client restrictions or wrong path/version. <code>permission denied</code> after mounting is file authorization, not network failure. Do not change local UIDs or write to an export during concept study.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> inspect readable backups, home data, keys and configuration; record numeric ownership and actual write boundaries; send a writable/privileged-consumer hypothesis to the escalation block.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: an export permits the assessment client. Test: inspect ownership and a scoped read. Illustrative output: a backup configuration is readable under a matching numeric UID. Interpretation: recover its secrets; assess writes separately.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Verify the export, mapped identity, actual bytes and any created file's server-side ownership.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>An empty showmount response does not rule out NFSv4. Mount failure may be transport/export/client-policy rather than absence of files.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/linux-privesc/#linux-mounts">Exploit a permission-backed mount, NFS mapping or local service</a>; <a href="/oscp/notes/methods/sessions-transfers/#transfer-http">Transfer over HTTP using Linux or Windows clients</a>.</p>
+<p><a id="service-ssh"></a></p>
+<h2 id="use-ssh-passwords-keys-and-forwarding-capable-access">Use SSH passwords, keys and forwarding-capable access</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/02-ssh/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>An authenticated shell, subsystem or forwarding capability with verified identity.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>An SSH service and a known password, private key or agent context.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Find SSH in service discovery, then trace a candidate password/key back to its recorded user before a bounded authentication attempt.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ssh -v -p PORT USER@TARGET
+ssh -v -i KEY -p PORT USER@TARGET
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Authenticated to TARGET using publickey
+uid=USER_ID(USER) gid=GROUP_ID(GROUP)
+</code></pre>
+<p><strong>Recognize this detail:</strong> Accepted key authentication plus a verified shell identity establishes that specific login, not root or unrestricted forwarding.</p>
+<p><strong>Still missing before method selection:</strong> Check actual account/shell/subsystem and separately inspect forwarding policy if a tunnel is needed.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended user can run commands: establish host/privilege/network state.</td></tr><tr><td>Ruled out in this context</td><td>The same valid key is not authorized for this user: rule out that username/key pairing.</td></tr><tr><td>Inconclusive</td><td>A passphrase prompt or host policy rejection requires key/context diagnosis; it is not evidence that all SSH access is unavailable.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Compatible authentication method, correct user, accepted key policy and the requested shell/subsystem permission.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ssh -v -p PORT USER@TARGET
+ssh -v -i KEY -p PORT USER@TARGET
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>SSH authentication can succeed while shell access is restricted. Key ownership, passphrase and server authorization matter independently; forwarding is a separately controlled feature.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> SSH commonly uses TCP/22. <strong>Prerequisite for access:</strong> an accepted authentication method plus a permitted account/session context.</p>
+</blockquote>
+<h5 id="baseline-validate-one-known-identity">Baseline: validate one known identity</h5>
+<pre><code class="language-bash">ssh -v -p PORT USER@TARGET
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> the debug trace separates connection, host-key negotiation, offered authentication methods and account acceptance. A shell prompt establishes session access as that identity.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — private key</strong></summary>
+<pre><code class="language-bash">chmod 600 KEY
+ssh -v -i KEY -p PORT USER@TARGET
+</code></pre>
+<p>The key must correspond to an authorized public key for that account. <code>Permission denied (publickey)</code> can mean wrong user, wrong key, server policy or account restrictions.</p>
+</details>
+<details>
+<summary><strong>Variant — discover methods for a known username</strong></summary>
+<pre><code class="language-bash">nmap -p PORT --script ssh-auth-methods --script-args "ssh.user=USER" TARGET
+</code></pre>
+<p>This starts an authentication exchange and is logged; Nmap classifies it as intrusive. Use it only when the supported methods change the next decision.</p>
+</details>
+<details>
+<summary><strong>Variant — non-interactive key check</strong></summary>
+<pre><code class="language-bash">ssh -o BatchMode=yes -o ConnectTimeout=5 -i KEY -p PORT USER@TARGET 'id'
+</code></pre>
+<p>Batch mode will not prompt for passwords or key passphrases. It is useful only when the key is already usable non-interactively.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> timeout suggests route/filtering/service issues; refusal means no accepting listener in that context; host-key failure occurs before user authentication; <code>Permission denied</code> proves that the attempted method/context failed, not that every credential is invalid. A valid account may still have no shell or be restricted by server policy.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> after a shell, verify <code>whoami</code>, groups, hostname and addresses, then re-enumerate locally. Password spraying and key-passphrase cracking belong to the credential-attack block, not this procedure.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: a disclosed private key names a local user. Test: inspect the key and authenticate to that user. Illustrative output: a shell returns with a non-root UID. Interpretation: establish Linux state and inspect allowed forwarding.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Run hostname and id in the resulting context; retain whether a shell, SFTP or only forwarding was actually granted.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>Permission denied may be username, key, passphrase, policy or method mismatch. A successful banner exchange proves none of these.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/linux-privesc/#linux-state">Establish Linux state and choose an escalation candidate</a>; <a href="/oscp/notes/methods/credentials/#ssh-key">Inspect and recover SSH private-key access</a>; <a href="/oscp/notes/methods/pivoting/#ssh-local">Forward a selected service through an SSH client-side listener</a>.</p>
+<p><a id="service-dns"></a></p>
+<h2 id="expand-names-through-dns-records-and-zone-transfers">Expand names through DNS records and zone transfers</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/04-dns/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>Hostnames, address relationships and possibly a zone inventory.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>A DNS server, domain name or host aliases.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use DNS-server evidence and discovered domain names to query authority and specific records before considering a transfer.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">dig @TARGET DOMAIN SOA
+dig @TARGET DOMAIN NS
+dig @TARGET DOMAIN AXFR
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">DOMAIN. SOA DC_HOST. HOSTMASTER.
+HOSTNAME.DOMAIN. A TARGET
+Transfer completed
+</code></pre>
+<p><strong>Recognize this detail:</strong> An authoritative zone and returned records can expose hostnames, aliases and applications needing separate enumeration.</p>
+<p><strong>Still missing before method selection:</strong> Check each new name's scope/address and verify host/virtual-host behavior.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A permitted transfer returns a relevant new host: validate it through discovery.</td></tr><tr><td>Ruled out in this context</td><td>Transfer refused rules out AXFR on this server/zone/context; ordinary records may remain useful.</td></tr><tr><td>Inconclusive</td><td>A timeout or non-authoritative response requires authority/transport checks before any zone conclusion.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Reachable DNS transport and relevant authoritative zone; AXFR requires an allowed TCP zone transfer.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">dig @TARGET DOMAIN SOA
+dig @TARGET DOMAIN NS
+dig @TARGET DOMAIN AXFR
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>A DNS answer belongs to a server and zone context. AXFR exposes zone records only when the server is authoritative and permits the transfer; names become discovery or virtual-host inputs.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> DNS uses UDP/53 for most queries and TCP/53 for operations including conventional zone transfers and oversized responses. <strong>Prerequisite:</strong> a known or inferred domain for meaningful record and name enumeration.</p>
+</blockquote>
+<h5 id="baseline-query-the-target-dns-server-directly">Baseline: query the target DNS server directly</h5>
+<pre><code class="language-bash">dig @TARGET DOMAIN SOA
+dig @TARGET DOMAIN NS
+dig @TARGET DOMAIN A
+dig @TARGET DOMAIN MX
+dig @TARGET DOMAIN TXT
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> <code>ANSWER</code> records disclose names, addresses, mail exchangers or text. The <code>aa</code> flag supports an authoritative answer. Record <code>status</code> separately from the answer count.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — reverse lookup and zone transfer</strong></summary>
+<pre><code class="language-bash">dig @TARGET -x IP
+dig @TARGET DOMAIN AXFR
+</code></pre>
+<p>A successful AXFR returns the zone records and closing SOA. <code>Transfer failed</code>, <code>REFUSED</code> or <code>NOTAUTH</code> only disproves an unauthenticated transfer from this source; continue ordinary queries.</p>
+</details>
+<details>
+<summary><strong>Variant — name guessing after the domain is known</strong></summary>
+<pre><code class="language-bash">dnsrecon -d DOMAIN -n TARGET -t std
+dnsrecon -d DOMAIN -n TARGET -D WORDLIST -t brt
+dnsenum --dnsserver TARGET DOMAIN
+</code></pre>
+<p>Check wildcard behavior before trusting large result sets. Every resolved in-scope name becomes a new discovery/service-enumeration input.</p>
+</details>
+<details>
+<summary><strong>Variant — reverse sweep of an explicitly assigned range</strong></summary>
+<pre><code class="language-bash">dnsrecon -r SUBNET -n TARGET
+</code></pre>
+<p>Use this only when the entire <code>SUBNET</code> is assigned. PTR names are clues; resolve/scan only in-scope results.</p>
+</details>
+<details>
+<summary><strong>Variant — host and Windows nslookup</strong></summary>
+<pre><code class="language-bash">host -t mx DOMAIN TARGET
+host -t txt DOMAIN TARGET
+</code></pre>
+<pre><code class="language-powershell">nslookup HOST.DOMAIN TARGET
+nslookup -type=TXT HOST.DOMAIN TARGET
+nslookup -type=MX DOMAIN TARGET
+</code></pre>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> <code>NXDOMAIN</code> means that queried name does not exist in that view; <code>NOERROR</code> with no answer can mean the name exists but lacks that record type. Timeout can be filtering, loss or a silent/unreachable server. A recursive answer does not establish that the server is authoritative.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> add new hostnames/IPs to the scoped queue, correlate naming roles with observed services, and repeat discovery/service identification for those in-scope endpoints.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: the authoritative server permits AXFR. Test: inspect the returned A/CNAME records. Illustrative output: a previously unknown application hostname. Interpretation: confirm scope/address reachability and request that virtual host.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Identify responding server, record type, answer and zone authority; transfer refusal disproves only that transfer/context.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>No answer may mean wrong server, recursion policy, transport or zone. Resolve authoritative context before retrying AXFR.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/discovery/#path-hosts">Validate the source path and discover hosts</a>; <a href="/oscp/notes/methods/web-mapping/#web-vhosts">Discover virtual hosts and hostname-selected applications</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
+<p><a id="service-snmp"></a></p>
+<h2 id="extract-configuration-and-process-information-through-snmp">Extract configuration and process information through SNMP</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/07-snmp/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>Host, interface, software or process/configuration clues from permitted OID branches.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>UDP/161 evidence or an exposed management plane.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Take UDP/161 evidence and a justified management credential/community, then request a small known OID branch before a broad walk.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">snmpwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1.1
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SNMPv2-MIB::sysDescr.0 = STRING: OS_AND_BUILD
+SNMPv2-MIB::sysName.0 = STRING: HOSTNAME
+</code></pre>
+<p><strong>Recognize this detail:</strong> A real OID response confirms the accepted read context and supplies software/name clues.</p>
+<p><strong>Still missing before method selection:</strong> Determine which useful views/branches are actually readable; process data and write rights are separate.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A relevant interface/process branch returns useful data: follow the named subnet/application/credential.</td></tr><tr><td>Ruled out in this context</td><td>An explicit authorization failure rules out that security context/view.</td></tr><tr><td>Inconclusive</td><td>UDP silence can be routing, version, community or view policy; a timeout cannot choose between them.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> An accepted read community or SNMPv3 identity/security level; transport and view permissions.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">snmpwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1.1
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>An SNMP community acts as an access selector; views can expose only some trees. A successful system OID does not grant write access or all process data.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> SNMP queries commonly use UDP/161. Versions 1 and 2c authenticate with a community string sent without modern transport protection; version 3 can provide user-based authentication and privacy. <strong>Goal:</strong> turn a valid read context into host, interface, route, process, software, user and listener clues.</p>
+</blockquote>
+<h5 id="baseline-find-a-read-community-then-walk">Baseline: find a read community, then walk</h5>
+<pre><code class="language-bash">onesixtyone -c COMMUNITY_FILE TARGET
+snmpwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1
+</code></pre>
+<p>Use <code>-v1</code> instead when version 1 is indicated. Start with the standard system tree before a huge full walk.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> returned OID/value pairs prove that the selected version/community can read those objects. Hostnames, interfaces, routes, users, processes and locally listening ports become new hypotheses to validate through the appropriate service or post-access path.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — efficient v2c bulk walk</strong></summary>
+<pre><code class="language-bash">snmpbulkwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1
+</code></pre>
+<p>Bulk requests reduce round trips but require SNMPv2c or later. If the agent rejects them, fall back to <code>snmpwalk</code> with the verified version.</p>
+</details>
+<details>
+<summary><strong>Variant — high-value Windows OIDs</strong></summary>
+<pre><code class="language-bash">snmpwalk -v1 -c COMMUNITY TARGET 1.3.6.1.4.1.77.1.2.25
+snmpwalk -v1 -c COMMUNITY TARGET 1.3.6.1.2.1.25.4.2.1.2
+snmpwalk -v1 -c COMMUNITY TARGET 1.3.6.1.2.1.25.6.3.1.2
+snmpwalk -v1 -c COMMUNITY TARGET 1.3.6.1.2.1.6.13.1.3
+</code></pre>
+<p>These target user names, running process names, installed software and TCP listener ports. Availability depends on the agent and exposed MIB view.</p>
+</details>
+<details>
+<summary><strong>Variant — SNMPv3 authenticated and private walk</strong></summary>
+<pre><code class="language-bash">snmpwalk -v3 -l authPriv -u USER -a SHA -A AUTH_PASSWORD -x AES -X PRIV_PASSWORD TARGET 1.3.6.1.2.1
+</code></pre>
+<p>The security level, authentication algorithm, privacy algorithm and credentials must match the configured SNMPv3 user. <code>authNoPriv</code> authenticates without encryption; <code>noAuthNoPriv</code> supplies neither and should be used only when that exact configuration is observed.</p>
+</details>
+<details>
+<summary><strong>Variant — focused UDP verification</strong></summary>
+<pre><code class="language-bash">sudo nmap -sU -sV -p 161 --script snmp-info TARGET
+</code></pre>
+<p><code>snmp-info</code> extracts basic SNMPv3 engine information without proving a usable v1/v2c community.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> UDP silence can remain <code>open|filtered</code>; it does not prove that the community is wrong. <code>Timeout: No Response</code> can be version mismatch, wrong community, filtering, loss or an unavailable OID view. <code>No Such Object</code> means the queried OID is absent/not exposed, not that the whole service failed. Do not use a discovered write community to change configuration during enumeration.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> translate output into exact host/service/user hypotheses, scan newly disclosed in-scope addresses/listeners from the proper source position, and keep configuration-changing SNMP actions outside this stage.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: a system OID responds. Test: inspect the relevant interface/process branch. Illustrative output: an internal subnet and application command line. Interpretation: return the subnet to scoped discovery and classify any exposed credential.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Preserve the OID, accepted security context and returned value; empty branches can reflect view restrictions.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>Silence can mean UDP filtering, wrong community/version or denied view; change only the condition supported by evidence.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/discovery/#path-hosts">Validate the source path and discover hosts</a>; <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a>.</p>
+<p><a id="service-smtp"></a></p>
+<h2 id="enumerate-smtp-identities-and-accessible-mailbox-protocols">Enumerate SMTP identities and accessible mailbox protocols</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/03-smtp/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>Validated mail capabilities, possible usernames or authenticated mailbox artifacts.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>SMTP capabilities or mail-related account clues.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Identify mail-related listeners, inspect greeting/capabilities and compare permitted user-discovery replies with a known-invalid control.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nc -nv TARGET 25
+</code></pre>
+<p>Then enter the protocol dialogue:</p>
+<pre><code class="language-text">EHLO example.invalid
+VRFY USER
+VRFY INVALID_CONTROL
+QUIT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">220 HOSTNAME ESMTP
+250-VRFY
+VRFY USER -> 250 USER
+VRFY INVALID_CONTROL -> 550 No such user
+</code></pre>
+<p><strong>Recognize this detail:</strong> A reproducible reply difference can expose a possible mailbox identity.</p>
+<p><strong>Still missing before method selection:</strong> Check catch-all policy and account context; recipient acceptance does not prove mailbox credentials or OS access.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Controls support a real account and compatible credentials are available: validate its permitted mailbox/service access.</td></tr><tr><td>Ruled out in this context</td><td>All recipients are accepted by catch-all behavior: discard account-existence inference from this test.</td></tr><tr><td>Inconclusive</td><td>Uniform policy replies leave usernames unknown; inspect another identity source.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Reachable SMTP/POP3/IMAP service; enumeration or mailbox access must be enabled for the selected context.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nc -nv TARGET 25
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>VRFY/RCPT differences may disclose account existence but catch-all policy can invalidate inference. A valid recipient is not an authenticated mailbox or operating-system login.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> SMTP commonly uses TCP/25, submission uses 587, and implicit TLS commonly uses 465. <strong>Goal:</strong> collect banner/capabilities, mail-domain clues and only defensible user evidence.</p>
+</blockquote>
+<h5 id="baseline-banner-and-capabilities">Baseline: banner and capabilities</h5>
+<pre><code class="language-bash">nc -nv TARGET PORT
+</code></pre>
+<p>Then enter:</p>
+<pre><code class="language-text">EHLO example.invalid
+HELP
+VRFY USER
+EXPN postmaster
+QUIT
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> <code>250-</code> capability lines reveal extensions such as STARTTLS or AUTH. <code>250</code> after <code>VRFY</code> may support a valid mailbox; <code>550</code> commonly rejects or denies it; <code>252</code> explicitly means the server will not verify and is not proof that the user exists.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — STARTTLS or implicit TLS</strong></summary>
+<pre><code class="language-bash">openssl s_client -connect TARGET:587 -starttls smtp -crlf -quiet
+openssl s_client -connect TARGET:465 -crlf -quiet
+</code></pre>
+<p>Run <code>EHLO example.invalid</code> after TLS negotiation. Certificate names and capabilities can yield host/domain clues; authentication still requires a supported identity and mechanism.</p>
+</details>
+<details>
+<summary><strong>Variant — focused automated user checks</strong></summary>
+<pre><code class="language-bash">smtp-user-enum -M VRFY -U users.txt -t TARGET -p PORT
+smtp-user-enum -M RCPT -U users.txt -t TARGET -p PORT
+</code></pre>
+<p><code>RCPT</code> testing requires an SMTP transaction and servers may deliberately normalize responses. Treat automation as candidate generation and manually compare decisive responses.</p>
+</details>
+<details>
+<summary><strong>Variant — Windows source position</strong></summary>
+<pre><code class="language-powershell">Test-NetConnection -ComputerName TARGET -Port PORT
+</code></pre>
+<p>This verifies TCP reachability only. Use an available Netcat/Ncat or OpenSSL client for protocol dialogue.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> multiline replies begin with <code>NNN-</code> and finish with <code>NNN </code>; read the final line. <code>503</code> often means the command sequence is wrong. Uniform <code>252</code> or <code>550</code> responses make enumeration inconclusive. A visible AUTH method does not mean anonymous relay or valid credentials.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> add confirmed/candidate names and domains to the private evidence ledger; test new names only in the later credential block. Do not send real mail or run relay checks unless the objective requires it.</p>
+</blockquote>
+<h5 id="pop3-and-imap-handoff">POP3 and IMAP handoff</h5>
+<p>Mail-access services expose mailbox capabilities and, with legitimate credentials, stored messages that may contain workflow or reset links.</p>
+<pre><code class="language-bash">openssl s_client -connect TARGET:995 -crlf -quiet   # POP3S
+openssl s_client -connect TARGET:993 -crlf -quiet   # IMAPS
+</code></pre>
+<p>POP3 dialogue:</p>
+<pre><code class="language-text">CAPA
+USER USER
+PASS PASSWORD
+STAT
+LIST
+QUIT
+</code></pre>
+<p>IMAP dialogue:</p>
+<pre><code class="language-text">a1 CAPABILITY
+a2 LOGIN USER PASSWORD
+a3 LIST "" "*"
+a4 LOGOUT
+</code></pre>
+<blockquote>
+<p>Test one legitimately acquired credential. Capability output is not authentication; avoid brute-force NSE scripts until lockout/authorization is explicitly understood. Source supplement: reviewed getSH Nmap mail blocks.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: two recipient probes produce different replies. Test: compare known-invalid controls and repeated responses. Illustrative output: only one candidate is consistently accepted. Interpretation: retain a possible username and check account context before authentication testing.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Record response/control differences and separate inferred account existence from successful mailbox authentication.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>Uniform replies, disabled VRFY or a catch-all make username enumeration inconclusive; investigate other identity sources.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>; <a href="/oscp/notes/methods/services/#service-dns">Expand names through DNS records and zone transfers</a>; <a href="/oscp/notes/methods/services/#service-smb">Enumerate SMB/RPC shares, files and identities</a>.</p>
+<p><a id="service-ldap"></a></p>
+<h2 id="discover-ldap-naming-contexts-and-authenticated-search">Discover LDAP naming contexts and authenticated search</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-7">1. Purpose and result</h3>
+<p>A directory base DN and permitted account/group/computer attributes.</p>
+<h3 id="2-recognition-clues-7">2. Recognition clues</h3>
+<p>LDAP/Kerberos listeners or a probable AD domain.</p>
+<h4 id="find-the-clue-from-your-starting-access-7">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Identify the directory endpoint and query RootDSE before a subtree search under a known bind identity.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_IP -s base -b '' defaultNamingContext namingContexts
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">dn:
+defaultNamingContext: DC=DOMAIN,DC=TLD
+</code></pre>
+<p><strong>Recognize this detail:</strong> RootDSE supplies the search base; it does not grant arbitrary anonymous subtree access.</p>
+<p><strong>Still missing before method selection:</strong> Check bind identity, transport/signing requirements and read visibility on the selected objects.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A correctly authenticated scoped search returns expected objects: continue domain mapping.</td></tr><tr><td>Ruled out in this context</td><td>Anonymous subtree search is denied: reject anonymous enumeration while retaining a known-authenticated option.</td></tr><tr><td>Inconclusive</td><td>An empty result may be the wrong base/filter or ACL visibility; compare a known object.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-7">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Reachable directory; anonymous query permission or valid bind identity; required signing/TLS and naming context.</p>
+<h3 id="4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ldapsearch -x -H ldap://DC_IP -s base -b '' namingContexts defaultNamingContext
+</code></pre>
+<h3 id="5-why-it-works-7">5. Why it works</h3>
+<p>RootDSE can disclose naming contexts without permitting subtree enumeration. A bind identity, search base and attribute/object ACLs independently constrain results.</p>
+<h3 id="6-execute-and-choose-variants-7">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognition:</strong> LDAP commonly appears on TCP/389 or TCP/636; Global Catalog on TCP/3268 or 3269; Kerberos on TCP/UDP 88. Applications may listen elsewhere, so follow protocol evidence rather than port labels.</p>
+</blockquote>
+<h5 id="baseline-discover-naming-contexts">Baseline: discover naming contexts</h5>
+<blockquote>
+<p><strong>Prerequisite:</strong> LDAP reachability. <strong>Coverage:</strong> RootDSE only; this can work even when directory searches require authentication. <strong>Decisive output:</strong> <code>defaultNamingContext</code> and <code>dnsHostName</code>.</p>
+</blockquote>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://TARGET:389 -s base -b '' \
+  defaultNamingContext rootDomainNamingContext configurationNamingContext dnsHostName
+</code></pre>
+<p>Convert <code>DC=corp,DC=example</code> into <code>corp.example</code> for DNS/Kerberos work. Preserve the server's exact hostname because Kerberos is name-sensitive.</p>
+<details>
+<summary><strong>LDAPS and certificate-name inspection</strong></summary>
+<pre><code class="language-bash">openssl s_client -connect TARGET:636 -servername DC_HOST &#x3C;/dev/null
+ldapsearch -x -LLL -H ldaps://DC_HOST:636 -s base -b '' defaultNamingContext dnsHostName
+</code></pre>
+<blockquote>
+<p>A certificate can disclose domain/DC names. A TLS validation error is a client trust/name issue, not proof that LDAP is unavailable.</p>
+</blockquote>
+</details>
+<h5 id="anonymous-directory-search">Anonymous directory search</h5>
+<blockquote>
+<p><strong>Prerequisite:</strong> known base DN and server permitting anonymous search. <strong>Failure cue:</strong> <code>Inappropriate authentication</code> or <code>Insufficient access</code> closes only the anonymous path.</p>
+</blockquote>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_IP:389 -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user))' \
+  sAMAccountName userPrincipalName memberOf description
+</code></pre>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_IP:389 -b 'DC=DOMAIN,DC=TLD' \
+  '(objectClass=group)' cn member description
+</code></pre>
+<h5 id="authenticated-search">Authenticated search</h5>
+<blockquote>
+<p><strong>Prerequisite:</strong> a valid directory identity. <strong>Decisive output:</strong> objects/attributes unavailable anonymously. Avoid placing a real password in shell history when an interactive prompt is available.</p>
+</blockquote>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 \
+  -D 'USER@DOMAIN.TLD' -W -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user))' \
+  sAMAccountName userPrincipalName memberOf description servicePrincipalName userAccountControl
+</code></pre>
+<details>
+<summary><strong>Search computers, groups and SPN-bearing accounts separately</strong></summary>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN.TLD' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(objectClass=computer)' \
+  dNSHostName operatingSystem operatingSystemVersion servicePrincipalName
+
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN.TLD' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(objectClass=group)' cn member
+
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN.TLD' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(&#x26;(objectCategory=person)(servicePrincipalName=*))' \
+  sAMAccountName servicePrincipalName memberOf
+</code></pre>
+</details>
+<h5 id="kerberos-prerequisites-before-an-attack">Kerberos prerequisites before an attack</h5>
+<p>Kerberos failures are often name/time/route failures rather than credential failures. Establish:</p>
+<pre><code class="language-bash">getent hosts DC_HOST
+nc -nvz DC_IP 88
+date -u
+nmap -Pn -sV -p 88,389,445,464,636,3268,3269 DC_IP -oN dc-services.txt
+</code></pre>
+<blockquote>
+<p><strong>Interpretation:</strong> resolve <code>DOMAIN</code> and <code>DC_HOST</code> consistently, keep clock skew within Kerberos tolerance, and ensure the KDC is reached through the selected route. <code>KDC_ERR_C_PRINCIPAL_UNKNOWN</code> points to identity/domain naming; <code>KRB_AP_ERR_SKEW</code> points to time; <code>KDC_ERR_PREAUTH_FAILED</code> normally points to authentication material.</p>
+</blockquote>
+<h5 id="handoff">Handoff</h5>
+<ul>
+<li>New users, groups, computers, SPNs or domain names → <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">domain mapping</a>.</li>
+<li>A user confirmed without preauthentication → <a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and identity transitions</a>.</li>
+<li>Valid credentials → rerun authenticated LDAP plus SMB/share/remote-access enumeration.</li>
+<li>Certificate templates/AD CS clues → <a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">AD CS and object-control abuse</a>.</li>
+</ul>
+<h3 id="7-worked-example--hypothetical-7">7. Worked example — hypothetical</h3>
+<p>Observation: RootDSE returns a base DN. Test: attempt the permitted scoped search with the appropriate bind. Illustrative output: anonymous search is denied but a domain bind succeeds. Interpretation: continue authenticated domain mapping.</p>
+<h3 id="8-verify-the-result-7">8. Verify the result</h3>
+<p>Record DC, base DN, bind identity and actual returned attributes; RootDSE alone is not a complete directory dump.</p>
+<h3 id="9-failure-and-fallback-7">9. Failure and fallback</h3>
+<p>Stronger-auth-required may mean TLS/signing policy; invalid credentials or an empty base require different fixes.</p>
+<h3 id="10-next-transitions-7">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a>; <a href="/oscp/notes/methods/ad-identities/#kerberos-roast">Request a selected service ticket for offline service-account recovery</a>.</p>
+<p><a id="service-mysql"></a></p>
+<h2 id="use-mysqlmariadb-data-and-file-primitives">Use MySQL/MariaDB data and file primitives</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/08-databases/#mysql--mariadb">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-8">1. Purpose and result</h3>
+<p>Useful data or a permission-backed server-side file operation.</p>
+<h3 id="2-recognition-clues-8">2. Recognition clues</h3>
+<p>A MySQL-compatible service and valid application/database credentials.</p>
+<h4 id="find-the-clue-from-your-starting-access-8">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use a known application/database login and inspect identity, grants and file-operation constraints before choosing an OS transition.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-sql">SELECT USER(),CURRENT_USER(),VERSION();
+SHOW GRANTS;
+SHOW VARIABLES LIKE 'secure_file_priv';
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">CURRENT_USER(): APP_USER@%
+GRANT SELECT ON APP_DB.*
+secure_file_priv: /RESTRICTED_DIRECTORY/
+</code></pre>
+<p><strong>Recognize this detail:</strong> SELECT permits data investigation; absent FILE/admin rights and the restricted directory constrain file/OS hypotheses.</p>
+<p><strong>Still missing before method selection:</strong> Check exact grants, useful tables, destination OS permissions and an execution consumer before escalating a file operation.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A useful readable table or fully validated file consumer exists: choose that precise primitive.</td></tr><tr><td>Ruled out in this context</td><td>No required FILE privilege rules out the proposed LOAD_FILE/OUTFILE chain for this account.</td></tr><tr><td>Inconclusive</td><td>Incomplete grants or unknown server path keeps file capability unresolved; inspect before selecting it.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-8">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Database authentication and exact schema/file privileges; secure_file_priv and server filesystem identity constrain file actions.</p>
+<h3 id="4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</h3>
+<pre><code class="language-sql">SELECT USER(),CURRENT_USER(),VERSION();
+SHOW GRANTS;
+SHOW VARIABLES LIKE 'secure_file_priv';
+</code></pre>
+<h3 id="5-why-it-works-8">5. Why it works</h3>
+<p>Database rights and operating-system rights intersect. FILE permission alone does not guarantee a writable executable web directory or a usable destination.</p>
+<h3 id="6-execute-and-choose-variants-8">6. Execute and choose variants</h3>
+<pre><code class="language-bash">mysql -h TARGET -P PORT -u USER -p
+</code></pre>
+<pre><code class="language-sql">SELECT VERSION(), USER(), CURRENT_USER();
+SHOW DATABASES;
+SHOW GRANTS;
+USE DATABASE;
+SHOW TABLES;
+DESCRIBE TABLE;
+SELECT * FROM TABLE LIMIT 20;
+SELECT @@secure_file_priv;
+</code></pre>
+<blockquote>
+<p><strong>Interpret:</strong> <code>USER()</code> shows the presented client identity; <code>CURRENT_USER()</code> shows the account used for privilege checking. <code>secure_file_priv</code> restricts server-side import/export: a directory constrains it, an empty value is unrestricted by that variable, and <code>NULL</code> disables these operations. The <code>FILE</code> privilege is still required.</p>
+</blockquote>
+<details>
+<summary><strong>MySQL variant — validate server-side file read/write prerequisites</strong></summary>
+<pre><code class="language-sql">SELECT LOAD_FILE('/path/on/database/server');
+SELECT 'probe' INTO OUTFILE '/allowed/server/path/probe.txt';
+</code></pre>
+<p>Use only an authorized harmless path. <code>LOAD_FILE</code> returning <code>NULL</code> is ambiguous among missing file, permissions, size, FILE privilege and <code>secure_file_priv</code>. <code>INTO OUTFILE</code> will not overwrite an existing file. A written file becomes execution only if another privileged component consumes it.</p>
+</details>
+<h3 id="7-worked-example--hypothetical-8">7. Worked example — hypothetical</h3>
+<p>Observation: the application database login can read configuration tables. Test: inspect grants before any file operation. Illustrative output: no FILE privilege. Interpretation: use data/credential disclosure; do not assume server execution.</p>
+<h3 id="8-verify-the-result-8">8. Verify the result</h3>
+<p>Check current database identity, grants and actual returned data or written file through an independent observation.</p>
+<h3 id="9-failure-and-fallback-8">9. Failure and fallback</h3>
+<p>Permission denied or a restricted file directory changes the available primitive; pivot to data/credential use or a different entry point.</p>
+<h3 id="10-next-transitions-8">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/web-exploitation/#sql-os">Convert database rights into a file or operating-system effect</a>; <a href="/oscp/notes/methods/web-exploitation/#web-upload-exec">Execute an uploaded file through a compatible handler</a>.</p>
+<p><a id="service-mssql"></a></p>
+<h2 id="use-sql-server-rights-impersonation-and-command-facilities">Use SQL Server rights, impersonation and command facilities</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/08-databases/#microsoft-sql-server">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-9">1. Purpose and result</h3>
+<p>Database data, a more useful SQL security context or verified server command execution.</p>
+<h3 id="2-recognition-clues-9">2. Recognition clues</h3>
+<p>SQL Server credentials or a Windows identity accepted by the database.</p>
+<h4 id="find-the-clue-from-your-starting-access-9">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Once SQL Server authentication works, inspect actual login/server role and supported impersonation context.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-sql">SELECT SYSTEM_USER, ORIGINAL_LOGIN(), @@VERSION;
+SELECT IS_SRVROLEMEMBER('sysadmin');
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SYSTEM_USER: DOMAIN\USER
+ORIGINAL_LOGIN: DOMAIN\USER
+IS_SRVROLEMEMBER: 0
+</code></pre>
+<p><strong>Recognize this detail:</strong> A valid login with sysadmin=0 is data/rights evidence, not permission to enable xp_cmdshell.</p>
+<p><strong>Still missing before method selection:</strong> Enumerate actual database/server grants and useful impersonation; independently verify any OS facility and its identity.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Required role/configuration and OS effect are verified: use the supported database-to-command method.</td></tr><tr><td>Ruled out in this context</td><td>No facility/impersonation right rules out that proposed OS chain while readable data may remain.</td></tr><tr><td>Inconclusive</td><td>A failed role query or unknown proxy context needs a narrower rights check.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-9">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Correct SQL versus Windows authentication; database role and configuration must permit the requested operation.</p>
+<h3 id="4-discover-and-verify-prerequisites-9">4. Discover and verify prerequisites</h3>
+<pre><code class="language-sql">SELECT SYSTEM_USER, ORIGINAL_LOGIN(), @@VERSION;
+SELECT IS_SRVROLEMEMBER('sysadmin');
+</code></pre>
+<h3 id="5-why-it-works-9">5. Why it works</h3>
+<p>SQL login, sysadmin/impersonation rights and xp_cmdshell configuration are separate conditions. OS commands run under the SQL service or configured proxy context, not automatically as domain administrator.</p>
+<h3 id="6-execute-and-choose-variants-9">6. Execute and choose variants</h3>
+<pre><code class="language-bash">impacket-mssqlclient 'USER@TARGET'
+impacket-mssqlclient 'DOMAIN/USER@TARGET' -windows-auth
+</code></pre>
+<p>Let the tool prompt for the password. At the SQL prompt:</p>
+<pre><code class="language-sql">SELECT @@VERSION;
+SELECT SYSTEM_USER;
+SELECT IS_SRVROLEMEMBER('sysadmin');
+SELECT name FROM sys.databases;
+USE DATABASE;
+SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES;
+SELECT TOP 20 * FROM SCHEMA.TABLE;
+</code></pre>
+<blockquote>
+<p><strong>Interpret:</strong> <code>IS_SRVROLEMEMBER('sysadmin')</code> returns <code>1</code>, <code>0</code> or <code>NULL</code>; <code>NULL</code> is not success. Impacket also exposes helpers such as <code>enum_impersonate</code> and <code>xp_cmdshell</code> depending on version and rights.</p>
+</blockquote>
+<details>
+<summary><strong>MSSQL variant — command-execution boundary</strong></summary>
+<pre><code class="language-sql">EXEC xp_cmdshell 'whoami';
+</code></pre>
+<p><code>xp_cmdshell</code> is disabled by default on new installations. Enabling it generally requires high privilege and changes server configuration; do not enable it merely to enumerate. When available, a sysadmin's child process normally runs as the SQL Server service account; an authorized non-sysadmin may use a configured proxy. Verify returned identity before choosing the next action.</p>
+</details>
+<h3 id="7-worked-example--hypothetical-9">7. Worked example — hypothetical</h3>
+<p>Observation: Windows authentication succeeds to SQL Server. Test: inspect role and allowed impersonation. Illustrative output: only a low-privilege database user. Interpretation: enumerate permitted data and relationships before proposing xp_cmdshell.</p>
+<h3 id="8-verify-the-result-9">8. Verify the result</h3>
+<p>Verify SQL identity and any OS effect with hostname/whoami; record service/proxy execution identity.</p>
+<h3 id="9-failure-and-fallback-9">9. Failure and fallback</h3>
+<p>Login success with denied configuration changes is a rights boundary. Do not repeatedly enable an unavailable facility.</p>
+<h3 id="10-next-transitions-9">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/web-exploitation/#sql-os">Convert database rights into a file or operating-system effect</a>; <a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<p><a id="service-postgres"></a></p>
+<h2 id="use-postgresql-data-and-privileged-program-execution">Use PostgreSQL data and privileged program execution</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/08-databases/#postgresql">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-10">1. Purpose and result</h3>
+<p>Database information or a verified privilege-backed OS effect.</p>
+<h3 id="2-recognition-clues-10">2. Recognition clues</h3>
+<p>PostgreSQL access or an application connection string.</p>
+<h4 id="find-the-clue-from-your-starting-access-10">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Authenticate to the observed database and inspect current/session identity and role attributes before program/file functions.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-sql">SELECT current_user,session_user,version();
+SELECT rolname,rolsuper FROM pg_roles WHERE rolname=current_user;
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">current_user | session_user
+APP_USER     | APP_USER
+rolname      | rolsuper
+APP_USER     | f
+</code></pre>
+<p><strong>Recognize this detail:</strong> An ordinary database role does not automatically have COPY PROGRAM or server-file access.</p>
+<p><strong>Still missing before method selection:</strong> Inspect effective role memberships and exact operation rights, then the database service's OS context.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The needed execution/file role and a usable consumer are established: select that documented operation.</td></tr><tr><td>Ruled out in this context</td><td>No superuser or required operation-specific privilege rules out the proposed program-execution route.</td></tr><tr><td>Inconclusive</td><td>Unknown inherited role rights leave the operation unresolved; enumerate memberships before deciding.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-10">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Accepted connection/database role; COPY PROGRAM needs the corresponding server privilege and an executable OS context.</p>
+<h3 id="4-discover-and-verify-prerequisites-10">4. Discover and verify prerequisites</h3>
+<pre><code class="language-sql">SELECT current_user,session_user,version();
+SELECT rolname,rolsuper FROM pg_roles WHERE rolname=current_user;
+</code></pre>
+<h3 id="5-why-it-works-10">5. Why it works</h3>
+<p>SQL access does not imply server superuser. File/program functions execute as the database service and are gated by database roles and OS permissions.</p>
+<h3 id="6-execute-and-choose-variants-10">6. Execute and choose variants</h3>
+<pre><code class="language-bash">psql -h TARGET -p PORT -U USER -d postgres
+</code></pre>
+<pre><code class="language-text">\conninfo
+\l
+\du
+\dn
+\dt *.*
+</code></pre>
+<pre><code class="language-sql">SELECT version(), current_user, session_user;
+SELECT rolname, rolsuper, rolcreaterole, rolcreatedb
+FROM pg_roles;
+</code></pre>
+<details>
+<summary><strong>PostgreSQL variant — server file/program privilege boundary</strong></summary>
+<pre><code class="language-sql">SELECT pg_has_role(current_user, 'pg_read_server_files', 'member');
+SELECT pg_has_role(current_user, 'pg_write_server_files', 'member');
+SELECT pg_has_role(current_user, 'pg_execute_server_program', 'member');
+</code></pre>
+<p>Server-side <code>COPY ... FROM/TO 'file'</code> uses the PostgreSQL server's filesystem and service identity. <code>COPY ... PROGRAM</code> executes on the server and requires superuser or the corresponding predefined role. Client-side <code>\copy</code> reads/writes the client filesystem and is not the same primitive.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> connection refusal/timeout is network or listener context; login rejection is authentication/context; an empty database list may be visibility limits; object denial is authorization. Query only bounded rows first. Never assume that reading application credentials or obtaining database admin implies OS execution.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> identify application accounts, hashes/credentials, paths and linked systems; record the precise grant enabling any file or execution primitive; validate recovered credentials in the later credential block and re-enumerate after any identity change.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-10">7. Worked example — hypothetical</h3>
+<p>Observation: a database role can read application tables. Test: inspect role attributes. Illustrative output: rolsuper is false and program-execution rights are absent. Interpretation: recover useful data without treating SQL access as a shell.</p>
+<h3 id="8-verify-the-result-10">8. Verify the result</h3>
+<p>Separate returned rows, file operations and command execution; prove the actual operating-system identity for the latter.</p>
+<h3 id="9-failure-and-fallback-10">9. Failure and fallback</h3>
+<p>Role or OS permission failures require another allowed primitive, not a different spelling of the same denied operation.</p>
+<h3 id="10-next-transitions-10">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/web-exploitation/#sql-os">Convert database rights into a file or operating-system effect</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<p><a id="service-redis"></a></p>
+<h2 id="inspect-redis-access-and-persistence-boundaries">Inspect Redis access and persistence boundaries</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/08-databases/#redis">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-11">1. Purpose and result</h3>
+<p>Useful accessible keys or a precisely bounded persistence/file-write candidate.</p>
+<h3 id="2-recognition-clues-11">2. Recognition clues</h3>
+<p>A Redis listener or application cache credentials.</p>
+<h4 id="find-the-clue-from-your-starting-access-11">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Identify Redis and use its authentication context to distinguish accepted commands from denied administrative facilities.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">redis-cli -h TARGET -p PORT PING
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">PONG
+Administrative operation: NOPERM this user has no permissions
+</code></pre>
+<p><strong>Recognize this detail:</strong> The connection is usable but command ACLs can remove persistence/configuration methods.</p>
+<p><strong>Still missing before method selection:</strong> Inspect allowed operations, data visibility and actual persistence/destination/consumer conditions.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Useful keys are readable or a fully permitted file-consumer chain exists: select that bounded capability.</td></tr><tr><td>Ruled out in this context</td><td>CONFIG denied rules out the familiar configuration-backed file-write route under this identity.</td></tr><tr><td>Inconclusive</td><td>PING alone leaves key and administrative rights unknown; inspect the selected permitted command.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-11">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Reachability and accepted authentication/ACL commands; persistence writes need CONFIG rights, destination permissions and a consumer.</p>
+<h3 id="4-discover-and-verify-prerequisites-11">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">redis-cli -h TARGET -p PORT PING
+</code></pre>
+<h3 id="5-why-it-works-11">5. Why it works</h3>
+<p>Redis keys may disclose sessions or secrets. Historical file-write chains depend on command permissions, persistence format and a writable useful path; an open port alone proves none of them.</p>
+<h3 id="6-execute-and-choose-variants-11">6. Execute and choose variants</h3>
+<pre><code class="language-bash">nmap -Pn -sV --script redis-info -p PORT TARGET
+redis-cli -h TARGET -p PORT PING
+redis-cli -h TARGET -p PORT INFO
+redis-cli -h TARGET -p PORT ACL WHOAMI
+redis-cli -h TARGET -p PORT ACL LIST
+</code></pre>
+<p>Authenticated when a password is legitimately known:</p>
+<pre><code class="language-bash">redis-cli -h TARGET -p PORT --askpass
+</code></pre>
+<blockquote>
+<p><code>PONG</code> proves an accessible Redis command surface, not write/file/execution permission. Check ACLs, mode, bind/protected-mode and persistence/module configuration before reasoning about an effect. Do not run <code>CONFIG SET</code>, write keys or load modules during enumeration.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-11">7. Worked example — hypothetical</h3>
+<p>Observation: PING returns PONG but CONFIG is denied. Test: inspect allowed data access. Illustrative output: only application keys are readable. Interpretation: investigate session/credential value while rejecting a presumed arbitrary-file-write chain.</p>
+<h3 id="8-verify-the-result-11">8. Verify the result</h3>
+<p>Verify authentication context, allowed commands and actual key/file effects without assuming old Redis exploit defaults.</p>
+<h3 id="9-failure-and-fallback-11">9. Failure and fallback</h3>
+<p>NOAUTH and NOPERM identify different boundaries. Investigate credentials or permitted data rather than assuming unauthenticated execution.</p>
+<h3 id="10-next-transitions-11">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/web-exploitation/#web-authz">Cross role, function or session authorization boundaries</a>; <a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a>.</p>
+<p><a id="service-oracle"></a></p>
+<h2 id="triage-oracle-listener-and-database-identity">Triage Oracle listener and database identity</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/08-databases/#oracle-tnssid-triage">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-12">1. Purpose and result</h3>
+<p>A confirmed listener/service context and permission-scoped database access.</p>
+<h3 id="2-recognition-clues-12">2. Recognition clues</h3>
+<p>An Oracle TNS listener or connection descriptor.</p>
+<h4 id="find-the-clue-from-your-starting-access-12">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use service discovery and an application's connection descriptor to distinguish listener identification from a valid database session.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nmap -Pn -sV -p 1521 TARGET
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">1521/tcp open oracle-tns Oracle TNS Listener
+Application descriptor: SERVICE_NAME
+</code></pre>
+<p><strong>Recognize this detail:</strong> Listener/product evidence and a service name establish a connection candidate, not database credentials or DBA rights.</p>
+<p><strong>Still missing before method selection:</strong> Validate the exact descriptor/account and inspect its permitted database action.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The selected account logs in and grants a useful operation: enumerate within that role.</td></tr><tr><td>Ruled out in this context</td><td>The descriptor names a nonexistent service: reject that connection string before judging passwords.</td></tr><tr><td>Inconclusive</td><td>An unidentified listener version or authentication error needs descriptor/account separation.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-12">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Correct service/SID, reachable database transport and valid database credentials for authenticated work.</p>
+<h3 id="4-discover-and-verify-prerequisites-12">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nmap -Pn -sV -p 1521 TARGET
+</code></pre>
+<h3 id="5-why-it-works-12">5. Why it works</h3>
+<p>A TNS listener is a connection broker; knowing its version or service name does not establish database authentication or DBA rights.</p>
+<h3 id="6-execute-and-choose-variants-12">6. Execute and choose variants</h3>
+<pre><code class="language-bash">nmap -Pn -sV --script oracle-tns-version -p 1521 TARGET
+nmap -Pn --script oracle-sid-brute -p 1521 TARGET
+</code></pre>
+<blockquote>
+<p>A discovered SID/service name is a namespace clue, not credentials. Continue with an installed Oracle client only when a legitimate identity is available; preserve listener/version/SID evidence and do not treat a conventional port as Oracle proof. Source supplement: reviewed getSH Nmap Oracle block.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-12">7. Worked example — hypothetical</h3>
+<p>Observation: TNS responds on 1521. Test: identify the configured service and validate a known credential. Illustrative output: listener identification succeeds but database authentication fails. Interpretation: retain the service clue and seek the correct account/descriptor.</p>
+<h3 id="8-verify-the-result-12">8. Verify the result</h3>
+<p>Distinguish listener identification, database login and a permitted SQL action.</p>
+<h3 id="9-failure-and-fallback-12">9. Failure and fallback</h3>
+<p>An invalid service descriptor is different from an invalid password; resolve it before further credential decisions.</p>
+<h3 id="10-next-transitions-12">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>; <a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a>; <a href="/oscp/notes/methods/discovery/#result-validation">Validate uncertain results and rebuild the service queue</a>.</p>
+<p><a id="service-remote"></a></p>
+<h2 id="validate-rdp-winrm-vnc-and-telnet-access-contexts">Validate RDP, WinRM, VNC and Telnet access contexts</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-13">1. Purpose and result</h3>
+<p>A verified remote session or a precise authentication/authorization failure.</p>
+<h3 id="2-recognition-clues-13">2. Recognition clues</h3>
+<p>An exposed remote-access application and compatible known credentials.</p>
+<h4 id="find-the-clue-from-your-starting-access-13">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Take remote-access listeners from discovery and validate one known identity against the specific endpoint/logon type.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 3389
+Test-NetConnection TARGET -Port 5985
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">RemotePort : 3389; TcpTestSucceeded : True
+RemotePort : 5985; TcpTestSucceeded : False
+</code></pre>
+<p><strong>Recognize this detail:</strong> Transport offers an RDP candidate from this source; it does not establish remote-interactive rights.</p>
+<p><strong>Still missing before method selection:</strong> Check actual protocol, local/domain context, accepted authentication and endpoint/logon authorization.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended remote session opens and its identity is verified: enumerate the new host context.</td></tr><tr><td>Ruled out in this context</td><td>A known-valid identity lacks that logon right: reject this access form for the account.</td></tr><tr><td>Inconclusive</td><td>A timeout cannot distinguish host firewall, route or absent service; verify the failed layer.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-13">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Enabled destination service, matching authentication and protocol-specific logon/session rights.</p>
+<h3 id="4-discover-and-verify-prerequisites-13">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection TARGET -Port 3389
+Test-NetConnection TARGET -Port 5985
+</code></pre>
+<h3 id="5-why-it-works-13">5. Why it works</h3>
+<p>Remote interactive logon and remote management are different rights. VNC may use its own password; Telnet may expose a different account context from Windows/domain authentication.</p>
+<h3 id="6-execute-and-choose-variants-13">6. Execute and choose variants</h3>
+<blockquote>
+<p><strong>Recognize:</strong> RDP commonly uses TCP/3389; WinRM commonly uses 5985/HTTP and 5986/HTTPS. <strong>Goal:</strong> determine whether one known credential is accepted in the correct local/domain context and whether it is authorized for a usable session.</p>
+</blockquote>
+<h5 id="rdp-baseline-authentication-only-check">RDP baseline: authentication-only check</h5>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /d:DOMAIN /auth-only /cert:ignore
+</code></pre>
+<p>Some distributions expose the binary as <code>xfreerdp</code>. Omit <code>/d:DOMAIN</code> for the intended local-account context; use <code>/u:TARGET\\USER</code> if needed to make that context explicit.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> successful authentication-only validation supports that the credential is accepted for RDP/NLA. It does not prove an interactive desktop will be granted under every policy/session condition.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — open an RDP desktop</strong></summary>
+<pre><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /d:DOMAIN /dynamic-resolution /cert:ignore
+</code></pre>
+<p>Let FreeRDP prompt for the password. <code>/cert:ignore</code> suppresses certificate validation and is suitable only in the controlled lab context; it removes server-identity protection.</p>
+</details>
+<details>
+<summary><strong>Variant — identify RDP security requirements</strong></summary>
+<pre><code class="language-bash">nmap -p 3389 --script rdp-enum-encryption,rdp-ntlm-info TARGET
+</code></pre>
+<p>This can disclose supported security layers, NLA and NTLM host/domain clues. It does not validate a credential.</p>
+</details>
+<h5 id="winrm-baseline-interactive-session">WinRM baseline: interactive session</h5>
+<pre><code class="language-bash">evil-winrm -i TARGET -u USER
+</code></pre>
+<pre><code class="language-bash">evil-winrm -i TARGET -u 'DOMAIN\\USER'
+</code></pre>
+<p>Omitting <code>-p</code> makes the established Ruby client prompt for the password.</p>
+<blockquote>
+<p><strong>Decisive output:</strong> an interactive PowerShell prompt establishes WinRM authorization. Immediately verify identity and host context with <code>whoami</code>, <code>hostname</code> and <code>Get-NetIPAddress</code>.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — WinRM over HTTPS</strong></summary>
+<pre><code class="language-bash">evil-winrm -i TARGET -u USER -S -P 5986
+</code></pre>
+<p>Check <code>evil-winrm -h</code> because the established Ruby client and newer <code>evil-winrm-py</code> use different long-option spelling. Do not assume a copied command matches the installed implementation.</p>
+</details>
+<details>
+<summary><strong>Variant — Windows PowerShell remoting</strong></summary>
+<pre><code class="language-powershell">$cred = Get-Credential
+Enter-PSSession -ComputerName TARGET -Credential $cred
+</code></pre>
+<p>PowerShell remoting uses the configured WinRM endpoint. Local trusted-host, Kerberos/name-resolution and endpoint authorization settings can fail independently of password validity.</p>
+</details>
+<blockquote>
+<p><strong>Failure cues:</strong> certificate warnings are different from authentication failure. RDP errors can reflect NLA, account context, expired/locked accounts or missing logon rights. WinRM <code>401</code> supports authentication/authorization failure; <code>WinRM cannot process the request</code> can be name resolution, trusted-host, listener or transport context. Valid SMB credentials do not guarantee RDP or WinRM rights.</p>
+</blockquote>
+<blockquote>
+<p><strong>Next action:</strong> after a session, re-enumerate identity, groups, privileges, files, local services/listeners and routes. Password spraying, pass-the-hash and ticket use belong to later credential/AD blocks.</p>
+</blockquote>
+<h5 id="vnc">VNC</h5>
+<pre><code class="language-bash">nmap -Pn -sV --script vnc-info -p PORT TARGET
+vncviewer TARGET:PORT
+</code></pre>
+<blockquote>
+<p>VNC may expose a desktop without Windows logon semantics; the VNC server's authentication and the resulting OS session identity are separate. Use <code>realvnc-auth-bypass</code> or password testing only for a confirmed compatible product and explicit authorized objective, then verify the desktop identity.</p>
+</blockquote>
+<h5 id="telnet">Telnet</h5>
+<pre><code class="language-bash">nmap -Pn -sV -p PORT TARGET
+nc -nv TARGET PORT
+telnet TARGET PORT
+</code></pre>
+<blockquote>
+<p>Telnet is plaintext and may expose a banner/login prompt. Validate only legitimately acquired credentials; do not make <code>telnet-brute</code> a baseline. After login, verify host and identity because appliance/application shells can differ from an OS shell. Source supplement: reviewed getSH Nmap VNC/Telnet blocks.</p>
+</blockquote>
+<h5 id="gnu-inetutils-telnetd--conditional-authentication-bypass-check">GNU Inetutils telnetd — conditional authentication-bypass check</h5>
+<p>Use only after identifying the affected GNU Inetutils telnetd/login chain and its patch status. CVE-2026-24061 concerns how a supplied USER value reaches login; it does not apply to every Telnet server. Distribution backports matter.</p>
+<pre><code class="language-bash"># Client supports sending the autologin USER environment value
+USER='-f root' telnet -a TARGET PORT
+</code></pre>
+<p>Read: if a shell is obtained, verify hostname and id. A prompt or echoed username is not root access. A different daemon, fixed build, client negotiation mismatch or a rejected USER value → return to service identification. The affected upstream range and distribution fixes must be checked against the advisory rather than inferred from port 23.</p>
+<p>Sources: <a href="https://security-tracker.debian.org/tracker/CVE-2026-24061">upstream 1</a>.</p>
+<h3 id="7-worked-example--hypothetical-13">7. Worked example — hypothetical</h3>
+<p>Observation: SMB accepts a credential but RDP rejects it. Test: separate the RDP service and logon-right checks. Illustrative output: the account lacks remote-interactive authorization. Interpretation: test a justified WinRM or SMB execution path instead.</p>
+<h3 id="8-verify-the-result-13">8. Verify the result</h3>
+<p>Verify destination hostname, represented identity and usable effect in the resulting session.</p>
+<h3 id="9-failure-and-fallback-13">9. Failure and fallback</h3>
+<p>A valid password is not proof of RDP/WinRM rights. Diagnose TLS, transport, account qualification and logon policy separately.</p>
+<h3 id="10-next-transitions-13">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/lateral-movement/#move-rdp">Obtain an authorized RDP interactive session</a>; <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<p><a id="service-sip-irc"></a></p>
+<h2 id="investigate-sipirc-identity-and-configuration-clues">Investigate SIP/IRC identity and configuration clues</h2>
+<p><strong>Blocks:</strong> 2; authenticated re-enumeration throughout. <a href="/oscp/reference/02-service-enumeration/12-sip-irc/">Operational procedure</a> | <a href="/oscp/cheatsheets/service-opportunities/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-14">1. Purpose and result</h3>
+<p>Service capabilities, identity clues or an evidence-matched exploit candidate.</p>
+<h3 id="2-recognition-clues-14">2. Recognition clues</h3>
+<p>A confirmed SIP or IRC application.</p>
+<h4 id="find-the-clue-from-your-starting-access-14">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Classify the unusual listener, then use its normal greeting/registration behavior and the owning procedure's bounded protocol checks.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nmap -Pn -sV -p PORT TARGET
+nc -nv TARGET PORT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">PORT/tcp open irc APPLICATION_VERSION
+:HOSTNAME NOTICE AUTH :registration required
+</code></pre>
+<p><strong>Recognize this detail:</strong> The real protocol and registration state determine the next client operation; the expected port label is insufficient.</p>
+<p><strong>Still missing before method selection:</strong> Verify application/version, accepted interaction and exact exploit/access conditions.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Normal protocol interaction exposes useful configuration or an exact vulnerable component: follow that candidate.</td></tr><tr><td>Ruled out in this context</td><td>The listener speaks another protocol: remove the SIP/IRC assumption.</td></tr><tr><td>Inconclusive</td><td>A silent client-first or UDP service requires an appropriate protocol request; no greeting is not a version conclusion.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h3 id="3-prerequisites-14">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A confirmed reachable application; anonymous context or one identified credential. <strong>Required conditions:</strong> Application-specific request format; permitted registration/channel/configuration access.</p>
+<h3 id="4-discover-and-verify-prerequisites-14">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">nmap -Pn -sV -p PORT TARGET
+</code></pre>
+<h3 id="5-why-it-works-14">5. Why it works</h3>
+<p>Protocol identification and configuration may expose useful users or product versions. Do not replace application evidence with the expected service at a conventional port.</p>
+<h3 id="6-execute-and-choose-variants-14">6. Execute and choose variants</h3>
+<p>These source-site topics contain only first-pass reconnaissance. Treat them as application-identification branches, not default exploitation paths.</p>
+<h5 id="sip">SIP</h5>
+<blockquote>
+<p>Commonly UDP/TCP 5060 or TLS 5061; follow protocol evidence.</p>
+</blockquote>
+<pre><code class="language-bash">nmap -Pn -sU -sV --script sip-methods -p 5060 TARGET
+nmap -Pn -sT -sV --script sip-methods -p 5060 TARGET
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> a SIP response and supported methods. <code>open|filtered</code> without application response remains ambiguous. Do not run <code>sip-brute</code> until the exact registrar, known test identities, lockout policy and explicit authorization are established.</p>
+</blockquote>
+<h5 id="irc">IRC</h5>
+<pre><code class="language-bash">nmap -Pn -sV --script irc-info -p PORT TARGET
+nc -nv TARGET PORT
+</code></pre>
+<p>Minimal registration for an authorized test client:</p>
+<pre><code class="language-text">NICK testnick
+USER testuser 0 * :Test User
+QUIT
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> IRC numeric replies, server/network name, version/capabilities or authentication requirement. Do not use <code>irc-brute</code> as identification; authenticate only with legitimately acquired credentials.</p>
+</blockquote>
+<h3 id="7-worked-example--hypothetical-14">7. Worked example — hypothetical</h3>
+<p>Observation: a nonstandard port responds as IRC. Test: inspect its normal registration/banner behavior. Illustrative output: a named build and accessible channel information. Interpretation: record identity clues and verify any public exploit's exact prerequisites.</p>
+<h3 id="8-verify-the-result-14">8. Verify the result</h3>
+<p>Retain protocol responses and distinguish product clues from confirmed vulnerabilities.</p>
+<h3 id="9-failure-and-fallback-14">9. Failure and fallback</h3>
+<p>A generic banner or denied registration leaves access unproven; return to version/configuration matching.</p>
+<h3 id="10-next-transitions-14">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a>; <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>; <a href="/oscp/notes/methods/discovery/#identify-app">Identify applications and validate selected NSE checks</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 DNS pp136–142, SMB/SMTP pp156–160, SNMP pp161–164, databases pp282–285; service-specific official sources remain linked beside the operational procedures. <a href="https://github.com/LeonardoE95/OSCP">Hexdump enumeration supplement</a>.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

