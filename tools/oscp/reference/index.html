@@ -13190,10 +13190,25 @@ record `account → service class/host/port → groups → password age/encrypti
 ```powershell
 get-domainobjectacl -identity target_object -resolveguids |
   where-object { $_.activedirectoryrights -match 'genericall|genericwrite|writedacl|writeowner|extendedright|writeproperty|self' } |
+  select-object objectdn,securityidentifier,activedirectoryrights,objectacetype,acetype,isinherited,inheritancetype
+```
+
+powerview normally exposes the trustee as `securityidentifier`. resolve that sid and trace controlled direct/nested membership. `-resolveguids` resolves operation guids; it does not make every trustee a friendly account name. a blank projected column can mean the selected property is absent, not that an ace has no trustee.
+
+<details>
+<summary><strong>compatible copy that actually emits identityreference</strong></summary>
+
+use this projection only when inspecting the returned object confirms that the loaded implementation provides `identityreference`.
+
+```powershell
+get-domainobjectacl -identity target_object -resolveguids |
+  where-object { $_.activedirectoryrights -match 'genericall|genericwrite|writedacl|writeowner|extendedright|writeproperty|self' } |
   select-object objectdn,identityreference,activedirectoryrights,objectacetype,acetype,isinherited,inheritancetype
 ```
 
-if `identityreference` is an unresolved sid, resolve it and trace whether the controlled user reaches it through direct or nested group membership.
+if the value is an unresolved sid, resolve it before applying the rule to a controlled principal.
+
+</details>
 
 | candidate right | possible transition to validate later | missing proof now |
 | --- | --- | --- |
@@ -13797,10 +13812,25 @@ record `account → service class/host/port → groups → password age/encrypti
 ```powershell
 get-domainobjectacl -identity target_object -resolveguids |
   where-object { $_.activedirectoryrights -match 'genericall|genericwrite|writedacl|writeowner|extendedright|writeproperty|self' } |
+  select-object objectdn,securityidentifier,activedirectoryrights,objectacetype,acetype,isinherited,inheritancetype
+```
+
+powerview normally exposes the trustee as `securityidentifier`. resolve that sid and trace controlled direct/nested membership. `-resolveguids` resolves operation guids; it does not make every trustee a friendly account name. a blank projected column can mean the selected property is absent, not that an ace has no trustee.
+
+<details>
+<summary><strong>compatible copy that actually emits identityreference</strong></summary>
+
+use this projection only when inspecting the returned object confirms that the loaded implementation provides `identityreference`.
+
+```powershell
+get-domainobjectacl -identity target_object -resolveguids |
+  where-object { $_.activedirectoryrights -match 'genericall|genericwrite|writedacl|writeowner|extendedright|writeproperty|self' } |
   select-object objectdn,identityreference,activedirectoryrights,objectacetype,acetype,isinherited,inheritancetype
 ```
 
-if `identityreference` is an unresolved sid, resolve it and trace whether the controlled user reaches it through direct or nested group membership.
+if the value is an unresolved sid, resolve it before applying the rule to a controlled principal.
+
+</details>
 
 | candidate right | possible transition to validate later | missing proof now |
 | --- | --- | --- |

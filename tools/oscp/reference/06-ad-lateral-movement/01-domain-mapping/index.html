@@ -255,9 +255,18 @@ setspn -L ACCOUNT
 <h2 id="9-directory-acls-and-effective-control">9. Directory ACLs and effective control</h2>
 <pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
   Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight|WriteProperty|Self' } |
+  Select-Object ObjectDN,SecurityIdentifier,ActiveDirectoryRights,ObjectAceType,AceType,IsInherited,InheritanceType
+</code></pre>
+<p>PowerView normally exposes the trustee as <code>SecurityIdentifier</code>. Resolve that SID and trace controlled direct/nested membership. <code>-ResolveGUIDs</code> resolves operation GUIDs; it does not make every trustee a friendly account name. A blank projected column can mean the selected property is absent, not that an ACE has no trustee.</p>
+<details>
+<summary><strong>Compatible copy that actually emits IdentityReference</strong></summary>
+<p>Use this projection only when inspecting the returned object confirms that the loaded implementation provides <code>IdentityReference</code>.</p>
+<pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">Get-DomainObjectAcl -Identity TARGET_OBJECT -ResolveGUIDs |
+  Where-Object { $_.ActiveDirectoryRights -match 'GenericAll|GenericWrite|WriteDacl|WriteOwner|ExtendedRight|WriteProperty|Self' } |
   Select-Object ObjectDN,IdentityReference,ActiveDirectoryRights,ObjectAceType,AceType,IsInherited,InheritanceType
 </code></pre>
-<p>If <code>IdentityReference</code> is an unresolved SID, resolve it and trace whether the controlled user reaches it through direct or nested group membership.</p>
+<p>If the value is an unresolved SID, resolve it before applying the rule to a controlled principal.</p>
+</details>
 
 
 
