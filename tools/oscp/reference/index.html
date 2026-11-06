@@ -13037,6 +13037,8 @@ get-adtrust -filter *
 
 ## 4. built-in adsi/directorysearcher fallback
 
+for repeated queries, [define ldapsearch once inline](../../cheatsheets/active-directory.md#define-ldapsearch-once-in-this-powershell-session), then use its purpose-labelled calls. the transparent one-off procedure below remains useful when no helper is loaded.
+
 ```powershell
 $root = [adsi]'ldap://rootdse'
 $base = [adsi](&quot;ldap://&quot; + $root.defaultnamingcontext)
@@ -13581,6 +13583,8 @@ get-adtrust -filter *
 
 </details>
 "><a href="/tools/oscp/reference/06-ad-lateral-movement/01-domain-mapping/#3-native-windows-baseline">3. Native Windows baseline</a></li><li class="level-2" data-reference-section data-search="## 4. built-in adsi/directorysearcher fallback
+
+for repeated queries, [define ldapsearch once inline](../../cheatsheets/active-directory.md#define-ldapsearch-once-in-this-powershell-session), then use its purpose-labelled calls. the transparent one-off procedure below remains useful when no helper is loaded.
 
 ```powershell
 $root = [adsi]'ldap://rootdse'

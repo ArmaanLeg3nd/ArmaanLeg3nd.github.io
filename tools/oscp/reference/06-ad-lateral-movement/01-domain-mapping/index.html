@@ -114,6 +114,7 @@ Get-ADTrust -Filter *
 <p><code>Get-AD*</code> cmdlets require the RSAT ActiveDirectory module. Its absence on a client is normal; use ADSI, LDAP, PowerView or an off-domain client.</p>
 </details>
 <h2 id="4-built-in-adsidirectorysearcher-fallback">4. Built-in ADSI/DirectorySearcher fallback</h2>
+<p>For repeated queries, <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/active-directory.md#define-ldapsearch-once-in-this-powershell-session">define LDAPSearch once inline</a>, then use its purpose-labelled calls. The transparent one-off procedure below remains useful when no helper is loaded.</p>
 <pre><button type="button" data-reference-copy aria-label="Copy command">Copy</button><code class="language-powershell">$root = [ADSI]'LDAP://RootDSE'
 $base = [ADSI]("LDAP://" + $root.defaultNamingContext)
 $searcher = New-Object System.DirectoryServices.DirectorySearcher($base)
