@@ -5,6 +5,7 @@ export async function buildSearchIndex():Promise<SearchEntry[]> {
  const entries:SearchEntry[]=[];
  for(const page of plainPages) {
    const {html,headings}=await renderPlain(page);
+   for(const match of html.matchAll(/<details data-study-approach="([^"]+)"><summary id="([^"]+)">([\s\S]*?)<\/summary>([\s\S]*?)(?=<\/details>)/g)){entries.push({number:'',title:plain(match[3]),url:plainURL(page)+'#'+match[2],text:plain(match[4]).slice(0,6000),kind:'Procedure',topic:referenceTopic(plainURL(page))});}
    for(let i=0;i<headings.length;i++) {
      const heading=headings[i],start=html.indexOf('id="'+heading.slug+'"');
      const end=i+1<headings.length?html.indexOf('id="'+headings[i+1].slug+'"',start+1):html.length;

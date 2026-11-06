@@ -188,6 +188,14 @@ test('only reviewed method choices fold; preflight and sequential steps remain v
  assert.ok(move.html.includes('<details data-method-fold>'));assert.ok(move.html.includes('method-choice-cue'));
  assert.ok(!move.html.includes('<details data-method-fold open'));
  const {foldMethods}=await import('../src/lib/oscp-folds.ts');
- const steps='<h2 id="step">Step 1: prepare</h2><p>required</p><h2>Step 2: verify</h2>';assert.equal(foldMethods(steps,'reference/example.md'),steps);
+ const steps='<h2 id="step">Step 1: prepare</h2><p>required</p><h2>Step 2: verify</h2>';assert.equal(foldMethods(steps,'reference/08-evidence-reporting/01-attack-tracking-and-evidence.md'),steps);
  for(const page of plainPages){const {html}=await renderPlain(page);assert.equal((html.match(/<details\b/g)||[]).length,(html.match(/<\/details>/g)||[]).length,page.path);}
+});
+
+test('full review covers every page/method and AD approaches have searchable stable destinations',async()=>{
+ const review=JSON.parse(readFileSync(new URL('../src/content/oscp-fold-review.json',import.meta.url),'utf8'));assert.equal(Object.keys(review).length,plainPages.length);
+ const {html}=await renderPlain(plainPages.find(p=>p.path==='notes/methods/ad-mapping.md'));for(const key of ['native-windows','adsi','ldap','powerview'])assert.ok(html.includes('id="approach-'+key+'"'));
+ const {buildSearchIndex}=await import('../src/lib/oscp-search-index.ts');const entries=await buildSearchIndex();assert.ok(entries.some(e=>e.url.endsWith('#approach-adsi')));
+ const template=readFileSync(new URL('../src/pages/oscp/[...slug].astro',import.meta.url),'utf8');assert.ok(!template.includes('summary h2{display:inline;font-size:1.15em'));
+ const linux=await renderPlain(plainPages.find(p=>p.path==='cheatsheets/linux-privesc.md'));assert.ok(!linux.html.includes('Fixed TCP relay:'));assert.ok(linux.html.includes('exact command, arguments and restrictions'));
 });

@@ -1,0 +1,902 @@
+{
+  "README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "cheatsheets/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "cheatsheets/active-directory.md": {
+    "choices": [
+      "Native / RSAT / ADSI",
+      "Authenticated LDAP",
+      "PowerView",
+      "Targeted Kerberoast from SPN write",
+      "Silver ticket",
+      "SMB, services and scheduled tasks",
+      "WMI/DCOM",
+      "WinRM and RDP",
+      "Key and ticket transitions"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/ad-investigation.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "cheatsheets/credentials-cracking.md": {
+    "choices": [
+      "Hashcat",
+      "John",
+      "Use a known password from a Windows foothold"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/discovery-scanning.md": {
+    "choices": [
+      "No raw-packet privileges",
+      "Known-running target skipped by discovery",
+      "Selected ports across an assigned list",
+      "TCP through an established SOCKS route"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/evidence-reporting.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "cheatsheets/linux-privesc.md": {
+    "choices": [
+      "Sudo",
+      "SUID / SGID / capabilities",
+      "Cron, timers, services and short-lived processes",
+      "PATH hijacking",
+      "Wildcard option injection",
+      "Writable account and policy files",
+      "Groups, sockets and containers",
+      "Mounts, NFS, local services and libraries",
+      "Software/kernel candidates — last"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/payload-execution.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "cheatsheets/pivoting.md": {
+    "choices": [
+      "Socat fixed TCP relay",
+      "OpenSSH",
+      "sshuttle",
+      "Windows",
+      "Chisel",
+      "Ligolo-ng",
+      "DNS tunneling, conditional"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/public-exploits.md": {
+    "choices": [
+      "Python exploit",
+      "Compile",
+      "Web exploit diagnostics",
+      "Existing memory-corruption PoC"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/service-opportunities.md": {
+    "choices": [
+      "MySQL / MariaDB",
+      "MSSQL",
+      "PostgreSQL",
+      "SMBMap and authenticated SMB/RPC collection"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/shells-payloads.md": {
+    "choices": [
+      "Linux reverse shells",
+      "Windows command channels",
+      "Bind shells"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "cheatsheets/tool-command-reference.md": {
+    "choices": [],
+    "disposition": "Lookup catalogue or terminology: leave searchable entries visible."
+  },
+  "cheatsheets/tool-selection.md": {
+    "choices": [],
+    "disposition": "Lookup catalogue or terminology: leave searchable entries visible."
+  },
+  "cheatsheets/tools-and-scripts.md": {
+    "choices": [],
+    "disposition": "Lookup catalogue or terminology: leave searchable entries visible."
+  },
+  "cheatsheets/web-exploitation.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "cheatsheets/web-mapping.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "cheatsheets/windows-privesc.md": {
+    "choices": [
+      "Services",
+      "Unquoted service paths",
+      "DLL/helper search",
+      "Scheduled tasks and startup consumers",
+      "AlwaysInstallElevated and UAC",
+      "Token privileges",
+      "Software, drivers and kernel",
+      "Recover supported application stores with LaZagne"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "notes/Attack_Strategy_Map.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "notes/GetSH_Coverage.md": {
+    "choices": [],
+    "disposition": "Lookup catalogue or terminology: leave searchable entries visible."
+  },
+  "notes/Master_Notes.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "notes/Recognition_Practice.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "notes/Speedrun_Breakdown.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "notes/ad-investigation/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "notes/ad-investigation/acl.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/asrep.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/bloodhound.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/chapter-6-1.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/chapter-6-2.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/chapter-6-3.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/chapter-6-4.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/chapter-6-5.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/chapter-6-6.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/conditional.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/context.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/credential-sources.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/failure.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/files.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/glossary.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/hosts.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/kerberoast.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/managed.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/material.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/method-choice.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/movement.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/notes-feedback.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/object-change.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/policy.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/practice-cases.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/quick-reference.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/read-output.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/reenumerate.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/replication.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/routes.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/secure-baseline.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/sessions.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/shares.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/smb-wmi.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/spns.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/tickets.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/users.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/winrm.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/ad-investigation/worked-chain.md": {
+    "choices": [],
+    "disposition": "Focused investigation: baseline and decision steps remain visible; native optional variants already fold."
+  },
+  "notes/methods/ad-identities.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "ad-lsass": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-sam": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-security": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-dpapi": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-ntds": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "kerberos-asrep": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "kerberos-roast": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-targeted-roast": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "kerberos-tickets": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "kerberos-silver": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-password-reset": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-group-control": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-owner-dacl": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-dcsync": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-gpo": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-delegation": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ad-certificates": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "kerberos-golden": "fold: conditional mechanism or access-context choice; retain its internal sequence"
+    }
+  },
+  "notes/methods/ad-mapping.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible. Four merged directory-query extracts now have explicit source-authored approach boundaries.",
+    "methods": {
+      "domain-state": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "domain-directory": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "domain-shares": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "domain-spns": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "domain-acl": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "domain-hosts": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "domain-graph": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/credentials.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "credential-classify": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "credential-use": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "offline-recovery": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "keepass-recovery": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ssh-key": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-hashes": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "nt-hash": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "netntlm-recovery": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "dcc2-recovery": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ticket-use": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/discovery.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "path-hosts": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "tcp-coverage": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "identify-app": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "udp-coverage": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "result-validation": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "windows-discovery": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "unknown-port": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/execution.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "execution-office": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "execution-library": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "execution-format": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "execution-parser": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "execution-powershell": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "execution-controls": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "execution-handler": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "execution-framework": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "execution-callback": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/integration.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "attack-state": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "attack-chains": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "attack-recovery": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "attack-evidence": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "attack-report": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/lateral-movement.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "move-preflight": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "move-services": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "move-smbexec": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "move-tasks": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "move-wmi": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "move-dcom": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "move-winrm": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "move-rdp": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "move-auth-material": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/linux-privesc.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "linux-state": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "linux-permissions": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "linux-secrets": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "linux-sudo": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-preload": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-suid": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-capabilities": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-jobs": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-path": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-wildcard": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-policy": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-containers": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-mounts": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-library": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-kernel": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "linux-enumerators": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/pivoting.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "pivot-state": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "fixed-forward": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ssh-local": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ssh-dynamic": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ssh-remote": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ssh-remote-dynamic": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "proxy-clients": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "sshuttle-route": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-forward": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "chisel-reverse": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "chisel-forward": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "ligolo-route": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "pivot-dns": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "pivot-callback": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "pivot-multihop": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "pivot-dns-tunnel": "fold: conditional mechanism or access-context choice; retain its internal sequence"
+    }
+  },
+  "notes/methods/public-exploits.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "exploit-select": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "exploit-runtime": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "exploit-compile": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "exploit-web": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/services.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "service-ftp": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-ssh": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-smtp": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-dns": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-nfs": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-smb": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-snmp": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-mysql": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-mssql": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-postgres": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-redis": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-oracle": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-remote": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-ldap": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "service-sip-irc": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/sessions-transfers.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "session-proof": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "session-reverse": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "session-windows": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "session-bind": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "payload-generate": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "session-tty": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "transfer-http": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "transfer-scp": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "transfer-smb": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "transfer-stream": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "transfer-text": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "transfer-ftp": "fold: conditional mechanism or access-context choice; retain its internal sequence"
+    }
+  },
+  "notes/methods/web-exploitation.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "web-traversal": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-php-source": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-lfi-log": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-upload": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "web-upload-exec": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-upload-path": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-command": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "sql-influence": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "sql-auth": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "sql-union": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "sql-blind": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "sql-os": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-idor": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-authz": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-mass-assignment": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-xss": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-cms": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "web-ssrf": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "sql-oob": "fold: conditional mechanism or access-context choice; retain its internal sequence"
+    }
+  },
+  "notes/methods/web-mapping.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "web-identity": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "web-behavior": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "web-artifacts": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "web-content": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "web-vhosts": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "web-parameters": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "notes/methods/windows-privesc.md": {
+    "choices": [],
+    "disposition": "Method choices reviewed separately by ID; workflows and prerequisites stay visible.",
+    "methods": {
+      "windows-state": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "windows-acl": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "windows-secrets": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+      "windows-service-config": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-service-binary": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-unquoted": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-dll": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-tasks": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-installer": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-token": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-backup": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-kernel": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+      "windows-enumerators": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence"
+    }
+  },
+  "reference/01-discovery-scanning/01-path-and-host-discovery.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/01-discovery-scanning/02-tcp-scanning.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/01-discovery-scanning/03-service-identification.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/01-discovery-scanning/04-udp-scanning.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/01-discovery-scanning/05-results-and-next-actions.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/01-discovery-scanning/06-windows-network-checks.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/01-discovery-scanning/07-scanner-alternatives.md": {
+    "choices": [
+      "RustScan: fast TCP discovery, Nmap interpretation",
+      "Masscan: raw-packet discovery, then validation",
+      "Nikto: bounded web-server candidate generation"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/01-discovery-scanning/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/02-service-enumeration/01-ftp.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/02-ssh.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/03-smtp.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/04-dns.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/05-nfs-rpc.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/06-smb-rpc.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/07-snmp.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/08-databases.md": {
+    "choices": [
+      "MySQL / MariaDB",
+      "Microsoft SQL Server",
+      "PostgreSQL",
+      "Redis",
+      "Oracle TNS/SID triage",
+      "MongoDB — inspect readable databases with mongosh",
+      "SQLite — inspect a recovered application database"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/02-service-enumeration/09-windows-remote-access.md": {
+    "choices": [
+      "RDP baseline: authentication-only check",
+      "WinRM baseline: interactive session",
+      "VNC",
+      "Telnet",
+      "GNU Inetutils telnetd — conditional authentication-bypass check"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/02-service-enumeration/10-http-web-mapping.md": {
+    "choices": [
+      "wfuzz alternative for paths and form values"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/02-service-enumeration/11-ldap-kerberos.md": {
+    "choices": [
+      "Anonymous directory search",
+      "Authenticated search"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/02-service-enumeration/12-sip-irc.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/13-memcached-webdav.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/02-service-enumeration/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/03-initial-access/01-rdp-access.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/03-initial-access/02-web-file-handling.md": {
+    "choices": [
+      "Directory traversal: prove file read",
+      "PHP inclusion: retrieve source",
+      "LFI to command execution through a writable/readable log",
+      "PHP include control — generate a filter chain when uploads are unavailable",
+      "Image/PDF upload plus inclusion — verify the consumer"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/03-initial-access/03-command-and-sql-injection.md": {
+    "choices": [
+      "Out-of-band SQL injection boundary",
+      "SSTI — prove template evaluation, then identify the engine",
+      "XXE — test the XML parser and file-read result",
+      "NoSQL operator injection — separate JSON objects from strings",
+      "PHP deserialization — match the gadget to installed dependencies",
+      "Unsafe YAML construction — distinguish loading from safe parsing",
+      "SQL truncation or normalization mismatch at registration",
+      "Shellshock candidate — only for a CGI path that invokes vulnerable Bash"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/03-initial-access/04-access-control-and-xss.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/03-initial-access/05-wordpress-and-ssrf.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/03-initial-access/06-public-exploit-adaptation.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/03-initial-access/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/04-shells-transfers-credentials/01-file-transfer.md": {
+    "choices": [
+      "PHP HTTP file server when Python is unavailable"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/04-shells-transfers-credentials/02-shells-and-payloads.md": {
+    "choices": [
+      "Linux reverse-shell baselines",
+      "Windows session options",
+      "Bind shells",
+      "Powercat — Windows PowerShell shell transport",
+      "Penelope or pwncat-cs — handle an existing shell and move files",
+      "Shell alternatives when the installed runtime changes",
+      "OpenSSL transport when a TLS callback is useful"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/04-shells-transfers-credentials/03-credential-use-and-cracking.md": {
+    "choices": [
+      "Hashcat baseline and meaningful modes",
+      "John the Ripper workflow",
+      "Build a small site-specific wordlist with CeWL",
+      "Targeted candidates — Crunch, CUPP and rules"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/04-shells-transfers-credentials/04-file-and-repository-hunting.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/04-shells-transfers-credentials/05-python-tool-environments.md": {
+    "choices": [
+      "Linux/Kali virtual environment",
+      "Windows PowerShell",
+      "uv alternative for a Python PoC with missing dependencies"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/04-shells-transfers-credentials/06-payload-execution-obstacles.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/04-shells-transfers-credentials/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/05-local-privilege-escalation/01-linux-privilege-escalation.md": {
+    "choices": [
+      "Sudo: parse the complete rule",
+      "SUID, SGID and capabilities",
+      "Cron, timers and services",
+      "PATH and relative-command hijacking",
+      "Wildcard and option injection",
+      "Writable account/policy files",
+      "Privileged groups, sockets and containers",
+      "Mounts, NFS and local services",
+      "Shared-library resolution",
+      "Software/kernel exploits: evidence last",
+      "Restricted shell — escape the restriction without claiming root",
+      "Kernel candidates — Linux Exploit Suggester as a second view",
+      "Logrotate race — only with a controlled log path and privileged rotation"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/05-local-privilege-escalation/02-windows-privilege-escalation.md": {
+    "choices": [
+      "Service control and executed objects",
+      "Unquoted service paths",
+      "DLL/config/helper search hijacking",
+      "Scheduled tasks and autostarts",
+      "AlwaysInstallElevated and UAC context",
+      "Token privilege routes",
+      "Application, driver and kernel candidates",
+      "JAWS — PowerShell enumeration when the compiled helper is unsuitable",
+      "Legacy impersonation helpers — select by OS build and trigger"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/05-local-privilege-escalation/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/06-ad-lateral-movement/01-domain-mapping.md": {
+    "choices": [
+      "Native Windows baseline",
+      "Built-in ADSI/DirectorySearcher fallback",
+      "Authenticated LDAP from Kali",
+      "PowerView: convenient manual breadth",
+      "RustHound-CE — a cross-platform BloodHound collector"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/06-ad-lateral-movement/02-credential-access.md": {
+    "choices": [
+      "LSASS: live logon-session material",
+      "SAM and SYSTEM: local identities",
+      "SECURITY and SYSTEM: LSA secrets and cached domain verifiers",
+      "Credential Manager and DPAPI",
+      "NTDS and replication paths",
+      "DonPAPI — remote DPAPI/application-secret collection with host rights"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions.md": {
+    "choices": [
+      "AS-REP roasting",
+      "Kerberoasting",
+      "Targeted Kerberoasting from object control",
+      "Silver tickets: forge one service ticket",
+      "Timeroast — offline recovery of weak computer-account passwords via MS-SNTP"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise.md": {
+    "choices": [
+      "Conditional: GPO control",
+      "Conditional: delegation paths",
+      "Conditional: AD CS enumeration",
+      "Conditional: high-impact ticket-forging concepts",
+      "bloodyAD — Linux-side LDAP reads and permission-backed writes",
+      "Delegated reads — LAPS and gMSA material",
+      "Shadow credentials — object-key write, PKINIT, then cleanup",
+      "PassTheCert — Schannel/LDAP when the certificate is usable there",
+      "gMSA — obtain a decoded hash only with managed-password read rights"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/06-ad-lateral-movement/05-lateral-movement.md": {
+    "choices": [
+      "SMB and service-control execution",
+      "WMI and DCOM execution",
+      "WinRM, WinRS and PowerShell remoting",
+      "RDP",
+      "winexe — Samba-side service execution alternative"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/06-ad-lateral-movement/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding.md": {
+    "choices": [
+      "Socat fixed TCP relay",
+      "OpenSSH forwarding",
+      "sshuttle transparent selected-subnet route",
+      "Windows forwarding alternatives",
+      "Chisel HTTP/WebSocket tunnel",
+      "Ligolo-ng routed pivot",
+      "DNS tunneling with dnscat2"
+    ],
+    "disposition": "Reviewed conditional approaches; other steps stay visible and native variants remain folded."
+  },
+  "reference/07-pivoting-tunneling/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/08-evidence-reporting/01-attack-tracking-and-evidence.md": {
+    "choices": [],
+    "disposition": "Sequential study, shared concepts or operational baseline; keep visible and retain native alternative disclosures."
+  },
+  "reference/08-evidence-reporting/README.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  },
+  "reference/INDEX.md": {
+    "choices": [],
+    "disposition": "Navigation index: leave visible."
+  }
+}

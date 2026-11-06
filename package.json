@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "test:tools": "node --experimental-strip-types --test tests/tools.test.mjs",
-    "test:plain": "node --experimental-strip-types --test tests/oscp-plain.test.mjs"
+    "test:plain": "node --experimental-strip-types --test tests/oscp-plain.test.mjs",
+    "audit:reference": "node --experimental-strip-types scripts/audit-oscp-reference.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
