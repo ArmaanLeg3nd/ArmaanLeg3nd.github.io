@@ -1,3 +1,4 @@
+import stable from '../content/oscp-section-numbers.json' with {type:'json'};
 import snapshot from '../content/oscp-plain.snapshot.json' with {type:'json'};
 import methods from '../content/oscp.snapshot.json' with {type:'json'};
 
@@ -33,6 +34,7 @@ export function describe(page:Page) {
    const topic=page.path.split('/').at(-1)!.replace('.md','');
    return {number:topicCodes[topic],title:cleanTitle(page.title),authored:false};
  }
+ if(page.path in stable)return {number:stable[page.path as keyof typeof stable].number,title:cleanTitle(page.title),authored:false};
  if(page.path.startsWith('cheatsheets/'))return {number:page.path.endsWith('/README.md')?'10.0':'10.'+(sheets.findIndex(p=>p.path===page.path)+1),title:cleanTitle(page.title),authored:false};
  const stage=page.path.match(/^reference\/(\d+)-/);
  if(stage) {
@@ -79,10 +81,10 @@ export function numberMarkup(html:string,page:Page,original:Array<{depth:number;
  const headings:SectionHeading[]=[];
  const counters=Array(7).fill(0);
  const details:number[]=[];
- let depth=1,headingPosition=0;
+ let depth=1,headingPosition=0,zeroParent=false;
  const next=(level:number)=>{
    if(level===1)return descriptor.number;
-   for(let i=2;i<level;i++)if(!counters[i])counters[i]=1;
+   for(let i=2;i<level;i++)if(!counters[i]&&!(i===2&&zeroParent))counters[i]=1;
    counters[level]++;
    for(let i=level+1;i<counters.length;i++)counters[i]=0;
    return descriptor.number+'.'+counters.slice(2,level+1).join('.');
@@ -108,8 +110,10 @@ export function numberMarkup(html:string,page:Page,original:Array<{depth:number;
      if(!old)throw new Error('Heading metadata mismatch: '+page.path);
      depth=Number(level);
      const authoredNumber=old.text.match(/^\d+(?:\.\d+)*/)?.[0];
-     const number=descriptor.authored&&authoredNumber?authoredNumber:next(depth);
-     if(descriptor.authored&&number.startsWith(descriptor.number+'.')) {
+     const fixed=(stable as Record<string,{headings:Record<string,string>}>)[page.path]?.headings[old.slug];
+     const number=fixed || (authoredNumber&&authoredNumber.startsWith(descriptor.number+'.')?authoredNumber:descriptor.authored&&authoredNumber?authoredNumber:next(depth));
+     zeroParent=number.startsWith(descriptor.number+'.0');
+     if(number.startsWith(descriptor.number+'.')) {
        const parts=number.slice(descriptor.number.length+1).split('.').map(Number);
        for(let i=2;i<counters.length;i++)counters[i]=parts[i-2]||0;
      }

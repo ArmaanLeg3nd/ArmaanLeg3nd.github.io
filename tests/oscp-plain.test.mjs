@@ -161,3 +161,9 @@ test('AD support includes matched output cases, stop rules and unanswered practi
  assert.equal((practice.match(/## 6\.6\.4\.\d Case/g)||[]).length,5);
  assert.ok(!practice.includes('Correct answer:')&&!practice.includes('Solution:'));
 });
+
+test('quick-use pilot retains all existing cheatsheet heading numbers',async()=>{
+ const stable=JSON.parse(readFileSync(new URL('../src/content/oscp-section-numbers.json',import.meta.url),'utf8'));
+ for(const page of plainPages.filter(p=>p.path in stable)){const rendered=await renderPlain(page);for(const [slug,number] of Object.entries(stable[page.path].headings)){assert.equal(rendered.headings.find(h=>h.slug===slug)?.number,number,page.path+'#'+slug);}}
+ const ad=plainPages.find(p=>p.path==='cheatsheets/active-directory.md');assert.equal((ad.markdown.match(/function LDAPSearch \{/g)||[]).length,1);
+});
