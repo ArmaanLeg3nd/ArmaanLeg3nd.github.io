@@ -16,7 +16,8 @@ test('plain section covers every pinned document, without the themed shell',()=>
     assert.ok(existsSync(target),page.path);
     const html=readFileSync(target,'utf8');
     assert.ok(html.includes('aria-label="Reference index"') && html.includes('id="document"'),page.path);
-    assert.ok(html.includes('color-scheme') && html.includes('position:fixed'),page.path);
+    const styles=html+[...html.matchAll(/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g)].map(m=>readFileSync(new URL('../dist'+m[1],import.meta.url),'utf8')).join('');
+    assert.ok(styles.includes('color-scheme') && /position\s*:\s*fixed/.test(styles),page.path);
     assert.ok(!html.includes('ClientRouter') && !html.includes('tools-surface') && !html.includes('data-theme='),page.path);
     assert.ok(html.includes('id="reference-search"')&&html.includes('<noscript>'),page.path+': progressive search fallback');
   }
@@ -198,4 +199,20 @@ test('full review covers every page/method and AD approaches have searchable sta
  const {buildSearchIndex}=await import('../src/lib/oscp-search-index.ts');const entries=await buildSearchIndex();assert.ok(entries.some(e=>e.url.endsWith('#approach-adsi')));
  const template=readFileSync(new URL('../src/pages/oscp/[...slug].astro',import.meta.url),'utf8');assert.ok(!template.includes('summary h2{display:inline;font-size:1.15em'));
  const linux=await renderPlain(plainPages.find(p=>p.path==='cheatsheets/linux-privesc.md'));assert.ok(!linux.html.includes('Fixed TCP relay:'));assert.ok(linux.html.includes('exact command, arguments and restrictions'));
+});
+
+test('important cue emphasis is selective and preserves commands and link styling',async()=>{
+ const {emphasizeCues}=await import('../src/lib/oscp-emphasis.ts');
+ const code='<pre><code>this changes directory state</code></pre>';assert.equal(emphasizeCues(code),code);
+ const link='<a href="/">This is disruptive</a>';assert.equal(emphasizeCues(link),link);
+ assert.equal(emphasizeCues('<p>Ordinary information and output.</p>'),'<p>Ordinary information and output.</p>');
+ assert.ok(emphasizeCues('<p><strong>Requires:</strong> access</p>').includes('cue-condition'));
+ assert.ok(emphasizeCues('<p><strong>Decisive clue:</strong> verified</p>').includes('cue-evidence'));
+ assert.ok(emphasizeCues('<p>This is disruptive because an unknown original password cannot be restored.</p>').includes('cue-critical'));
+ assert.equal(emphasizeCues('<h2>This is disruptive</h2>'),'<h2>This is disruptive</h2>');
+});
+
+test('cue colors retain readable contrast on the plain white page',()=>{
+ const css=readFileSync(new URL('../src/pages/oscp/[...slug].astro',import.meta.url),'utf8');
+ for(const kind of ['critical','condition','evidence']){const hex=css.match(new RegExp('\\.cue-'+kind+'\\{color:#([0-9a-f]{6})'))[1];const channels=hex.match(/../g).map(x=>parseInt(x,16)/255).map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4);const luminance=channels[0]*0.2126+channels[1]*0.7152+channels[2]*0.0722;assert.ok(1.05/(luminance+0.05)>=4.5,kind);}
 });
