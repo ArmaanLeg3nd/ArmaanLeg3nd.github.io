@@ -25,7 +25,6 @@ const shared:Record<string,string>={
 };
 export function cleanTitle(title:string){return title.replace(/^\d+(?:\.\d+)*[.)]?\s+/,'');}
 const ad=new Map(snapshot.sections.map(s=>[s.path,s]));
-const sheets=snapshot.pages.filter(p=>p.path.startsWith('cheatsheets/')&&!p.path.endsWith('/README.md')).sort((a,b)=>a.path.localeCompare(b.path));
 export function describe(page:Page) {
  const section=ad.get(page.path);
  if(section)return {number:section.number,title:section.title,authored:true};
@@ -35,7 +34,7 @@ export function describe(page:Page) {
    return {number:topicCodes[topic],title:cleanTitle(page.title),authored:false};
  }
  if(page.path in stable)return {number:stable[page.path as keyof typeof stable].number,title:cleanTitle(page.title),authored:false};
- if(page.path.startsWith('cheatsheets/'))return {number:page.path.endsWith('/README.md')?'10.0':'10.'+(sheets.findIndex(p=>p.path===page.path)+1),title:cleanTitle(page.title),authored:false};
+ if(page.path.startsWith('cheatsheets/'))throw new Error('Assign an explicit workflow number for '+page.path);
  const stage=page.path.match(/^reference\/(\d+)-/);
  if(stage) {
    const file=page.path.split('/').at(-1)!;
@@ -81,6 +80,8 @@ export function numberMarkup(html:string,page:Page,original:Array<{depth:number;
  const headings:SectionHeading[]=[];
  const counters=Array(7).fill(0);
  const details:number[]=[];
+ const legacy=(stable as Record<string,{legacyNumber?:string}>)[page.path]?.legacyNumber;
+ const variantSlug=(number:string)=>'variant-'+(legacy?legacy+number.slice(descriptor.number.length):number).replaceAll('.','-');
  let depth=1,headingPosition=0,zeroParent=false;
  const next=(level:number)=>{
    if(level===1)return descriptor.number;
@@ -97,7 +98,7 @@ export function numberMarkup(html:string,page:Page,original:Array<{depth:number;
      if(chunks.length<2)return all;
      const child=Math.min(depth+1,6);
      return chunks.map((chunk:string)=>{
-       const number=next(child),slug='variant-'+number.replaceAll('.','-');
+       const number=next(child),slug=variantSlug(number);
        const title=chunk.split('\n')[0].replace(/^(?:#|REM)\s*/i,'');
        headings.push({depth:child,slug,text:number+' '+title,number});
        return '<h'+child+' id="'+slug+'">'+number+' '+title+'</h'+child+'><pre><code'+codeAttrs+'>'+chunk+'</code></pre>';
@@ -126,9 +127,10 @@ export function numberMarkup(html:string,page:Page,original:Array<{depth:number;
    const variantDepth=Math.min(depth+1,6);
    const number=next(variantDepth);
    const title=summaryInner.replace(/^\s*<(?:strong|b)>/,'').replace(/<\/(?:strong|b)>\s*$/,'').replace(/^\d+(?:\.\d+)*[.)]?\s+/,'');
-   const slug='variant-'+number.replaceAll('.','-');
+   const slug=variantSlug(number);
    headings.push({depth:variantDepth,slug,text:number+' '+title.replace(/<[^>]*>/g,''),number});
    return '<summary'+summaryAttrs+' id="'+slug+'">'+number+' '+title+'</summary>';
  });
+ if(legacy&&legacy!==descriptor.number){const prefix='s-'+descriptor.number.replaceAll('.','-');html=html.replace(/id="(s-[0-9-]+)"/g,(all,id)=>{if(id===prefix||id.startsWith(prefix+'-')){const old='s-'+legacy.replaceAll('.','-')+id.slice(prefix.length);if(!html.includes('id="'+old+'"'))return all+' data-legacy-anchor="'+old+'"';}return all;});html=html.replace(/(<a id="[^"]+" data-legacy-anchor="([^"]+)"[^>]*><\/a>)/g,'<a id="$2"></a>$1');}
  return {html,headings};
 }

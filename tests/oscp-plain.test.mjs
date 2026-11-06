@@ -176,3 +176,9 @@ test('paired cues preserve steps and contextual search keeps exact number priori
  assert.equal(searchReference(entries,'error',10,'ad')[0].number,'2');assert.equal(searchReference(entries,'1',10,'ad')[0].number,'1');
  const ad=await renderPlain(plainPages.find(p=>p.path==='cheatsheets/active-directory.md'));assert.ok(ad.html.includes('command-pair'));assert.ok(renderPageIndex(plainPages[0],ad.headings).includes('data-page-branch'));
 });
+
+test('cheatsheets follow workflow order and retain legacy heading destinations',async()=>{
+ const registry=JSON.parse(readFileSync(new URL('../src/content/oscp-section-numbers.json',import.meta.url),'utf8'));
+ const names=['discovery-scanning','service-opportunities','web-mapping','web-exploitation','public-exploits','shells-payloads','payload-execution','credentials-cracking','linux-privesc','windows-privesc','ad-investigation','active-directory','pivoting','evidence-reporting','tool-selection','tools-and-scripts','tool-command-reference'];
+ for(const [i,name] of names.entries()){const path='cheatsheets/'+name+'.md',row=registry[path];assert.equal(row.number,'10.'+(i+1));const {html}=await renderPlain(plainPages.find(p=>p.path===path));for(const [slug,number] of Object.entries(row.headings)){if(slug.startsWith('variant-'))continue;const old=row.legacyNumber+number.slice(row.number.length);assert.ok(html.includes('id="s-'+old.replaceAll('.','-')+'"'),path+' legacy '+old);}}
+});
