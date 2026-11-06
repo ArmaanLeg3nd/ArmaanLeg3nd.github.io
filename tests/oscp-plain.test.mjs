@@ -147,7 +147,7 @@ test('glossary links and contextual aids do not modify executable code',async()=
    terms+=(html.match(/class="glossary-term"/g)||[]).length;
    for(const block of html.matchAll(/<pre[\s\S]*?<\/pre>/g))assert.ok(!block[0].includes('class="glossary-term"'),page.path);
  }
- assert.equal(panels,166);
+ assert.equal(panels,174);
  assert.ok(terms>100);
 });
 

@@ -8,7 +8,7 @@ const topicLabels: Record<string,string> = {
   execution:'Execution troubleshooting', integration:'Integration & evidence'
 };
 const serviceLabels: Record<string,string> = {
-  'service-ftp':'FTP', 'service-smb':'SMB / RPC', 'service-nfs':'NFS / RPC', 'service-ssh':'SSH',
+  'service-ftp':'FTP', 'service-smb':'SMB / RPC', 'service-nfs':'NFS / RPC', 'service-rsync':'Rsync', 'service-tftp':'TFTP', 'service-ssh':'SSH',
   'service-dns':'DNS', 'service-snmp':'SNMP', 'service-smtp':'SMTP & mailbox protocols', 'service-ldap':'LDAP',
   'service-mysql':'MySQL / MariaDB', 'service-mssql':'SQL Server', 'service-postgres':'PostgreSQL',
   'service-redis':'Redis', 'service-oracle':'Oracle', 'service-remote':'RDP / WinRM / VNC / Telnet', 'service-sip-irc':'SIP / IRC'
@@ -46,6 +46,12 @@ const taskLabels: Record<string,string> = {
   'web-xss':'Cross-site scripting',
   'web-cms':'WordPress',
   'web-ssrf':'Server-side request forgery',
+  'web-ssti':'SSTI',
+  'web-xxe':'XXE',
+  'web-nosql':'NoSQL operator injection',
+  'web-php-deserialization':'PHP deserialization',
+  'web-yaml':'Unsafe YAML',
+  'web-shellshock':'Shellshock',
   'sql-oob':'Out-of-band SQL injection',
   'credential-classify':'Identify credential material',
   'credential-use':'Password reuse',
@@ -172,9 +178,9 @@ export const methodLabel = (method: Pick<MethodSummary,'id'|'title'>) => service
 
 export const investigationSteps: Record<string,string[]> = {
   discovery:['Can I reach it?','Find open ports','Identify what is listening','Record targets worth investigating'],
-  services:['Try the service with the access you have','Look for names, files and configuration','Check database permissions','Follow recovered credentials'],
+  services:['Try the service with the access you have','Check file-service namespaces and known filenames','Look for names, files and configuration','Check database permissions','Follow recovered credentials'],
   'web-mapping':['Confirm the site and login state','Browse features and inspect requests','Find hidden paths and hostnames','Choose an input or permission to test'],
-  'web-exploitation':['Check file reads and uploads','Test command or SQL influence','Compare access between users and roles','Verify the finding before seeking execution'],
+  'web-exploitation':['Check file reads and uploads','Test command or SQL influence','Compare access between users and roles','Verify the finding before seeking execution','Use parser or template paths only when the technology fits'],
   credentials:['Identify the material and account','Can it be used directly?','Recover or use the matching credential type','Verify access, then enumerate again'],
   'public-exploits':['Does the exploit match this system?','Check the script and dependencies','Check architecture and compilation','Match the actual web request'],
   'sessions-transfers':['Verify your host and identity','Choose a reachable session route','Match the payload and terminal','Transfer a file and verify it'],

@@ -485,6 +485,8 @@
       "service-smtp": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
       "service-dns": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
       "service-nfs": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+    "service-rsync": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
+    "service-tftp": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
       "service-smb": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
       "service-snmp": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
       "service-mysql": "visible: objective, service-specific investigation, prerequisite, validation, workflow or diagnostic sequence",
@@ -537,6 +539,12 @@
       "web-xss": "fold: conditional mechanism or access-context choice; retain its internal sequence",
       "web-cms": "fold: conditional mechanism or access-context choice; retain its internal sequence",
       "web-ssrf": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+    "web-ssti": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+    "web-xxe": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+    "web-nosql": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+    "web-php-deserialization": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+    "web-yaml": "fold: conditional mechanism or access-context choice; retain its internal sequence",
+    "web-shellshock": "fold: conditional mechanism or access-context choice; retain its internal sequence",
       "sql-oob": "fold: conditional mechanism or access-context choice; retain its internal sequence"
     }
   },

@@ -47,7 +47,7 @@ test('every topic is a direct cheatsheet with complete commands and preserved de
       count++;
     }
   }
-  assert.equal(count,166);
+  assert.equal(count,174);
 });
 
 test('examples are commented with native syntax while unsafe formats stay unchanged',() => {
@@ -70,10 +70,10 @@ test('examples are commented with native syntax while unsafe formats stay unchan
 });
 
 test('snapshot accounts for the entire reviewed inventory and all valid conditional transitions',() => {
-  assert.equal(snapshot.methods.length,166); assert.equal(snapshot.topics.length,15); assert.equal(snapshot.stages.length,8);
-  assert.equal(snapshot.topics.reduce((sum,t) => sum+t.families.length,0),54);
-  assert.equal(snapshot.methods.reduce((sum,m) => sum+m.next.length,0),562);
-  const ids=new Set(snapshot.methods.map(m => m.id)); assert.equal(ids.size,166);
+  assert.equal(snapshot.methods.length,174); assert.equal(snapshot.topics.length,15); assert.equal(snapshot.stages.length,8);
+  assert.equal(snapshot.topics.reduce((sum,t) => sum+t.families.length,0),55);
+  assert.equal(snapshot.methods.reduce((sum,m) => sum+m.next.length,0),594);
+  const ids=new Set(snapshot.methods.map(m => m.id)); assert.equal(ids.size,174);
   for(const m of snapshot.methods) { assert.ok(m.procedure && m.recognition.sample && m.recognition.confirm); for(const edge of m.next) assert.ok(ids.has(edge.id) && edge.when && edge.requires); }
   assert.equal(snapshot.stages.flatMap(s => s.topics).length,15);
   for(const topic of snapshot.topics) for(const flow of topic.workflow) assert.ok(flow.methods.every(id => ids.has(id)));
@@ -175,7 +175,7 @@ test('focused task pages retain every method, source command, recognition field 
     for(const edge of method.next) assert.ok(text.includes(edge.when) && text.includes(edge.requires),`${method.id}: finding and prerequisites`);
     totalMethods++;totalEdges+=method.next.length;
   }
-  assert.equal(totalMethods,166);assert.equal(totalEdges,562);assert.ok(totalBlocks>500);
+  assert.equal(totalMethods,174);assert.equal(totalEdges,594);assert.ok(totalBlocks>500);
 });
 test('command presentation preserves every source command in order without variant disclosures',() => {
   for(const method of snapshot.methods) {
@@ -207,7 +207,7 @@ test('topic contents index every task once and keep navigation complete',() => {
       assert.ok(decodeHTML(html).includes(methodLabel(method)),method.id);count++;
     }
   }
-  assert.equal(count,166);
+  assert.equal(count,174);
 });
 test('lookup names are concise and unique within their topic; full usage notes remain available',() => {
   for(const topic of snapshot.topics) {
@@ -246,7 +246,7 @@ test('every task has a receiving handoff and is navigable from discovery',() => 
   assert.deepEqual(snapshot.methods.filter(method=>!incoming.has(method.id) && method.id!=='path-hosts'),[]);
   const seen=new Set(),queue=['path-hosts'];
   while(queue.length){const id=queue.pop();if(seen.has(id))continue;seen.add(id);queue.push(...methods.get(id).next.map(edge=>edge.id));}
-  assert.equal(seen.size,166);
+  assert.equal(seen.size,174);
   for(const [source,target] of [['identify-app','service-ftp'],['identify-app','service-ldap'],['credential-classify','keepass-recovery'],['domain-directory','kerberos-asrep'],['pivot-state','ssh-remote-dynamic']])assert.ok(methods.get(source).next.some(edge=>edge.id===target));
 });
 test('command constraints remain visible and host-location changes separate same-language blocks',() => {
