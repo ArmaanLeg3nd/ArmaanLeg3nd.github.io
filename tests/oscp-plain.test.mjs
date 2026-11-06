@@ -182,3 +182,12 @@ test('cheatsheets follow workflow order and retain legacy heading destinations',
  const names=['discovery-scanning','service-opportunities','web-mapping','web-exploitation','public-exploits','shells-payloads','payload-execution','credentials-cracking','linux-privesc','windows-privesc','ad-investigation','active-directory','pivoting','evidence-reporting','tool-selection','tools-and-scripts','tool-command-reference'];
  for(const [i,name] of names.entries()){const path='cheatsheets/'+name+'.md',row=registry[path];assert.equal(row.number,'10.'+(i+1));const {html}=await renderPlain(plainPages.find(p=>p.path===path));for(const [slug,number] of Object.entries(row.headings)){if(slug.startsWith('variant-'))continue;const old=row.legacyNumber+number.slice(row.number.length);assert.ok(html.includes('id="s-'+old.replaceAll('.','-')+'"'),path+' legacy '+old);}}
 });
+
+test('only reviewed method choices fold; preflight and sequential steps remain visible',async()=>{
+ const move=await renderPlain(plainPages.find(p=>p.path==='notes/methods/lateral-movement.md'));
+ assert.ok(move.html.includes('<details data-method-fold>'));assert.ok(move.html.includes('method-choice-cue'));
+ assert.ok(!move.html.includes('<details data-method-fold open'));
+ const {foldMethods}=await import('../src/lib/oscp-folds.ts');
+ const steps='<h2 id="step">Step 1: prepare</h2><p>required</p><h2>Step 2: verify</h2>';assert.equal(foldMethods(steps,'reference/example.md'),steps);
+ for(const page of plainPages){const {html}=await renderPlain(page);assert.equal((html.match(/<details\b/g)||[]).length,(html.match(/<\/details>/g)||[]).length,page.path);}
+});

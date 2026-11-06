@@ -1,3 +1,4 @@
+import {foldMethods} from './oscp-folds.ts';
 import {commandPairs} from './oscp-pairs.ts';
 import snapshot from '../content/oscp-plain.snapshot.json' with {type:'json'};
 import {createMarkdownProcessor} from '@astrojs/markdown-remark';
@@ -35,7 +36,7 @@ async function compile(page:PlainPage) {
  const result=await (await (page.path.endsWith('/glossary.md')?plainProcessor:processor)).render(markdown);
  if(/<(?:script|iframe|object|embed|style|form|input)\b|<[^>]+\son\w+\s*=|<[^>]+(?:href|src)=["']\s*(?:javascript|data):/i.test(result.code))throw new Error('Active reference markup: '+page.path);
  const numbered=numberMarkup(resultRoutes(result.code,page),page,result.metadata.headings);
- return {...numbered,html:commandPairs(methodContext(numbered.html,page.path))};
+ return {...numbered,html:foldMethods(commandPairs(methodContext(numbered.html,page.path)),page.path)};
 }
 export function renderPlain(page:PlainPage) {
  if(!cache.has(page.path))cache.set(page.path,compile(page));

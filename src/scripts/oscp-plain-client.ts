@@ -4,6 +4,12 @@ const right=document.querySelector<HTMLElement>('#page-index');
 const key='oscp-reference-navigation-v1';
 let state=validNavigationState(null);
 try{state=validNavigationState(JSON.parse(sessionStorage.getItem(key)||'null'));}catch{}
+const disclosures=[...document.querySelectorAll<HTMLDetailsElement>('article details')];
+const controls=document.querySelector<HTMLElement>('.method-controls');
+if(controls&&disclosures.length){controls.hidden=false;controls.addEventListener('click',event=>{const action=(event.target as Element).closest<HTMLElement>('[data-disclosure-action]')?.dataset.disclosureAction;if(!action)return;for(const d of disclosures)d.open=action==='expand';});}
+let printState:boolean[]=[];
+window.addEventListener('beforeprint',()=>{printState=disclosures.map(d=>d.open);for(const d of disclosures)d.open=true;});
+window.addEventListener('afterprint',()=>disclosures.forEach((d,i)=>d.open=printState[i]??d.open));
 if(left&&right) {
  const folders=[...left.querySelectorAll<HTMLDetailsElement>('details[data-section]')];
  for(const folder of folders) {
@@ -27,10 +33,11 @@ if(left&&right) {
  const reveal=()=>{
    const node=document.getElementById(decodeURIComponent(location.hash.slice(1)));let parent=node?.closest('details');
    while(parent){parent.open=true;parent=parent.parentElement?.closest('details')||null;}
+   if(node)requestAnimationFrame(()=>node.scrollIntoView({block:'start'}));
  };
- right.addEventListener('click',event=>{
+ document.addEventListener('click',event=>{
    const anchor=(event.target as Element).closest<HTMLAnchorElement>('a[href*="#"]');
-   if(!anchor)return;
+   if(!anchor||new URL(anchor.href).pathname!==location.pathname)return;
    const target=document.getElementById(decodeURIComponent(new URL(anchor.href).hash.slice(1)));
    let parent=target?.closest('details');while(parent){parent.open=true;parent=parent.parentElement?.closest('details')||null;}
  });
