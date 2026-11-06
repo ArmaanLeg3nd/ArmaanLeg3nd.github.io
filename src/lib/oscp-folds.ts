@@ -31,7 +31,8 @@ export function foldMethods(html:string,path:string) {
  for(const part of outer.reverse()){
   const heading=html.slice(part.headingStart,part.headingEnd),anchors=html.slice(part.start,part.headingStart);
   const body=html.slice(part.headingEnd,part.end);
-  html=html.slice(0,part.start)+'<details data-method-fold><summary>'+heading+'<span class="method-choice-cue">'+escape(part.cue)+'</span></summary>'+anchors+body+'</details>'+html.slice(part.end);
+  const cue=body.includes('Run/context:')?'':'<span class="method-choice-cue">'+escape(part.cue)+'</span>';
+  html=html.slice(0,part.start)+'<details data-method-fold><summary>'+heading+cue+'</summary>'+anchors+body+'</details>'+html.slice(part.end);
  }
  html=html.replace(/<section data-study-approach="([^"]+)" aria-label="([^"]+)">([\s\S]*?)<\/section>/g,(_all,key,label,body)=>'<details data-study-approach="'+key+'"><summary id="approach-'+key+'"><span class="approach-heading">'+label+'</span><span class="method-choice-cue">'+escape(choiceCue(label))+'</span></summary>'+body+'</details>');
  return html;

@@ -331,6 +331,7 @@ export function goalMarkup<T extends {slug:string;text:string}>(html:string,head
   return '<'+tag+attrs+'>'+safe(change.next)+' <span class="method-label">'+safe(change.old.replace(/^\d+(?:\.\d+)*[.)]?\s+/,''))+'</span></'+tag+'>';
  });
  // Update ordinary navigation links, never code or prose terminology.
- html=html.replace(/<a\b([^>]*)>([^<]+)<\/a>/g,(all,attrs,title)=>{const label=goalLabel(title);return label===title?all:'<a'+attrs+'>'+label.replace(/&(?!(?:amp|lt|gt|quot|#\d+);)/g,'&amp;')+'</a>';});
+ html=html.replace(/<a\b([^>]*)>([^<]+)<\/a>/g,(all,attrs,title)=>{const label=/^[a-z]/.test(title.trim())?title:goalLabel(title);return label===title?all:'<a'+attrs+'>'+label.replace(/&(?!(?:amp|lt|gt|quot|#\d+);)/g,'&amp;')+'</a>';});
+ html=html.replace(/<span class="method-choice-cue">Check this approach’s stated access\/configuration prerequisites and decisive verification before choosing it\.<\/span>/g,'');
  return {html,headings:revised};
 }

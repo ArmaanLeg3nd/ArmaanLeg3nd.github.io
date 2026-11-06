@@ -1,4 +1,6 @@
 import test from 'node:test';
+import methodsSnapshot from '../src/content/oscp.snapshot.json' with {type:'json'};
+import {buildSearchIndex} from '../src/lib/oscp-search-index.ts';
 import {goalLabel,goalMarkup} from '../src/lib/oscp-goals.ts';
 import {workflows,resourceLinks,workflowResources,workflowFor,quickURL} from '../src/lib/oscp-workflows.ts';
 import {foldInvestigations} from '../src/lib/oscp-investigations.ts';
@@ -9,6 +11,23 @@ import {plainPages,plainURL,renderPlain,renderIndex,renderPageIndex,localTarget}
 
 const decode=text=>text.replace(/&(?:#x([0-9a-f]+)|#([0-9]+)|(amp|lt|gt|quot|apos));/gi,(_,hex,dec,name)=>hex?String.fromCodePoint(parseInt(hex,16)):dec?String.fromCodePoint(+dec):({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[name]));
 const blocks=text=>[...text.matchAll(/^```[^\n]*\n([\s\S]*?)\n```/gm)].map(m=>m[1]);
+
+test('reviewed method access is visible outside its collapsed context details',async()=>{
+ for(const topic of new Set(methodsSnapshot.methods.map(m=>m.topic))){
+  const page=plainPages.find(p=>p.path==='notes/methods/'+topic+'.md');const {html}=await renderPlain(page);
+  for(const method of methodsSnapshot.methods.filter(m=>m.topic===topic)){
+   const marker='data-access-context="'+method.id+'"';assert.ok(html.includes(marker),method.id);
+   assert.ok(html.indexOf(marker)<html.indexOf('data-command-context="'+method.id+'"'),method.id);
+  }
+ }
+});
+test('realistic lookup terms reach the relevant command and decision sheets',async()=>{
+ const index=await buildSearchIndex();
+ for(const [query,page] of [['sudo','linux-privesc'],['WinRM','active-directory'],['import interpreter','public-exploits'],['callback route','shells-payloads']]){
+  const results=searchReference(index,query,30);
+  assert.ok(results.some(r=>r.url.includes('/cheatsheets/'+page+'/')),query);
+ }
+});
 
 test('workflow primary destinations are cheatsheets and distinct resources remain directly discoverable',()=>{
  const ad=workflows.find(w=>w.id==='ad');assert.equal(quickURL(ad),'/oscp/cheatsheets/active-directory/');
@@ -244,7 +263,7 @@ test('full review covers every page/method and AD approaches have searchable sta
  const {html}=await renderPlain(plainPages.find(p=>p.path==='notes/methods/ad-mapping.md'));for(const key of ['native-windows','adsi','ldap','powerview'])assert.ok(html.includes('id="approach-'+key+'"'));
  const {buildSearchIndex}=await import('../src/lib/oscp-search-index.ts');const entries=await buildSearchIndex();assert.ok(entries.some(e=>e.url.endsWith('#approach-adsi')));
  const template=readFileSync(new URL('../src/pages/oscp/[...slug].astro',import.meta.url),'utf8');assert.ok(!template.includes('summary h2{display:inline;font-size:1.15em'));
- const linux=await renderPlain(plainPages.find(p=>p.path==='cheatsheets/linux-privesc.md'));assert.ok(!linux.html.includes('Fixed TCP relay:'));assert.ok(linux.html.includes('exact command, arguments and restrictions'));
+ const linux=await renderPlain(plainPages.find(p=>p.path==='cheatsheets/linux-privesc.md'));assert.ok(!linux.html.includes('Fixed TCP relay:'));assert.ok(linux.html.includes('exact rule, run-as identity, arguments'));
 });
 
 test('important cue emphasis is selective and preserves commands and link styling',async()=>{

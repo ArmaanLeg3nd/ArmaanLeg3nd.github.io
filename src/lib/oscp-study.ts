@@ -57,7 +57,7 @@ export function methodContext(html:string,path:string) {
    const {method,start}=entries[i];const end=i+1<entries.length?entries[i+1].start:html.length;
    const part=html.slice(start,end);const code=part.indexOf('<pre');
    if(code<0)continue;
-   const panel='<details data-command-context="'+method.id+'"><summary>Execution context, effects and stopping rule</summary><p><strong>Host/access:</strong> '+escape(method.access)+'</p><p><strong>Requires:</strong> '+escape(method.conditions)+'</p><p><strong>Action class:</strong> '+escape(effects[topic]||'Use the selected operation and its stated prerequisites.')+'</p><p><strong>Stop/verify:</strong> '+escape(method.verify)+'</p><p><strong>Failure/next check:</strong> '+escape(method.failure)+'</p></details>';
+   const panel='<p data-access-context="'+method.id+'"><strong>Access/context:</strong> '+escape(method.access)+'</p><details data-command-context="'+method.id+'"><summary>Conditions, effects and verification</summary><p><strong>Requires:</strong> '+escape(method.conditions)+'</p><p><strong>Action class:</strong> '+escape(effects[topic]||'Use the selected operation and its stated prerequisites.')+'</p><p><strong>Stop/verify:</strong> '+escape(method.verify)+'</p><p><strong>Failure/next check:</strong> '+escape(method.failure)+'</p></details>';
    html=html.slice(0,start+code)+panel+html.slice(start+code);
  }
  return html;
