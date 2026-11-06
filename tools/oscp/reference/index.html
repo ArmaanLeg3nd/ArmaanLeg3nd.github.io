@@ -11059,6 +11059,8 @@ remove temporary documents, shortcuts, webdav content, payloads, handler jobs an
 
 > **first pass:** confirm the session identity, run the [linpeas baseline](#14-automated-enumeration-generate-then-prove) early, then verify its exact finding. for short-lived scheduled commands use [pspy](#6-cron-timers-and-services) and inspect the consumed path.
 
+> **reuse discovery:** repeating an inventory is optional when equivalent complete output is available from the same host and identity. check the linpeas build/options, skipped checks and errors. keep selected-candidate validation: exact effective permissions, privileged consumer, trigger and verified outcome. re-enumerate affected resources after access changes; absence from a report does not rule a path out. the [quick sheet](../../cheatsheets/linux-privesc.md) marks reusable discovery and follow-up checks per investigation.
+
 ## 1. establish current state
 
 > **decisive output:** current identity/groups, os/kernel/architecture, network position, root-owned activity, mounts and exact sudo rules.

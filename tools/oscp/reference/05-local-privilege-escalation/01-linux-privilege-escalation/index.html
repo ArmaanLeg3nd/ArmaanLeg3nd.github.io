@@ -43,6 +43,9 @@
 <blockquote>
 <p><strong>First pass:</strong> confirm the session identity, run the <a href="#14-automated-enumeration-generate-then-prove">LinPEAS baseline</a> early, then verify its exact finding. For short-lived scheduled commands use <a href="#6-cron-timers-and-services">pspy</a> and inspect the consumed path.</p>
 </blockquote>
+<blockquote>
+<p><strong>Reuse discovery:</strong> repeating an inventory is optional when equivalent complete output is available from the same host and identity. Check the LinPEAS build/options, skipped checks and errors. Keep selected-candidate validation: exact effective permissions, privileged consumer, trigger and verified outcome. Re-enumerate affected resources after access changes; absence from a report does not rule a path out. The <a href="https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/cheatsheets/linux-privesc.md">quick sheet</a> marks reusable discovery and follow-up checks per investigation.</p>
+</blockquote>
 <h2 id="1-establish-current-state">1. Establish current state</h2>
 <blockquote>
 <p><strong>Decisive output:</strong> current identity/groups, OS/kernel/architecture, network position, root-owned activity, mounts and exact sudo rules.</p>
