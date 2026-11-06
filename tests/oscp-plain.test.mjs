@@ -167,3 +167,12 @@ test('quick-use pilot retains all existing cheatsheet heading numbers',async()=>
  for(const page of plainPages.filter(p=>p.path in stable)){const rendered=await renderPlain(page);for(const [slug,number] of Object.entries(stable[page.path].headings)){assert.equal(rendered.headings.find(h=>h.slug===slug)?.number,number,page.path+'#'+slug);}}
  const ad=plainPages.find(p=>p.path==='cheatsheets/active-directory.md');assert.equal((ad.markdown.match(/function LDAPSearch \{/g)||[]).length,1);
 });
+
+test('paired cues preserve steps and contextual search keeps exact number priority',async()=>{
+ const {commandPairs}=await import('../src/lib/oscp-pairs.ts');
+ const code='<pre><code>one</code></pre>';assert.ok(commandPairs(code+'<blockquote>cue</blockquote>').includes('command-pair'));
+ assert.equal(commandPairs(code+'<h2>Another step</h2>'+code+'<p>plain</p>'),code+'<h2>Another step</h2>'+code+'<p>plain</p>');
+ const entries=[{number:'1',title:'1 error',url:'/one',text:'1 error',topic:'other',kind:'Procedure'},{number:'2',title:'error',url:'/two',text:'error',topic:'ad',kind:'Quick command'}];
+ assert.equal(searchReference(entries,'error',10,'ad')[0].number,'2');assert.equal(searchReference(entries,'1',10,'ad')[0].number,'1');
+ const ad=await renderPlain(plainPages.find(p=>p.path==='cheatsheets/active-directory.md'));assert.ok(ad.html.includes('command-pair'));assert.ok(renderPageIndex(plainPages[0],ad.headings).includes('data-page-branch'));
+});

@@ -1,3 +1,4 @@
+import {commandPairs} from './oscp-pairs.ts';
 import snapshot from '../content/oscp-plain.snapshot.json' with {type:'json'};
 import {createMarkdownProcessor} from '@astrojs/markdown-remark';
 import {glossaryLinks,methodContext} from './oscp-study.ts';
@@ -34,7 +35,7 @@ async function compile(page:PlainPage) {
  const result=await (await (page.path.endsWith('/glossary.md')?plainProcessor:processor)).render(markdown);
  if(/<(?:script|iframe|object|embed|style|form|input)\b|<[^>]+\son\w+\s*=|<[^>]+(?:href|src)=["']\s*(?:javascript|data):/i.test(result.code))throw new Error('Active reference markup: '+page.path);
  const numbered=numberMarkup(resultRoutes(result.code,page),page,result.metadata.headings);
- return {...numbered,html:methodContext(numbered.html,page.path)};
+ return {...numbered,html:commandPairs(methodContext(numbered.html,page.path))};
 }
 export function renderPlain(page:PlainPage) {
  if(!cache.has(page.path))cache.set(page.path,compile(page));
@@ -60,7 +61,7 @@ function list(nodes:IndexNode[],active:string):string {
    const isCurrent=node.url===active;
    const hasCurrent=(entry:IndexNode):boolean=>entry.url===active||entry.children.some(hasCurrent);
    const label=node.url?'<a href="'+escape(node.url)+'"'+(isCurrent?' aria-current="page"':'')+'>'+escape(node.title)+'</a>':escape(node.title);
-   return '<li>'+(node.children.length&&node.depth===undefined?'<details data-section="'+node.key+'"'+(hasCurrent(node)?' open':'')+'><summary>'+label+'</summary>'+list(node.children,active)+'</details>':label+(node.children.length?list(node.children,active):''))+'</li>';
+   return '<li>'+(node.children.length?'<details '+(node.depth===undefined?'data-section="'+node.key+'"':'data-page-branch')+(node.depth===undefined&&hasCurrent(node)?' open':'')+'><summary>'+label+'</summary>'+list(node.children,active)+'</details>':label+(node.children.length?list(node.children,active):''))+'</li>';
  }).join('')+'</ul>';
 }
 export function renderIndex(current:PlainPage,_headings:Heading[]) {return list(indexTree(),plainURL(current));}

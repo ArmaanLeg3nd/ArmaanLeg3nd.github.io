@@ -1,4 +1,4 @@
-import {searchReference,validNavigationState,type SearchEntry} from '../lib/oscp-plain-search.ts';
+import {searchReference,referenceTopic,validNavigationState,type SearchEntry} from '../lib/oscp-plain-search.ts';
 const left=document.querySelector<HTMLElement>('#reference-index');
 const right=document.querySelector<HTMLElement>('#page-index');
 const key='oscp-reference-navigation-v1';
@@ -39,6 +39,7 @@ if(left&&right) {
  const mark=()=>{painting=false;const offset=matchMedia('(max-width:760px)').matches?right.getBoundingClientRect().bottom+32:40;
    let active=targets.find(t=>t.node!.getClientRects().length)?.a;
    for(const item of targets)if(item.node!.getClientRects().length&&item.node!.getBoundingClientRect().top<=offset)active=item.a;
+   for(const branch of right.querySelectorAll<HTMLDetailsElement>('details[data-page-branch]'))branch.open=!!active&&branch.contains(active);
    for(const {a} of targets)if(a===active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');
  };
  window.addEventListener('scroll',()=>{if(!painting){painting=true;requestAnimationFrame(mark);}},{passive:true});
@@ -58,9 +59,9 @@ if(form&&input&&results&&status) {
    status.textContent='Finding sections…';
    try {
      index ||= fetch('/oscp/search.json').then(response=>{if(!response.ok)throw new Error('Search unavailable');return response.json();});
-     const matches=searchReference(await index,query);
+     const matches=searchReference(await index,query,10,referenceTopic(location.pathname));
      if(token!==request)return;
-     for(const entry of matches){const li=document.createElement('li'),a=document.createElement('a');a.href=entry.url;a.textContent=entry.title;li.append(a);results.append(li);}
+     for(const entry of matches){const li=document.createElement('li'),a=document.createElement('a');a.href=entry.url;a.textContent=(entry.kind?'['+entry.kind+'] ':'')+entry.title;li.append(a);results.append(li);}
      results.hidden=matches.length===0;status.textContent=matches.length?matches.length+' matching sections':'No matching section. Try a field, tool, error or section number.';
    }catch{index=undefined;if(token===request)status.textContent='Search is unavailable. Use the chapter index or your browser’s Find command.';}
  };

@@ -28,6 +28,7 @@ const contents=renderPageIndex(page,headings);
 </html>
 <script>import "../../scripts/oscp-plain-client.ts";</script>
 <style is:global>
+ .command-pair{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:1.5rem;align-items:start}.command-action,.command-reading{min-width:0}.command-reading{font-size:.95em;border-left:1px solid #ccc;padding-left:1rem}.command-reading blockquote{border:0;padding:0;margin:.7rem 0}.command-action pre{margin-top:.7rem} @media(max-width:1250px){.command-pair{display:block}.command-reading{border-left:2px solid #aaa}}
  :root {color-scheme:light}
  .reference-find{margin:.5rem 0;font-size:14px}.reference-find label{display:block}.reference-find input{box-sizing:border-box;max-width:100%;width:100%}.reference-find ol{padding-left:1.2rem}.reference-find li{margin:.4rem 0}
  [data-command-context]{font-size:.9em;border-left:2px solid #aaa;padding-left:.6rem} [data-command-context] p{margin:.4rem 0}
@@ -38,13 +39,13 @@ const contents=renderPageIndex(page,headings);
  a:focus-visible,summary:focus-visible {outline:2px solid black;outline-offset:3px}
  aside {position:fixed;top:0;bottom:0;box-sizing:border-box;padding:.75rem 1rem;overflow:auto;background:white}
  #reference-index {left:0;width:18rem;border-right:1px solid #888}
- #page-index {right:0;width:18rem;border-left:1px solid #888}
+ #page-index {right:0;width:15rem;border-left:1px solid #888}
  aside>p:first-child {margin-top:0}
  nav {font-size:14px;line-height:1.4;overflow-wrap:anywhere}
  nav ul {padding-left:1rem;margin:.35rem 0} nav li {margin:.3rem 0}
  nav summary,article summary {cursor:pointer} nav [aria-current="page"] {font-weight:bold}
- main {margin:0 18rem;padding:1rem 1.5rem 3rem;min-width:0}
- article {max-width:85ch;min-width:0;overflow-wrap:anywhere}
+ main {margin:0 15rem 0 18rem;padding:1rem 1.5rem 3rem;min-width:0}
+ article>p{max-width:85ch} article {max-width:none;min-width:0;overflow-wrap:anywhere}
  h1 {font-size:1.9em;line-height:1.2} h2 {font-size:1.45em;margin-top:1.7em} h3 {font-size:1.15em;margin-top:1.5em} h4,h5,h6 {font-size:1em;margin-top:1.3em}
  pre,code {font-family:"Courier New",Courier,monospace;font-size:.9em}
  pre {padding:.7rem;border:1px solid #aaa;background:#f5f5f5;overflow-x:auto;white-space:pre;overflow-wrap:normal}
