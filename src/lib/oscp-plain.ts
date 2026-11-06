@@ -1,7 +1,7 @@
 import {emphasizeCues} from './oscp-emphasis.ts';
 import {goalMarkup} from './oscp-goals.ts';
 import {foldInvestigations} from './oscp-investigations.ts';
-import {workflows,workflowFor,quickURL} from './oscp-workflows.ts';
+import {workflows,workflowFor,quickURL,workflowResources,resourceURL} from './oscp-workflows.ts';
 import {foldMethods} from './oscp-folds.ts';
 import {commandPairs} from './oscp-pairs.ts';
 import snapshot from '../content/oscp-plain.snapshot.json' with {type:'json'};
@@ -73,8 +73,8 @@ function list(nodes:IndexNode[],active:string):string {
 }
 export function renderIndex(current:PlainPage,_headings:Heading[]) {
  const active=workflowFor(current.path);
- const nav='<nav class="workflow-links" aria-label="Workflow">'+workflows.map(w=>'<div><a href="/oscp/workflows/'+w.id+'/"'+(active===w?' aria-current="location"':'')+'>'+escape(w.title)+'</a>'+(active===w?'<div class="workflow-resources"><a href="'+quickURL(w)+'"'+(current.path==='cheatsheets/'+w.quick+'.md'?' aria-current="page"':'')+'>Quick reference</a><a href="/oscp/reference/'+w.procedure+'/">Complete procedures</a><a href="/oscp/notes/methods/'+w.study+'/">Understand the methods</a></div>':'')+'</div>').join('')+'</nav>';
- return nav+'<details class="full-library" data-section="99"><summary>Browse all numbered resources</summary>'+list(indexTree(),plainURL(current))+'</details>';
+ const nav='<nav class="workflow-links" aria-label="Workflow">'+workflows.map(w=>'<div><a href="'+quickURL(w)+'"'+(active===w?' aria-current="location"':'')+'>'+escape(w.title)+'</a>'+(active===w?'<div class="workflow-resources">'+workflowResources(w).map(r=>'<a href="'+resourceURL(r)+'"'+(current.path===r.path?' aria-current="page"':'')+'>'+escape(r.label)+'</a>').join('')+'</div>':'')+'</div>').join('')+'</nav>';
+ return nav+'<p><a href="/oscp/cheatsheets/">All cheatsheets</a></p><details class="tool-library"><summary>Tools and commands</summary><p><a href="/oscp/cheatsheets/tool-command-reference/">Tool command reference</a></p><p><a href="/oscp/cheatsheets/tool-selection/">Tool selection</a></p><p><a href="/oscp/cheatsheets/tools-and-scripts/">Tools and scripts by task</a></p></details><details class="full-library" data-section="99"><summary>Browse all numbered resources</summary>'+list(indexTree(),plainURL(current))+'</details>';
 }
 export function renderPageIndex(page:PlainPage,headings:Heading[]) {
  const roots:IndexNode[]=[];const stack=[{depth:0,children:roots}];

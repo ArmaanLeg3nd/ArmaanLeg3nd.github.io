@@ -1,6 +1,6 @@
 import test from 'node:test';
 import {goalLabel,goalMarkup} from '../src/lib/oscp-goals.ts';
-import {workflows,resourceLinks} from '../src/lib/oscp-workflows.ts';
+import {workflows,resourceLinks,workflowResources,workflowFor,quickURL} from '../src/lib/oscp-workflows.ts';
 import {foldInvestigations} from '../src/lib/oscp-investigations.ts';
 import {searchReference,validNavigationState} from '../src/lib/oscp-plain-search.ts';
 import assert from 'node:assert/strict';
@@ -9,6 +9,21 @@ import {plainPages,plainURL,renderPlain,renderIndex,renderPageIndex,localTarget}
 
 const decode=text=>text.replace(/&(?:#x([0-9a-f]+)|#([0-9]+)|(amp|lt|gt|quot|apos));/gi,(_,hex,dec,name)=>hex?String.fromCodePoint(parseInt(hex,16)):dec?String.fromCodePoint(+dec):({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[name]));
 const blocks=text=>[...text.matchAll(/^```[^\n]*\n([\s\S]*?)\n```/gm)].map(m=>m[1]);
+
+test('workflow primary destinations are cheatsheets and distinct resources remain directly discoverable',()=>{
+ const ad=workflows.find(w=>w.id==='ad');assert.equal(quickURL(ad),'/oscp/cheatsheets/active-directory/');
+ for(const w of workflows){
+  const primary=workflowResources(w)[0];assert.equal(primary.path,'cheatsheets/'+w.quick+'.md');assert.equal(primary.role,'cheatsheet');
+  const page=plainPages.find(p=>p.path===primary.path);const nav=renderIndex(page,[]);
+  assert.ok(nav.includes('href="'+quickURL(w)+'"'));assert.ok(!nav.includes('>Quick reference</a>'));
+  assert.ok(!resourceLinks(w).includes('>Quick reference</a>'));
+ }
+ for(const path of ['cheatsheets/web-exploitation.md','reference/04-shells-transfers-credentials/01-file-transfer.md','reference/04-shells-transfers-credentials/04-file-and-repository-hunting.md','reference/04-shells-transfers-credentials/05-python-tool-environments.md']){
+  const owner=workflowFor(path);assert.ok(owner,path);assert.ok(workflowResources(owner).some(r=>r.path===path),path);
+ }
+ assert.equal(workflowFor('reference/03-initial-access/01-rdp-access.md').id,'services');
+ assert.equal(workflowFor('reference/02-service-enumeration/10-http-web-mapping.md').id,'web');
+});
 
 test('every workflow has a built landing page, explicit resource roles and valid starting anchors',async()=>{
  for(const w of workflows){

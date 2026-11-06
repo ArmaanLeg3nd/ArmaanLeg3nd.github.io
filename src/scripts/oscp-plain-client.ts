@@ -13,6 +13,8 @@ for(const task of document.querySelectorAll<HTMLDetailsElement>('article > detai
  const controls=document.createElement('div');controls.className='section-controls';
  for(const [label,expand] of [['Expand this section',true],['Collapse this section',false]] as const){const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{for(const d of task.querySelectorAll('details'))d.open=expand;task.open=expand;});controls.append(b);}summary.after(controls);
 }
+const chooser=document.getElementById('ad-evidence-chooser');
+if(chooser){const block=chooser.parentElement?.matches('article>p')?chooser.parentElement:chooser;const intro=block.nextElementSibling,table=intro?.nextElementSibling;if(intro&&table?.matches('table')){const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Choose the next check from your evidence';details.className='evidence-chooser';block.before(details);details.append(summary);summary.append(chooser);details.append(intro,table);if(block!==chooser&&!block.textContent?.trim())block.remove();}}
 const disclosures=[...document.querySelectorAll<HTMLDetailsElement>('article details')];
 const controls=document.querySelector<HTMLElement>('.method-controls');
 if(controls&&disclosures.length){controls.hidden=false;controls.addEventListener('click',event=>{const action=(event.target as Element).closest<HTMLElement>('[data-disclosure-action]')?.dataset.disclosureAction;if(!action)return;for(const d of disclosures)d.open=action==='expand';});}

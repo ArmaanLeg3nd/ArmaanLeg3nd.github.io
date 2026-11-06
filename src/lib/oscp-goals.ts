@@ -1,5 +1,6 @@
 // Editorial labels only. Original anchors, numbering, commands and source titles remain stable.
 const entries=`
+AD quick reference => AD topic chooser — legacy entry
 Prove effective permissions => Verify your effective access to the resource the attack depends on
 LD_PRELOAD only when allowed/preserved => Check whether sudo preserves a controlled preload library
 Password => Authenticate with a known password in the correct account scope
