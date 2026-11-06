@@ -2,7 +2,7 @@
 <p><a href="/oscp/reference/02-service-enumeration/">← Stage index</a> · <a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP access procedure</a> · <a href="/oscp/cheatsheets/service-opportunities/#windows-remote-access">Cheatsheet</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/services/">Extract opportunities from services</a></p>
 <blockquote>
 <p><strong>Recognize:</strong> RDP commonly uses TCP/3389; WinRM commonly uses 5985/HTTP and 5986/HTTPS. <strong>Goal:</strong> determine whether one known credential is accepted in the correct local/domain context and whether it is authorized for a usable session.</p>
-</blockquote><details data-method-fold><summary><h2 id="rdp-baseline-authentication-only-check">9.2.9.1 RDP baseline: authentication-only check</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote><details data-method-fold><summary><h2 id="rdp-baseline-authentication-only-check">9.2.9.1 RDP baseline: authentication-only check</h2></summary>
 <a id="s-9-2-9-1"></a>
 <pre><code class="language-bash">xfreerdp3 /v:TARGET /u:USER /d:DOMAIN /auth-only /cert:ignore
 </code></pre>
@@ -21,7 +21,7 @@
 <pre><code class="language-bash">nmap -p 3389 --script rdp-enum-encryption,rdp-ntlm-info TARGET
 </code></pre>
 <p>This can disclose supported security layers, NLA and NTLM host/domain clues. It does not validate a credential.</p>
-</details></details><details data-method-fold><summary><h2 id="winrm-baseline-interactive-session">9.2.9.2 WinRM baseline: interactive session</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</details></details><details data-method-fold><summary><h2 id="winrm-baseline-interactive-session">9.2.9.2 WinRM baseline: interactive session</h2></summary>
 <a id="s-9-2-9-2"></a>
 <pre><code class="language-bash">evil-winrm -i TARGET -u USER
 </code></pre>
@@ -49,20 +49,20 @@ Enter-PSSession -ComputerName TARGET -Credential $cred
 </blockquote>
 <blockquote>
 <p><strong>Next action:</strong> after a session, re-enumerate identity, groups, privileges, files, local services/listeners and routes. Password spraying, pass-the-hash and ticket use belong to later credential/AD blocks.</p>
-</blockquote></details><details data-method-fold><summary><h2 id="vnc">9.2.9.3 Validate access to an exposed VNC desktop <span class="method-label">VNC</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></details><details data-method-fold><summary><h2 id="vnc">9.2.9.3 Validate access to an exposed VNC desktop <span class="method-label">VNC</span></h2></summary>
 <a id="s-9-2-9-3"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">nmap -Pn -sV --script vnc-info -p PORT TARGET
 vncviewer TARGET:PORT
 </code></pre></div><div class="command-reading"><blockquote>
 <p>VNC may expose a desktop without Windows logon semantics; the VNC server's authentication and the resulting OS session identity are separate. Use <code>realvnc-auth-bypass</code> or password testing only for a confirmed compatible product and explicit authorized objective, then verify the desktop identity.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="telnet">9.2.9.4 Identify the Telnet service and validate available access <span class="method-label">Telnet</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="telnet">9.2.9.4 Identify the Telnet service and validate available access <span class="method-label">Telnet</span></h2></summary>
 <a id="s-9-2-9-4"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">nmap -Pn -sV -p PORT TARGET
 nc -nv TARGET PORT
 telnet TARGET PORT
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Telnet is plaintext and may expose a banner/login prompt. Validate only legitimately acquired credentials; do not make <code>telnet-brute</code> a baseline. After login, verify host and identity because appliance/application shells can differ from an OS shell. Source supplement: reviewed getSH Nmap VNC/Telnet blocks.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="gnu-inetutils-telnetd--conditional-authentication-bypass-check">9.2.9.5 GNU Inetutils telnetd — conditional authentication-bypass check</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="gnu-inetutils-telnetd--conditional-authentication-bypass-check">9.2.9.5 GNU Inetutils telnetd — conditional authentication-bypass check</h2></summary>
 <a id="s-9-2-9-5"></a>
 <p>Use only after identifying the affected GNU Inetutils telnetd/login chain and its patch status. CVE-2026-24061 concerns how a supplied USER value reaches login; it does not apply to every Telnet server. Distribution backports matter.</p>
 <pre><code class="language-bash"># Client supports sending the autologin USER environment value

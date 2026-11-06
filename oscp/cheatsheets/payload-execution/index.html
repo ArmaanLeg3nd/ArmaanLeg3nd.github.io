@@ -35,6 +35,9 @@
 
 <table><thead><tr><th>Evidence</th><th>Next question</th></tr></thead><tbody><tr><td>File/request arrived</td><td>Did the intended consumer open/parse it?</td></tr><tr><td>User/service triggered it</td><td>Did a harmless command execute?</td></tr><tr><td>Marker/process exists</td><td>Can that context reach the listener?</td></tr><tr><td>TCP connection arrived</td><td>Does the handler match the payload?</td></tr><tr><td>Session opened</td><td>What host, identity, architecture and privilege?</td></tr></tbody></table></details><details data-investigation><summary><h2 id="first-pass-triage">10.7.2 Establish the current state and choose your first useful check <span class="method-label">First-pass triage</span></h2></summary>
 <a id="s-10-7-2"></a>
+<blockquote>
+<p><strong>Run/context:</strong> artifact generation and listeners belong to the testing workstation; delivery, process execution and security-control evidence must be checked on the selected host. <strong>Decide:</strong> identify the last independently verified state using the <a href="#state-ladder">state ladder</a>. Diagnose the failed boundary before regenerating; a callback problem belongs to <a href="/oscp/cheatsheets/shells-payloads/#callback-ladder">session/route checks</a>.</p>
+</blockquote>
 <ol>
 <li>Prove a harmless direct command.</li>
 <li>Verify final artifact path and hash.</li>

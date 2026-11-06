@@ -140,6 +140,9 @@ tftp> quit
 </blockquote></div></div>
 </details></details><details data-investigation><summary><h2 id="smb-and-ms-rpc">10.2.7 Find shares, identities and rights through SMB and RPC <span class="method-label">SMB and MS-RPC</span></h2></summary>
 <a id="s-10-10-7"></a><a id="s-10-2-7" data-legacy-anchor="s-10-10-7"></a>
+<blockquote>
+<p><strong>Run/context:</strong> SMB/RPC clients run on the testing workstation against the named server, using an explicit anonymous, local or domain identity. <strong>Decide:</strong> share listing does not establish file read, write or execution. Validate the exact object with the <a href="/oscp/reference/02-service-enumeration/06-smb-rpc/">complete SMB procedure</a>; send a recovered secret to <a href="/oscp/cheatsheets/credentials-cracking/#classify">credential classification</a>, and record a denied object as denied in this context.</p>
+</blockquote>
 <pre><code class="language-bash">smbclient -N -L //TARGET
 smbclient -L //TARGET -U 'DOMAIN/USER'
 smbclient //TARGET/SHARE -U 'DOMAIN/USER'
@@ -186,7 +189,7 @@ date -u
 </code></pre></div><div class="command-reading"><blockquote>
 <p>RootDSE may work when anonymous directory search does not. Kerberos failures often come from DNS/hostname/<a href="/oscp/notes/ad-investigation/glossary/#term-spn" title="A service principal name associates a Kerberos service instance with an account. It is not a password-strength or reachability result." class="glossary-term">SPN</a>/time/route rather than the password. <a href="/oscp/reference/02-service-enumeration/11-ldap-kerberos/">Full LDAP/Kerberos procedure</a>.</p>
 </blockquote></div></div></details><details data-investigation><summary><h2 id="databases">10.2.10 Determine which database data and operations your identity can access <span class="method-label">Databases</span></h2></summary>
-<a id="s-10-10-10"></a><a id="s-10-2-10" data-legacy-anchor="s-10-10-10"></a><details data-method-fold><summary><h3 id="mysql--mariadb">10.2.10.1 Inspect MySQL identity, readable data and file-operation rights <span class="method-label">MySQL / MariaDB</span></h3><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<a id="s-10-10-10"></a><a id="s-10-2-10" data-legacy-anchor="s-10-10-10"></a><details data-method-fold><summary><h3 id="mysql--mariadb">10.2.10.1 Inspect MySQL identity, readable data and file-operation rights <span class="method-label">MySQL / MariaDB</span></h3></summary>
 <a id="s-10-10-10-1"></a><a id="s-10-2-10-1" data-legacy-anchor="s-10-10-10-1"></a>
 <pre><code class="language-bash">mysql -h TARGET -P PORT -u USER -p
 </code></pre>
@@ -197,7 +200,7 @@ USE DATABASE;
 SHOW TABLES;
 SELECT * FROM TABLE LIMIT 20;
 SELECT @@secure_file_priv;
-</code></pre></details><details data-method-fold><summary><h3 id="mssql">10.2.10.2 Inspect SQL Server identity, grants and available operations <span class="method-label">MSSQL</span></h3><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</code></pre></details><details data-method-fold><summary><h3 id="mssql">10.2.10.2 Inspect SQL Server identity, grants and available operations <span class="method-label">MSSQL</span></h3></summary>
 <a id="s-10-10-10-2"></a><a id="s-10-2-10-2" data-legacy-anchor="s-10-10-10-2"></a>
 <pre><code class="language-bash">impacket-mssqlclient 'USER@TARGET'
 impacket-mssqlclient 'DOMAIN/USER@TARGET' -windows-auth
@@ -206,7 +209,7 @@ impacket-mssqlclient 'DOMAIN/USER@TARGET' -windows-auth
 SELECT SYSTEM_USER;
 SELECT IS_SRVROLEMEMBER('sysadmin');
 SELECT name FROM sys.databases;
-</code></pre></details><details data-method-fold><summary><h3 id="postgresql">10.2.10.3 Inspect PostgreSQL identity, data and server-side operation rights <span class="method-label">PostgreSQL</span></h3><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</code></pre></details><details data-method-fold><summary><h3 id="postgresql">10.2.10.3 Inspect PostgreSQL identity, data and server-side operation rights <span class="method-label">PostgreSQL</span></h3></summary>
 <a id="s-10-10-10-3"></a><a id="s-10-2-10-3" data-legacy-anchor="s-10-10-10-3"></a>
 <pre><code class="language-bash">psql -h TARGET -p PORT -U USER -d postgres
 # \conninfo  \l  \du  \dn  \dt *.*
@@ -264,7 +267,7 @@ Enter-PSSession -ComputerName TARGET -Credential $cred
 
 
 
-<table><thead><tr><th>New finding</th><th>Immediate study/practice action</th></tr></thead><tbody><tr><td>Hostname or IP</td><td>Confirm scope, resolve both directions, run discovery/service identification</td></tr><tr><td>Username/domain</td><td>Record confidence and source; do not promote ambiguous SMTP output to confirmed</td></tr><tr><td>Credential/key</td><td>Identify local/domain context and likely services; perform one controlled validation</td></tr><tr><td>Readable file</td><td>Preserve metadata and inspect locally for paths, names, keys and configuration</td></tr><tr><td>Writable path</td><td>Identify consumer, execution identity and trigger before testing exploitation</td></tr><tr><td>Remote session</td><td>Verify host/identity/IP, then re-enumerate local privileges, files, listeners and routes</td></tr></tbody></table></details><details data-method-fold><summary><h2 id="smbmap-and-authenticated-smbrpc-collection">10.2.13 Map accessible shares and domain leads with your accepted SMB identity <span class="method-label">SMBMap and authenticated SMB/RPC collection</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<table><thead><tr><th>New finding</th><th>Immediate study/practice action</th></tr></thead><tbody><tr><td>Hostname or IP</td><td>Confirm scope, resolve both directions, run discovery/service identification</td></tr><tr><td>Username/domain</td><td>Record confidence and source; do not promote ambiguous SMTP output to confirmed</td></tr><tr><td>Credential/key</td><td>Identify local/domain context and likely services; perform one controlled validation</td></tr><tr><td>Readable file</td><td>Preserve metadata and inspect locally for paths, names, keys and configuration</td></tr><tr><td>Writable path</td><td>Identify consumer, execution identity and trigger before testing exploitation</td></tr><tr><td>Remote session</td><td>Verify host/identity/IP, then re-enumerate local privileges, files, listeners and routes</td></tr></tbody></table></details><details data-method-fold><summary><h2 id="smbmap-and-authenticated-smbrpc-collection">10.2.13 Map accessible shares and domain leads with your accepted SMB identity <span class="method-label">SMBMap and authenticated SMB/RPC collection</span></h2></summary>
 <a id="s-10-10-13"></a><a id="s-10-2-13" data-legacy-anchor="s-10-10-13"></a>
 <p>Use an accepted account and reachable SMB; inspect one share before downloading a selected file.</p>
 <pre><code class="language-bash">smbmap -H TARGET -d DOMAIN -u USER -p 'PASSWORD' --no-write-check

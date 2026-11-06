@@ -327,7 +327,7 @@ impacket-wmiexec -k -no-pass 'DOMAIN/USER@HOST.DOMAIN'
 -> authenticated application behavior -> accessible hosts/routes
 -> new credentials/tickets/sessions -> privilege and movement handoffs
 </code></pre>
-<p>Verify destination host, accepted identity and actual read/write/execute rights. New hosts/listeners return to discovery; recovered material returns here; operating-system execution enters session handling; domain identities enter AD mapping.</p><details data-method-fold><summary><h2 id="build-a-small-site-specific-wordlist-with-cewl">9.4.3.17 Build a small site-specific wordlist with CeWL</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Verify destination host, accepted identity and actual read/write/execute rights. New hosts/listeners return to discovery; recovered material returns here; operating-system execution enters session handling; domain identities enter AD mapping.</p><details data-method-fold><summary><h2 id="build-a-small-site-specific-wordlist-with-cewl">9.4.3.17 Build a small site-specific wordlist with CeWL</h2></summary>
 <a id="s-9-4-3-17"></a>
 <p>Use when observed organization, product or account vocabulary could improve an offline recovery attempt. Keep the crawl on the assigned site.</p>
 <h3 id="variant-9-4-3-17-1">9.4.3.17.1 Bounded crawl: depth 1, words of at least five characters</h3><pre><code class="language-bash"># Bounded crawl: depth 1, words of at least five characters
@@ -347,7 +347,7 @@ wc -l site-words.txt
 sort -u users.txt -o users.txt
 </code></pre>
 <p>Read: these are candidates. Confirm names with authorized directory/user enumeration; an email local part is not automatically a domain account. Keep domain, local-machine and application namespaces distinct. Use Kerbrute's username probe only when the <a href="/oscp/notes/ad-investigation/glossary/#term-kdc" title="The Kerberos key distribution service. Route, realm, DNS/SPN and time failures differ from rejected credentials." class="glossary-term">KDC</a> path and domain are known.</p>
-<p>Sources: <a href="https://github.com/urbanadventurer/username-anarchy">upstream 1</a>.</p><details data-method-fold><summary><h2 id="targeted-candidates--crunch-cupp-and-rules">9.4.3.19 Targeted candidates — Crunch, CUPP and rules</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/urbanadventurer/username-anarchy">upstream 1</a>.</p><details data-method-fold><summary><h2 id="targeted-candidates--crunch-cupp-and-rules">9.4.3.19 Targeted candidates — Crunch, CUPP and rules</h2></summary>
 <a id="s-9-4-3-19"></a>
 <p>Use a mask/profile only when evidence justifies it. This example expands a known six-character stem with three digits; it creates 1,000 candidates.</p>
 <h3 id="variant-9-4-3-19-1">9.4.3.19.1 crunch 9 9 -t 'foobar%%%' -o stem-digits.txt</h3><pre><code class="language-bash">crunch 9 9 -t 'foobar%%%' -o stem-digits.txt</code></pre>

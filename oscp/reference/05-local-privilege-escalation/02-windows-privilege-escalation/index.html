@@ -148,7 +148,7 @@ icacls "C:\Program Files\Vendor App"
 sc.exe qc SERVICE
 </code></pre></div><div class="command-reading"><blockquote>
 <p><strong>Confirmed only if:</strong> path contains spaces and is unquoted; an earlier attempted executable such as <code>C:\Program.exe</code> or <code>C:\Program Files\Vendor.exe</code> is absent and creatable; service runs higher; trigger exists. A listed unquoted path alone is a false positive.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="6-dllconfighelper-search-hijacking">9.5.2.6 Check whether privileged software loads a file you control <span class="method-label">DLL/config/helper search hijacking</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="6-dllconfighelper-search-hijacking">9.5.2.6 Check whether privileged software loads a file you control <span class="method-label">DLL/config/helper search hijacking</span></h2></summary>
 <a id="s-9-5-2-6"></a>
 <p>Confirm:</p>
 <ol>
@@ -194,7 +194,7 @@ dir "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Need a modifiable consumed value/file plus a higher-privileged boot/logon/application trigger. A writable PATH directory matters only when a privileged consumer invokes an unqualified executable through that effective PATH.</p>
 </blockquote></div></div>
-</details></details><details data-method-fold><summary><h2 id="8-alwaysinstallelevated-and-uac-context">9.5.2.8 Check installer policy and the elevation limits of your token <span class="method-label">AlwaysInstallElevated and UAC context</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</details></details><details data-method-fold><summary><h2 id="8-alwaysinstallelevated-and-uac-context">9.5.2.8 Check installer policy and the elevation limits of your token <span class="method-label">AlwaysInstallElevated and UAC context</span></h2></summary>
 <a id="s-9-5-2-8"></a>
 <pre><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
@@ -209,7 +209,7 @@ reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v Enab
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin
 </code></pre></div><div class="command-reading"><blockquote>
 <p>A UAC bypass normally elevates an already-administrative filtered token. Build/policy-specific bypasses are not a baseline path for a standard user.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="9-token-privilege-routes">9.5.2.9 Check whether your token privileges support an escalation route <span class="method-label">Token privilege routes</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="9-token-privilege-routes">9.5.2.9 Check whether your token privileges support an escalation route <span class="method-label">Token privilege routes</span></h2></summary>
 <a id="s-9-5-2-9"></a>
 <pre><code class="language-cmd">whoami /priv
 </code></pre>
@@ -350,13 +350,13 @@ Invoke-AllChecks
 hostname
 ipconfig /all
 </code></pre>
-<p>After a higher token, re-enumerate protected credentials, services, tasks, sessions, listeners, routes and domain context. Preserve the command, relevant output, trigger and restoration step. For exam use, recheck the current OffSec guide: Windows full-privilege evidence requires SYSTEM, Administrator or an account with Administrator privileges, and AI/LLM use is prohibited during the exam and report phase.</p><details data-method-fold><summary><h2 id="jaws--powershell-enumeration-when-the-compiled-helper-is-unsuitable">9.5.2.14 JAWS — PowerShell enumeration when the compiled helper is unsuitable</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>After a higher token, re-enumerate protected credentials, services, tasks, sessions, listeners, routes and domain context. Preserve the command, relevant output, trigger and restoration step. For exam use, recheck the current OffSec guide: Windows full-privilege evidence requires SYSTEM, Administrator or an account with Administrator privileges, and AI/LLM use is prohibited during the exam and report phase.</p><details data-method-fold><summary><h2 id="jaws--powershell-enumeration-when-the-compiled-helper-is-unsuitable">9.5.2.14 JAWS — PowerShell enumeration when the compiled helper is unsuitable</h2></summary>
 <a id="s-9-5-2-14"></a>
 <p>Use a reviewed JAWS script when its PowerShell-based checks fit the current host/runtime. It is an alternative survey, not proof that every current Windows configuration is covered.</p>
 <pre><code class="language-cmd">powershell.exe -ExecutionPolicy Bypass -File .\jaws-enum.ps1 -OutputFilename JAWS-Enum.txt
 </code></pre>
 <p>Read: turn a named service, path or credential finding into its exact native check (<code>sc.exe qc</code>, <code>sc.exe sdshow</code>, <code>icacls</code>, task XML, or the file read). Policy or language restrictions can still prevent the script from running. The process-scope flag does not override an enforced policy/control layer; use the manual checks already listed here.</p>
-<p>Sources: <a href="https://github.com/411Hall/JAWS">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="legacy-impersonation-helpers--select-by-os-build-and-trigger">9.5.2.15 Legacy impersonation helpers — select by OS build and trigger</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/411Hall/JAWS">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="legacy-impersonation-helpers--select-by-os-build-and-trigger">9.5.2.15 Legacy impersonation helpers — select by OS build and trigger</h2></summary>
 <a id="s-9-5-2-15"></a>
 <p>Use the current GodPotato/PrintSpoofer workflow first when its conditions fit. Older JuicyPotato-family recipes depend on specific COM/DCOM/RPC behavior; an enabled token privilege alone is not the complete condition.</p>
 <h3 id="variant-9-5-2-15-1">9.5.2.15.1 Legacy JuicyPotato: requires a working CLSID and supported Windows build</h3><pre><code class="language-cmd">REM Legacy JuicyPotato: requires a working CLSID and supported Windows build

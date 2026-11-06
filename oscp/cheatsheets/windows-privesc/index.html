@@ -54,8 +54,11 @@ Get-ChildItem C:\inetpub,C:\ProgramData,C:\Users -Recurse -File -ErrorAction Sil
   Select-String 'password|passwd|secret|token|connectionString|user id=' -CaseSensitive:$false
 </code></pre></div><div class="command-reading"><blockquote>
 <p><code>cmdkey</code> proves a target-bound stored entry, not plaintext. DPAPI artifacts need the protecting user/machine context. Classify identity/type/scope before reuse.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="services">10.10.5 Check whether you control a privileged service or its executable <span class="method-label">Services</span></h2><span class="method-choice-cue">Verify the selected service identity, effective control and required trigger; reachability alone is insufficient.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="services">10.10.5 Check whether you control a privileged service or its executable <span class="method-label">Services</span></h2></summary>
 <a id="s-10-17-5"></a><a id="s-10-10-5" data-legacy-anchor="s-10-17-5"></a>
+<blockquote>
+<p><strong>Run/context:</strong> in the current Windows foothold, using its effective <a href="/oscp/notes/ad-investigation/glossary/#term-token" title="A process/logon security context. Group attributes, privileges, integrity and network credentials affect different operations." class="glossary-term">token</a>; service names and paths refer to this host. <strong>Decide:</strong> a modifiable file is useful only if a privileged service actually consumes it and a trigger is available. Validate <a href="#effective-acls">effective ACLs</a>; a path-with-spaces lead belongs to <a href="#unquoted-service-paths">unquoted service paths</a>, not an assumed service-configuration right.</p>
+</blockquote>
 <pre><code class="language-powershell">Get-CimInstance Win32_Service | Select Name,StartName,State,StartMode,PathName
 </code></pre>
 <div class="command-pair"><div class="command-action"><pre><code class="language-cmd">sc.exe qc SERVICE
@@ -98,7 +101,7 @@ icacls "C:\Program Files\Vendor App"
 sc.exe qc SERVICE
 </code></pre></div><div class="command-reading"><blockquote>
 <p>For <code>C:\Program Files\Vendor App\svc.exe</code>, prove an earlier missing prefix such as <code>C:\Program.exe</code> or <code>C:\Program Files\Vendor.exe</code> is creatable, service runs higher and trigger exists.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="dllhelper-search">10.10.7 Check whether privileged software loads a file you control <span class="method-label">DLL/helper search</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="dllhelper-search">10.10.7 Check whether privileged software loads a file you control <span class="method-label">DLL/helper search</span></h2></summary>
 <a id="s-10-17-7"></a><a id="s-10-10-7" data-legacy-anchor="s-10-17-7"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-cmd">icacls "C:\Path\To\Application"
 sc.exe qc SERVICE
@@ -123,7 +126,7 @@ reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
 dir "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Need writable consumed action/file plus higher principal and reliable trigger. <code>Highest</code> is relative to the task principal. <code>/run</code> accepted is not execution proof.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="alwaysinstallelevated-and-uac">10.10.9 Check installer policy and the elevation limits of your token <span class="method-label">AlwaysInstallElevated and UAC</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="alwaysinstallelevated-and-uac">10.10.9 Check installer policy and the elevation limits of your token <span class="method-label">AlwaysInstallElevated and UAC</span></h2></summary>
 <a id="s-10-17-9"></a><a id="s-10-10-9" data-legacy-anchor="s-10-17-9"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-cmd">reg query HKLM\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
@@ -135,8 +138,8 @@ msiexec.exe /quiet /qn /i C:\Path\To\PAYLOAD.msi
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin
 </code></pre></div><div class="command-reading"><blockquote>
-<p>UAC bypass normally raises an already-admin filtered <a href="/oscp/notes/ad-investigation/glossary/#term-token" title="A process/logon security context. Group attributes, privileges, integrity and network credentials affect different operations." class="glossary-term">token</a>; it is not ordinary standard-user escalation.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="token-privileges">10.10.10 Check whether your token privileges support an escalation route <span class="method-label">Token privileges</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>UAC bypass normally raises an already-admin filtered token; it is not ordinary standard-user escalation.</p>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="token-privileges">10.10.10 Check whether your token privileges support an escalation route <span class="method-label">Token privileges</span></h2></summary>
 <a id="s-10-17-10"></a><a id="s-10-10-10" data-legacy-anchor="s-10-17-10"></a>
 <pre><code class="language-cmd">whoami /priv
 </code></pre>
@@ -266,7 +269,7 @@ hostname
 ipconfig /all
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Re-enumerate credentials, services, tasks, sessions, listeners, routes and domain context after every identity/integrity change.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="recover-supported-application-stores-with-lazagne">10.10.15 Recover supported application stores with LaZagne</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="recover-supported-application-stores-with-lazagne">10.10.15 Recover supported application stores with LaZagne</h2></summary>
 <a id="s-10-17-15"></a><a id="s-10-10-15" data-legacy-anchor="s-10-17-15"></a>
 <p>Use a reviewed build in the relevant user's context; system-protected stores can require elevation.</p>
 <pre><code class="language-cmd">REM Start with the relevant application family

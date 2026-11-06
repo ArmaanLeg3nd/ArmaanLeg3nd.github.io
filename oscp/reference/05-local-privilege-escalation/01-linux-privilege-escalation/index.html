@@ -4,7 +4,7 @@
 <p><strong>Model:</strong> controlled object → <a href="/oscp/notes/ad-investigation/glossary/#term-effective-right" title="The operation actually allowed after the current trustee memberships, allow/deny rules, scope, inheritance and object-specific restrictions are considered." class="glossary-term">effective permission</a> → privileged consumer → execution identity → trigger → effect → verified identity.</p>
 </blockquote>
 <blockquote>
-<p><strong>First pass:</strong> confirm the session identity, run the <a href="#14-automated-enumeration-generate-then-prove">LinPEAS baseline</a> early, then verify its exact finding. For short-lived scheduled commands use <a href="#6-cron-timers-and-services">Observe short-lived privileged processes and their consumed inputs</a> and inspect the consumed path.</p>
+<p><strong>First pass:</strong> confirm the session identity, run the <a href="#14-automated-enumeration-generate-then-prove">LinPEAS baseline</a> early, then verify its exact finding. For short-lived scheduled commands use <a href="#6-cron-timers-and-services">pspy</a> and inspect the consumed path.</p>
 </blockquote>
 <blockquote>
 <p><strong>Reuse discovery:</strong> repeating an inventory is optional when equivalent complete output is available from the same host and identity. Check the LinPEAS build/options, skipped checks and errors. Keep selected-candidate validation: exact effective permissions, privileged consumer, trigger and verified outcome. Re-enumerate affected resources after access changes; absence from a report does not rule a path out. The <a href="/oscp/cheatsheets/linux-privesc/">quick sheet</a> marks reusable discovery and follow-up checks per investigation.</p>
@@ -182,7 +182,7 @@ touch -- '--checkpoint=1'
 touch -- '--checkpoint-action=exec=sh proof.sh'
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Confirm working directory, wildcard placement, utility implementation/options, privileged identity and trigger. Do not assume every wildcard or utility accepts filename-derived options.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="9-writable-accountpolicy-files">9.5.1.9 Check whether writable account or policy files enable higher privileges <span class="method-label">Writable account/policy files</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="9-writable-accountpolicy-files">9.5.1.9 Check whether writable account or policy files enable higher privileges <span class="method-label">Writable account/policy files</span></h2></summary>
 <a id="s-9-5-1-9"></a>
 <pre><code class="language-bash">ls -l /etc/passwd /etc/shadow /etc/sudoers
 namei -l /etc/passwd
@@ -199,7 +199,7 @@ id
 <p>Preserve a known-good copy and restore it. UID/GID 0 creates a superuser. Do not risk corrupting a host when no safe recovery exists.</p>
 </blockquote></div></div>
 </details>
-<p>Also inspect effective access to <code>/etc/sudoers.d</code>, PAM, SSH authorized-key locations and root-executed startup/configuration files.</p></details><details data-method-fold><summary><h2 id="10-privileged-groups-sockets-and-containers">9.5.1.10 Check whether group or socket access gives you higher privileges <span class="method-label">Privileged groups, sockets and containers</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Also inspect effective access to <code>/etc/sudoers.d</code>, PAM, SSH authorized-key locations and root-executed startup/configuration files.</p></details><details data-method-fold><summary><h2 id="10-privileged-groups-sockets-and-containers">9.5.1.10 Check whether group or socket access gives you higher privileges <span class="method-label">Privileged groups, sockets and containers</span></h2></summary>
 <a id="s-9-5-1-10"></a>
 <pre><code class="language-bash">id
 ls -l /var/run/docker.sock /run/docker.sock 2>/dev/null
@@ -234,7 +234,7 @@ ss -lntup
 ss -lxnp
 </code></pre>
 <p>For NFS, a writable export plus <code>no_root_squash</code> can trust client-root-created ownership/SUID metadata. Confirm export options, writable mount, target-side mount options and compatible execution. See <a href="/oscp/reference/02-service-enumeration/05-nfs-rpc/">NFS/RPC</a>.</p>
-<p>Root-only loopback services and UNIX sockets are candidates only. Identify protocol/authentication and prove a privileged action through a controlled request, configuration, plugin or file.</p></details><details data-method-fold><summary><h2 id="12-shared-library-resolution">9.5.1.12 Check whether a privileged program loads a library you control <span class="method-label">Shared-library resolution</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Root-only loopback services and UNIX sockets are candidates only. Identify protocol/authentication and prove a privileged action through a controlled request, configuration, plugin or file.</p></details><details data-method-fold><summary><h2 id="12-shared-library-resolution">9.5.1.12 Check whether a privileged program loads a library you control <span class="method-label">Shared-library resolution</span></h2></summary>
 <a id="s-9-5-1-12"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">file /PATH/TO/BINARY
 readelf -d /PATH/TO/BINARY 2>/dev/null | grep -E 'RPATH|RUNPATH|NEEDED'
@@ -339,7 +339,7 @@ sha256sum exploit
 hostname; pwd
 ip addr; ip route
 </code></pre>
-<p>After root, re-enumerate newly readable credentials, services, listeners, mounts and routes. Capture the exact command, decisive output and state transition required by the objective; keep target details and proof material private.</p><details data-method-fold><summary><h2 id="restricted-shell--escape-the-restriction-without-claiming-root">9.5.1.17 Restricted shell — escape the restriction without claiming root</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>After root, re-enumerate newly readable credentials, services, listeners, mounts and routes. Capture the exact command, decisive output and state transition required by the objective; keep target details and proof material private.</p><details data-method-fold><summary><h2 id="restricted-shell--escape-the-restriction-without-claiming-root">9.5.1.17 Restricted shell — escape the restriction without claiming root</h2></summary>
 <a id="s-9-5-1-17"></a>
 <p>Use when a login is confined by rbash or an allowlisted command wrapper. Check which binaries and features are actually allowed; the following are alternatives, not a sequence to execute together.</p>
 <h3 id="variant-9-5-1-17-1">9.5.1.17.1 If the allowed Python interpreter can create a child shell</h3><pre><code class="language-bash"># If the allowed Python interpreter can create a child shell
@@ -350,7 +350,7 @@ awk 'BEGIN {system("/bin/sh")}'</code></pre>
 !/bin/sh
 </code></pre>
 <p>Read: run <code>id</code> and check the new shell behavior. This changes the command environment, not the UID. LESSSECURE, a restricted editor build, no-exec controls or an application wrapper can block an otherwise familiar GTFOBins escape. A server-side SSH ForceCommand can ignore the command you supply to ssh; do not repeat a client-side command substitution as though it overrides the server policy.</p>
-<p>Sources: <a href="https://www.gnu.org/software/bash/manual/html_node/The-Restricted-Shell.html">upstream 1</a> · <a href="https://gtfobins.github.io/">upstream 2</a>.</p></details><details data-method-fold><summary><h2 id="kernel-candidates--linux-exploit-suggester-as-a-second-view">9.5.1.18 Kernel candidates — Linux Exploit Suggester as a second view</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://www.gnu.org/software/bash/manual/html_node/The-Restricted-Shell.html">upstream 1</a> · <a href="https://gtfobins.github.io/">upstream 2</a>.</p></details><details data-method-fold><summary><h2 id="kernel-candidates--linux-exploit-suggester-as-a-second-view">9.5.1.18 Kernel candidates — Linux Exploit Suggester as a second view</h2></summary>
 <a id="s-9-5-1-18"></a>
 <p>Use when manual permission/credential routes have not yielded a candidate and kernel/package evidence justifies checking public local exploits. Transfer a reviewed copy before execution.</p>
 <pre><code class="language-bash">uname -a
@@ -358,7 +358,7 @@ cat /etc/os-release
 bash linux-exploit-suggester.sh
 </code></pre>
 <p>Read: candidates need the advisory's exact kernel/build/configuration and prerequisite checks. Distribution backports can fix a CVE without changing an apparent upstream version. Inspect the PoC's primitive, architecture, compilation and failure impact before choosing it. A suggestion or successful build is not evidence of a vulnerable target or an elevated identity.</p>
-<p>Sources: <a href="https://github.com/The-Z-Labs/linux-exploit-suggester">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="logrotate-race--only-with-a-controlled-log-path-and-privileged-rotation">9.5.1.19 Logrotate race — only with a controlled log path and privileged rotation</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/The-Z-Labs/linux-exploit-suggester">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="logrotate-race--only-with-a-controlled-log-path-and-privileged-rotation">9.5.1.19 Logrotate race — only with a controlled log path and privileged rotation</h2></summary>
 <a id="s-9-5-1-19"></a>
 <p>Use when root rotates a log in an attacker-controlled path and the configuration creates/copies/compresses a file. A writable log by itself is insufficient. Check the relevant stanza, directory ownership and actual scheduled execution first.</p>
 <h3 id="variant-9-5-1-19-1">9.5.1.19.1 cat /etc/logrotate.conf</h3><pre><code class="language-bash">cat /etc/logrotate.conf
@@ -386,5 +386,5 @@ printf '%s\n' 'id > /tmp/logrotate-proof.txt' > payloadfile</code></pre>
 <li><a href="https://man7.org/linux/man-pages/man7/capabilities.7.html">Linux capabilities manual</a></li>
 <li><a href="https://www.freedesktop.org/software/systemd/man/latest/systemctl.html">systemctl manual</a></li>
 <li><a href="https://docs.docker.com/reference/cli/docker/container/run/">Docker run reference</a> and <a href="https://docs.docker.com/engine/install/linux-postinstall/">Docker Linux post-install security</a></li>
-<li><a href="https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS">LinPEAS</a>, <a href="https://github.com/diego-treitos/linux-smart-enumeration">LSE</a>, <a href="https://github.com/DominicBreuker/pspy">Observe short-lived privileged processes and their consumed inputs</a> and <a href="https://gtfobins.github.io/">GTFOBins</a></li>
+<li><a href="https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS">LinPEAS</a>, <a href="https://github.com/diego-treitos/linux-smart-enumeration">LSE</a>, <a href="https://github.com/DominicBreuker/pspy">pspy</a> and <a href="https://gtfobins.github.io/">GTFOBins</a></li>
 </ul></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html><script type="module" src="/_assets/_...slug_.astro_astro_type_script_index_0_lang.BEJe-5V9.js"></script>

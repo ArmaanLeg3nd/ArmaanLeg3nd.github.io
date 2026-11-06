@@ -2,7 +2,7 @@
 <p><a href="/oscp/reference/01-discovery-scanning/">← Stage index</a> | <a href="/oscp/cheatsheets/discovery-scanning/">Discovery cheatsheet</a> | <a href="/oscp/notes/Master_Notes/">Master Notes</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/discovery/">Discover attack surfaces</a></p>
 <blockquote>
 <p><strong>Use when:</strong> Nmap remains the interpretation baseline, but a faster TCP discovery pass or a bounded web-server check is useful. These tools generate candidates; Nmap/manual protocol checks confirm them.</p>
-</blockquote><details data-method-fold><summary><h2 id="rustscan-fast-tcp-discovery-nmap-interpretation">9.1.7.1 RustScan: fast TCP discovery, Nmap interpretation</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote><details data-method-fold><summary><h2 id="rustscan-fast-tcp-discovery-nmap-interpretation">9.1.7.1 RustScan: fast TCP discovery, Nmap interpretation</h2></summary>
 <a id="s-9-1-7-1"></a>
 <blockquote>
 <p><strong><span class="reference-cue cue-condition">Prerequisite:</span></strong> RustScan and Nmap on Kali; direct TCP reachability. <strong>Coverage:</strong> only the explicit TCP range. <strong><span class="reference-cue cue-evidence">Decisive output:</span></strong> a discovered port that Nmap can reproduce and identify.</p>
@@ -18,7 +18,7 @@
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Use only for a quick selection. It is not full TCP coverage and is not equivalent to Nmap's default top-1,000 selection.</p>
 </blockquote></div></div>
-</details></details><details data-method-fold><summary><h2 id="masscan-raw-packet-discovery-then-validation">9.1.7.2 Masscan: raw-packet discovery, then validation</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</details></details><details data-method-fold><summary><h2 id="masscan-raw-packet-discovery-then-validation">9.1.7.2 Masscan: raw-packet discovery, then validation</h2></summary>
 <a id="s-9-1-7-2"></a>
 <blockquote>
 <p><strong><span class="reference-cue cue-condition">Prerequisite:</span></strong> root/raw-packet access and a directly routed target. <strong>Choose it:</strong> for a large authorized address/port space where discovery speed matters. <strong>Failure cue:</strong> high loss or inconsistent results at the chosen rate.</p>
@@ -53,7 +53,7 @@ grep -i 'SCRIPT_NAME' /usr/share/nmap/scripts/script.db
 <p>The broad <code>vuln</code> category is candidate generation and can be intrusive or misleading. If its use is justified in the authorized lab, restrict it to identified ports and manually validate every result:</p>
 <pre><code class="language-bash">nmap -Pn -sV --script vuln -p PORTS TARGET -oN nse-vuln-candidates.txt
 </code></pre>
-<p>Avoid <code>*brute*</code> categories as a default; first establish exact service, known test identities, lockout/rate limits and explicit <a href="/oscp/notes/ad-investigation/glossary/#term-authorization" title="The permission decision for the requested object or operation after identity context is established." class="glossary-term">authorization</a>.</p><details data-method-fold><summary><h2 id="nikto-bounded-web-server-candidate-generation">9.1.7.5 Nikto: bounded web-server candidate generation</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Avoid <code>*brute*</code> categories as a default; first establish exact service, known test identities, lockout/rate limits and explicit <a href="/oscp/notes/ad-investigation/glossary/#term-authorization" title="The permission decision for the requested object or operation after identity context is established." class="glossary-term">authorization</a>.</p><details data-method-fold><summary><h2 id="nikto-bounded-web-server-candidate-generation">9.1.7.5 Nikto: bounded web-server candidate generation</h2></summary>
 <a id="s-9-1-7-5"></a>
 <blockquote>
 <p><strong><span class="reference-cue cue-condition">Prerequisite:</span></strong> an identified HTTP(S) endpoint. <strong>Choose it:</strong> after manual baselining to identify common files, headers and server misconfiguration candidates. <strong><span class="reference-cue cue-evidence">Decisive output:</span></strong> a finding manually reproduced with the same host, path and <a href="/oscp/notes/ad-investigation/glossary/#term-authentication" title="Establishing an identity through a protocol. Success does not automatically permit a share read, remote logon or execution." class="glossary-term">authentication</a> context.</p>

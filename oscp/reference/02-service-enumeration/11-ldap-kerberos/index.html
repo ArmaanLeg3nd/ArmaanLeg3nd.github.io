@@ -18,7 +18,7 @@ ldapsearch -x -LLL -H ldaps://DC_HOST:636 -s base -b '' defaultNamingContext dns
 </code></pre></div><div class="command-reading"><blockquote>
 <p>A certificate can disclose domain/DC names. A TLS validation error is a client trust/name issue, not proof that LDAP is unavailable.</p>
 </blockquote></div></div>
-</details><details data-method-fold><summary><h2 id="anonymous-directory-search">9.2.11.2 Check which directory objects are readable without credentials <span class="method-label">Anonymous directory search</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</details><details data-method-fold><summary><h2 id="anonymous-directory-search">9.2.11.2 Check which directory objects are readable without credentials <span class="method-label">Anonymous directory search</span></h2></summary>
 <a id="s-9-2-11-2"></a>
 <blockquote>
 <p><strong><span class="reference-cue cue-condition">Prerequisite:</span></strong> known base DN and server permitting anonymous search. <strong>Failure cue:</strong> <code>Inappropriate authentication</code> or <code>Insufficient access</code> closes only the anonymous path.</p>
@@ -29,7 +29,7 @@ ldapsearch -x -LLL -H ldaps://DC_HOST:636 -s base -b '' defaultNamingContext dns
 </code></pre>
 <pre><code class="language-bash">ldapsearch -x -LLL -H ldap://DC_IP:389 -b 'DC=DOMAIN,DC=TLD' \
   '(objectClass=group)' cn member description
-</code></pre></details><details data-method-fold><summary><h2 id="authenticated-search">9.2.11.3 Query directory objects with your accepted identity <span class="method-label">Authenticated search</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</code></pre></details><details data-method-fold><summary><h2 id="authenticated-search">9.2.11.3 Query directory objects with your accepted identity <span class="method-label">Authenticated search</span></h2></summary>
 <a id="s-9-2-11-3"></a>
 <blockquote>
 <p><strong><span class="reference-cue cue-condition">Prerequisite:</span></strong> a valid directory identity. <strong><span class="reference-cue cue-evidence">Decisive output:</span></strong> objects/attributes unavailable anonymously. Avoid placing a real password in shell history when an interactive prompt is available.</p>

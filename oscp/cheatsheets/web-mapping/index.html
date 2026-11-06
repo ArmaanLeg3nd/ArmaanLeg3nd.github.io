@@ -14,6 +14,9 @@ curl -sk http://TARGET:PORT/sitemap.xml
 METHOD PATH | INPUT | OBJECT/FUNCTION | STATUS/LENGTH/MARKER | NEXT TEST
 </code></pre></details><details data-investigation><summary><h2 id="burp-manual-loop">10.3.2 Capture a working request and compare one controlled change <span class="method-label">Burp manual loop</span></h2></summary>
 <a id="s-10-16-2"></a><a id="s-10-3-2" data-legacy-anchor="s-10-16-2"></a>
+<blockquote>
+<p><strong>Run/context:</strong> use the workstation's browser/proxy and preserve the actual application hostname, cookies and identity. <strong>Decide:</strong> a changed response needs a matched control, not just a status-code comparison. Select the next test through <a href="#attack-input-routing">attack-input routing</a>; if session or routing is broken, use <a href="#common-failure-decisions">common failure decisions</a> before judging the input.</p>
+</blockquote>
 <pre><code class="language-text">Scope target -> browse normally with Intercept off -> Proxy history
 -> send interesting request to Repeater -> unchanged baseline
 -> change one field/header/cookie/method/object -> compare -> save decisive pair

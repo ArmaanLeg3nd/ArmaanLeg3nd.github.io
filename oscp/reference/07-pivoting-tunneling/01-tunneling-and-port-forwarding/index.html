@@ -488,7 +488,7 @@ internal target -> pivot -> Kali listener # callback path
 <li>re-evaluate DNS and callback direction at every hop;</li>
 <li>prefer a routed method for several deep services instead of stacking many opaque wrappers.</li>
 </ul>
-<p>An upstream tunnel failure invalidates every deeper observation. Do not troubleshoot target credentials until the complete path is restored.</p><details data-method-fold><summary><h2 id="14-dns-tunneling-with-dnscat2">9.7.1.14 Reach a controlled endpoint through a permitted DNS tunnel <span class="method-label">DNS tunneling with dnscat2</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>An upstream tunnel failure invalidates every deeper observation. Do not troubleshoot target credentials until the complete path is restored.</p><details data-method-fold><summary><h2 id="14-dns-tunneling-with-dnscat2">9.7.1.14 Reach a controlled endpoint through a permitted DNS tunnel <span class="method-label">DNS tunneling with dnscat2</span></h2></summary>
 <a id="s-9-7-1-14"></a>
 <p>Use only when ordinary transports are unavailable and DNS is demonstrably permitted. This is a conditional advanced route, but it remains in the current official BOK.</p>
 <p>Prerequisites:</p>
@@ -740,12 +740,12 @@ netsh advfirewall firewall show rule name="OSCP Pivot LOCAL_PORT"
 <li><a href="https://man.openbsd.org/ssh">OpenSSH client manual</a></li>
 <li><a href="http://www.dest-unreach.org/socat/doc/socat.html">Socat documentation</a></li>
 <li><a href="https://github.com/rofl0r/proxychains-ng">ProxyChains-NG</a></li>
-<li><a href="https://github.com/sshuttle/sshuttle">Route a selected subnet through an SSH-accessible pivot</a></li>
+<li><a href="https://github.com/sshuttle/sshuttle">sshuttle</a></li>
 <li><a href="https://the.earth.li/~sgtatham/putty/latest/htmldoc/Chapter7.html">PuTTY/Plink manual</a></li>
 <li><a href="https://learn.microsoft.com/windows-server/administration/windows-commands/netsh-interface">Microsoft Netsh interface/portproxy</a></li>
 <li><a href="https://github.com/jpillora/chisel">Reach internal services through an HTTP-based Chisel tunnel</a></li>
 <li><a href="https://docs.ligolo.ng/Quickstart/">Ligolo-ng quickstart</a>, <a href="https://docs.ligolo.ng/Listeners/">listeners</a> and <a href="https://docs.ligolo.ng/Localhost/">agent loopback access</a></li>
-<li><a href="https://github.com/iagox86/dnscat2">Establish a controlled DNS tunnel when the transport is appropriate</a></li>
+<li><a href="https://github.com/iagox86/dnscat2">dnscat2</a></li>
 <li><a href="https://lizajose.github.io/getSH/useful-stuff?section=tunneling">getSH tunneling route</a>, source snapshot <a href="https://github.com/lizajose/getSH/commit/e1f62dd351bd061b59e2573beea741f6c5bb4f98"><code>e1f62dd</code></a></li>
 <li><a href="https://github.com/LeonardoE95/OSCP">Hexdump OSCP repository</a> and <a href="https://github.com/LeonardoE95/yt-en">Port Forwarding and Pivoting video index</a>. The upstream module provides the four SSH-forwarding categories; current syntax and tool behavior above were checked independently.</li>
 </ul></article><hr><p><a href="#document">Top of document</a> · <a href="/oscp/">Reference home</a></p></main></body></html><script type="module" src="/_assets/_...slug_.astro_astro_type_script_index_0_lang.BEJe-5V9.js"></script>

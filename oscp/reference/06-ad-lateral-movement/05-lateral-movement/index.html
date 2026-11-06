@@ -160,7 +160,7 @@ impacket-atexec -hashes :NT_HASH 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname 
 <p>Kerberos:</p>
 <pre><code class="language-bash">export KRB5CCNAME="$PWD/USER.ccache"
 impacket-atexec -k -no-pass -dc-ip DC_IP 'DOMAIN/USER@TARGET_HOST' "cmd.exe /c hostname &#x26; whoami"
-</code></pre></details><details data-method-fold><summary><h2 id="5-wmi-and-dcom-execution">9.6.5.5 Execute on a reachable host through WMI or DCOM rights <span class="method-label">WMI and DCOM execution</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</code></pre></details><details data-method-fold><summary><h2 id="5-wmi-and-dcom-execution">9.6.5.5 Execute on a reachable host through WMI or DCOM rights <span class="method-label">WMI and DCOM execution</span></h2></summary>
 <a id="s-9-6-5-5"></a>
 <a id="s-9-6-5-5-1"></a><h3 id="impacket-wmiexec">9.6.5.5.1 Execute through WMI with accepted credentials and DCOM access <span class="method-label">Impacket WMIExec</span></h3>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">impacket-wmiexec 'DOMAIN/USER:PASSWORD@TARGET'
@@ -207,7 +207,7 @@ $Object.Document.ActiveView.ExecuteShellCommand(
 impacket-dcomexec -hashes :NT_HASH 'DOMAIN/USER@TARGET'
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Current Impacket <code>dcomexec</code> explicitly rejects Kerberos for its supported MMC/Shell DCOM objects because they do not accept the required HOST ticket. Use <code>wmiexec -k</code> when Kerberos command execution is required. DCOM class availability, RPC reachability and launch/access permissions vary.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="6-winrm-winrs-and-powershell-remoting">9.6.5.6 Check remote session access with the available identity <span class="method-label">WinRM, WinRS and PowerShell remoting</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="6-winrm-winrs-and-powershell-remoting">9.6.5.6 Check remote session access with the available identity <span class="method-label">WinRM, WinRS and PowerShell remoting</span></h2></summary>
 <a id="s-9-6-5-6"></a>
 <a id="s-9-6-5-6-1"></a><h3 id="evil-winrm">9.6.5.6.1 Open a remote command session through verified WinRM rights <span class="method-label">Evil-WinRM</span></h3>
 <h4 id="variant-9-6-5-6-1-1">9.6.5.6.1.1 Authenticate with a known password using a supported prompt <span class="method-label">Password; omit -p to prompt where supported</span></h4><pre><code class="language-bash"># Password; omit -p to prompt where supported
@@ -243,7 +243,7 @@ $Session = New-PSSession -ComputerName TARGET_HOST -Credential $Credential
 Enter-PSSession -Session $Session
 </code></pre></div><div class="command-reading"><blockquote>
 <p>A hostname normally supports Negotiate/Kerberos in a domain. An IP address requires explicit credentials and generally HTTPS or a tightly scoped TrustedHosts configuration. Do not weaken global TrustedHosts merely to hide DNS/SPN mistakes.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="7-rdp">9.6.5.7 Obtain an authorized interactive desktop session <span class="method-label">RDP</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="7-rdp">9.6.5.7 Obtain an authorized interactive desktop session <span class="method-label">RDP</span></h2></summary>
 <a id="s-9-6-5-7"></a>
 <p>Check the installed binary name:</p>
 <pre><code class="language-bash">command -v xfreerdp3 || command -v xfreerdp
@@ -552,7 +552,7 @@ winexe -U 'DOMAIN/USER' //TARGET 'cmd.exe /c whoami'
 <ul>
 <li>Supplied PEN-200, Chapter 24 pp786–804 for WMI/CIM, WinRS/WinRM, PsExec, PtH, Overpass-the-Hash, Pass-the-Ticket and DCOM.</li>
 <li><a href="https://help.offsec.com/hc/en-us/articles/38543335188756-OSCP-Body-of-knowledge">OffSec OSCP+ Body of Knowledge</a></li>
-<li><a href="https://github.com/fortra/impacket/blob/master/examples/psexec.py">Execute through a reachable service-control interface with administrative rights</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/smbexec.py">Execute through service creation with a supported output channel</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/wmiexec.py">wmiexec</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/atexec.py">Execute through the remote Task Scheduler interface with sufficient rights</a> and <a href="https://github.com/fortra/impacket/blob/master/examples/dcomexec.py">dcomexec</a></li>
+<li><a href="https://github.com/fortra/impacket/blob/master/examples/psexec.py">Execute through a reachable service-control interface with administrative rights</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/smbexec.py">smbexec</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/wmiexec.py">wmiexec</a>, <a href="https://github.com/fortra/impacket/blob/master/examples/atexec.py">atexec</a> and <a href="https://github.com/fortra/impacket/blob/master/examples/dcomexec.py">dcomexec</a></li>
 <li><a href="https://www.netexec.wiki/smb-protocol/command-execution/execute-remote-command">NetExec command execution</a> and <a href="https://www.netexec.wiki/smb-protocol/authentication/checking-credentials-local">local authentication</a></li>
 <li><a href="https://learn.microsoft.com/windows-server/administration/windows-commands/winrs">Microsoft WinRS</a>, <a href="https://learn.microsoft.com/powershell/scripting/learn/remoting/running-remote-commands">Open a remote command session through verified WinRM rights</a>, <a href="https://learn.microsoft.com/powershell/module/cimcmdlets/new-cimsessionoption">CIM DCOM options</a></li>
 <li><a href="https://learn.microsoft.com/troubleshoot/windows-server/windows-security/user-account-control-and-remote-restriction">Microsoft remote UAC behavior</a>, <a href="https://learn.microsoft.com/windows/security/application-security/application-control/administrator-protection/">Administrator Protection</a> and <a href="https://learn.microsoft.com/windows/security/identity-protection/remote-credential-guard">Remote Credential Guard/Restricted Admin</a></li>

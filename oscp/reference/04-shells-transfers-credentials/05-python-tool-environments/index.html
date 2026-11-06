@@ -2,7 +2,7 @@
 <p><a href="/oscp/reference/04-shells-transfers-credentials/">← Stage index</a> | <a href="/oscp/cheatsheets/tool-selection/">Choose tools that match your task and constraints</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/public-exploits/">Select and adapt public exploits</a></p>
 <blockquote>
 <p><strong>Use when:</strong> a source-based Python assessment tool has dependencies that should not modify Kali's system Python. This is setup/reference material, not <a href="/oscp/notes/ad-investigation/glossary/#term-authorization" title="The permission decision for the requested object or operation after identity context is established." class="glossary-term">authorization</a> to install a tool.</p>
-</blockquote><details data-method-fold><summary><h2 id="linuxkali-virtual-environment">9.4.5.1 Isolate the Python dependencies required by the reviewed tool <span class="method-label">Linux/Kali virtual environment</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote><details data-method-fold><summary><h2 id="linuxkali-virtual-environment">9.4.5.1 Isolate the Python dependencies required by the reviewed tool <span class="method-label">Linux/Kali virtual environment</span></h2></summary>
 <a id="s-9-4-5-1"></a>
 <pre><code class="language-bash">python3 -m venv .venv
 source .venv/bin/activate
@@ -16,7 +16,7 @@ python -m pip install -r requirements.txt
 python -m pip freeze
 deactivate
 </code></pre>
-<p>PEP 668 intentionally protects externally managed system environments. Do not bypass it with <code>--break-system-packages</code>; use a venv or the distribution package when appropriate.</p></details><details data-method-fold><summary><h2 id="windows-powershell">9.4.5.2 Run the procedure from a Windows PowerShell environment <span class="method-label">Windows PowerShell</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>PEP 668 intentionally protects externally managed system environments. Do not bypass it with <code>--break-system-packages</code>; use a venv or the distribution package when appropriate.</p></details><details data-method-fold><summary><h2 id="windows-powershell">9.4.5.2 Run the procedure from a Windows PowerShell environment <span class="method-label">Windows PowerShell</span></h2></summary>
 <a id="s-9-4-5-2"></a>
 <pre><code class="language-powershell">py -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -29,7 +29,7 @@ deactivate
 python -m pip --version
 python -m pip freeze > requirements-resolved.txt
 </code></pre>
-<p>Record the tool source/commit, Python version, dependency file and exact command. Keep environments per tool when their dependency ranges conflict.</p><details data-method-fold><summary><h2 id="uv-alternative-for-a-python-poc-with-missing-dependencies">9.4.5.4 uv alternative for a Python PoC with missing dependencies</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Record the tool source/commit, Python version, dependency file and exact command. Keep environments per tool when their dependency ranges conflict.</p><details data-method-fold><summary><h2 id="uv-alternative-for-a-python-poc-with-missing-dependencies">9.4.5.4 uv alternative for a Python PoC with missing dependencies</h2></summary>
 <a id="s-9-4-5-4"></a>
 <p>Use when uv is already available and the reviewed script needs a small dependency set. Keep the baseline venv workflow as an option when uv is absent.</p>
 <h3 id="variant-9-4-5-4-1">9.4.5.4.1 Run outside the current project's dependencies, supplying the known dependency</h3><pre><code class="language-bash"># Run outside the current project's dependencies, supplying the known dependency

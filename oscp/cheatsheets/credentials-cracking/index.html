@@ -4,6 +4,9 @@
 -> authorization -> new access -> re-enumerate
 </code></pre><details data-investigation><summary><h2 id="classify">10.8.1 Classify</h2></summary>
 <a id="s-10-3-1"></a><a id="s-10-8-1" data-legacy-anchor="s-10-3-1"></a>
+<blockquote>
+<p><strong>Run/context:</strong> classify and process recovered artifacts on the testing workstation; <a href="/oscp/notes/ad-investigation/glossary/#term-authentication" title="Establishing an identity through a protocol. Success does not automatically permit a share read, remote logon or execution." class="glossary-term">authentication</a> checks contact the explicitly selected service. <strong>Decide:</strong> an NT hash, Net-NTLMv2 response and Kerberos cache are different capabilities. Follow the matching format section below; use <a href="#validate-one-known-credential">one known credential validation</a> before choosing <a href="/oscp/cheatsheets/active-directory/#lateral-movement-chooser">remote access</a>. Offline recovery alone does not establish service access.</p>
+</blockquote>
 <pre><code class="language-bash">hashid HASH_OR_FILE
 john --list=formats | grep -i KEYWORD
 hashcat --example-hashes | less
@@ -56,7 +59,7 @@ nxc smb TARGET --local-auth -u USER -p 'PASSWORD' --shares
 evil-winrm -i TARGET -u USER -p 'PASSWORD'
 xfreerdp /v:TARGET /u:'DOMAIN\USER' /p:'PASSWORD' /cert:ignore
 </code></pre></div><div class="command-reading"><blockquote>
-<p>Login accepted proves <a href="/oscp/notes/ad-investigation/glossary/#term-authentication" title="Establishing an identity through a protocol. Success does not automatically permit a share read, remote logon or execution." class="glossary-term">authentication</a> to that service. Shares, sessions, execution and administrator rights are separate <a href="/oscp/notes/ad-investigation/glossary/#term-authorization" title="The permission decision for the requested object or operation after identity context is established." class="glossary-term">authorization</a> claims.</p>
+<p>Login accepted proves authentication to that service. Shares, sessions, execution and administrator rights are separate <a href="/oscp/notes/ad-investigation/glossary/#term-authorization" title="The permission decision for the requested object or operation after identity context is established." class="glossary-term">authorization</a> claims.</p>
 </blockquote></div></div></details><details data-investigation><summary><h2 id="authorized-online-dictionaryspray">10.8.3 Test bounded password candidates after checking lockout constraints <span class="method-label">Authorized online dictionary/spray</span></h2></summary>
 <a id="s-10-3-3"></a><a id="s-10-8-3" data-legacy-anchor="s-10-3-3"></a>
 <h3 id="variant-10-3-3-1">10.8.3.1 one known user, candidate passwords</h3><pre><code class="language-bash"># one known user, candidate passwords
@@ -187,7 +190,7 @@ impacket-wmiexec -k -no-pass 'DOMAIN/USER@HOST.DOMAIN'
 <a id="s-10-3-13"></a><a id="s-10-8-13" data-legacy-anchor="s-10-3-13"></a>
 <pre><code class="language-text">identity -> groups/roles -> services -> shares/files -> application features
 -> accessible hosts/routes -> new credentials/tickets/sessions -> next block
-</code></pre></details><details data-method-fold><summary><h2 id="use-a-known-password-from-a-windows-foothold">10.8.14 Use a known password from a Windows foothold</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</code></pre></details><details data-method-fold><summary><h2 id="use-a-known-password-from-a-windows-foothold">10.8.14 Use a known password from a Windows foothold</h2></summary>
 <a id="s-10-3-14"></a><a id="s-10-8-14" data-legacy-anchor="s-10-3-14"></a>
 <p>Run a reviewed RunasCs build on the current Windows host with the intended account scope. It accepts a plaintext password, not an NT hash.</p>
 <pre><code class="language-cmd">REM Domain account: inspect the resulting token

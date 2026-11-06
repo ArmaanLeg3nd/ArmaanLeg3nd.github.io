@@ -202,7 +202,7 @@ nmap -sT -Pn -n -p PORTS 240.0.0.1
 <pre><code class="language-text">listener_add --addr 0.0.0.0:PIVOT_PORT --to 127.0.0.1:KALI_PORT --tcp
 listener_list
 listener_stop LISTENER_ID
-</code></pre></details><details data-method-fold><summary><h2 id="dns-tunneling-conditional">10.13.11 Reach a controlled endpoint through a permitted DNS tunnel <span class="method-label">DNS tunneling, conditional</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</code></pre></details><details data-method-fold><summary><h2 id="dns-tunneling-conditional">10.13.11 Reach a controlled endpoint through a permitted DNS tunnel <span class="method-label">DNS tunneling, conditional</span></h2></summary>
 <a id="s-10-8-11"></a><a id="s-10-13-11" data-legacy-anchor="s-10-8-11"></a>
 <h3 id="variant-10-8-11-1">10.13.11.1 Authoritative domain server</h3><pre><code class="language-bash"># Authoritative domain server
 dnscat2-server --secret=SHARED_SECRET TUNNEL_DOMAIN</code></pre>
@@ -218,6 +218,9 @@ help
 <p>Needs client execution plus authoritative NS delegation or direct DNS-server reachability. Slow and conspicuous. A query reaching the server is not yet an authenticated channel. DNS tunneling is distinct from prohibited DNS spoofing.</p>
 </blockquote></div></div></details><details data-investigation><summary><h2 id="callback-route">10.13.12 Verify payload delivery and callback paths separately <span class="method-label">Callback route</span></h2></summary>
 <a id="s-10-8-12"></a><a id="s-10-13-12" data-legacy-anchor="s-10-8-12"></a>
+<blockquote>
+<p><strong>Run/context:</strong> distinguish the testing workstation, pivot and internal target for each connection leg. A working tool-to-target tunnel does not establish the target-to-listener return path. <strong>Decide:</strong> trace the listener address/port and each forwarded leg using the <a href="/oscp/reference/07-pivoting-tunneling/01-tunneling-and-port-forwarding/#12-callback-and-delivery-routing">complete callback-routing checks</a>; verify the new session with the <a href="/oscp/cheatsheets/shells-payloads/#verify-session">session checks</a>.</p>
+</blockquote>
 <pre><code class="language-text">Kali -> tunnel -> internal service          access path
 internal target -> pivot listener -> Kali   callback path
 </code></pre>

@@ -125,11 +125,11 @@ curl -ski -X POST -H 'Content-Type: application/json' -d '{"username":"TEST_USER
 <ul>
 <li>file/path selector -> <a href="/oscp/reference/03-initial-access/02-web-file-handling/">file handling attacks</a>;</li>
 <li>shell/diagnostic or database-backed input -> <a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">command and SQL injection</a>;</li>
-<li>object/role/property or browser-script context -> <a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">Check whether application permissions or browser execution enable useful access</a>;</li>
+<li>object/role/property or browser-script context -> <a href="/oscp/reference/03-initial-access/04-access-control-and-xss/">access control and XSS</a>;</li>
 <li>product/plugin/version exploit candidate -> Block 6 public-exploit adaptation;</li>
 <li>new credential -> Block 5 credential handling and authenticated re-enumeration;</li>
 <li>verified server command execution -> Block 7 session handling.</li>
-</ul><details data-method-fold><summary><h2 id="wfuzz-alternative-for-paths-and-form-values">9.2.10.9 wfuzz alternative for paths and form values</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</ul><details data-method-fold><summary><h2 id="wfuzz-alternative-for-paths-and-form-values">9.2.10.9 wfuzz alternative for paths and form values</h2></summary>
 <a id="s-9-2-10-9"></a>
 <p>Use when wfuzz is the available/familiar client for the same controlled-response test. Choose a nonexistent control first; preserve the actual Host and authenticated session.</p>
 <h3 id="variant-9-2-10-9-1">9.2.10.9.1 Paths; hiding 404s is appropriate only after checking the site's failure behavior</h3><pre><code class="language-bash"># Paths; hiding 404s is appropriate only after checking the site's failure behavior

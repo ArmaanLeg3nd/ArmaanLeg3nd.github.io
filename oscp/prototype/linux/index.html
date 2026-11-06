@@ -67,8 +67,11 @@ screen -ls 2>/dev/null
 find /tmp /run -maxdepth 3 -type s -ls 2>/dev/null
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Record user/service context before <code>su</code>, <code>sudo</code>, SSH or application validation. <code>/proc</code> access and short process lifetime can hide values. Session/agent sockets require effective access and a useful live identity.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="sudo">10.9.6 Check whether your sudo rights enable higher privileges <span class="method-label">Sudo</span></h2><span class="method-choice-cue">Inspect the allowed run-as identity, exact command, arguments and restrictions before selecting a sudo path.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="sudo">10.9.6 Check whether your sudo rights enable higher privileges <span class="method-label">Sudo</span></h2></summary>
 <a id="s-10-6-6"></a><a id="s-10-9-6" data-legacy-anchor="s-10-6-6"></a>
+<blockquote>
+<p><strong>Run/context:</strong> on the Linux foothold, as the identity whose sudo rights you are testing. <strong>Decide:</strong> an allowed command is only a candidate; resolve its run-as identity and exact argument restrictions. If the attempted operation fails, check <a href="#prove-effective-permissions">effective permissions</a> and the <a href="#failure-quick-map">failure map</a> before trying a different permitted operation.</p>
+</blockquote>
 <blockquote>
 <p><strong>Validate the finding:</strong> retain the exact rule, run-as identity, arguments, environment restrictions and allowed execution mode. Reuse a complete current rule listing, but do not substitute a LinPEAS highlight for reading that rule.</p>
 </blockquote>
@@ -184,7 +187,7 @@ touch -- '--checkpoint=1'
 touch -- '--checkpoint-action=exec=sh proof.sh'
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Confirm expansion, option support/order, utility implementation, identity and trigger.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="writable-account-and-policy-files">10.9.11 Check whether writable account or policy files enable higher privileges <span class="method-label">Writable account and policy files</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="writable-account-and-policy-files">10.9.11 Check whether writable account or policy files enable higher privileges <span class="method-label">Writable account and policy files</span></h2></summary>
 <a id="s-10-6-11"></a><a id="s-10-9-11" data-legacy-anchor="s-10-6-11"></a>
 <blockquote>
 <p><strong>Discovery may already be covered:</strong> reuse current account/policy-file permission candidates. <strong>Validate the finding:</strong> verify exact effective write or replacement access and a recovery path before changing an account or policy file.</p>
@@ -203,7 +206,7 @@ id
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Preserve/restore the original. Avoid direct change without a recovery path.</p>
 </blockquote></div></div>
-</details></details><details data-method-fold><summary><h2 id="groups-sockets-and-containers">10.9.12 Check whether group or socket access gives you higher privileges <span class="method-label">Groups, sockets and containers</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</details></details><details data-method-fold><summary><h2 id="groups-sockets-and-containers">10.9.12 Check whether group or socket access gives you higher privileges <span class="method-label">Groups, sockets and containers</span></h2></summary>
 <a id="s-10-6-12"></a><a id="s-10-9-12" data-legacy-anchor="s-10-6-12"></a>
 <blockquote>
 <p><strong>Discovery may already be covered:</strong> reuse group membership and socket inventory. <strong>Validate the finding:</strong> check access to the actual daemon/socket, its authority and host/namespace boundary; a group name or installed client alone is insufficient.</p>
