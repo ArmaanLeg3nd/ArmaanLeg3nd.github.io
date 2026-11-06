@@ -1,5 +1,7 @@
 import {searchReference,referenceTopic,validNavigationState,type SearchEntry} from '../lib/oscp-plain-search.ts';
 const decodeFragment=(hash:string)=>{try{return decodeURIComponent(hash.replace(/^#/,''));}catch{return hash.replace(/^#/,'');}};
+const header=document.querySelector<HTMLElement>('.reference-header');
+if(header)new ResizeObserver(()=>document.documentElement.style.setProperty('--reference-header-height',header.getBoundingClientRect().height+'px')).observe(header);
 const left=document.querySelector<HTMLElement>('#reference-index');
 const right=document.querySelector<HTMLElement>('#page-index');
 const key='oscp-reference-navigation-v1';
@@ -44,7 +46,7 @@ if(left&&right) {
  });
  window.addEventListener('hashchange',reveal);reveal();
  let painting=false;
- const mark=()=>{painting=false;const offset=matchMedia('(max-width:760px)').matches?right.getBoundingClientRect().bottom+32:40;
+ const mark=()=>{painting=false;const offset=matchMedia('(max-width:760px)').matches?right.getBoundingClientRect().bottom+32:(header?.getBoundingClientRect().bottom||0)+40;
    let active=targets.find(t=>t.node!.getClientRects().length)?.a;
    for(const item of targets)if(item.node!.getClientRects().length&&item.node!.getBoundingClientRect().top<=offset)active=item.a;
    for(const branch of right.querySelectorAll<HTMLDetailsElement>('details[data-page-branch]'))branch.open=!!active&&branch.contains(active);
@@ -59,10 +61,20 @@ const results=document.querySelector<HTMLOListElement>('#reference-results');
 const status=document.querySelector<HTMLElement>('#reference-search-status');
 let index:Promise<SearchEntry[]>|undefined,request=0;
 if(form&&input&&results&&status) {
+ const feedback=document.querySelector<HTMLElement>('.search-feedback');
+ const dismiss=()=>{++request;clearTimeout(timer);if(feedback)feedback.hidden=true;};
+ document.addEventListener('keydown',event=>{
+   const editing=(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable="true"]');
+   if((event.key==='/'&&!editing)||((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k')){event.preventDefault();input.focus();input.select();}
+   if(event.key==='Escape'&&feedback&&!feedback.hidden){event.preventDefault();input.focus();dismiss();}
+ });
+ document.addEventListener('click',event=>{if(!(event.target as Element).closest('.reference-find'))dismiss();});
+ input.addEventListener('focus',()=>{if(feedback&&status.textContent)feedback.hidden=false;});
  const run=async()=>{
    const token=++request,query=input.value.trim();
    results.replaceChildren();results.hidden=true;
-   if(!query){status.textContent='';return;}
+   if(!query){status.textContent='';if(feedback)feedback.hidden=true;return;}
+   if(feedback)feedback.hidden=false;
    if(query.length>160){status.textContent='Use a shorter query.';return;}
    status.textContent='Finding sections…';
    try {
@@ -75,5 +87,5 @@ if(form&&input&&results&&status) {
  };
  form.addEventListener('submit',event=>{event.preventDefault();void run();});
  let timer:ReturnType<typeof setTimeout>;
- input.addEventListener('input',()=>{++request;clearTimeout(timer);if(!input.value.trim()){results.replaceChildren();results.hidden=true;status.textContent='';return;}timer=setTimeout(()=>void run(),180);});
+ input.addEventListener('input',()=>{++request;clearTimeout(timer);if(!input.value.trim()){results.replaceChildren();results.hidden=true;status.textContent='';if(feedback)feedback.hidden=true;return;}timer=setTimeout(()=>void run(),180);});
 }
