@@ -1,5 +1,7 @@
 import test from 'node:test';
 import {goalLabel,goalMarkup} from '../src/lib/oscp-goals.ts';
+import {workflows,resourceLinks} from '../src/lib/oscp-workflows.ts';
+import {foldInvestigations} from '../src/lib/oscp-investigations.ts';
 import {searchReference,validNavigationState} from '../src/lib/oscp-plain-search.ts';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
@@ -7,6 +9,24 @@ import {plainPages,plainURL,renderPlain,renderIndex,renderPageIndex,localTarget}
 
 const decode=text=>text.replace(/&(?:#x([0-9a-f]+)|#([0-9]+)|(amp|lt|gt|quot|apos));/gi,(_,hex,dec,name)=>hex?String.fromCodePoint(parseInt(hex,16)):dec?String.fromCodePoint(+dec):({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[name]));
 const blocks=text=>[...text.matchAll(/^```[^\n]*\n([\s\S]*?)\n```/gm)].map(m=>m[1]);
+
+test('every workflow has a built landing page, explicit resource roles and valid starting anchors',async()=>{
+ for(const w of workflows){
+  assert.ok(existsSync(new URL('../dist/oscp/workflows/'+w.id+'/index.html',import.meta.url)),w.id);
+  for(const [quick,anchor] of [[w.quick,w.anchor],[w.nextQuick||w.quick,w.nextAnchor]]){
+   const page=plainPages.find(p=>p.path==='cheatsheets/'+quick+'.md');assert.ok(page,w.id);
+   assert.ok((await renderPlain(page)).headings.some(h=>h.slug===anchor),w.id+'#'+anchor);
+  }
+  for(const match of resourceLinks(w).matchAll(/href="([^"]+)"/g))assert.ok(existsSync(new URL('../dist'+match[1]+'index.html',import.meta.url)),match[1]);
+ }
+});
+test('investigation folds preserve whole command pairs and do not collapse sequential full procedures',async()=>{
+ const linux=plainPages.find(p=>p.path==='cheatsheets/linux-privesc.md');
+ const {html}=await renderPlain(linux);assert.ok(html.includes('data-investigation'));
+ assert.ok(html.includes('Discovery may already be covered')&&html.includes('Validate the finding'));
+ const procedure='<h2 id="one">Step one</h2><pre><code>id</code></pre><h2 id="two">Step two</h2>';
+ assert.equal(foldInvestigations(procedure,'reference/05-local-privilege-escalation/01-linux-privilege-escalation.md'),procedure);
+});
 
 test('goal headings agree with navigation while retaining anchors, numbers and command bytes',()=>{
  const code='<pre><code>Sudo\nLDAP and Kerberos\n</code></pre>';

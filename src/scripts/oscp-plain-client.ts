@@ -7,6 +7,12 @@ const right=document.querySelector<HTMLElement>('#page-index');
 const key='oscp-reference-navigation-v1';
 let state=validNavigationState(null);
 try{state=validNavigationState(JSON.parse(sessionStorage.getItem(key)||'null'));}catch{}
+for(const task of document.querySelectorAll<HTMLDetailsElement>('article > details[data-investigation],article > details[data-method-fold]')){
+ if(task.querySelector(':scope > .section-controls'))continue;
+ const summary=task.querySelector(':scope > summary');if(!summary)continue;
+ const controls=document.createElement('div');controls.className='section-controls';
+ for(const [label,expand] of [['Expand this section',true],['Collapse this section',false]] as const){const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{for(const d of task.querySelectorAll('details'))d.open=expand;task.open=expand;});controls.append(b);}summary.after(controls);
+}
 const disclosures=[...document.querySelectorAll<HTMLDetailsElement>('article details')];
 const controls=document.querySelector<HTMLElement>('.method-controls');
 if(controls&&disclosures.length){controls.hidden=false;controls.addEventListener('click',event=>{const action=(event.target as Element).closest<HTMLElement>('[data-disclosure-action]')?.dataset.disclosureAction;if(!action)return;for(const d of disclosures)d.open=action==='expand';});}

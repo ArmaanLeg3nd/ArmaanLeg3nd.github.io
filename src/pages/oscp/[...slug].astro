@@ -1,8 +1,21 @@
 ---
 import {plainPages,plainURL,renderPlain,renderIndex,renderPageIndex} from '../../lib/oscp-plain';
-export function getStaticPaths(){return plainPages.map(page=>({params:{slug:page.slug||undefined},props:{page}}));}
-const {page}=Astro.props;
-const {html,headings}=await renderPlain(page);
+import {workflows,workflowFor,startingPanel,resourceLinks} from '../../lib/oscp-workflows';
+export function getStaticPaths(){return [...plainPages.map(page=>({params:{slug:page.slug||undefined},props:{page,workflow:undefined}})),...workflows.map(workflow=>({params:{slug:'workflows/'+workflow.id},props:{page:{path:'workflows/'+workflow.id,slug:'workflows/'+workflow.id,title:workflow.title,markdown:''},workflow}}))];}
+const {page,workflow}=Astro.props;
+const rendered=workflow?{html:'',headings:[]}:await renderPlain(page);
+let {html}=rendered;
+const {headings}=rendered;
+const topic=workflow||workflowFor(page.path);
+if(topic&&(workflow||page.path==='cheatsheets/'+topic.quick+'.md'||page.path==='cheatsheets/'+topic.nextQuick+'.md')){
+ for(const [quick,anchor] of [[topic.quick,topic.anchor],[topic.nextQuick||topic.quick,topic.nextAnchor]]){
+  const target=plainPages.find(p=>p.path==='cheatsheets/'+quick+'.md');
+  if(!target||(await renderPlain(target)).headings.every(h=>h.slug!==anchor))throw new Error('Missing workflow destination: '+quick+'#'+anchor);
+ }
+ const panel=startingPanel(topic,(quick,anchor)=>'/oscp/cheatsheets/'+quick+'/#'+anchor);
+ if(workflow)html='<h1>'+workflow.title+'</h1>'+panel+resourceLinks(workflow);
+ else html=html.replace(/(<h1\b[^>]*>[\s\S]*?<\/h1>)/,'$1'+panel);
+}
 const navigation=renderIndex(page,headings);
 const contents=renderPageIndex(page,headings);
 ---
@@ -14,7 +27,7 @@ const contents=renderPageIndex(page,headings);
   <meta name="description" content="Numbered OSCP chapters, baselines, variants and result-specific next sections." />
   <link rel="canonical" href={new URL(plainURL(page),Astro.site)} />
  </head>
- <body>
+ <body class={workflow?'workflow-home':undefined}>
   <a class="skip" href="#document">Skip to document</a>
   <header class="reference-header">
    <a class="reference-title" href="/oscp/">OSCP Reference</a>
@@ -34,6 +47,8 @@ const contents=renderPageIndex(page,headings);
  [data-method-fold]{border-top:1px solid #888;padding:.75rem 0}[data-method-fold]>summary{padding:.35rem .5rem;background:#f5f5f5;border-bottom:1px solid #bbb}[data-method-fold]>summary::marker{color:#0000ee}[data-method-fold]>summary :is(h2,h3,h4,h5){display:inline;margin:0;font-weight:bold}article summary{font-weight:bold}[data-study-approach]>summary{padding:.5rem;border-bottom:1px solid #bbb;background:#f5f5f5}.approach-heading{font-size:1em;font-weight:bold}.method-choice-cue{display:block;font-size:.9em;font-weight:normal;margin:.3rem 0 .3rem 1rem;max-width:85ch}.method-controls{font-size:14px;margin:.5rem 0} @media print{aside,.method-controls,.reference-find{display:none!important}main{margin:0!important;padding:0!important}.command-pair{display:block!important}}
  .reference-cue{font-weight:bold;padding:.05em .2em;border-radius:.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}.cue-critical{color:#861b1b;background:#fde6e6}.cue-condition{color:#684500;background:#fff0c2}.cue-evidence{color:#1d5133;background:#e3f2e7}article :is(h2,h3,h4,h5,h6):target{background:#fff5cf;outline:2px solid #e1ce8b;outline-offset:3px}article ::selection{background:#fff0b3;color:#000} @media print{.reference-cue{color:#000!important;background:transparent!important;text-decoration:underline}article :target{background:transparent!important;outline:0!important}}
  :root {color-scheme:light}
+ .workflow-home #page-index{display:none}.workflow-home main{margin-right:0}
+ .workflow-links>div{margin:.2rem 0}.workflow-links>div>a{display:block;padding:.35rem .5rem}.workflow-links [aria-current]{background:#edf2fa;font-weight:bold}.workflow-resources{margin:.1rem 0 .65rem .65rem;border-left:1px solid #ccc;padding-left:.55rem}.workflow-resources a{display:block;padding:.25rem 0;font-size:13px}.full-library{margin-top:1.5rem;border-top:1px solid #ccc;padding-top:.8rem}.starting-panel{display:grid;grid-template-columns:1fr 1fr;border:1px solid #dce2eb;border-radius:3px;background:#f8fafc;margin:1.3rem 0 1.7rem;font-size:.92em}.starting-panel>div{padding:1rem 1.2rem}.starting-panel>div+div{border-left:1px solid #dce2eb}.starting-panel p{margin:.5rem 0;color:#49586c}.resource-roles dt{font-weight:bold;margin-top:1rem}.resource-roles dd{margin:.3rem 0 1rem}details[data-investigation]{margin:1rem 0;border-top:1px solid #888;padding:.75rem 0}details[data-investigation]>summary{cursor:pointer;background:#f5f5f5;padding:.35rem .5rem;border-bottom:1px solid #bbb}details[data-investigation]>summary h2{display:inline;margin:0}.section-controls{display:flex;gap:.5rem;flex-wrap:wrap;font-size:13px;margin:.8rem 0}.section-controls button{cursor:pointer}.starting-panel a{display:inline-block}@media(max-width:900px){.starting-panel{grid-template-columns:1fr}.starting-panel>div+div{border-left:0;border-top:1px solid #dce2eb}}@media print{.starting-panel,.section-controls{display:none!important}}
  .method-label{display:block;font-size:.75em;font-weight:normal;color:#586273;margin:.2rem 0}.method-label::before{content:'Method: '}
  .reference-header{position:fixed;inset:0 0 auto;z-index:5;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,44rem) minmax(0,1fr);align-items:center;gap:1rem;padding:.6rem 1rem;box-sizing:border-box;background:white;border-bottom:1px solid #888}.reference-title{font-weight:bold;font-size:16px}.reference-find{position:relative;min-width:0;font-size:14px}.search-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.search-row{display:flex;align-items:center;gap:.5rem}.reference-find input{box-sizing:border-box;min-width:0;width:100%;font:16px/1.4 Arial,sans-serif;padding:.4rem .6rem;border:1px solid #888;border-radius:2px;background:white;color:black}.reference-find button{font:14px Arial,sans-serif;padding:.5rem .7rem}.reference-find kbd{border:1px solid #aaa;padding:0 .35rem}.search-feedback{position:absolute;top:calc(100% + .65rem);left:0;right:0;max-height:60dvh;overflow:auto;background:white;border:1px solid #888;padding:0 .8rem;box-shadow:0 3px 8px #0002}.reference-find ol{padding-left:1.2rem}.reference-find li{margin:.6rem 0}.reference-find input:focus-visible{outline:2px solid #0000ee;outline-offset:2px}
  [data-command-context]{font-size:.9em;border-left:2px solid #aaa;padding-left:.6rem} [data-command-context] p{margin:.4rem 0}

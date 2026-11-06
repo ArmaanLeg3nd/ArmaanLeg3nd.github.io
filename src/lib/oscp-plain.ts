@@ -1,5 +1,7 @@
 import {emphasizeCues} from './oscp-emphasis.ts';
 import {goalMarkup} from './oscp-goals.ts';
+import {foldInvestigations} from './oscp-investigations.ts';
+import {workflows,workflowFor,quickURL} from './oscp-workflows.ts';
 import {foldMethods} from './oscp-folds.ts';
 import {commandPairs} from './oscp-pairs.ts';
 import snapshot from '../content/oscp-plain.snapshot.json' with {type:'json'};
@@ -39,7 +41,8 @@ async function compile(page:PlainPage) {
  if(/<(?:script|iframe|object|embed|style|form|input)\b|<[^>]+\son\w+\s*=|<[^>]+(?:href|src)=["']\s*(?:javascript|data):/i.test(result.code))throw new Error('Active reference markup: '+page.path);
  const numbered=numberMarkup(resultRoutes(result.code,page),page,result.metadata.headings);
  const rendered=emphasizeCues(foldMethods(commandPairs(methodContext(numbered.html,page.path)),page.path));
- return goalMarkup(rendered,numbered.headings,page.path);
+ const goals=goalMarkup(rendered,numbered.headings,page.path);
+ return {...goals,html:foldInvestigations(goals.html,page.path)};
 }
 export function renderPlain(page:PlainPage) {
  if(!cache.has(page.path))cache.set(page.path,compile(page));
@@ -68,7 +71,11 @@ function list(nodes:IndexNode[],active:string):string {
    return '<li>'+(node.children.length?'<details '+(node.depth===undefined?'data-section="'+node.key+'"':'data-page-branch')+(node.depth===undefined&&hasCurrent(node)?' open':'')+'><summary>'+label+'</summary>'+list(node.children,active)+'</details>':label+(node.children.length?list(node.children,active):''))+'</li>';
  }).join('')+'</ul>';
 }
-export function renderIndex(current:PlainPage,_headings:Heading[]) {return list(indexTree(),plainURL(current));}
+export function renderIndex(current:PlainPage,_headings:Heading[]) {
+ const active=workflowFor(current.path);
+ const nav='<nav class="workflow-links" aria-label="Workflow">'+workflows.map(w=>'<div><a href="/oscp/workflows/'+w.id+'/"'+(active===w?' aria-current="location"':'')+'>'+escape(w.title)+'</a>'+(active===w?'<div class="workflow-resources"><a href="'+quickURL(w)+'"'+(current.path==='cheatsheets/'+w.quick+'.md'?' aria-current="page"':'')+'>Quick reference</a><a href="/oscp/reference/'+w.procedure+'/">Complete procedures</a><a href="/oscp/notes/methods/'+w.study+'/">Understand the methods</a></div>':'')+'</div>').join('')+'</nav>';
+ return nav+'<details class="full-library" data-section="99"><summary>Browse all numbered resources</summary>'+list(indexTree(),plainURL(current))+'</details>';
+}
 export function renderPageIndex(page:PlainPage,headings:Heading[]) {
  const roots:IndexNode[]=[];const stack=[{depth:0,children:roots}];
  for(const heading of headings.filter(h=>h.depth>1)) {
