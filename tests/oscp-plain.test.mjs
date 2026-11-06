@@ -212,7 +212,8 @@ test('important cue emphasis is selective and preserves commands and link stylin
  assert.equal(emphasizeCues('<h2>This is disruptive</h2>'),'<h2>This is disruptive</h2>');
 });
 
-test('cue colors retain readable contrast on the plain white page',()=>{
+test('filled cue highlights retain readable foreground/background contrast',()=>{
  const css=readFileSync(new URL('../src/pages/oscp/[...slug].astro',import.meta.url),'utf8');
- for(const kind of ['critical','condition','evidence']){const hex=css.match(new RegExp('\\.cue-'+kind+'\\{color:#([0-9a-f]{6})'))[1];const channels=hex.match(/../g).map(x=>parseInt(x,16)/255).map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4);const luminance=channels[0]*0.2126+channels[1]*0.7152+channels[2]*0.0722;assert.ok(1.05/(luminance+0.05)>=4.5,kind);}
+ const luminance=hex=>{const c=hex.match(/../g).map(x=>parseInt(x,16)/255).map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4);return c[0]*0.2126+c[1]*0.7152+c[2]*0.0722;};
+ for(const kind of ['critical','condition','evidence']){const match=css.match(new RegExp('\\.cue-'+kind+'\\{color:#([0-9a-f]{6});background:#([0-9a-f]{6})'));assert.ok(match,kind+' has a filled background');const a=luminance(match[1]),b=luminance(match[2]);assert.ok((Math.max(a,b)+0.05)/(Math.min(a,b)+0.05)>=4.5,kind);}
 });
