@@ -1,4 +1,5 @@
 import stable from '../content/oscp-section-numbers.json' with {type:'json'};
+import {goalLabel} from './oscp-goals.ts';
 import snapshot from '../content/oscp-plain.snapshot.json' with {type:'json'};
 import methods from '../content/oscp.snapshot.json' with {type:'json'};
 
@@ -25,9 +26,9 @@ const shared:Record<string,string>={
 };
 export function cleanTitle(title:string){return title.replace(/^\d+(?:\.\d+)*[.)]?\s+/,'');}
 const ad=new Map(snapshot.sections.map(s=>[s.path,s]));
-export function describe(page:Page) {
+function rawDescribe(page:Page) {
  const section=ad.get(page.path);
- if(section)return {number:section.number,title:section.title,authored:true};
+ if(section)return {number:section.number,title:goalLabel(section.title),authored:true};
  if(shared[page.path])return {number:shared[page.path],title:cleanTitle(page.title),authored:false};
  if(page.path.startsWith('notes/methods/')) {
    const topic=page.path.split('/').at(-1)!.replace('.md','');
@@ -43,6 +44,7 @@ export function describe(page:Page) {
  }
  return {number:'9.0',title:cleanTitle(page.title),authored:false};
 }
+export function describe(page:Page){const item=rawDescribe(page);return {...item,title:goalLabel(item.title)};}
 export function escape(text:string){return text.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));}
 const url=(page:Page)=>'/oscp/'+(page.slug?page.slug+'/':'');
 const methodById=new Map(methods.methods.map(m=>[m.id,m]));

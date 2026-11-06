@@ -209,11 +209,11 @@ test('topic contents index every task once and keep navigation complete',() => {
   }
   assert.equal(count,174);
 });
-test('lookup names are concise and unique within their topic; full usage notes remain available',() => {
+test('lookup names retain the method objective and remain unique within their topic; usage notes remain available',() => {
   for(const topic of snapshot.topics) {
     const methods=snapshot.methods.filter(method=>method.topic===topic.id);
     assert.equal(new Set(methods.map(methodLabel)).size,methods.length,topic.id);
-    for(const method of methods) assert.ok(methodLabel(method).length<method.title.length,method.id);
+    for(const method of methods) assert.equal(methodLabel(method),method.title,method.id);
   }
   const smb=snapshot.methods.find(method=>method.id==='service-smb');
   assert.ok(!combinedProcedure(smb.procedure).includes('older material may use'));

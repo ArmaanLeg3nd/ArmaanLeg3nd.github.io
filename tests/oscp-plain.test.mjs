@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {goalLabel,goalMarkup} from '../src/lib/oscp-goals.ts';
 import {searchReference,validNavigationState} from '../src/lib/oscp-plain-search.ts';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
@@ -6,6 +7,16 @@ import {plainPages,plainURL,renderPlain,renderIndex,renderPageIndex,localTarget}
 
 const decode=text=>text.replace(/&(?:#x([0-9a-f]+)|#([0-9]+)|(amp|lt|gt|quot|apos));/gi,(_,hex,dec,name)=>hex?String.fromCodePoint(parseInt(hex,16)):dec?String.fromCodePoint(+dec):({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[name]));
 const blocks=text=>[...text.matchAll(/^```[^\n]*\n([\s\S]*?)\n```/gm)].map(m=>m[1]);
+
+test('goal headings agree with navigation while retaining anchors, numbers and command bytes',()=>{
+ const code='<pre><code>Sudo\nLDAP and Kerberos\n</code></pre>';
+ const result=goalMarkup('<h2 id="sudo">10.9.6 Sudo</h2>'+code,[{slug:'sudo',text:'10.9.6 Sudo',number:'10.9.6',depth:2}],'cheatsheets/linux-privesc.md');
+ assert.equal(result.headings[0].text,'10.9.6 Check whether your sudo rights enable higher privileges');
+ assert.ok(result.html.includes('id="sudo"')&&result.html.includes(code)&&result.html.includes('class="method-label">Sudo'));
+ assert.equal(result.headings[0].number,'10.9.6');
+ assert.match(goalLabel('10.12.4 DCSync'),/verified replication rights/);
+ assert.equal(goalMarkup('<h2 id="spn">SPN</h2>',[{slug:'spn',text:'SPN'}],'notes/ad-investigation/glossary.md').headings[0].text,'SPN');
+});
 
 test('plain section covers every pinned document, without the themed shell',()=>{
   assert.ok(plainPages.length>100);

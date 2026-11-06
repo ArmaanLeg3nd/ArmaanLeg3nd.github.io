@@ -4,13 +4,14 @@ import type { Catalog, Method, MethodSummary, PrerequisiteCheck, FirstPassStep }
 import { annotateCheck } from './oscp-checks';
 import { combinedProcedure, procedureNotes } from './oscp-procedure';
 import { buildSearchText } from './oscp-search';
+import {methodTerms} from './oscp-navigation';
 
 export const catalog: Catalog = {
   toolbox:snapshot.toolbox, supplementarySource:snapshot.supplementarySource,
   schemaVersion: snapshot.schemaVersion, contentHash: snapshot.contentHash, sourceRevision: snapshot.sourceRevision,
   stages: snapshot.stages, topics: snapshot.topics, chains: snapshot.chains,
   methods: snapshot.methods.map(m => ({ id: m.id, topic: m.topic, title: m.title, family: m.family, clue: m.clue, access: m.access, conditions: m.conditions,
-    search: buildSearchText(m) }))
+    search: buildSearchText(m)+' '+methodTerms(m) }))
 };
 const cache = new Map<string, Promise<Method[]>>();
 const checkCache = new Map<string,Promise<PrerequisiteCheck[]>>();

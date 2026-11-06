@@ -174,7 +174,8 @@ const taskLabels: Record<string,string> = {
   'attack-report':'Reporting & submission',
 };
 export const topicLabel = (topic: Pick<Topic,'id'|'title'>) => topicLabels[topic.id] || topic.title;
-export const methodLabel = (method: Pick<MethodSummary,'id'|'title'>) => serviceLabels[method.id] || taskLabels[method.id] || method.title;
+export const methodLabel = (method: Pick<MethodSummary,'id'|'title'>) => method.title;
+export const methodTerms = (method: Pick<MethodSummary,'id'|'title'>) => [serviceLabels[method.id],taskLabels[method.id],method.title].filter(Boolean).join(' ');
 
 export const investigationSteps: Record<string,string[]> = {
   discovery:['Can I reach it?','Find open ports','Identify what is listening','Record targets worth investigating'],

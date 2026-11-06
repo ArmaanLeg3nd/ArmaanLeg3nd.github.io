@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {goalLabel} from '../src/lib/oscp-goals.ts';
 import assert from 'node:assert/strict';
 import {plainPages,renderPlain,plainURL} from '../src/lib/oscp-plain.ts';
 import review from '../src/content/oscp-fold-review.json' with {type:'json'};
@@ -14,7 +15,7 @@ for(const page of plainPages){
  }
  assert.equal(stack.length,0,page.path+': unclosed disclosure');
  for(const choice of policy.choices){
-  const found=headings.filter(h=>h.text.replace(/^\d+(?:\.\d+)*\s+/,'')===choice);
+  const found=headings.filter(h=>h.text.replace(/^\d+(?:\.\d+)*\s+/,'')===goalLabel(choice));
   if(!found.length){gaps.push(page.path+': missing '+choice);continue;}
   for(const h of found){
    const pos=html.indexOf('id="'+h.slug+'"'),parents=[];
