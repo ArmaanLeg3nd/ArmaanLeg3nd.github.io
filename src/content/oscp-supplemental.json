@@ -1,0 +1,135 @@
+[
+  {
+    "id": "S01",
+    "title": "Inspect host-side RDP enablement and logon policy",
+    "topic": "windows-privesc",
+    "markdown": "- **Enter:** you have authorized local administrative or equivalent management access to a Windows destination, and RDP access is relevant or failing.\n- **Discover:** inspect `TermService`, `fDenyTSConnections`, configured `PortNumber`, `qwinsta` listener state and the actual source-to-port path.\n- **Validate:** inspect NLA/security-layer policy, applied GPO, local Remote Desktop Users membership, and the effective `SeRemoteInteractiveLogonRight` / `SeDenyRemoteInteractiveLogonRight` assignments. Deny overrides allow.\n- **Execute:** [RDP host-side inspection](/oscp/reference/02-service-enumeration/09-windows-remote-access/#rdp-host-side-inspection-local-administrative-context); then use the [RDP access procedure](/oscp/reference/03-initial-access/01-rdp-access/) only when its conditions are satisfied.\n- **Verify:** a usable desktop followed by `whoami`, `hostname` and `ipconfig` establishes the new host/identity/source position. Authentication-only success is not an interactive session.\n- **Outcomes:** listener/right/client conditions satisfied → D29 then D18; decisive deny/no listener → ruled out here; policy, SID expansion or filtering unresolved → inconclusive.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S02",
+    "title": "Read a classic LAPS password for one computer",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** a specific computer object is relevant and the current directory principal may read `ms-Mcs-AdmPwd`.\n- **Discover:** identify the computer object and test the attribute read; merely enumerating the object is not enough.\n- **Validate:** the returned value is present, current and scoped to that computer's managed local account; identify the intended local username and destination service separately.\n- **Execute:** [Delegated LAPS/gMSA reads](/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#delegated-reads--laps-and-gmsa-material).\n- **Verify:** validate the password on one compatible service using explicit local-account context, then prove the specific permitted operation. Password acceptance does not prove local administration or remote execution.\n- **Outcomes:** readable current value → D17/D29; attribute denied/absent for this principal/object → ruled out here; schema, replication freshness or object identity unresolved → inconclusive.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S03",
+    "title": "Read or decrypt a Windows LAPS password",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** a relevant computer uses Windows LAPS and the principal may read `msLAPS-Password` or decrypt the protected value.\n- **Discover:** query the exact computer attribute and record whether the result is plaintext JSON, encrypted content, empty or denied.\n- **Validate:** plaintext/decryption rights, password age, managed account name and host scope. An encrypted blob without the permitted decryption context is not a password.\n- **Execute:** [Delegated LAPS/gMSA reads](/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#delegated-reads--laps-and-gmsa-material).\n- **Verify:** validate only against the named host and intended local account, then establish the actual service capability.\n- **Outcomes:** usable current password → D17/D29; no read/decrypt right → ruled out here; returned protected data but decryption context unknown → inconclusive.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S04",
+    "title": "Recover and classify gMSA material",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** a specific gMSA is used by a relevant service and the current identity may read `msDS-ManagedPassword`.\n- **Discover:** inspect the gMSA object and allowed managed-password readers; distinguish a raw blob from a decoded NT hash.\n- **Validate:** exact account name including `$`, managed-password read permission, working LDAPS/tool path, decoded representation and intended service/host.\n- **Execute:** [Raw and decoded gMSA checks](/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#gmsa--obtain-a-decoded-hash-only-with-managed-password-read-rights).\n- **Verify:** test one service compatible with the decoded material and record the exact accepted identity and operation. Authentication is not administrative execution.\n- **Outcomes:** decoded material accepted for the intended identity → D17/D29; read denied or wrong object type → ruled out here; raw blob, TLS failure or empty output → inconclusive.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S05",
+    "title": "Use a validated shadow-credential path",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** the effective principal can write the target object's `msDS-KeyCredentialLink`, and the assigned lab permits the object change.\n- **Discover:** list existing key credentials before mutation and preserve their identifiers.\n- **Validate:** target identity, exact effective write right, DC PKINIT/key-trust support, DNS/time/KDC route, certificate tooling and a cleanup route.\n- **Execute:** [Shadow credentials — add, authenticate and remove only the added DeviceID](/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#shadow-credentials--object-key-write-pkinit-then-cleanup).\n- **Verify:** establish the cached target principal and one intended service action; then confirm that only the newly added key credential was removed.\n- **Outcomes:** target TGT/service capability established → D28/D29; effective write or PKINIT prerequisite disproved → ruled out here; write succeeds but certificate/KDC mapping is unresolved → D31/inconclusive.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S06",
+    "title": "Authenticate to LDAP with a mapped certificate",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** you possess a certificate and private key plausibly mapped to an AD identity, and LDAP over TLS is reachable.\n- **Discover:** identify certificate subject/SAN/EKU, trust chain, private-key availability and the DC TLS path.\n- **Validate:** the certificate maps to the intended principal, the private key matches, Schannel authentication is accepted and the mapped identity has the exact object right required by the intended LDAP operation.\n- **Execute:** [PassTheCert identity check and LDAP shell](/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#passthecert--schannelldap-when-the-certificate-is-usable-there).\n- **Verify:** `whoami`/bind establishes only the mapped LDAP identity; separately verify the selected LDAP read or write and its object state.\n- **Outcomes:** mapped identity and permitted object operation confirmed → D26; mapping/trust/private key disproved → ruled out here; PKINIT fails while Schannel remains untested, or TLS errors mask mapping → inconclusive.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S07",
+    "title": "Create a controlled machine account only for a selected AD path",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** a validated RBCD/delegation path needs a service principal or machine key you control.\n- **Discover:** inspect machine-account quota, target OU/container ACL, existing names and whether the current identity can create the account in the intended location.\n- **Validate:** the downstream path actually needs this principal, the resulting SPNs/key will be usable, target-object rights are independently present, and cleanup/deletion rights are understood.\n- **Execute:** [Powermad machine-account creation](/oscp/reference/06-ad-lateral-movement/04-object-control-adcs-and-domain-compromise/#powermad--create-an-account-only-when-the-chosen-ad-path-needs-it).\n- **Verify:** confirm the created object, its SPNs and controlled key; do not record RBCD or target access until the separate delegation operation and service ticket succeed.\n- **Outcomes:** controlled principal created for an already validated receiver path → D27; quota/ACL/name condition fails → ruled out here; object exists but downstream target right is missing → retain only the machine-account capability.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S08",
+    "title": "Evaluate DNSAdmins without assuming immediate execution",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** the controlled principal is a direct/effective DNSAdmins member or has equivalent DNS-server configuration rights.\n- **Discover:** identify the actual DNS server, DNS service state/identity and service ACL from the current authorized source.\n- **Validate:** effective configuration permission, product/build behavior, a usable plugin/configuration operation, payload delivery path and a separately authorized restart trigger. A restart on a DC is disruptive and is never a discovery probe.\n- **Execute:** [DNSAdmins condition checks](/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/#dnsadmins-distinguish-dns-configuration-from-a-service-trigger).\n- **Verify:** current content supports only membership/service/trigger investigation. A complete plugin execution and cleanup procedure is not registered; see RW01.\n- **Outcomes:** all prerequisites identified → ready for a separately reviewed procedure; membership absent/effective right denied → ruled out here; group present but configuration or trigger unknown → inconclusive.",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S09",
+    "title": "Map WSUS client policy to a server-side authorization question",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** host policy or traffic indicates the machine uses WSUS.\n- **Discover:** read `WUServer`, `WUStatusServer` and `UseWUServer`; record URL, port, TLS and actual source reachability.\n- **Validate:** authenticated access to the identified server, update-approval/content/signing/deployment rights, target group scope and the privileged client consumer. Client configuration alone supplies none of those rights.\n- **Execute:** [WSUS client authority discovery](/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/#wsus-identify-the-update-authority-from-the-current-client).\n- **Verify:** this state produces a named update authority and a missing-rights checklist, not code execution. A complete update-deployment procedure is not registered; see RW02.\n- **Outcomes:** authority plus exact server-side control established → ready for a separately reviewed procedure; server rights denied → ruled out here; registry values absent or server role unknown → inconclusive.",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S10",
+    "title": "Recognize SCCM client context and locate the management boundary",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** `CcmExec`, `SMS_Client` or readable client configuration indicates Configuration Manager.\n- **Discover:** identify client state, assigned site, management point and reachable authenticated interfaces.\n- **Validate:** SMS Provider/site-server authorization, deployment or CMPivot rights, relevant collection scope and any specifically readable credential source. Client presence does not imply server rights.\n- **Execute:** [SCCM client recognition checks](/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/#configuration-manager--sccm-recognize-the-client-before-choosing-a-server-side-path).\n- **Verify:** this state establishes product/site context only. A complete SCCM rights-to-action procedure is not registered; see RW03.\n- **Outcomes:** exact management interface and relevant permission found → ready for a separately reviewed procedure; no applicable server permission → ruled out here; namespace access denied or site/role unresolved → inconclusive.",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S11",
+    "title": "Interpret an AD trust as a boundary, not a privilege transition",
+    "topic": "ad-mapping",
+    "markdown": "- **Enter:** directory or native trust enumeration identifies another domain/forest relationship.\n- **Discover:** record source and destination domain, direction, trust type/transitivity, same-forest versus cross-forest context, selective authentication and SID filtering.\n- **Validate:** destination DNS/KDC/service reachability, accepted identity, target SPN, allowed-to-authenticate/resource rights and the exact capability sought. A trust object or child-domain administration is not automatically forest compromise.\n- **Execute:** [Trust-boundary inspection](/oscp/reference/06-ad-lateral-movement/06-conditional-infrastructure-and-trusts/#trusts-inspect-the-boundary-before-treating-another-domain-as-reachable-privilege), then [movement preflight](/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#2-preflight-from-the-actual-source).\n- **Verify:** establish one destination service action under the named identity. Trust-key/SID-history forgery and coercion chains are not registered complete procedures; see RW04.\n- **Outcomes:** destination service accepts the identity and action → D29; filtering/selective-auth/resource authorization decisively denies it → ruled out here; direction/filtering/identity or route unresolved → inconclusive.",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S12",
+    "title": "Map an authentication, session or multistep web flow",
+    "topic": "web-mapping",
+    "markdown": "- **Enter:** the application exposes login, registration, recovery, role change, state-changing business action, authenticated API or another session-dependent flow.\n- **Discover:** capture a working anonymous and/or authenticated request, then record method, scheme/host/path, headers, cookies/tokens, body fields, hidden values, redirects, role and each step required to complete the action. Include non-GET/POST methods, JSON/XML bodies and WebSocket/API messages when the application actually uses them.\n- **Validate:** replay the unchanged request first; then change one identity, object, property or session boundary at a time. Confirm freshness, CSRF/token coupling, object ownership and whether the result is server-side rather than a browser-only presentation change.\n- **Execute:** [HTTP and web mapping](/oscp/reference/02-service-enumeration/10-http-web-mapping/), then route only the demonstrated effect to the existing parameter, authorization, IDOR, mass-assignment, XSS, parser or command/SQL method.\n- **Verify:** preserve one reproducible request/response pair and the exact role/session/object delta. Mapping a field or flow is not itself exploitation.\n- **Outcomes:** controlled unauthorized effect → D14 or the matching primitive; invariant authorization/ownership enforcement → ruled out for that transition; token expiry, cache, redirect or client-side behavior masks the result → inconclusive/D31.\n- **Source:** [OWASP WSTG entry-point mapping](https://wstg.owasp.org/stable/4-Web_Application_Security_Testing/01-Information_Gathering/06-Identify_Application_Entry_Points/).",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S13",
+    "title": "Inspect a Java RMI registry before selecting an exploit",
+    "topic": "services",
+    "markdown": "- **Enter:** service detection or an application response identifies Java RMI on a selected port.\n- **Discover:** enumerate bound names, classes, remote endpoints and codebase annotations without assuming the registry is exploitable:\n\n  ```bash\n  nmap -sV -p PORT --script rmi-dumpregistry TARGET\n  ```\n\n- **Validate:** confirm the selected endpoint is the actual registry/service, its class-loading/serialization behavior, Java/version prerequisites and whether any proposed test is intrusive. The Nmap class-loader probe is categorized intrusive and must not be the baseline:\n\n  ```bash\n  nmap -p PORT --script rmi-vuln-classloader TARGET\n  ```\n\n- **Execute:** no generic RMI/serialization execution procedure is registered. Route a matched component/version/condition to D16 only after the required behavior is established; see RW05.\n- **Verify:** registry names or a vulnerable class-loader result are component evidence, not a session. A complete action must separately verify the executed identity and resulting capability.\n- **Outcomes:** matching component and vulnerable behavior → candidate for reviewed D16 procedure; no registry or prerequisite decisively absent → ruled out here; filtered/incomplete registry or ambiguous class loading → inconclusive.\n- **Sources:** [Nmap `rmi-dumpregistry`](https://nmap.org/nsedoc/scripts/rmi-dumpregistry.html) and [`rmi-vuln-classloader`](https://nmap.org/nsedoc/scripts/rmi-vuln-classloader.html).",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S14",
+    "title": "Classify a Tomcat Manager interface and accepted role",
+    "topic": "services",
+    "markdown": "- **Enter:** the application is confirmed as Apache Tomcat and a `/manager/*` interface responds.\n- **Discover:** inspect the selected interface and authentication boundary without spraying credentials:\n\n  ```bash\n  curl -sk -D - \"https://TARGET:PORT/manager/html\" -o /dev/null\n  curl -sk -D - \"https://TARGET:PORT/manager/text/list\" -o /dev/null\n  ```\n\n- **Validate:** identify the accepted account and manager role: `manager-gui`, `manager-script`, `manager-jmx` or `manager-status`. GUI access and text-script access are intentionally separate; a `401`, `403` and application `404` have different meanings.\n- **Execute:** current notes do not yet own a version-scoped deployment, verification and cleanup procedure. Preserve the authenticated management capability and see RW06. JBoss/Jenkins and other managers remain separate product branches under RW07.\n- **Verify:** a manager listing proves the interface/role only. A deployable application, reachable context path and server-side execution identity require separate proof.\n- **Outcomes:** accepted deployment-capable role → ready for a reviewed product procedure; role/interface denies the required operation → ruled out for that role; proxy rewriting, wrong scheme/path or ambiguous realm → inconclusive.\n- **Source:** [Apache Tomcat Manager App HOW-TO](https://tomcat.apache.org/tomcat-11.0-doc/manager-howto.html).",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S15",
+    "title": "Follow an MSSQL linked server as a new SQL identity boundary",
+    "topic": "services",
+    "markdown": "- **Enter:** a working MSSQL login reveals one linked server or login mapping.\n- **Discover:** enumerate `sys.servers` and `sp_helplinkedsrvlogin`, preserving local login, remote server, provider/data source and mapping.\n- **Validate:** test one read-only remote identity query through the supported RPC or data-access mechanism. Do not enable RPC, create mappings or change configuration for enumeration.\n- **Execute:** [MSSQL linked-server and login-context mapping](/oscp/reference/02-service-enumeration/08-databases/#mssql-linked-server-and-login-context-mapping).\n- **Verify:** record returned `SYSTEM_USER`, `ORIGINAL_LOGIN()` and the remote role result. A remote SQL query is not OS command execution.\n- **Outcomes:** mapped remote query succeeds → re-enter D07 for that server/identity; link exists but RPC/data access is decisively unavailable → ruled out for that mechanism; mapping/authentication/provider failure is unresolved → inconclusive/D31.",
+    "discoveryOnly": false
+  },
+  {
+    "id": "S16",
+    "title": "Inspect VSS/shadow-copy credential-source conditions",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** you control a Windows Server/DC context where offline credential material is relevant and the token may hold administrative or backup rights.\n- **Discover:** inspect `whoami /priv`, `vssadmin list shadows`, then `diskshadow` → `list shadows all`.\n- **Validate:** establish platform, exact volume, existing-versus-new snapshot, read rights, matched `NTDS.dit` and SYSTEM-hive requirement, output destination and cleanup authority.\n- **Execute:** [shadow-copy boundary checks](/oscp/reference/06-ad-lateral-movement/02-credential-access/#shadow-copy-boundary-inspect-before-creating-anything). Creating/exposing/deleting a shadow and acquiring the matched files remain unavailable until RW08 is complete.\n- **Verify:** listing proves only snapshot metadata. Credential acquisition requires readable, point-in-time-compatible NTDS/SYSTEM material and successful offline parsing.\n- **Outcomes:** suitable existing snapshot and read path identified → ready for RW08 procedure; platform/rights/volume/source decisively incompatible → ruled out here; snapshot listed but access/freshness/matching hive unresolved → inconclusive.\n- **Source:** [Microsoft DiskShadow](https://learn.microsoft.com/windows-server/administration/windows-commands/diskshadow).",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S17",
+    "title": "Evaluate a direct Net-NTLMv2 relay path without spoofing",
+    "topic": "lateral-movement",
+    "markdown": "- **Enter:** an explicitly authorized, live NTLM authentication source is already present and a different receiver target is relevant. A saved Net-NTLMv2 response alone does not enter this state.\n- **Discover:** identify source protocol/event, relayed principal, receiver protocol/host and source-to-target reachability. For a selected SMB receiver, inspect signing with `nmap -p 445 --script smb2-security-mode TARGET`.\n- **Validate:** receiver accepts NTLM, signing/EPA/channel binding/reflection protections permit the exchange, and the relayed principal has one useful target operation. Current exam rules prohibit poisoning/spoofing; Responder name-resolution poisoning is never the source in the exam workflow.\n- **Execute:** the existing [tool reference](/oscp/cheatsheets/tool-command-reference/#responder-and-ntlm-relay) is not a complete action-specific procedure. Keep execution unavailable pending RW09.\n- **Verify:** define success as the chosen receiver operation under the relayed identity, not merely an inbound connection or captured challenge-response.\n- **Outcomes:** source + compatible receiver + useful authorization established → ready for RW09 procedure; signing/protocol/authorization decisively blocks it → ruled out for that receiver; protection or source-event behavior unresolved → inconclusive.",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S18",
+    "title": "Inspect AD-integrated DNS record control",
+    "topic": "ad-mapping",
+    "markdown": "- **Enter:** AD-integrated DNS is present and a selected zone or record object may be writable by the current principal.\n- **Discover:** enumerate the zone container and record objects from a domain Windows context:\n\n  ```powershell\n  $Root = (Get-ADRootDSE).defaultNamingContext\n  $DnsBase = \"CN=MicrosoftDNS,DC=DomainDnsZones,$Root\"\n  Get-ADObject -SearchBase $DnsBase -LDAPFilter '(objectClass=dnsNode)' -Properties dnsRecord -ResultSetSize 50\n  ```\n\n- **Validate:** identify one exact `dnsNode` distinguished name, effective create/write-child or record-property right, zone replication scope, resolver path, intended record/value, TTL and cleanup/restore plan. Zone visibility is not write permission.\n- **Execute:** no record-add/modify/delete procedure is registered; keep mutation unavailable under RW10.\n- **Verify:** a future write must resolve through the intended client path and cleanup must restore only the changed record. LDAP success alone is insufficient.\n- **Outcomes:** exact writable object/zone and resolver path established → ready for RW10; effective right denied or non-AD-integrated zone → ruled out here; object visible but ACL/replication/client resolver unresolved → inconclusive.",
+    "discoveryOnly": true
+  },
+  {
+    "id": "S19",
+    "title": "Separate an unconstrained-delegation flag from tickets actually present",
+    "topic": "ad-identities",
+    "markdown": "- **Enter:** a computer/service account has `TrustedForDelegation`/unconstrained delegation and the selected host/session context is accessible.\n- **Discover:** confirm the account/SPNs and inspect the actual selected ticket cache with `klist` or `Rubeus.exe triage` in the permitted context.\n- **Validate:** ticket owner, realm, service/TGT type, validity, logon-session/LUID access, export/cache compatibility and the exact receiving service. A delegation flag without a cached client ticket is only configuration.\n- **Execute:** when a relevant ticket already exists, use the [ticket classification and cache procedure](/oscp/reference/06-ad-lateral-movement/03-kerberos-and-identity-transitions/) and [movement preflight](/oscp/reference/06-ad-lateral-movement/05-lateral-movement/#2-preflight-from-the-actual-source). Forced/coerced authentication remains unavailable under RW11.\n- **Verify:** prove one named service action under the ticket principal, then preserve the host/LUID/cache scope. Do not record a password, hash or domain-wide privilege.\n- **Outcomes:** usable cached ticket accepted by the named service → D28/D29; no relevant ticket in the inspectable context → current cached-ticket path ruled out; inaccessible LUID, stale ticket or ambiguous principal → inconclusive.",
+    "discoveryOnly": false
+  }
+]
