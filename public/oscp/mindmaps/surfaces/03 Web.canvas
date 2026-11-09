@@ -1,0 +1,880 @@
+{
+  "nodes": [
+    {
+      "id": "group-web-mapping",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 1467,
+      "label": "Map useful web behavior",
+      "color": "5"
+    },
+    {
+      "id": "group-web-exploitation",
+      "type": "group",
+      "x": 1480,
+      "y": -50,
+      "width": 1410,
+      "height": 3665,
+      "label": "Turn application weaknesses into access",
+      "color": "5"
+    },
+    {
+      "id": "topic-web-mapping",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Map useful web behavior",
+      "color": "5"
+    },
+    {
+      "id": "web-identity",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-mapping.md#web-identity|Establish scheme, host, redirects and request state]]"
+    },
+    {
+      "id": "web-vhosts",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-mapping.md#web-vhosts|Discover virtual hosts and hostname-selected applications]]"
+    },
+    {
+      "id": "web-mapping-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 248,
+      "width": 360,
+      "height": 76,
+      "text": "Application identity and hosts",
+      "color": "1"
+    },
+    {
+      "id": "web-behavior",
+      "type": "text",
+      "x": 550,
+      "y": 522,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-mapping.md#web-behavior|Map functions, roles and normal requests manually]]"
+    },
+    {
+      "id": "web-artifacts",
+      "type": "text",
+      "x": 550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-mapping.md#web-artifacts|Inspect source, backups, configuration and repository artifacts]]"
+    },
+    {
+      "id": "web-content",
+      "type": "text",
+      "x": 550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-mapping.md#web-content|Discover directories and files with controlled response filtering]]"
+    },
+    {
+      "id": "web-mapping-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 626,
+      "width": 360,
+      "height": 76,
+      "text": "Functions, artifacts and content",
+      "color": "2"
+    },
+    {
+      "id": "web-parameters",
+      "type": "text",
+      "x": 550,
+      "y": 955,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-mapping.md#web-parameters|Map parameters, API methods, objects and writable properties]]"
+    },
+    {
+      "id": "web-mapping-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 948,
+      "width": 360,
+      "height": 76,
+      "text": "Inputs, objects and APIs",
+      "color": "3"
+    },
+    {
+      "id": "S12",
+      "type": "text",
+      "x": 550,
+      "y": 1166,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-mapping.md#S12|Map an authentication, session or multistep web flow]]"
+    },
+    {
+      "id": "web-mapping-family-3",
+      "type": "text",
+      "x": 20,
+      "y": 1159,
+      "width": 360,
+      "height": 76,
+      "text": "Conditional surfaces",
+      "color": "4"
+    },
+    {
+      "id": "topic-web-exploitation",
+      "type": "text",
+      "x": 1500,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Turn application weaknesses into access",
+      "color": "5"
+    },
+    {
+      "id": "web-traversal",
+      "type": "text",
+      "x": 2050,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-traversal|Read files through directory traversal]]"
+    },
+    {
+      "id": "web-php-source",
+      "type": "text",
+      "x": 2050,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-php-source|Disclose PHP source through an inclusion wrapper]]"
+    },
+    {
+      "id": "web-lfi-log",
+      "type": "text",
+      "x": 2050,
+      "y": 422,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-lfi-log|Turn controlled local file content into inclusion execution]]"
+    },
+    {
+      "id": "web-exploitation-family-0",
+      "type": "text",
+      "x": 1520,
+      "y": 304,
+      "width": 360,
+      "height": 76,
+      "text": "File read and interpreted inclusion",
+      "color": "1"
+    },
+    {
+      "id": "web-upload",
+      "type": "text",
+      "x": 2050,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-upload|Establish upload acceptance, storage and retrieval]]"
+    },
+    {
+      "id": "web-upload-exec",
+      "type": "text",
+      "x": 2050,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-upload-exec|Execute an uploaded file through a compatible handler]]"
+    },
+    {
+      "id": "web-upload-path",
+      "type": "text",
+      "x": 2050,
+      "y": 855,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-upload-path|Use upload path control to reach a useful consumer]]"
+    },
+    {
+      "id": "web-exploitation-family-1",
+      "type": "text",
+      "x": 1520,
+      "y": 737,
+      "width": 360,
+      "height": 76,
+      "text": "File writes and consuming handlers",
+      "color": "2"
+    },
+    {
+      "id": "web-command",
+      "type": "text",
+      "x": 2050,
+      "y": 1066,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-command|Prove visible or blind operating-system command injection]]"
+    },
+    {
+      "id": "sql-influence",
+      "type": "text",
+      "x": 2050,
+      "y": 1177,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#sql-influence|Establish SQL query influence and DBMS context]]"
+    },
+    {
+      "id": "sql-auth",
+      "type": "text",
+      "x": 2050,
+      "y": 1288,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#sql-auth|Test a SQL-backed authentication bypass]]"
+    },
+    {
+      "id": "sql-union",
+      "type": "text",
+      "x": 2050,
+      "y": 1399,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#sql-union|Extract data through UNION and visible SQL results]]"
+    },
+    {
+      "id": "sql-blind",
+      "type": "text",
+      "x": 2050,
+      "y": 1510,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#sql-blind|Infer SQL data through boolean or time-based differences]]"
+    },
+    {
+      "id": "sql-os",
+      "type": "text",
+      "x": 2050,
+      "y": 1621,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#sql-os|Convert database rights into a file or operating-system effect]]"
+    },
+    {
+      "id": "sql-oob",
+      "type": "text",
+      "x": 2050,
+      "y": 1732,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#sql-oob|Conditional: validate an out-of-band SQL request channel]]"
+    },
+    {
+      "id": "web-exploitation-family-2",
+      "type": "text",
+      "x": 1520,
+      "y": 1392,
+      "width": 360,
+      "height": 76,
+      "text": "Command and database injection",
+      "color": "3"
+    },
+    {
+      "id": "web-idor",
+      "type": "text",
+      "x": 2050,
+      "y": 1943,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-idor|Cross an object-ownership boundary]]"
+    },
+    {
+      "id": "web-authz",
+      "type": "text",
+      "x": 2050,
+      "y": 2054,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-authz|Cross role, function or session authorization boundaries]]"
+    },
+    {
+      "id": "web-mass-assignment",
+      "type": "text",
+      "x": 2050,
+      "y": 2165,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-mass-assignment|Modify a protected property through excessive writable fields]]"
+    },
+    {
+      "id": "web-xss",
+      "type": "text",
+      "x": 2050,
+      "y": 2276,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-xss|Execute browser code and validate a useful same-origin action]]"
+    },
+    {
+      "id": "web-exploitation-family-3",
+      "type": "text",
+      "x": 1520,
+      "y": 2102,
+      "width": 360,
+      "height": 82,
+      "text": "Application authorization and browser context",
+      "color": "4"
+    },
+    {
+      "id": "web-cms",
+      "type": "text",
+      "x": 2050,
+      "y": 2487,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-cms|Use WordPress component evidence and authorized administration features]]"
+    },
+    {
+      "id": "web-ssrf",
+      "type": "text",
+      "x": 2050,
+      "y": 2598,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-ssrf|Use server-side requests to inspect reachable internal behavior]]"
+    },
+    {
+      "id": "web-exploitation-family-4",
+      "type": "text",
+      "x": 1520,
+      "y": 2535,
+      "width": 360,
+      "height": 82,
+      "text": "Product features and server-side requests",
+      "color": "5"
+    },
+    {
+      "id": "web-ssti",
+      "type": "text",
+      "x": 2050,
+      "y": 2809,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-ssti|Prove server-side template evaluation and identify its engine]]"
+    },
+    {
+      "id": "web-xxe",
+      "type": "text",
+      "x": 2050,
+      "y": 2920,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-xxe|Use an XML parser's external-entity behavior for bounded file read]]"
+    },
+    {
+      "id": "web-nosql",
+      "type": "text",
+      "x": 2050,
+      "y": 3031,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-nosql|Test structured NoSQL operator injection with identity controls]]"
+    },
+    {
+      "id": "web-php-deserialization",
+      "type": "text",
+      "x": 2050,
+      "y": 3142,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-php-deserialization|Match PHP deserialization gadgets to installed dependencies]]"
+    },
+    {
+      "id": "web-yaml",
+      "type": "text",
+      "x": 2050,
+      "y": 3253,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-yaml|Validate unsafe YAML object construction]]"
+    },
+    {
+      "id": "web-shellshock",
+      "type": "text",
+      "x": 2050,
+      "y": 3364,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/web-exploitation.md#web-shellshock|Test Shellshock only through a confirmed CGI-to-Bash chain]]"
+    },
+    {
+      "id": "web-exploitation-family-5",
+      "type": "text",
+      "x": 1520,
+      "y": 3079,
+      "width": 360,
+      "height": 82,
+      "text": "Conditional parser, template and component paths",
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-web-mapping--web-mapping-family-0",
+      "fromNode": "topic-web-mapping",
+      "fromSide": "right",
+      "toNode": "web-mapping-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-mapping-family-0--web-identity",
+      "fromNode": "web-mapping-family-0",
+      "fromSide": "right",
+      "toNode": "web-identity",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-mapping-family-0--web-vhosts",
+      "fromNode": "web-mapping-family-0",
+      "fromSide": "right",
+      "toNode": "web-vhosts",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-mapping--web-mapping-family-1",
+      "fromNode": "topic-web-mapping",
+      "fromSide": "right",
+      "toNode": "web-mapping-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-mapping-family-1--web-behavior",
+      "fromNode": "web-mapping-family-1",
+      "fromSide": "right",
+      "toNode": "web-behavior",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-mapping-family-1--web-artifacts",
+      "fromNode": "web-mapping-family-1",
+      "fromSide": "right",
+      "toNode": "web-artifacts",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-mapping-family-1--web-content",
+      "fromNode": "web-mapping-family-1",
+      "fromSide": "right",
+      "toNode": "web-content",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-mapping--web-mapping-family-2",
+      "fromNode": "topic-web-mapping",
+      "fromSide": "right",
+      "toNode": "web-mapping-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-mapping-family-2--web-parameters",
+      "fromNode": "web-mapping-family-2",
+      "fromSide": "right",
+      "toNode": "web-parameters",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-mapping--web-mapping-family-3",
+      "fromNode": "topic-web-mapping",
+      "fromSide": "right",
+      "toNode": "web-mapping-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-mapping-family-3--S12",
+      "fromNode": "web-mapping-family-3",
+      "fromSide": "right",
+      "toNode": "S12",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-exploitation--web-exploitation-family-0",
+      "fromNode": "topic-web-exploitation",
+      "fromSide": "right",
+      "toNode": "web-exploitation-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-0--web-traversal",
+      "fromNode": "web-exploitation-family-0",
+      "fromSide": "right",
+      "toNode": "web-traversal",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-0--web-php-source",
+      "fromNode": "web-exploitation-family-0",
+      "fromSide": "right",
+      "toNode": "web-php-source",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-0--web-lfi-log",
+      "fromNode": "web-exploitation-family-0",
+      "fromSide": "right",
+      "toNode": "web-lfi-log",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-exploitation--web-exploitation-family-1",
+      "fromNode": "topic-web-exploitation",
+      "fromSide": "right",
+      "toNode": "web-exploitation-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-1--web-upload",
+      "fromNode": "web-exploitation-family-1",
+      "fromSide": "right",
+      "toNode": "web-upload",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-1--web-upload-exec",
+      "fromNode": "web-exploitation-family-1",
+      "fromSide": "right",
+      "toNode": "web-upload-exec",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-1--web-upload-path",
+      "fromNode": "web-exploitation-family-1",
+      "fromSide": "right",
+      "toNode": "web-upload-path",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-exploitation--web-exploitation-family-2",
+      "fromNode": "topic-web-exploitation",
+      "fromSide": "right",
+      "toNode": "web-exploitation-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-2--web-command",
+      "fromNode": "web-exploitation-family-2",
+      "fromSide": "right",
+      "toNode": "web-command",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-2--sql-influence",
+      "fromNode": "web-exploitation-family-2",
+      "fromSide": "right",
+      "toNode": "sql-influence",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-2--sql-auth",
+      "fromNode": "web-exploitation-family-2",
+      "fromSide": "right",
+      "toNode": "sql-auth",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-2--sql-union",
+      "fromNode": "web-exploitation-family-2",
+      "fromSide": "right",
+      "toNode": "sql-union",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-2--sql-blind",
+      "fromNode": "web-exploitation-family-2",
+      "fromSide": "right",
+      "toNode": "sql-blind",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-2--sql-os",
+      "fromNode": "web-exploitation-family-2",
+      "fromSide": "right",
+      "toNode": "sql-os",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-2--sql-oob",
+      "fromNode": "web-exploitation-family-2",
+      "fromSide": "right",
+      "toNode": "sql-oob",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-exploitation--web-exploitation-family-3",
+      "fromNode": "topic-web-exploitation",
+      "fromSide": "right",
+      "toNode": "web-exploitation-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-3--web-idor",
+      "fromNode": "web-exploitation-family-3",
+      "fromSide": "right",
+      "toNode": "web-idor",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-3--web-authz",
+      "fromNode": "web-exploitation-family-3",
+      "fromSide": "right",
+      "toNode": "web-authz",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-3--web-mass-assignment",
+      "fromNode": "web-exploitation-family-3",
+      "fromSide": "right",
+      "toNode": "web-mass-assignment",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-3--web-xss",
+      "fromNode": "web-exploitation-family-3",
+      "fromSide": "right",
+      "toNode": "web-xss",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-exploitation--web-exploitation-family-4",
+      "fromNode": "topic-web-exploitation",
+      "fromSide": "right",
+      "toNode": "web-exploitation-family-4",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-4--web-cms",
+      "fromNode": "web-exploitation-family-4",
+      "fromSide": "right",
+      "toNode": "web-cms",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-4--web-ssrf",
+      "fromNode": "web-exploitation-family-4",
+      "fromSide": "right",
+      "toNode": "web-ssrf",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-web-exploitation--web-exploitation-family-5",
+      "fromNode": "topic-web-exploitation",
+      "fromSide": "right",
+      "toNode": "web-exploitation-family-5",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-5--web-ssti",
+      "fromNode": "web-exploitation-family-5",
+      "fromSide": "right",
+      "toNode": "web-ssti",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-5--web-xxe",
+      "fromNode": "web-exploitation-family-5",
+      "fromSide": "right",
+      "toNode": "web-xxe",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-5--web-nosql",
+      "fromNode": "web-exploitation-family-5",
+      "fromSide": "right",
+      "toNode": "web-nosql",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-5--web-php-deserialization",
+      "fromNode": "web-exploitation-family-5",
+      "fromSide": "right",
+      "toNode": "web-php-deserialization",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-5--web-yaml",
+      "fromNode": "web-exploitation-family-5",
+      "fromSide": "right",
+      "toNode": "web-yaml",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-exploitation-family-5--web-shellshock",
+      "fromNode": "web-exploitation-family-5",
+      "fromSide": "right",
+      "toNode": "web-shellshock",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "web-identity--web-vhosts",
+      "fromNode": "web-identity",
+      "fromSide": "bottom",
+      "toNode": "web-vhosts",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Redirect to a different hostname",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-identity--web-parameters",
+      "fromNode": "web-identity",
+      "fromSide": "bottom",
+      "toNode": "web-parameters",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A login, upload or object endpoint",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-content--web-artifacts",
+      "fromNode": "web-content",
+      "fromSide": "bottom",
+      "toNode": "web-artifacts",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A backup, config, source or repository path",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-content--web-parameters",
+      "fromNode": "web-content",
+      "fromSide": "bottom",
+      "toNode": "web-parameters",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A new application function",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-vhosts--web-behavior",
+      "fromNode": "web-vhosts",
+      "fromSide": "bottom",
+      "toNode": "web-behavior",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A host has a distinct response",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-command--web-parameters",
+      "fromNode": "web-command",
+      "fromSide": "bottom",
+      "toNode": "web-parameters",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-traversal--web-php-source",
+      "fromNode": "web-traversal",
+      "fromSide": "bottom",
+      "toNode": "web-php-source",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A PHP include sink accepts a filter wrapper",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-traversal--web-parameters",
+      "fromNode": "web-traversal",
+      "fromSide": "bottom",
+      "toNode": "web-parameters",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-upload--web-upload-exec",
+      "fromNode": "web-upload",
+      "fromSide": "bottom",
+      "toNode": "web-upload-exec",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A controlled file is stored and retrieved",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-upload--web-upload-path",
+      "fromNode": "web-upload",
+      "fromSide": "bottom",
+      "toNode": "web-upload-path",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "The upload destination path is controllable",
+      "color": "#74829a"
+    },
+    {
+      "id": "web-upload--web-authz",
+      "fromNode": "web-upload",
+      "fromSide": "bottom",
+      "toNode": "web-authz",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    }
+  ]
+}

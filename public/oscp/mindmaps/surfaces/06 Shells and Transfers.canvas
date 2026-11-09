@@ -1,0 +1,314 @@
+{
+  "nodes": [
+    {
+      "id": "group-sessions-transfers",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 1922,
+      "label": "Establish sessions and move files",
+      "color": "5"
+    },
+    {
+      "id": "topic-sessions-transfers",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Establish sessions and move files",
+      "color": "5"
+    },
+    {
+      "id": "session-proof",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#session-proof|Verify command execution, host and represented identity]]"
+    },
+    {
+      "id": "session-reverse",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#session-reverse|Connect a Linux reverse shell through an available interpreter]]"
+    },
+    {
+      "id": "session-windows",
+      "type": "text",
+      "x": 550,
+      "y": 422,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#session-windows|Use Windows authenticated access or a PowerShell command channel]]"
+    },
+    {
+      "id": "session-bind",
+      "type": "text",
+      "x": 550,
+      "y": 533,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#session-bind|Use a bind shell when the target can accept inbound connections]]"
+    },
+    {
+      "id": "sessions-transfers-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 359,
+      "width": 360,
+      "height": 76,
+      "text": "Execution and connection direction",
+      "color": "1"
+    },
+    {
+      "id": "payload-generate",
+      "type": "text",
+      "x": 550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#payload-generate|Generate a payload matching OS, process, format and handler]]"
+    },
+    {
+      "id": "session-tty",
+      "type": "text",
+      "x": 550,
+      "y": 855,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#session-tty|Repair a limited Linux terminal]]"
+    },
+    {
+      "id": "sessions-transfers-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 792,
+      "width": 360,
+      "height": 76,
+      "text": "Payload and terminal compatibility",
+      "color": "2"
+    },
+    {
+      "id": "transfer-http",
+      "type": "text",
+      "x": 550,
+      "y": 1066,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#transfer-http|Transfer over HTTP using Linux or Windows clients]]"
+    },
+    {
+      "id": "transfer-scp",
+      "type": "text",
+      "x": 550,
+      "y": 1177,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#transfer-scp|Copy files through an authenticated SSH service]]"
+    },
+    {
+      "id": "transfer-smb",
+      "type": "text",
+      "x": 550,
+      "y": 1288,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#transfer-smb|Move Windows files through an authenticated SMB share]]"
+    },
+    {
+      "id": "transfer-stream",
+      "type": "text",
+      "x": 550,
+      "y": 1399,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#transfer-stream|Stream a file over a direct TCP connection]]"
+    },
+    {
+      "id": "transfer-text",
+      "type": "text",
+      "x": 550,
+      "y": 1510,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#transfer-text|Move a small artifact through a text-only channel]]"
+    },
+    {
+      "id": "transfer-ftp",
+      "type": "text",
+      "x": 550,
+      "y": 1621,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/sessions-transfers.md#transfer-ftp|Use a temporary FTP transfer as a constrained fallback]]"
+    },
+    {
+      "id": "sessions-transfers-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 1336,
+      "width": 360,
+      "height": 76,
+      "text": "File transport and integrity",
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-sessions-transfers--sessions-transfers-family-0",
+      "fromNode": "topic-sessions-transfers",
+      "fromSide": "right",
+      "toNode": "sessions-transfers-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-0--session-proof",
+      "fromNode": "sessions-transfers-family-0",
+      "fromSide": "right",
+      "toNode": "session-proof",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-0--session-reverse",
+      "fromNode": "sessions-transfers-family-0",
+      "fromSide": "right",
+      "toNode": "session-reverse",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-0--session-windows",
+      "fromNode": "sessions-transfers-family-0",
+      "fromSide": "right",
+      "toNode": "session-windows",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-0--session-bind",
+      "fromNode": "sessions-transfers-family-0",
+      "fromSide": "right",
+      "toNode": "session-bind",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-sessions-transfers--sessions-transfers-family-1",
+      "fromNode": "topic-sessions-transfers",
+      "fromSide": "right",
+      "toNode": "sessions-transfers-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-1--payload-generate",
+      "fromNode": "sessions-transfers-family-1",
+      "fromSide": "right",
+      "toNode": "payload-generate",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-1--session-tty",
+      "fromNode": "sessions-transfers-family-1",
+      "fromSide": "right",
+      "toNode": "session-tty",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-sessions-transfers--sessions-transfers-family-2",
+      "fromNode": "topic-sessions-transfers",
+      "fromSide": "right",
+      "toNode": "sessions-transfers-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-2--transfer-http",
+      "fromNode": "sessions-transfers-family-2",
+      "fromSide": "right",
+      "toNode": "transfer-http",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-2--transfer-scp",
+      "fromNode": "sessions-transfers-family-2",
+      "fromSide": "right",
+      "toNode": "transfer-scp",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-2--transfer-smb",
+      "fromNode": "sessions-transfers-family-2",
+      "fromSide": "right",
+      "toNode": "transfer-smb",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-2--transfer-stream",
+      "fromNode": "sessions-transfers-family-2",
+      "fromSide": "right",
+      "toNode": "transfer-stream",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-2--transfer-text",
+      "fromNode": "sessions-transfers-family-2",
+      "fromSide": "right",
+      "toNode": "transfer-text",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "sessions-transfers-family-2--transfer-ftp",
+      "fromNode": "sessions-transfers-family-2",
+      "fromSide": "right",
+      "toNode": "transfer-ftp",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "session-proof--session-reverse",
+      "fromNode": "session-proof",
+      "fromSide": "bottom",
+      "toNode": "session-reverse",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Commands execute as the expected target identity",
+      "color": "#74829a"
+    },
+    {
+      "id": "transfer-http--transfer-scp",
+      "fromNode": "transfer-http",
+      "fromSide": "bottom",
+      "toNode": "transfer-scp",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "HTTP is unavailable but SSH file access works",
+      "color": "#74829a"
+    },
+    {
+      "id": "transfer-http--transfer-smb",
+      "fromNode": "transfer-http",
+      "fromSide": "bottom",
+      "toNode": "transfer-smb",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "SMB is the usable authenticated channel",
+      "color": "#74829a"
+    }
+  ]
+}

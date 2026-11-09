@@ -1,0 +1,4556 @@
+{
+  "nodes": [
+    {
+      "id": "topic-group:linux-privesc",
+      "type": "group",
+      "x": 0,
+      "y": 420,
+      "width": 4400,
+      "height": 30042,
+      "label": "Escalate privileges on Linux",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-state",
+      "type": "group",
+      "x": 35,
+      "y": 5016,
+      "width": 4080,
+      "height": 2182,
+      "label": "Establish Linux state and choose an escalation candidate",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-permissions",
+      "type": "group",
+      "x": 35,
+      "y": 7323,
+      "width": 4080,
+      "height": 1448,
+      "label": "Prove effective file, directory, ACL and mount control",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-secrets",
+      "type": "group",
+      "x": 35,
+      "y": 8896,
+      "width": 4080,
+      "height": 1520,
+      "label": "Recover credentials from Linux user, service and process trails",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-sudo",
+      "type": "group",
+      "x": 35,
+      "y": 10541,
+      "width": 4080,
+      "height": 1376,
+      "label": "Use an allowed sudo operation to cross a privilege boundary",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-preload",
+      "type": "group",
+      "x": 35,
+      "y": 12042,
+      "width": 4080,
+      "height": 1328,
+      "label": "Load a controlled library through a permitted sudo environment",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-suid",
+      "type": "group",
+      "x": 35,
+      "y": 13495,
+      "width": 4080,
+      "height": 1400,
+      "label": "Use a SUID or SGID program's exposed privileged primitive",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-capabilities",
+      "type": "group",
+      "x": 35,
+      "y": 15020,
+      "width": 4080,
+      "height": 1352,
+      "label": "Use a file capability that enables a specific privileged operation",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-jobs",
+      "type": "group",
+      "x": 35,
+      "y": 16497,
+      "width": 4080,
+      "height": 1616,
+      "label": "Control a script, binary or configuration consumed by a privileged job/service",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-path",
+      "type": "group",
+      "x": 35,
+      "y": 18238,
+      "width": 4080,
+      "height": 1472,
+      "label": "Hijack an unqualified helper through controlled PATH resolution",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-wildcard",
+      "type": "group",
+      "x": 35,
+      "y": 19835,
+      "width": 4080,
+      "height": 1376,
+      "label": "Turn wildcard-expanded filenames into privileged command options",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-policy",
+      "type": "group",
+      "x": 35,
+      "y": 21336,
+      "width": 4080,
+      "height": 1352,
+      "label": "Change a writable account or privilege-policy file",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-containers",
+      "type": "group",
+      "x": 35,
+      "y": 22813,
+      "width": 4080,
+      "height": 1424,
+      "label": "Use privileged group, daemon or container-management control",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-mounts",
+      "type": "group",
+      "x": 35,
+      "y": 24362,
+      "width": 4080,
+      "height": 1424,
+      "label": "Exploit a permission-backed mount, NFS mapping or local service",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-library",
+      "type": "group",
+      "x": 35,
+      "y": 25911,
+      "width": 4080,
+      "height": 1352,
+      "label": "Control a privileged program's shared-library resolution",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-kernel",
+      "type": "group",
+      "x": 35,
+      "y": 27388,
+      "width": 4080,
+      "height": 1472,
+      "label": "Select an evidence-matched Linux software or kernel exploit",
+      "color": "1"
+    },
+    {
+      "id": "method-group:linux-enumerators",
+      "type": "group",
+      "x": 35,
+      "y": 28985,
+      "width": 4080,
+      "height": 1352,
+      "label": "Use enumeration tools to generate manually testable candidates",
+      "color": "1"
+    },
+    {
+      "id": "topic:linux-privesc",
+      "type": "text",
+      "x": 60,
+      "y": 440,
+      "width": 1800,
+      "height": 140,
+      "text": "# Escalate privileges on Linux\n\nStart with a low-privileged Linux command channel. No sudo rule, writable privileged script or usable SUID binary is assumed.",
+      "color": "1"
+    },
+    {
+      "id": "flow:linux-privesc:home",
+      "type": "text",
+      "x": 60,
+      "y": 620,
+      "width": 350,
+      "height": 240,
+      "text": "## Investigation flow\n\nEscalate privileges on Linux\n\n · \n\nBranches describe evidence and missing conditions. Follow one useful lead, then return to unfinished coverage.",
+      "color": "6"
+    },
+    {
+      "id": "flow:linux-privesc:check-0",
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "width": 760,
+      "height": 492,
+      "text": "## Identify the session, then run LinPEAS early\n\nAfter checking id, architecture and shell availability, transfer a trusted reviewed LinPEAS copy using the transfer procedure. The sh invocation does not need an executable bit. Save output; use the local -h before selecting optional flags.\n\n```bash\nid\nuname -m\ncommand -v bash python3\nls -ld /tmp\n```\n\n```bash\nsh ./linpeas.sh | tee linpeas.txt\n```\n\n**Use enumeration tools to generate manually testable candidates — on this canvas**"
+    },
+    {
+      "id": "flow:linux-privesc:check-0-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### sudo/NOPASSWD or an allowed binary\n\nRun sudo -l and compare run-as, exact path and permitted arguments with the chosen escape.\n\n**Use an allowed sudo operation to cross a privilege boundary — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-0-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 869,
+      "width": 610,
+      "height": 180,
+      "text": "### A root-owned SUID binary\n\nCheck the exact file, mount flags and its available privileged operation.\n\n**Use a SUID or SGID program's exposed privileged primitive — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-0-finding-2",
+      "type": "text",
+      "x": 1610,
+      "y": 1094,
+      "width": 610,
+      "height": 180,
+      "text": "### A useful file capability\n\nMatch the capability to the exact executable operation and mount.\n\n**Use a file capability that enables a specific privileged operation — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-0-finding-3",
+      "type": "text",
+      "x": 1610,
+      "y": 1319,
+      "width": 610,
+      "height": 180,
+      "text": "### A password, key or application config\n\nRead the source file and identify which account/service it belongs to.\n\n**Recover credentials from Linux user, service and process trails — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-0-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nLinPEAS cannot run or shows no usable finding: use the native identity/permissions checks; quiet output does not prove no escalation.\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:linux-privesc:check-1",
+      "type": "text",
+      "x": 560,
+      "y": 1724,
+      "width": 760,
+      "height": 324,
+      "text": "## Check sudo rules against the actual binary\n\nUse only the operation permitted by the entire rule. Select the matching GTFOBins mode/build instead of trying every example.\n\n```bash\nsudo -n -l 2>&1\nsudo -l\n```\n\n**Use an allowed sudo operation to cross a privilege boundary — on this canvas**"
+    },
+    {
+      "id": "flow:linux-privesc:check-1-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1724,
+      "width": 610,
+      "height": 204,
+      "text": "### (root) NOPASSWD permits a useful interpreter/helper\n\nCheck argument restrictions and privilege retention, then use that exact permitted invocation.\n\n**Use an allowed sudo operation to cross a privilege boundary — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-1-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 1973,
+      "width": 610,
+      "height": 204,
+      "text": "### LD_PRELOAD is explicitly permitted/preserved\n\nVerify a dynamically linked allowed program and the variable-setting permission.\n\n**Load a controlled library through a permitted sudo environment — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-1-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1724,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nNo useful sudo rule: check SUID/SGID and capabilities; do not keep trying sudo payloads.\n\n**Use a SUID or SGID program's exposed privileged primitive — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:linux-privesc:check-2",
+      "type": "text",
+      "x": 560,
+      "y": 2402,
+      "width": 760,
+      "height": 300,
+      "text": "## Catch short-lived root jobs with pspy\n\nUse a reviewed binary matching the target architecture; keep it running long enough to observe the suspected schedule. Stop after collecting the needed events.\n\n```bash\n./pspy64\n```\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**"
+    },
+    {
+      "id": "flow:linux-privesc:check-2-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 2402,
+      "width": 610,
+      "height": 204,
+      "text": "### UID=0 repeatedly invokes a script under /opt or another path\n\nCheck the script and each parent with namei/stat/getfacl, then identify the schedule/trigger.\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-2-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 2651,
+      "width": 610,
+      "height": 180,
+      "text": "### A privileged job invokes a helper without an absolute path\n\nInspect the real PATH and a writable directory searched first.\n\n**Hijack an unqualified helper through controlled PATH resolution — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-2-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 2402,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nNo event was observed: inspect cron/timers/services directly rather than assuming no privileged job exists.\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:linux-privesc:check-3",
+      "type": "text",
+      "x": 560,
+      "y": 3056,
+      "width": 760,
+      "height": 348,
+      "text": "## Test SUID/capability findings manually\n\nUse native discovery alongside the tool output; a flagged executable is only useful if it retains a relevant privilege.\n\n```bash\nfind / -xdev -type f -perm -4000 -ls 2>/dev/null\nfind / -xdev -type f -perm -2000 -ls 2>/dev/null\nfindmnt -T /PATH/TO/BINARY\n```\n\n**Use a SUID or SGID program's exposed privileged primitive — on this canvas**"
+    },
+    {
+      "id": "flow:linux-privesc:check-3-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 3056,
+      "width": 610,
+      "height": 180,
+      "text": "### A root-owned SUID program exposes a usable operation\n\nCheck nosuid, exact build and effective identity after that operation.\n\n**Use a SUID or SGID program's exposed privileged primitive — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-3-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 3281,
+      "width": 610,
+      "height": 180,
+      "text": "### An executable has a useful file capability\n\nCheck the named capability and its effective operation under this mount.\n\n**Use a file capability that enables a specific privileged operation — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-3-finding-2",
+      "type": "text",
+      "x": 1610,
+      "y": 3506,
+      "width": 610,
+      "height": 180,
+      "text": "### A root-consumed file/parent is writable\n\nValidate the real consumer and trigger before modification.\n\n**Prove effective file, directory, ACL and mount control — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:linux-privesc:check-3-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 3056,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nNo useful privileged executable: return to secrets, scheduled consumers, mounts and local-only services.\n\n**Recover credentials from Linux user, service and process trails — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "notes:linux-privesc",
+      "type": "file",
+      "file": "notes/linux-privesc.md",
+      "x": 60,
+      "y": 3916,
+      "width": 2100,
+      "height": 850
+    },
+    {
+      "id": "notes-label:linux-privesc",
+      "type": "text",
+      "x": 2350,
+      "y": 3916,
+      "width": 1400,
+      "height": 180,
+      "text": "## Full procedures and alternatives\n\nThe adjacent embedded note is readable here. Scroll inside it for complete variants. Commands and decisions continue below.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-state:start",
+      "type": "text",
+      "x": 70,
+      "y": 5191,
+      "width": 350,
+      "height": 250,
+      "text": "## Establish Linux state and choose an escalation candidate\n\nA new Linux foothold or an identity/privilege change",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-state:discover",
+      "type": "text",
+      "x": 570,
+      "y": 5151,
+      "width": 780,
+      "height": 252,
+      "text": "### Discover\n\n```text\nid\nfindmnt\nps auxww\nsudo -l\n```"
+    },
+    {
+      "id": "method:linux-state:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 5131,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe sudo rule and privileged backup consumer open different candidate families; neither should be replaced by an automatic kernel choice.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-state:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 5377,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nFor each candidate establish exact permitted operation/object, run-as identity and trigger.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-state:checks",
+      "type": "text",
+      "x": 570,
+      "y": 5463,
+      "width": 780,
+      "height": 252,
+      "text": "### Validate the condition\n\n```bash\nhostname\nid\nuname -a\ncat /etc/os-release\nfindmnt\nsudo -l\n```"
+    },
+    {
+      "id": "method:linux-state:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 5081,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA candidate's complete permission/consumer chain is validated: choose that specific method.\n\n**Verify:** Record effective UID/groups, host/namespace and the exact candidate permission; re-check identity after every claimed escalation.\n\n[[notes/linux-privesc.md#linux-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-state:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 5422,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA highlighted process belongs to the same low user: reject its assumed privilege gain.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-state:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 5643,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nPermission-denied inventory is incomplete visibility; use known application paths and supported built-ins.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-state:action",
+      "type": "text",
+      "x": 3130,
+      "y": 5081,
+      "width": 900,
+      "height": 396,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nhostname; id; groups\nuname -a; cat /etc/os-release; getconf LONG_BIT\npwd; umask; env\nip addr; ip route; ss -lntup; ss -lxnp\nps auxf\nmount; findmnt; lsblk; df -hT\nsudo -n -l 2>&1\nsudo -l\n```\n\n[[notes/linux-privesc.md#linux-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-state:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 5567,
+      "width": 620,
+      "height": 252,
+      "text": "### Prove effective file, directory, ACL and mount control\n\n**When:** A root-consumed file or directory appears writable\n\n**Still required:** Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately\n\n**Prove effective file, directory, ACL and mount control — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-state:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 5874,
+      "width": 620,
+      "height": 252,
+      "text": "### Use an allowed sudo operation to cross a privilege boundary\n\n**When:** sudo -l grants an operation under a more useful identity\n\n**Still required:** Exact executable/run-as/argument rule permits a useful primitive; password tags, environment and policy do not invalidate it\n\n**Use an allowed sudo operation to cross a privilege boundary — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-state:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 6181,
+      "width": 620,
+      "height": 300,
+      "text": "### Control a script, binary or configuration consumed by a privileged job/service\n\n**When:** Root-owned cron, systemd or recurring process activity uses a controllable object\n\n**Still required:** Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-state:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 6536,
+      "width": 620,
+      "height": 276,
+      "text": "### Use privileged group, daemon or container-management control\n\n**When:** Membership or socket ACLs permit controlling a rootful daemon or useful session\n\n**Still required:** Effective daemon/API permission, correct rootful/rootless or privileged mode, available resources and a host-affecting operation\n\n**Use privileged group, daemon or container-management control — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-state:next-4",
+      "type": "text",
+      "x": 3130,
+      "y": 6867,
+      "width": 620,
+      "height": 276,
+      "text": "### Select an evidence-matched Linux software or kernel exploit\n\n**When:** Permission/credential paths are insufficient and an exact affected build/configuration is present\n\n**Still required:** Vulnerable package/kernel state, architecture, mitigations, namespaces and documented exploit-specific conditions\n\n**Select an evidence-matched Linux software or kernel exploit — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-permissions:start",
+      "type": "text",
+      "x": 70,
+      "y": 7498,
+      "width": 350,
+      "height": 250,
+      "text": "## Prove effective file, directory, ACL and mount control\n\nA root-consumed file or directory appears writable",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-permissions:discover",
+      "type": "text",
+      "x": 570,
+      "y": 7458,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nnamei -l /PATH/TO/OBJECT\ngetfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT\nfindmnt -T /PATH/TO/OBJECT\n```"
+    },
+    {
+      "id": "method:linux-permissions:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 7438,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nParent replacement can provide a control primitive even when the existing file's write bit is absent.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-permissions:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 7684,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nRun namei -l, stat and getfacl on the exact path and its parents, then findmnt -T for ro/noexec/nosuid. Check the identity and trigger of the process that uses this path; write permission alone is not execution.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-permissions:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 7388,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe precise object can be replaced and is consumed under a higher identity: choose that control path.\n\n**Verify:** Prove the specific read/write/replace action and consumer path; world-writable alone is not the complete escalation chain.\n\n[[notes/linux-privesc.md#linux-permissions|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-permissions:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 7729,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nParent/file rights do not grant the needed operation: reject that proposed write.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-permissions:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 7950,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nAn ACL listing without effective trustee/mount context leaves control unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-permissions:action",
+      "type": "text",
+      "x": 3130,
+      "y": 7388,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnamei -l /PATH/TO/OBJECT\nstat /PATH/TO/OBJECT /PATH/TO/PARENT\ngetfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null\nfindmnt -T /PATH/TO/OBJECT -o TARGET,SOURCE,FSTYPE,OPTIONS\n```\n\n[[notes/linux-privesc.md#linux-permissions|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-permissions:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 7778,
+      "width": 620,
+      "height": 300,
+      "text": "### Control a script, binary or configuration consumed by a privileged job/service\n\n**When:** Root-owned cron, systemd or recurring process activity uses a controllable object\n\n**Still required:** Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-permissions:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 8133,
+      "width": 620,
+      "height": 276,
+      "text": "### Control a privileged program's shared-library resolution\n\n**When:** A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path\n\n**Still required:** Actual privileged load from a controlled location, matching ABI/name and required symbols, plus a trigger\n\n**Control a privileged program's shared-library resolution — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-permissions:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 8464,
+      "width": 620,
+      "height": 252,
+      "text": "### Change a writable account or privilege-policy file\n\n**When:** Account metadata or a privilege-policy file appears writable\n\n**Still required:** Effective write/replace permission, known file syntax and a useful identity/policy consumer; preserve the original\n\n**Change a writable account or privilege-policy file — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-secrets:start",
+      "type": "text",
+      "x": 70,
+      "y": 9071,
+      "width": 350,
+      "height": 250,
+      "text": "## Recover credentials from Linux user, service and process trails\n\nReadable configuration, shell history, environment, process arguments or session sockets",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-secrets:discover",
+      "type": "text",
+      "x": 570,
+      "y": 9031,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nps auxww\nhistory\nfind /opt /var/www /srv -maxdepth 3 -type f -readable 2>/dev/null\n```"
+    },
+    {
+      "id": "method:linux-secrets:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 9011,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn actual service's readable configuration supplies an identity-labelled secret candidate.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-secrets:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 9257,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nRead the named config/history/process artifact and record the user, service and host it belongs to. Classify a recovered password/key, test one matching service context and verify the accepted identity before trying reuse elsewhere.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-secrets:checks",
+      "type": "text",
+      "x": 570,
+      "y": 9319,
+      "width": 780,
+      "height": 204,
+      "text": "### Validate the condition\n\n```bash\nhistory\nps auxww\nenv\nfind /opt /var/www /srv -maxdepth 3 -type f -readable 2>/dev/null\n```"
+    },
+    {
+      "id": "method:linux-secrets:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 8961,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe secret works in its verified identity/service context: use that access and re-enumerate.\n\n**Verify:** Record source, exact material type and validated identity/service; keep real secrets in private lab records.\n\n[[notes/linux-privesc.md#linux-secrets|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-secrets:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 9302,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe value is a stale example and no longer accepted: reject that credential pairing.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-secrets:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 9523,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA token-like string without service/account context requires provenance work before reuse.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-secrets:action",
+      "type": "text",
+      "x": 3130,
+      "y": 8961,
+      "width": 900,
+      "height": 396,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nhistory 2>/dev/null\nfind /home /root -maxdepth 3 -type f \\\n  \\( -name '.*history' -o -name '*.conf' -o -name '*.ini' -o -name '*.env' \\\n     -o -name 'id_*' -o -name '*.pem' -o -name '*.key' -o -name '*.bak' \\) \\\n  -readable 2>/dev/null\n\ngrep -RniE 'pass(word)?|secret|token|api[_-]?key|connection(string)?' \\\n  /var/www /opt /srv /etc 2>/dev/null | head -n 200\n```\n\n[[notes/linux-privesc.md#linux-secrets|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-secrets:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 9447,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-secrets:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 9778,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-secrets:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 10085,
+      "width": 620,
+      "height": 276,
+      "text": "### Use MySQL/MariaDB data and file primitives\n\n**When:** A MySQL-compatible service and valid application/database credentials\n\n**Still required:** Database authentication and exact schema/file privileges; secure_file_priv and server filesystem identity constrain file actions\n\n[[tracks/02 Services.canvas|Use MySQL/MariaDB data and file primitives → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-sudo:start",
+      "type": "text",
+      "x": 70,
+      "y": 10716,
+      "width": 350,
+      "height": 250,
+      "text": "## Use an allowed sudo operation to cross a privilege boundary\n\nsudo -l grants an operation under a more useful identity",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-sudo:discover",
+      "type": "text",
+      "x": 570,
+      "y": 10676,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nsudo -n -l 2>&1\nsudo -l\n```"
+    },
+    {
+      "id": "method:linux-sudo:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 10656,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe rule permits that exact program as root; its documented privileged operation becomes a candidate.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-sudo:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 10902,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nRead sudo -l: match the run-as user, exact executable and allowed arguments. Check NOPASSWD/password access and NOEXEC/environment restrictions; choose only the GTFOBins operation that the full rule permits, then verify id.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-sudo:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 10606,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe allowed invocation exposes a useful operation and its effect is verified: choose that sudo method.\n\n**Verify:** Verify the executed run-as identity and effective UID; preserve the matching rule and successful operation.\n\n[[notes/linux-privesc.md#linux-sudo|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-sudo:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 10947,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOnly a fixed harmless argument pattern is permitted: reject the unrestricted escape assumption.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-sudo:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 11168,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA password-required response does not show the rule; obtain the legitimate credential/context before deciding.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-sudo:action",
+      "type": "text",
+      "x": 3130,
+      "y": 10606,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nsudo -n -l 2>&1\nsudo -l\nsudo --version\n```\n\n[[notes/linux-privesc.md#linux-sudo|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-sudo:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 10972,
+      "width": 620,
+      "height": 252,
+      "text": "### Load a controlled library through a permitted sudo environment\n\n**When:** A sudo rule explicitly preserves or permits a loader variable\n\n**Still required:** Allowed variable setting/preservation, a dynamically linked permitted executable and a loader path that honors it\n\n**Load a controlled library through a permitted sudo environment — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-sudo:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 11279,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-sudo:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 11586,
+      "width": 620,
+      "height": 276,
+      "text": "### Recover credentials from Linux user, service and process trails\n\n**When:** Readable configuration, shell history, environment, process arguments or session sockets\n\n**Still required:** Read access to the artifact; exact account/service context; session/agent access must include a usable live identity\n\n**Recover credentials from Linux user, service and process trails — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-preload:start",
+      "type": "text",
+      "x": 70,
+      "y": 12217,
+      "width": 350,
+      "height": 250,
+      "text": "## Load a controlled library through a permitted sudo environment\n\nA sudo rule explicitly preserves or permits a loader variable",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-preload:discover",
+      "type": "text",
+      "x": 570,
+      "y": 12177,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nsudo -l\nfile /ALLOWED/PROGRAM\nreadelf -l /ALLOWED/PROGRAM\n```"
+    },
+    {
+      "id": "method:linux-preload:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 12157,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nExplicit environment permission plus a compatible dynamic consumer suggests a loader-injection candidate.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-preload:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 12403,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nConfirm SETENV or explicit LD_PRELOAD preservation in sudo -l and a dynamically linked allowed program. Use only the permitted environment form; inspect the resulting id rather than assuming the shared library ran as root.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-preload:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 12107,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe permitted loader consumes the chosen library and its effect runs under the expected identity: select this route.\n\n**Verify:** Require the library's actual effect and effective identity; a successful compile alone proves nothing about the loader.\n\n[[notes/linux-privesc.md#linux-preload|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-preload:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 12448,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nThe binary is static or the variable is sanitized: reject this preload chain.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-preload:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 12645,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nSETENV alone without compatible consumer/loader evidence leaves the route incomplete.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-preload:action",
+      "type": "text",
+      "x": 3130,
+      "y": 12107,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nsudo -l | grep -E 'SETENV|env_keep.*LD_PRELOAD'\n```\n\n[[notes/linux-privesc.md#linux-preload|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-preload:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 12425,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-preload:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 12732,
+      "width": 620,
+      "height": 252,
+      "text": "### Use an allowed sudo operation to cross a privilege boundary\n\n**When:** sudo -l grants an operation under a more useful identity\n\n**Still required:** Exact executable/run-as/argument rule permits a useful primitive; password tags, environment and policy do not invalidate it\n\n**Use an allowed sudo operation to cross a privilege boundary — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-preload:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 13039,
+      "width": 620,
+      "height": 276,
+      "text": "### Control a privileged program's shared-library resolution\n\n**When:** A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path\n\n**Still required:** Actual privileged load from a controlled location, matching ABI/name and required symbols, plus a trigger\n\n**Control a privileged program's shared-library resolution — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-suid:start",
+      "type": "text",
+      "x": 70,
+      "y": 13670,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a SUID or SGID program's exposed privileged primitive\n\nA nonstandard or dangerous privileged executable",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-suid:discover",
+      "type": "text",
+      "x": 570,
+      "y": 13630,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nfind / -xdev -type f -perm -4000 -ls 2>/dev/null\nfind / -xdev -type f -perm -2000 -ls 2>/dev/null\nfile /PATH/TO/BINARY\n```"
+    },
+    {
+      "id": "method:linux-suid:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 13610,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe s bits identify an execution credential mechanism; nonstandard behavior warrants inspection but is not a vulnerability itself.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-suid:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 13856,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nRun stat on the flagged executable and findmnt -T on its path. Check the SUID owner, nosuid and exact binary behavior; after a permitted operation run id to see whether the elevated effective UID was retained.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-suid:checks",
+      "type": "text",
+      "x": 570,
+      "y": 13918,
+      "width": 780,
+      "height": 180,
+      "text": "### Validate the condition\n\n```bash\nfind / -xdev -type f -perm -4000 -ls 2>/dev/null\nfind / -xdev -type f -perm -2000 -ls 2>/dev/null\nfindmnt -T /PATH/TO/BINARY\n```"
+    },
+    {
+      "id": "method:linux-suid:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 13560,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe program exposes a permitted privileged read/write/exec operation: choose that exact mode.\n\n**Verify:** Verify effective IDs and the exact privileged operation; a real UID or prompt label alone is insufficient.\n\n[[notes/linux-privesc.md#linux-suid|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-suid:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 13901,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nIt drops privilege before the controllable operation or runs on nosuid: reject that assumed transition.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-suid:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 14122,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nOnly the SUID listing is known: inspect its actual behavior and constraints before choosing an escape.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-suid:action",
+      "type": "text",
+      "x": 3130,
+      "y": 13560,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nfind / -xdev -type f -perm -4000 -ls 2>/dev/null\nfind / -xdev -type f -perm -2000 -ls 2>/dev/null\ngetcap -r / 2>/dev/null\n```\n\n[[notes/linux-privesc.md#linux-suid|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-suid:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 13926,
+      "width": 620,
+      "height": 276,
+      "text": "### Hijack an unqualified helper through controlled PATH resolution\n\n**When:** A privileged program/job invokes a helper without an absolute path\n\n**Still required:** A controlled directory precedes the real helper in the consumer's effective PATH; execution preserves useful privilege and a trigger exists\n\n**Hijack an unqualified helper through controlled PATH resolution — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-suid:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 14257,
+      "width": 620,
+      "height": 252,
+      "text": "### Use a file capability that enables a specific privileged operation\n\n**When:** An interpreter/helper has an effective high-value capability\n\n**Still required:** The exact capability is effective in the execution context; mount/namespace/bounding-set restrictions permit its use\n\n**Use a file capability that enables a specific privileged operation — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-suid:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 14564,
+      "width": 620,
+      "height": 276,
+      "text": "### Control a privileged program's shared-library resolution\n\n**When:** A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path\n\n**Still required:** Actual privileged load from a controlled location, matching ABI/name and required symbols, plus a trigger\n\n**Control a privileged program's shared-library resolution — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-capabilities:start",
+      "type": "text",
+      "x": 70,
+      "y": 15195,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a file capability that enables a specific privileged operation\n\nAn interpreter/helper has an effective high-value capability",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-capabilities:discover",
+      "type": "text",
+      "x": 570,
+      "y": 15155,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\ngetcap -r / 2>/dev/null\ncapsh --print 2>/dev/null\n```"
+    },
+    {
+      "id": "method:linux-capabilities:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 15135,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe specific interpreter has effective set-UID authority, unlike an ordinary copy of python3 elsewhere.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-capabilities:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 15381,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nRead getcap for the exact executable, inspect its mount and match the named capability to the program operation. A version or capability name alone does not prove that the program retains a useful effective capability.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-capabilities:checks",
+      "type": "text",
+      "x": 570,
+      "y": 15419,
+      "width": 780,
+      "height": 180,
+      "text": "### Validate the condition\n\n```bash\ngetcap -r / 2>/dev/null\ncapsh --print 2>/dev/null\ngrep '^Cap' /proc/self/status\n```"
+    },
+    {
+      "id": "method:linux-capabilities:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 15085,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe exact capability-backed operation changes the effective identity as expected: select that method.\n\n**Verify:** Match the granted capability to the observed effect and effective IDs; do not infer unrelated root powers.\n\n[[notes/linux-privesc.md#linux-capabilities|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-capabilities:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 15426,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOnly cap_net_raw exists for the candidate: reject the assumed general UID-changing route.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-capabilities:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 15647,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA capability name without effective-context/consumer evidence is insufficient.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-capabilities:action",
+      "type": "text",
+      "x": 3130,
+      "y": 15085,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ncapsh --print 2>/dev/null\ngrep '^Cap' /proc/self/status\n```\n\n[[notes/linux-privesc.md#linux-capabilities|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-capabilities:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 15427,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-capabilities:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 15734,
+      "width": 620,
+      "height": 276,
+      "text": "### Recover credentials from Linux user, service and process trails\n\n**When:** Readable configuration, shell history, environment, process arguments or session sockets\n\n**Still required:** Read access to the artifact; exact account/service context; session/agent access must include a usable live identity\n\n**Recover credentials from Linux user, service and process trails — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-capabilities:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 16065,
+      "width": 620,
+      "height": 252,
+      "text": "### Use a SUID or SGID program's exposed privileged primitive\n\n**When:** A nonstandard or dangerous privileged executable\n\n**Still required:** Effective SUID/SGID on the relevant mount; a program operation preserves and exposes useful privilege\n\n**Use a SUID or SGID program's exposed privileged primitive — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-jobs:start",
+      "type": "text",
+      "x": 70,
+      "y": 16672,
+      "width": 350,
+      "height": 250,
+      "text": "## Control a script, binary or configuration consumed by a privileged job/service\n\nRoot-owned cron, systemd or recurring process activity uses a controllable object",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-jobs:discover",
+      "type": "text",
+      "x": 570,
+      "y": 16632,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\ncat /etc/crontab\nsystemctl list-timers --all\nps auxww\n```"
+    },
+    {
+      "id": "method:linux-jobs:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 16612,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe schedule explicitly names a privileged consumer and an exact file to inspect.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-jobs:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 16858,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nObserve the actual command and UID with pspy or inspect the unit with systemctl cat/show. Run namei -l, stat and getfacl on the consumed path and parents; identify the timer, restart or invocation before changing the file.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-jobs:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 16562,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe controlled object is consumed at a confirmed privileged trigger: choose the job/service method.\n\n**Verify:** Verify the consumer's resulting effect and identity; editing a file without an observed trigger is incomplete.\n\n[[notes/linux-privesc.md#linux-jobs|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-jobs:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 16903,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe real job runs as the same low user: reject privilege gain through that action.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-jobs:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 17124,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA stale job file without observed activity/usable trigger leaves execution unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-jobs:action",
+      "type": "text",
+      "x": 3130,
+      "y": 16562,
+      "width": 900,
+      "height": 492,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ncrontab -l 2>/dev/null\ncat /etc/crontab\ncat /etc/anacrontab 2>/dev/null\natq 2>/dev/null\nls -la /etc/cron.* /var/spool/cron 2>/dev/null\ngrep -RniE 'CRON|CMD' /var/log/syslog /var/log/cron* 2>/dev/null | tail -n 100\n\nsystemctl list-timers --all\nsystemctl list-unit-files --type=service\nsystemctl list-units --type=service --state=running\nsystemctl cat UNIT\nsystemctl show UNIT -p User -p Group -p ExecStart -p WorkingDirectory -p EnvironmentFiles\n```\n\n[[notes/linux-privesc.md#linux-jobs|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-jobs:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 17144,
+      "width": 620,
+      "height": 252,
+      "text": "### Prove effective file, directory, ACL and mount control\n\n**When:** A root-consumed file or directory appears writable\n\n**Still required:** Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately\n\n**Prove effective file, directory, ACL and mount control — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-jobs:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 17451,
+      "width": 620,
+      "height": 276,
+      "text": "### Hijack an unqualified helper through controlled PATH resolution\n\n**When:** A privileged program/job invokes a helper without an absolute path\n\n**Still required:** A controlled directory precedes the real helper in the consumer's effective PATH; execution preserves useful privilege and a trigger exists\n\n**Hijack an unqualified helper through controlled PATH resolution — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-jobs:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 17782,
+      "width": 620,
+      "height": 276,
+      "text": "### Turn wildcard-expanded filenames into privileged command options\n\n**When:** A privileged job passes an uncontrolled directory glob to an option-parsing utility\n\n**Still required:** Control of expanded filenames; compatible option parsing and argument placement; useful program feature and privileged trigger\n\n**Turn wildcard-expanded filenames into privileged command options — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-path:start",
+      "type": "text",
+      "x": 70,
+      "y": 18413,
+      "width": 350,
+      "height": 250,
+      "text": "## Hijack an unqualified helper through controlled PATH resolution\n\nA privileged program/job invokes a helper without an absolute path",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-path:discover",
+      "type": "text",
+      "x": 570,
+      "y": 18373,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nprintf '%s\\n' \"$PATH\"\nnamei -l /PATH/TO/CANDIDATE_DIRECTORY\nstrings /PATH/TO/REVIEWED_BINARY\n```"
+    },
+    {
+      "id": "method:linux-path:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 18353,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn unqualified helper can resolve through the controlled earlier directory in the consumer's environment.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-path:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 18599,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nFind the helper name in the privileged script or observed pspy command. Check that it is unqualified and identify the consumer's real PATH; a writable directory matters only if that consumer searches it first.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-path:checks",
+      "type": "text",
+      "x": 570,
+      "y": 18661,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nprintf '%s\\n' \"$PATH\"\nnamei -l /PATH/TO/CANDIDATE_DIRECTORY\n```"
+    },
+    {
+      "id": "method:linux-path:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 18303,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe consumer selects the controlled helper under the higher identity: use the verified resolution route.\n\n**Verify:** Prove actual helper selection and effective identity through a controlled effect.\n\n[[notes/linux-privesc.md#linux-path|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-path:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 18644,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nIt invokes /usr/bin/backup_tool by absolute path or uses a protected PATH: reject this hijack.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-path:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 18865,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA strings result alone does not prove an executed call or inherited PATH; inspect/observe the consumer.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-path:action",
+      "type": "text",
+      "x": 3130,
+      "y": 18303,
+      "width": 900,
+      "height": 348,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\necho \"$PATH\" | tr ':' '\\n'\necho \"$PATH\" | tr ':' '\\n' | while IFS= read -r d; do\n  [ -z \"$d\" ] && d=.\n  [ -w \"$d\" ] && ls -ld \"$d\"\ndone\nstrings /PATH/TO/PRIVILEGED_BINARY | grep -E '(^|[^/])(cp|tar|service|sh|bash|cat)( |$)'\n```\n\n[[notes/linux-privesc.md#linux-path|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-path:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 18741,
+      "width": 620,
+      "height": 300,
+      "text": "### Control a script, binary or configuration consumed by a privileged job/service\n\n**When:** Root-owned cron, systemd or recurring process activity uses a controllable object\n\n**Still required:** Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-path:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 19096,
+      "width": 620,
+      "height": 252,
+      "text": "### Use a SUID or SGID program's exposed privileged primitive\n\n**When:** A nonstandard or dangerous privileged executable\n\n**Still required:** Effective SUID/SGID on the relevant mount; a program operation preserves and exposes useful privilege\n\n**Use a SUID or SGID program's exposed privileged primitive — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-path:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 19403,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-wildcard:start",
+      "type": "text",
+      "x": 70,
+      "y": 20010,
+      "width": 350,
+      "height": 250,
+      "text": "## Turn wildcard-expanded filenames into privileged command options\n\nA privileged job passes an uncontrolled directory glob to an option-parsing utility",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-wildcard:discover",
+      "type": "text",
+      "x": 570,
+      "y": 19970,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\ncat /PATH/TO/REVIEWED_JOB_SCRIPT\nls -la /PATH/TO/JOB_DIRECTORY\nnamei -l /PATH/TO/JOB_DIRECTORY\n```"
+    },
+    {
+      "id": "method:linux-wildcard:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 19950,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nControlled filenames may become utility arguments after glob expansion; the exact utility and option ordering decide the method.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-wildcard:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 20196,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nInspect the exact privileged command: confirm that a wildcard expands attacker-controlled names into option positions and that the utility interprets those options. A writable directory without that command/trigger does not enable this route.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-wildcard:checks",
+      "type": "text",
+      "x": 570,
+      "y": 20258,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nnamei -l /PATH/TO/JOB_DIRECTORY\nls -la /PATH/TO/JOB_DIRECTORY\n```"
+    },
+    {
+      "id": "method:linux-wildcard:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 19900,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe actual invocation accepts the useful injected option and privileged effect is verified: select that mechanism.\n\n**Verify:** Verify the utility's actual triggered effect and its identity, not merely that special filenames exist.\n\n[[notes/linux-privesc.md#linux-wildcard|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-wildcard:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 20241,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe job uses -- before expanded filenames or no compatible glob: reject that option-injection route.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-wildcard:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 20462,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA wildcard-looking string without execution/working-directory evidence is only a candidate.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-wildcard:action",
+      "type": "text",
+      "x": 3130,
+      "y": 19900,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ngrep -RniE 'tar .+\\*|chown .+\\*|chmod .+\\*|rsync .+\\*' \\\n  /etc/cron* /etc/systemd /opt /usr/local 2>/dev/null\n```\n\n[[notes/linux-privesc.md#linux-wildcard|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-wildcard:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 20242,
+      "width": 620,
+      "height": 300,
+      "text": "### Control a script, binary or configuration consumed by a privileged job/service\n\n**When:** Root-owned cron, systemd or recurring process activity uses a controllable object\n\n**Still required:** Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-wildcard:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 20597,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-wildcard:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 20904,
+      "width": 620,
+      "height": 252,
+      "text": "### Prove effective file, directory, ACL and mount control\n\n**When:** A root-consumed file or directory appears writable\n\n**Still required:** Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately\n\n**Prove effective file, directory, ACL and mount control — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-policy:start",
+      "type": "text",
+      "x": 70,
+      "y": 21511,
+      "width": 350,
+      "height": 250,
+      "text": "## Change a writable account or privilege-policy file\n\nAccount metadata or a privilege-policy file appears writable",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-policy:discover",
+      "type": "text",
+      "x": 570,
+      "y": 21471,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nstat /etc/passwd /etc/shadow /etc/sudoers\ngetfacl -p /etc/passwd /etc/sudoers 2>/dev/null\n```"
+    },
+    {
+      "id": "method:linux-policy:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 21451,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA sensitive account file appears writable; the authentication implementation and valid record syntax determine its effect.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-policy:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 21697,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nPreserve original state; confirm exact effective write, file consumer, useful identity and recovery/trigger.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-policy:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 21401,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe valid authorized change produces the intended authentication/policy effect: choose this sensitive-file route.\n\n**Verify:** Verify the resulting identity/authorized action and retain the exact change plus recovery copy privately.\n\n[[notes/linux-privesc.md#linux-policy|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-policy:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 21742,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe filesystem/ACL denies the required operation: reject the writable-file hypothesis.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-policy:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 21963,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nMode bits without ACL/mount/consumer evidence leave a safe usable transition unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-policy:action",
+      "type": "text",
+      "x": 3130,
+      "y": 21401,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nls -l /etc/passwd /etc/shadow /etc/sudoers\nnamei -l /etc/passwd\ngetfacl -p /etc/passwd 2>/dev/null\n```\n\n[[notes/linux-privesc.md#linux-policy|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-policy:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 21767,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-policy:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 22074,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-policy:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 22381,
+      "width": 620,
+      "height": 252,
+      "text": "### Prove effective file, directory, ACL and mount control\n\n**When:** A root-consumed file or directory appears writable\n\n**Still required:** Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately\n\n**Prove effective file, directory, ACL and mount control — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-containers:start",
+      "type": "text",
+      "x": 70,
+      "y": 22988,
+      "width": 350,
+      "height": 250,
+      "text": "## Use privileged group, daemon or container-management control\n\nMembership or socket ACLs permit controlling a rootful daemon or useful session",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-containers:discover",
+      "type": "text",
+      "x": 570,
+      "y": 22948,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nid\nls -l /var/run/docker.sock\ncat /proc/1/cgroup\n```"
+    },
+    {
+      "id": "method:linux-containers:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 22928,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nEffective socket access suggests daemon control; group text alone does not establish host-affecting rootful operations.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-containers:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 23174,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck API acceptance, rootful/rootless and namespace policy, available resources and the specific host operation.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-containers:checks",
+      "type": "text",
+      "x": 570,
+      "y": 23236,
+      "width": 780,
+      "height": 204,
+      "text": "### Validate the condition\n\n```bash\nid\nls -l /var/run/docker.sock\nfindmnt\ncat /proc/1/cgroup\n```"
+    },
+    {
+      "id": "method:linux-containers:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 22878,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA rootful daemon permits the required host-affecting operation: use that documented route.\n\n**Verify:** Distinguish host and container namespace, effective UID and the exact host operation.\n\n[[notes/linux-privesc.md#linux-containers|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-containers:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 23219,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA rootless/user-namespaced daemon cannot grant the assumed host-root effect: reject that chain.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-containers:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 23440,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nSocket presence without usable API permissions leaves the control claim unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-containers:action",
+      "type": "text",
+      "x": 3130,
+      "y": 22878,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nid\nls -l /var/run/docker.sock /run/docker.sock 2>/dev/null\ndocker version 2>/dev/null\nlxc list 2>/dev/null\n```\n\n[[notes/linux-privesc.md#linux-containers|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-containers:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 23268,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-containers:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 23575,
+      "width": 620,
+      "height": 276,
+      "text": "### Recover credentials from Linux user, service and process trails\n\n**When:** Readable configuration, shell history, environment, process arguments or session sockets\n\n**Still required:** Read access to the artifact; exact account/service context; session/agent access must include a usable live identity\n\n**Recover credentials from Linux user, service and process trails — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-containers:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 23906,
+      "width": 620,
+      "height": 276,
+      "text": "### Exploit a permission-backed mount, NFS mapping or local service\n\n**When:** A writable/exported filesystem or a loopback-only service with useful privileges\n\n**Still required:** Relevant export/mount options or service authentication; effective identity, writable path and any privileged execution consumer\n\n**Exploit a permission-backed mount, NFS mapping or local service — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-mounts:start",
+      "type": "text",
+      "x": 70,
+      "y": 24537,
+      "width": 350,
+      "height": 250,
+      "text": "## Exploit a permission-backed mount, NFS mapping or local service\n\nA writable/exported filesystem or a loopback-only service with useful privileges",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-mounts:discover",
+      "type": "text",
+      "x": 570,
+      "y": 24497,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nfindmnt\ncat /etc/exports 2>/dev/null\nss -lntup\n```"
+    },
+    {
+      "id": "method:linux-mounts:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 24477,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA local-only service or export mapping creates a specific investigation route, not automatic escalation.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-mounts:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 24723,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nFor the service check accepted identity/rights; for NFS check client mapping, write permissions, mount flags and target-side consumer.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-mounts:checks",
+      "type": "text",
+      "x": 570,
+      "y": 24785,
+      "width": 780,
+      "height": 204,
+      "text": "### Validate the condition\n\n```bash\nfindmnt\ncat /etc/exports 2>/dev/null\nss -lntup\nss -lxnp\n```"
+    },
+    {
+      "id": "method:linux-mounts:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 24427,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe complete mapped-file or authenticated local-service primitive is verified: select it.\n\n**Verify:** Verify the actual file/service operation, mapped identity and any resulting execution effect.\n\n[[notes/linux-privesc.md#linux-mounts|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-mounts:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 24768,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nroot_squash/nosuid or insufficient service rights defeats the proposed privileged chain.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-mounts:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 24989,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nExport text or a listen socket without actual access leaves the candidate incomplete.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-mounts:action",
+      "type": "text",
+      "x": 3130,
+      "y": 24427,
+      "width": 900,
+      "height": 324,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nfindmnt\ncat /etc/fstab\nmount\nss -lntup\nss -lxnp\n```\n\n[[notes/linux-privesc.md#linux-mounts|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-mounts:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 24841,
+      "width": 620,
+      "height": 252,
+      "text": "### Inspect RPC/NFS exports and effective file identity\n\n**When:** RPC/NFS listeners or export information\n\n**Still required:** Reachable RPC/NFS transports, permitted client address and an export whose UID/GID mapping grants relevant access\n\n[[tracks/02 Services.canvas|Inspect RPC/NFS exports and effective file identity → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-mounts:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 25148,
+      "width": 620,
+      "height": 276,
+      "text": "### Use MySQL/MariaDB data and file primitives\n\n**When:** A MySQL-compatible service and valid application/database credentials\n\n**Still required:** Database authentication and exact schema/file privileges; secure_file_priv and server filesystem identity constrain file actions\n\n[[tracks/02 Services.canvas|Use MySQL/MariaDB data and file primitives → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-mounts:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 25479,
+      "width": 620,
+      "height": 252,
+      "text": "### Forward a selected service through an SSH client-side listener\n\n**When:** SSH reaches a server that can access the needed internal service\n\n**Still required:** Accepted SSH identity and forwarding policy; local listener availability and SSH-server-to-destination route\n\n[[tracks/10 Pivoting.canvas|Forward a selected service through an SSH client-side listener → 10 Pivoting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-library:start",
+      "type": "text",
+      "x": 70,
+      "y": 26086,
+      "width": 350,
+      "height": 250,
+      "text": "## Control a privileged program's shared-library resolution\n\nA privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-library:discover",
+      "type": "text",
+      "x": 570,
+      "y": 26046,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nreadelf -d /PATH/TO/BINARY\nnamei -l /PATH/TO/LIBRARY_DIRECTORY\n```"
+    },
+    {
+      "id": "method:linux-library:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 26026,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA named dependency plus a potentially controlled search location is a loader-resolution candidate.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-library:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 26272,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify actual runtime selection, ABI/symbols, secure-execution rules, retained privilege and a trigger.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-library:checks",
+      "type": "text",
+      "x": 570,
+      "y": 26310,
+      "width": 780,
+      "height": 180,
+      "text": "### Validate the condition\n\n```bash\nreadelf -d /PATH/TO/BINARY\nnamei -l /PATH/TO/LIBRARY_DIRECTORY\nfile /PATH/TO/BINARY\n```"
+    },
+    {
+      "id": "method:linux-library:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 25976,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe higher-identity process actually loads the controlled compatible library: select that chain.\n\n**Verify:** Prove the selected library path and effective execution identity; retain dependency and trigger evidence.\n\n[[notes/linux-privesc.md#linux-library|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-library:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 26317,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA protected earlier library or secure-loader behavior prevents selection: reject the assumed path.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-library:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 26538,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nStatic dependency output alone leaves actual privileged resolution unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-library:action",
+      "type": "text",
+      "x": 3130,
+      "y": 25976,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nfile /PATH/TO/BINARY\nreadelf -d /PATH/TO/BINARY 2>/dev/null | grep -E 'RPATH|RUNPATH|NEEDED'\nldd /PATH/TO/BINARY 2>/dev/null\n```\n\n[[notes/linux-privesc.md#linux-library|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-library:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 26342,
+      "width": 620,
+      "height": 252,
+      "text": "### Load a controlled library through a permitted sudo environment\n\n**When:** A sudo rule explicitly preserves or permits a loader variable\n\n**Still required:** Allowed variable setting/preservation, a dynamically linked permitted executable and a loader path that honors it\n\n**Load a controlled library through a permitted sudo environment — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-library:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 26649,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-library:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 26956,
+      "width": 620,
+      "height": 252,
+      "text": "### Compile and minimally adapt an existing native or memory-corruption PoC\n\n**When:** An existing C/C++ or platform-specific PoC matches the candidate\n\n**Still required:** Correct compiler/target architecture, runtime dependencies, documented payload constraints and validated exploit-specific constants\n\n[[tracks/04 Public Exploits.canvas|Compile and minimally adapt an existing native or memory-corruption PoC → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-kernel:start",
+      "type": "text",
+      "x": 70,
+      "y": 27563,
+      "width": 350,
+      "height": 250,
+      "text": "## Select an evidence-matched Linux software or kernel exploit\n\nPermission/credential paths are insufficient and an exact affected build/configuration is present",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-kernel:discover",
+      "type": "text",
+      "x": 570,
+      "y": 27523,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nuname -a\ncat /etc/os-release\ngetconf LONG_BIT\n```"
+    },
+    {
+      "id": "method:linux-kernel:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 27503,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA version-associated advisory is a candidate; backports and feature state determine applicability.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-kernel:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 27749,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nCollect uname and the distribution's package/build plus architecture. Match the advisory's vulnerable feature and vendor patch status before choosing a PoC; try a confirmed sudo/file/credential route first when one exists.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-kernel:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 27453,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nAffected code/configuration and compatible reviewed PoC are established: select its bounded test.\n\n**Verify:** Verify actual effective UID/host context after the exploit, keeping the reviewed source and adaptation record.\n\n[[notes/linux-privesc.md#linux-kernel|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-kernel:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 27794,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe vendor build includes the fix or required feature is absent: reject that exploit.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-kernel:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 28015,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA release string without patch/configuration evidence leaves vulnerability unconfirmed.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-kernel:action",
+      "type": "text",
+      "x": 3130,
+      "y": 27453,
+      "width": 900,
+      "height": 396,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nuname -a\ncat /proc/version\ncat /etc/os-release\ndpkg -l 2>/dev/null\nrpm -qa 2>/dev/null\nsudo --version\nlsmod\nsysctl kernel.unprivileged_userns_clone 2>/dev/null\n```\n\n[[notes/linux-privesc.md#linux-kernel|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-kernel:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 27939,
+      "width": 620,
+      "height": 252,
+      "text": "### Match a public exploit to the actual component and configuration\n\n**When:** A product/version clue, advisory or component-specific public PoC\n\n**Still required:** Exact vulnerable build/configuration, required access and endpoint behavior; reviewable source and a verifiable expected effect\n\n[[tracks/04 Public Exploits.canvas|Match a public exploit to the actual component and configuration → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-kernel:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 28246,
+      "width": 620,
+      "height": 252,
+      "text": "### Compile and minimally adapt an existing native or memory-corruption PoC\n\n**When:** An existing C/C++ or platform-specific PoC matches the candidate\n\n**Still required:** Correct compiler/target architecture, runtime dependencies, documented payload constraints and validated exploit-specific constants\n\n[[tracks/04 Public Exploits.canvas|Compile and minimally adapt an existing native or memory-corruption PoC → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-kernel:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 28553,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n**Establish Linux state and choose an escalation candidate — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-enumerators:start",
+      "type": "text",
+      "x": 70,
+      "y": 29160,
+      "width": 350,
+      "height": 250,
+      "text": "## Use enumeration tools to generate manually testable candidates\n\nA Linux foothold is available; run an early sweep for sudo rules, file capabilities, credentials and writable privileged paths",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-enumerators:discover",
+      "type": "text",
+      "x": 570,
+      "y": 29120,
+      "width": 780,
+      "height": 252,
+      "text": "### Discover\n\n```text\nid\nuname -m\ncommand -v bash python3\nls -ld /tmp\n```"
+    },
+    {
+      "id": "method:linux-enumerators:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 29100,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe highlight supplies a candidate object, not the missing privileged consumer or execution trigger.",
+      "color": "6"
+    },
+    {
+      "id": "method:linux-enumerators:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 29346,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nRun the reviewed LinPEAS baseline and save its output. For sudo highlights run sudo -l; for a flagged file use stat/namei/getfacl; for jobs confirm the UID and command with pspy or systemctl. Open the matching technique only after that check.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-enumerators:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 29050,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe full manual chain validates: follow its owning method.\n\n**Verify:** Read linpeas.txt. Confirm a reported sudo rule with sudo -l, a privileged path with namei/stat/getfacl, or a scheduled consumer with pspy before using that finding\n\n[[notes/linux-privesc.md#linux-enumerators|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-enumerators:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 29391,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOnly a low-privileged process consumes the object: reject the escalation hypothesis.",
+      "color": "1"
+    },
+    {
+      "id": "method:linux-enumerators:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 29612,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nMissing tools or restricted /proc can hide evidence; investigate application-specific paths manually.",
+      "color": "2"
+    },
+    {
+      "id": "method:linux-enumerators:action",
+      "type": "text",
+      "x": 3130,
+      "y": 29050,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nsh ./linpeas.sh | tee linpeas.txt\n```\n\n[[notes/linux-privesc.md#linux-enumerators|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:linux-enumerators:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 29368,
+      "width": 620,
+      "height": 252,
+      "text": "### Prove effective file, directory, ACL and mount control\n\n**When:** A root-consumed file or directory appears writable\n\n**Still required:** Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately\n\n**Prove effective file, directory, ACL and mount control — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-enumerators:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 29675,
+      "width": 620,
+      "height": 300,
+      "text": "### Control a script, binary or configuration consumed by a privileged job/service\n\n**When:** Root-owned cron, systemd or recurring process activity uses a controllable object\n\n**Still required:** Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger\n\n**Control a script, binary or configuration consumed by a privileged job/service — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:linux-enumerators:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 30030,
+      "width": 620,
+      "height": 252,
+      "text": "### Use an allowed sudo operation to cross a privilege boundary\n\n**When:** sudo -l grants an operation under a more useful identity\n\n**Still required:** Exact executable/run-as/argument rule permits a useful primitive; password tags, environment and policy do not invalidate it\n\n**Use an allowed sudo operation to cross a privilege boundary — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "track-title",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 2300,
+      "height": 270,
+      "color": "5",
+      "text": "# 07 Linux Privilege Escalation\n\nAll workflows, commands, result interpretations and method connections for this track are on this canvas. Embedded notes contain the complete procedures and variants.\n\n[[START.canvas|Choose another track]]\n\nCross-track results link directly to the receiving track."
+    }
+  ],
+  "edges": [
+    {
+      "id": "flow:linux-privesc:check-0--check-0-finding-0",
+      "fromNode": "flow:linux-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-0-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "sudo/NOPASSWD or an allowed binary"
+    },
+    {
+      "id": "flow:linux-privesc:check-0--check-0-finding-1",
+      "fromNode": "flow:linux-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-0-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-owned SUID binary"
+    },
+    {
+      "id": "flow:linux-privesc:check-0--check-0-finding-2",
+      "fromNode": "flow:linux-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-0-finding-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A useful file capability"
+    },
+    {
+      "id": "flow:linux-privesc:check-0--check-0-finding-3",
+      "fromNode": "flow:linux-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-0-finding-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password, key or application config"
+    },
+    {
+      "id": "flow:linux-privesc:check-0--check-0-fallback",
+      "fromNode": "flow:linux-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-0-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "LinPEAS cannot run or shows no usable finding: use the native identity/permissions checks; quiet output does not prove no escalation."
+    },
+    {
+      "id": "flow:linux-privesc:check-0--check-1",
+      "fromNode": "flow:linux-privesc:check-0",
+      "fromSide": "bottom",
+      "toNode": "flow:linux-privesc:check-1",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:linux-privesc:check-1--check-1-finding-0",
+      "fromNode": "flow:linux-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-1-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "(root) NOPASSWD permits a useful interpreter/helper"
+    },
+    {
+      "id": "flow:linux-privesc:check-1--check-1-finding-1",
+      "fromNode": "flow:linux-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-1-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "LD_PRELOAD is explicitly permitted/preserved"
+    },
+    {
+      "id": "flow:linux-privesc:check-1--check-1-fallback",
+      "fromNode": "flow:linux-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-1-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "No useful sudo rule: check SUID/SGID and capabilities; do not keep trying sudo payloads."
+    },
+    {
+      "id": "flow:linux-privesc:check-1--check-2",
+      "fromNode": "flow:linux-privesc:check-1",
+      "fromSide": "bottom",
+      "toNode": "flow:linux-privesc:check-2",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:linux-privesc:check-2--check-2-finding-0",
+      "fromNode": "flow:linux-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-2-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "UID=0 repeatedly invokes a script under /opt or another path"
+    },
+    {
+      "id": "flow:linux-privesc:check-2--check-2-finding-1",
+      "fromNode": "flow:linux-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-2-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged job invokes a helper without an absolute path"
+    },
+    {
+      "id": "flow:linux-privesc:check-2--check-2-fallback",
+      "fromNode": "flow:linux-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-2-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "No event was observed: inspect cron/timers/services directly rather than assuming no privileged job exists."
+    },
+    {
+      "id": "flow:linux-privesc:check-2--check-3",
+      "fromNode": "flow:linux-privesc:check-2",
+      "fromSide": "bottom",
+      "toNode": "flow:linux-privesc:check-3",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:linux-privesc:check-3--check-3-finding-0",
+      "fromNode": "flow:linux-privesc:check-3",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-3-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-owned SUID program exposes a usable operation"
+    },
+    {
+      "id": "flow:linux-privesc:check-3--check-3-finding-1",
+      "fromNode": "flow:linux-privesc:check-3",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-3-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An executable has a useful file capability"
+    },
+    {
+      "id": "flow:linux-privesc:check-3--check-3-finding-2",
+      "fromNode": "flow:linux-privesc:check-3",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-3-finding-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-consumed file/parent is writable"
+    },
+    {
+      "id": "flow:linux-privesc:check-3--check-3-fallback",
+      "fromNode": "flow:linux-privesc:check-3",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-3-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "No useful privileged executable: return to secrets, scheduled consumers, mounts and local-only services."
+    },
+    {
+      "id": "flow:linux-privesc:home--check-0",
+      "fromNode": "flow:linux-privesc:home",
+      "fromSide": "right",
+      "toNode": "flow:linux-privesc:check-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "start with current access"
+    },
+    {
+      "id": "method:linux-state:start--discover",
+      "fromNode": "method:linux-state:start",
+      "fromSide": "right",
+      "toNode": "method:linux-state:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-state:discover--interpret",
+      "fromNode": "method:linux-state:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-state:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-state:interpret--validate",
+      "fromNode": "method:linux-state:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-state:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-state:validate--checks",
+      "fromNode": "method:linux-state:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-state:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-state:validate--enabled",
+      "fromNode": "method:linux-state:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-state:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-state:validate--ruledout",
+      "fromNode": "method:linux-state:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-state:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-state:validate--unknown",
+      "fromNode": "method:linux-state:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-state:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-state:enabled--action",
+      "fromNode": "method:linux-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-state:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-state:enabled--next-0",
+      "fromNode": "method:linux-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-state:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-consumed file or directory appears writable"
+    },
+    {
+      "id": "method:linux-state:enabled--next-1",
+      "fromNode": "method:linux-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-state:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "sudo -l grants an operation under a more useful identity"
+    },
+    {
+      "id": "method:linux-state:enabled--next-2",
+      "fromNode": "method:linux-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-state:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Root-owned cron, systemd or recurring process activity uses a controllable object"
+    },
+    {
+      "id": "method:linux-state:enabled--next-3",
+      "fromNode": "method:linux-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-state:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Membership or socket ACLs permit controlling a rootful daemon or useful session"
+    },
+    {
+      "id": "method:linux-state:enabled--next-4",
+      "fromNode": "method:linux-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-state:next-4",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Permission/credential paths are insufficient and an exact affected build/configuration is present"
+    },
+    {
+      "id": "method:linux-permissions:start--discover",
+      "fromNode": "method:linux-permissions:start",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-permissions:discover--interpret",
+      "fromNode": "method:linux-permissions:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-permissions:interpret--validate",
+      "fromNode": "method:linux-permissions:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-permissions:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-permissions:validate--enabled",
+      "fromNode": "method:linux-permissions:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-permissions:validate--ruledout",
+      "fromNode": "method:linux-permissions:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-permissions:validate--unknown",
+      "fromNode": "method:linux-permissions:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-permissions:enabled--action",
+      "fromNode": "method:linux-permissions:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-permissions:enabled--next-0",
+      "fromNode": "method:linux-permissions:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Root-owned cron, systemd or recurring process activity uses a controllable object"
+    },
+    {
+      "id": "method:linux-permissions:enabled--next-1",
+      "fromNode": "method:linux-permissions:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path"
+    },
+    {
+      "id": "method:linux-permissions:enabled--next-2",
+      "fromNode": "method:linux-permissions:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Account metadata or a privilege-policy file appears writable"
+    },
+    {
+      "id": "method:linux-secrets:start--discover",
+      "fromNode": "method:linux-secrets:start",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-secrets:discover--interpret",
+      "fromNode": "method:linux-secrets:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-secrets:interpret--validate",
+      "fromNode": "method:linux-secrets:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-secrets:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-secrets:validate--checks",
+      "fromNode": "method:linux-secrets:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-secrets:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-secrets:validate--enabled",
+      "fromNode": "method:linux-secrets:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-secrets:validate--ruledout",
+      "fromNode": "method:linux-secrets:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-secrets:validate--unknown",
+      "fromNode": "method:linux-secrets:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-secrets:enabled--action",
+      "fromNode": "method:linux-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-secrets:enabled--next-0",
+      "fromNode": "method:linux-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:linux-secrets:enabled--next-1",
+      "fromNode": "method:linux-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:linux-secrets:enabled--next-2",
+      "fromNode": "method:linux-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A MySQL-compatible service and valid application/database credentials"
+    },
+    {
+      "id": "method:linux-sudo:start--discover",
+      "fromNode": "method:linux-sudo:start",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-sudo:discover--interpret",
+      "fromNode": "method:linux-sudo:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-sudo:interpret--validate",
+      "fromNode": "method:linux-sudo:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-sudo:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-sudo:validate--enabled",
+      "fromNode": "method:linux-sudo:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-sudo:validate--ruledout",
+      "fromNode": "method:linux-sudo:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-sudo:validate--unknown",
+      "fromNode": "method:linux-sudo:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-sudo:enabled--action",
+      "fromNode": "method:linux-sudo:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-sudo:enabled--next-0",
+      "fromNode": "method:linux-sudo:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A sudo rule explicitly preserves or permits a loader variable"
+    },
+    {
+      "id": "method:linux-sudo:enabled--next-1",
+      "fromNode": "method:linux-sudo:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-sudo:enabled--next-2",
+      "fromNode": "method:linux-sudo:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Readable configuration, shell history, environment, process arguments or session sockets"
+    },
+    {
+      "id": "method:linux-preload:start--discover",
+      "fromNode": "method:linux-preload:start",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-preload:discover--interpret",
+      "fromNode": "method:linux-preload:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-preload:interpret--validate",
+      "fromNode": "method:linux-preload:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-preload:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-preload:validate--enabled",
+      "fromNode": "method:linux-preload:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-preload:validate--ruledout",
+      "fromNode": "method:linux-preload:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-preload:validate--unknown",
+      "fromNode": "method:linux-preload:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-preload:enabled--action",
+      "fromNode": "method:linux-preload:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-preload:enabled--next-0",
+      "fromNode": "method:linux-preload:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-preload:enabled--next-1",
+      "fromNode": "method:linux-preload:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "sudo -l grants an operation under a more useful identity"
+    },
+    {
+      "id": "method:linux-preload:enabled--next-2",
+      "fromNode": "method:linux-preload:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path"
+    },
+    {
+      "id": "method:linux-suid:start--discover",
+      "fromNode": "method:linux-suid:start",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-suid:discover--interpret",
+      "fromNode": "method:linux-suid:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-suid:interpret--validate",
+      "fromNode": "method:linux-suid:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-suid:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-suid:validate--checks",
+      "fromNode": "method:linux-suid:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-suid:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-suid:validate--enabled",
+      "fromNode": "method:linux-suid:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-suid:validate--ruledout",
+      "fromNode": "method:linux-suid:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-suid:validate--unknown",
+      "fromNode": "method:linux-suid:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-suid:enabled--action",
+      "fromNode": "method:linux-suid:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-suid:enabled--next-0",
+      "fromNode": "method:linux-suid:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged program/job invokes a helper without an absolute path"
+    },
+    {
+      "id": "method:linux-suid:enabled--next-1",
+      "fromNode": "method:linux-suid:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An interpreter/helper has an effective high-value capability"
+    },
+    {
+      "id": "method:linux-suid:enabled--next-2",
+      "fromNode": "method:linux-suid:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged executable has an unsafe library dependency, RPATH/RUNPATH or plugin path"
+    },
+    {
+      "id": "method:linux-capabilities:start--discover",
+      "fromNode": "method:linux-capabilities:start",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-capabilities:discover--interpret",
+      "fromNode": "method:linux-capabilities:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-capabilities:interpret--validate",
+      "fromNode": "method:linux-capabilities:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-capabilities:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-capabilities:validate--checks",
+      "fromNode": "method:linux-capabilities:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-capabilities:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-capabilities:validate--enabled",
+      "fromNode": "method:linux-capabilities:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-capabilities:validate--ruledout",
+      "fromNode": "method:linux-capabilities:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-capabilities:validate--unknown",
+      "fromNode": "method:linux-capabilities:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-capabilities:enabled--action",
+      "fromNode": "method:linux-capabilities:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-capabilities:enabled--next-0",
+      "fromNode": "method:linux-capabilities:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-capabilities:enabled--next-1",
+      "fromNode": "method:linux-capabilities:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Readable configuration, shell history, environment, process arguments or session sockets"
+    },
+    {
+      "id": "method:linux-capabilities:enabled--next-2",
+      "fromNode": "method:linux-capabilities:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A nonstandard or dangerous privileged executable"
+    },
+    {
+      "id": "method:linux-jobs:start--discover",
+      "fromNode": "method:linux-jobs:start",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-jobs:discover--interpret",
+      "fromNode": "method:linux-jobs:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-jobs:interpret--validate",
+      "fromNode": "method:linux-jobs:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-jobs:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-jobs:validate--enabled",
+      "fromNode": "method:linux-jobs:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-jobs:validate--ruledout",
+      "fromNode": "method:linux-jobs:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-jobs:validate--unknown",
+      "fromNode": "method:linux-jobs:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-jobs:enabled--action",
+      "fromNode": "method:linux-jobs:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-jobs:enabled--next-0",
+      "fromNode": "method:linux-jobs:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-consumed file or directory appears writable"
+    },
+    {
+      "id": "method:linux-jobs:enabled--next-1",
+      "fromNode": "method:linux-jobs:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged program/job invokes a helper without an absolute path"
+    },
+    {
+      "id": "method:linux-jobs:enabled--next-2",
+      "fromNode": "method:linux-jobs:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged job passes an uncontrolled directory glob to an option-parsing utility"
+    },
+    {
+      "id": "method:linux-path:start--discover",
+      "fromNode": "method:linux-path:start",
+      "fromSide": "right",
+      "toNode": "method:linux-path:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-path:discover--interpret",
+      "fromNode": "method:linux-path:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-path:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-path:interpret--validate",
+      "fromNode": "method:linux-path:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-path:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-path:validate--checks",
+      "fromNode": "method:linux-path:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-path:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-path:validate--enabled",
+      "fromNode": "method:linux-path:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-path:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-path:validate--ruledout",
+      "fromNode": "method:linux-path:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-path:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-path:validate--unknown",
+      "fromNode": "method:linux-path:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-path:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-path:enabled--action",
+      "fromNode": "method:linux-path:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-path:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-path:enabled--next-0",
+      "fromNode": "method:linux-path:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-path:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Root-owned cron, systemd or recurring process activity uses a controllable object"
+    },
+    {
+      "id": "method:linux-path:enabled--next-1",
+      "fromNode": "method:linux-path:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-path:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A nonstandard or dangerous privileged executable"
+    },
+    {
+      "id": "method:linux-path:enabled--next-2",
+      "fromNode": "method:linux-path:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-path:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-wildcard:start--discover",
+      "fromNode": "method:linux-wildcard:start",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-wildcard:discover--interpret",
+      "fromNode": "method:linux-wildcard:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-wildcard:interpret--validate",
+      "fromNode": "method:linux-wildcard:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-wildcard:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-wildcard:validate--checks",
+      "fromNode": "method:linux-wildcard:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-wildcard:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-wildcard:validate--enabled",
+      "fromNode": "method:linux-wildcard:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-wildcard:validate--ruledout",
+      "fromNode": "method:linux-wildcard:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-wildcard:validate--unknown",
+      "fromNode": "method:linux-wildcard:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-wildcard:enabled--action",
+      "fromNode": "method:linux-wildcard:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-wildcard:enabled--next-0",
+      "fromNode": "method:linux-wildcard:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Root-owned cron, systemd or recurring process activity uses a controllable object"
+    },
+    {
+      "id": "method:linux-wildcard:enabled--next-1",
+      "fromNode": "method:linux-wildcard:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-wildcard:enabled--next-2",
+      "fromNode": "method:linux-wildcard:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-consumed file or directory appears writable"
+    },
+    {
+      "id": "method:linux-policy:start--discover",
+      "fromNode": "method:linux-policy:start",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-policy:discover--interpret",
+      "fromNode": "method:linux-policy:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-policy:interpret--validate",
+      "fromNode": "method:linux-policy:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-policy:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-policy:validate--enabled",
+      "fromNode": "method:linux-policy:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-policy:validate--ruledout",
+      "fromNode": "method:linux-policy:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-policy:validate--unknown",
+      "fromNode": "method:linux-policy:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-policy:enabled--action",
+      "fromNode": "method:linux-policy:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-policy:enabled--next-0",
+      "fromNode": "method:linux-policy:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-policy:enabled--next-1",
+      "fromNode": "method:linux-policy:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:linux-policy:enabled--next-2",
+      "fromNode": "method:linux-policy:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-consumed file or directory appears writable"
+    },
+    {
+      "id": "method:linux-containers:start--discover",
+      "fromNode": "method:linux-containers:start",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-containers:discover--interpret",
+      "fromNode": "method:linux-containers:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-containers:interpret--validate",
+      "fromNode": "method:linux-containers:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-containers:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-containers:validate--checks",
+      "fromNode": "method:linux-containers:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-containers:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-containers:validate--enabled",
+      "fromNode": "method:linux-containers:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-containers:validate--ruledout",
+      "fromNode": "method:linux-containers:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-containers:validate--unknown",
+      "fromNode": "method:linux-containers:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-containers:enabled--action",
+      "fromNode": "method:linux-containers:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-containers:enabled--next-0",
+      "fromNode": "method:linux-containers:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-containers:enabled--next-1",
+      "fromNode": "method:linux-containers:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Readable configuration, shell history, environment, process arguments or session sockets"
+    },
+    {
+      "id": "method:linux-containers:enabled--next-2",
+      "fromNode": "method:linux-containers:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A writable/exported filesystem or a loopback-only service with useful privileges"
+    },
+    {
+      "id": "method:linux-mounts:start--discover",
+      "fromNode": "method:linux-mounts:start",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-mounts:discover--interpret",
+      "fromNode": "method:linux-mounts:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-mounts:interpret--validate",
+      "fromNode": "method:linux-mounts:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-mounts:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-mounts:validate--checks",
+      "fromNode": "method:linux-mounts:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-mounts:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-mounts:validate--enabled",
+      "fromNode": "method:linux-mounts:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-mounts:validate--ruledout",
+      "fromNode": "method:linux-mounts:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-mounts:validate--unknown",
+      "fromNode": "method:linux-mounts:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-mounts:enabled--action",
+      "fromNode": "method:linux-mounts:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-mounts:enabled--next-0",
+      "fromNode": "method:linux-mounts:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "RPC/NFS listeners or export information"
+    },
+    {
+      "id": "method:linux-mounts:enabled--next-1",
+      "fromNode": "method:linux-mounts:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A MySQL-compatible service and valid application/database credentials"
+    },
+    {
+      "id": "method:linux-mounts:enabled--next-2",
+      "fromNode": "method:linux-mounts:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SSH reaches a server that can access the needed internal service"
+    },
+    {
+      "id": "method:linux-library:start--discover",
+      "fromNode": "method:linux-library:start",
+      "fromSide": "right",
+      "toNode": "method:linux-library:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-library:discover--interpret",
+      "fromNode": "method:linux-library:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-library:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-library:interpret--validate",
+      "fromNode": "method:linux-library:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-library:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-library:validate--checks",
+      "fromNode": "method:linux-library:validate",
+      "fromSide": "left",
+      "toNode": "method:linux-library:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:linux-library:validate--enabled",
+      "fromNode": "method:linux-library:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-library:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-library:validate--ruledout",
+      "fromNode": "method:linux-library:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-library:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-library:validate--unknown",
+      "fromNode": "method:linux-library:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-library:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-library:enabled--action",
+      "fromNode": "method:linux-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-library:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-library:enabled--next-0",
+      "fromNode": "method:linux-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-library:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A sudo rule explicitly preserves or permits a loader variable"
+    },
+    {
+      "id": "method:linux-library:enabled--next-1",
+      "fromNode": "method:linux-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-library:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-library:enabled--next-2",
+      "fromNode": "method:linux-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-library:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing C/C++ or platform-specific PoC matches the candidate"
+    },
+    {
+      "id": "method:linux-kernel:start--discover",
+      "fromNode": "method:linux-kernel:start",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-kernel:discover--interpret",
+      "fromNode": "method:linux-kernel:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-kernel:interpret--validate",
+      "fromNode": "method:linux-kernel:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-kernel:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-kernel:validate--enabled",
+      "fromNode": "method:linux-kernel:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-kernel:validate--ruledout",
+      "fromNode": "method:linux-kernel:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-kernel:validate--unknown",
+      "fromNode": "method:linux-kernel:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-kernel:enabled--action",
+      "fromNode": "method:linux-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-kernel:enabled--next-0",
+      "fromNode": "method:linux-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A product/version clue, advisory or component-specific public PoC"
+    },
+    {
+      "id": "method:linux-kernel:enabled--next-1",
+      "fromNode": "method:linux-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing C/C++ or platform-specific PoC matches the candidate"
+    },
+    {
+      "id": "method:linux-kernel:enabled--next-2",
+      "fromNode": "method:linux-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:linux-enumerators:start--discover",
+      "fromNode": "method:linux-enumerators:start",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:linux-enumerators:discover--interpret",
+      "fromNode": "method:linux-enumerators:discover",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:linux-enumerators:interpret--validate",
+      "fromNode": "method:linux-enumerators:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:linux-enumerators:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:linux-enumerators:validate--enabled",
+      "fromNode": "method:linux-enumerators:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:linux-enumerators:validate--ruledout",
+      "fromNode": "method:linux-enumerators:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:linux-enumerators:validate--unknown",
+      "fromNode": "method:linux-enumerators:validate",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:linux-enumerators:enabled--action",
+      "fromNode": "method:linux-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:linux-enumerators:enabled--next-0",
+      "fromNode": "method:linux-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A root-consumed file or directory appears writable"
+    },
+    {
+      "id": "method:linux-enumerators:enabled--next-1",
+      "fromNode": "method:linux-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Root-owned cron, systemd or recurring process activity uses a controllable object"
+    },
+    {
+      "id": "method:linux-enumerators:enabled--next-2",
+      "fromNode": "method:linux-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "sudo -l grants an operation under a more useful identity"
+    },
+    {
+      "id": "route-2569",
+      "fromNode": "flow:linux-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "method:linux-enumerators:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2570",
+      "fromNode": "flow:linux-privesc:check-0-finding-0",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2571",
+      "fromNode": "flow:linux-privesc:check-0-finding-1",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2572",
+      "fromNode": "flow:linux-privesc:check-0-finding-2",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2573",
+      "fromNode": "flow:linux-privesc:check-0-finding-3",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2574",
+      "fromNode": "flow:linux-privesc:check-0-fallback",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2575",
+      "fromNode": "flow:linux-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2576",
+      "fromNode": "flow:linux-privesc:check-1-finding-0",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2577",
+      "fromNode": "flow:linux-privesc:check-1-finding-1",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2578",
+      "fromNode": "flow:linux-privesc:check-1-fallback",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2579",
+      "fromNode": "flow:linux-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2580",
+      "fromNode": "flow:linux-privesc:check-2-finding-0",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2581",
+      "fromNode": "flow:linux-privesc:check-2-finding-1",
+      "fromSide": "right",
+      "toNode": "method:linux-path:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2582",
+      "fromNode": "flow:linux-privesc:check-2-fallback",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2583",
+      "fromNode": "flow:linux-privesc:check-3",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2584",
+      "fromNode": "flow:linux-privesc:check-3-finding-0",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2585",
+      "fromNode": "flow:linux-privesc:check-3-finding-1",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2586",
+      "fromNode": "flow:linux-privesc:check-3-finding-2",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2587",
+      "fromNode": "flow:linux-privesc:check-3-fallback",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2588",
+      "fromNode": "method:linux-state:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2589",
+      "fromNode": "method:linux-state:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2590",
+      "fromNode": "method:linux-state:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2591",
+      "fromNode": "method:linux-state:next-3",
+      "fromSide": "right",
+      "toNode": "method:linux-containers:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2592",
+      "fromNode": "method:linux-state:next-4",
+      "fromSide": "right",
+      "toNode": "method:linux-kernel:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2593",
+      "fromNode": "method:linux-permissions:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2594",
+      "fromNode": "method:linux-permissions:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-library:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2595",
+      "fromNode": "method:linux-permissions:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-policy:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2599",
+      "fromNode": "method:linux-sudo:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2600",
+      "fromNode": "method:linux-sudo:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2601",
+      "fromNode": "method:linux-sudo:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2602",
+      "fromNode": "method:linux-preload:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2603",
+      "fromNode": "method:linux-preload:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2604",
+      "fromNode": "method:linux-preload:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-library:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2605",
+      "fromNode": "method:linux-suid:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-path:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2606",
+      "fromNode": "method:linux-suid:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-capabilities:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2607",
+      "fromNode": "method:linux-suid:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-library:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2608",
+      "fromNode": "method:linux-capabilities:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2609",
+      "fromNode": "method:linux-capabilities:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2610",
+      "fromNode": "method:linux-capabilities:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2611",
+      "fromNode": "method:linux-jobs:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2612",
+      "fromNode": "method:linux-jobs:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-path:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2613",
+      "fromNode": "method:linux-jobs:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-wildcard:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2614",
+      "fromNode": "method:linux-path:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2615",
+      "fromNode": "method:linux-path:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-suid:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2616",
+      "fromNode": "method:linux-path:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2617",
+      "fromNode": "method:linux-wildcard:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2618",
+      "fromNode": "method:linux-wildcard:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2619",
+      "fromNode": "method:linux-wildcard:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2620",
+      "fromNode": "method:linux-policy:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2622",
+      "fromNode": "method:linux-policy:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2623",
+      "fromNode": "method:linux-containers:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2624",
+      "fromNode": "method:linux-containers:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-secrets:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2625",
+      "fromNode": "method:linux-containers:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-mounts:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2629",
+      "fromNode": "method:linux-library:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-preload:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2630",
+      "fromNode": "method:linux-library:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2634",
+      "fromNode": "method:linux-kernel:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2635",
+      "fromNode": "method:linux-enumerators:next-0",
+      "fromSide": "right",
+      "toNode": "method:linux-permissions:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2636",
+      "fromNode": "method:linux-enumerators:next-1",
+      "fromSide": "right",
+      "toNode": "method:linux-jobs:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2637",
+      "fromNode": "method:linux-enumerators:next-2",
+      "fromSide": "right",
+      "toNode": "method:linux-sudo:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    }
+  ]
+}

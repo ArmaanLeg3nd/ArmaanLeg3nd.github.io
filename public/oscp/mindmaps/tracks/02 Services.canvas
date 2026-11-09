@@ -1,0 +1,4434 @@
+{
+  "nodes": [
+    {
+      "id": "topic-group:services",
+      "type": "group",
+      "x": 0,
+      "y": 420,
+      "width": 4400,
+      "height": 31577,
+      "label": "Extract opportunities from services",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-ftp",
+      "type": "group",
+      "x": 35,
+      "y": 3687,
+      "width": 4080,
+      "height": 1352,
+      "label": "Use anonymous or authenticated FTP file access",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-ssh",
+      "type": "group",
+      "x": 35,
+      "y": 5164,
+      "width": 4080,
+      "height": 1304,
+      "label": "Use SSH passwords, keys and forwarding-capable access",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-smtp",
+      "type": "group",
+      "x": 35,
+      "y": 6593,
+      "width": 4080,
+      "height": 1304,
+      "label": "Enumerate SMTP identities and accessible mailbox protocols",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-dns",
+      "type": "group",
+      "x": 35,
+      "y": 8022,
+      "width": 4080,
+      "height": 1448,
+      "label": "Expand names through DNS records and zone transfers",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-nfs",
+      "type": "group",
+      "x": 35,
+      "y": 9595,
+      "width": 4080,
+      "height": 1376,
+      "label": "Inspect RPC/NFS exports and effective file identity",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-rsync",
+      "type": "group",
+      "x": 35,
+      "y": 11096,
+      "width": 4080,
+      "height": 1376,
+      "label": "Inspect rsync modules and retrieve selected artifacts",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-tftp",
+      "type": "group",
+      "x": 35,
+      "y": 12597,
+      "width": 4080,
+      "height": 1400,
+      "label": "Retrieve an evidence-backed file over TFTP",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-smb",
+      "type": "group",
+      "x": 35,
+      "y": 14122,
+      "width": 4080,
+      "height": 1376,
+      "label": "Enumerate SMB/RPC shares, files and identities",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-snmp",
+      "type": "group",
+      "x": 35,
+      "y": 15623,
+      "width": 4080,
+      "height": 1376,
+      "label": "Extract configuration and process information through SNMP",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-mysql",
+      "type": "group",
+      "x": 35,
+      "y": 17124,
+      "width": 4080,
+      "height": 1400,
+      "label": "Use MySQL/MariaDB data and file primitives",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-mssql",
+      "type": "group",
+      "x": 35,
+      "y": 18649,
+      "width": 4080,
+      "height": 1376,
+      "label": "Use SQL Server rights, impersonation and command facilities",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-postgres",
+      "type": "group",
+      "x": 35,
+      "y": 20150,
+      "width": 4080,
+      "height": 1352,
+      "label": "Use PostgreSQL data and privileged program execution",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-redis",
+      "type": "group",
+      "x": 35,
+      "y": 21627,
+      "width": 4080,
+      "height": 1448,
+      "label": "Inspect Redis access and persistence boundaries",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-oracle",
+      "type": "group",
+      "x": 35,
+      "y": 23200,
+      "width": 4080,
+      "height": 1352,
+      "label": "Triage Oracle listener and database identity",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-remote",
+      "type": "group",
+      "x": 35,
+      "y": 24677,
+      "width": 4080,
+      "height": 1376,
+      "label": "Validate RDP, WinRM, VNC and Telnet access contexts",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-ldap",
+      "type": "group",
+      "x": 35,
+      "y": 26178,
+      "width": 4080,
+      "height": 1352,
+      "label": "Discover LDAP naming contexts and authenticated search",
+      "color": "6"
+    },
+    {
+      "id": "method-group:service-sip-irc",
+      "type": "group",
+      "x": 35,
+      "y": 27655,
+      "width": 4080,
+      "height": 1328,
+      "label": "Investigate SIP/IRC identity and configuration clues",
+      "color": "6"
+    },
+    {
+      "id": "method-group:S13",
+      "type": "group",
+      "x": 35,
+      "y": 29108,
+      "width": 4080,
+      "height": 838,
+      "label": "Inspect a Java RMI registry before selecting an exploit",
+      "color": "6"
+    },
+    {
+      "id": "method-group:S14",
+      "type": "group",
+      "x": 35,
+      "y": 30071,
+      "width": 4080,
+      "height": 838,
+      "label": "Classify a Tomcat Manager interface and accepted role",
+      "color": "6"
+    },
+    {
+      "id": "method-group:S15",
+      "type": "group",
+      "x": 35,
+      "y": 31034,
+      "width": 4080,
+      "height": 838,
+      "label": "Follow an MSSQL linked server as a new SQL identity boundary",
+      "color": "6"
+    },
+    {
+      "id": "topic:services",
+      "type": "text",
+      "x": 60,
+      "y": 440,
+      "width": 1800,
+      "height": 140,
+      "text": "# Extract opportunities from services\n\nStart with application evidence from discovery; anonymous access, valid credentials and useful rights are separate questions.",
+      "color": "6"
+    },
+    {
+      "id": "flow:services:home",
+      "type": "text",
+      "x": 60,
+      "y": 620,
+      "width": 350,
+      "height": 240,
+      "text": "## Investigation flow\n\nExtract opportunities from services\n\n · \n\nBranches describe evidence and missing conditions. Follow one useful lead, then return to unfinished coverage.",
+      "color": "6"
+    },
+    {
+      "id": "flow:services:check-0",
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "width": 760,
+      "height": 300,
+      "text": "## Try SMB with the actual access context\n\nUse the anonymous form first when no credentials exist; use the authenticated variant when an identity is available.\n\n```bash\nsmbclient -N -L //TARGET\n```\n\n**Enumerate SMB/RPC shares, files and identities — on this canvas**"
+    },
+    {
+      "id": "flow:services:check-0-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### A readable share contains config, backups or keys\n\nRead the exact file and record its source before testing any recovered value.\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:services:check-0-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 869,
+      "width": 610,
+      "height": 204,
+      "text": "### A working domain identity\n\nEnumerate domain shares with that identity; share listing alone is not file access.\n\n[[tracks/09 Active Directory.canvas|Read domain shares, SYSVOL and NETLOGON for useful artifacts → 09 Active Directory]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:services:check-0-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nSMB is denied: inspect another discovered protocol, not repeated guesses against the same identity.\n\n[[tracks/01 Discovery.canvas|Identify applications and validate selected NSE checks → 01 Discovery]]",
+      "color": "2"
+    },
+    {
+      "id": "flow:services:check-1",
+      "type": "text",
+      "x": 560,
+      "y": 1298,
+      "width": 760,
+      "height": 300,
+      "text": "## Query exposed names and configuration\n\nUse only an observed/assigned community and the correct SNMP version; preserve the returned OIDs.\n\n```bash\nsnmpwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1.1\n```\n\n**Extract configuration and process information through SNMP — on this canvas**"
+    },
+    {
+      "id": "flow:services:check-1-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1298,
+      "width": 610,
+      "height": 180,
+      "text": "### Process arguments or configuration contain an account value\n\nClassify its account scope and format.\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:services:check-1-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 1523,
+      "width": 610,
+      "height": 180,
+      "text": "### A hostname or directory-service clue\n\nResolve it through the relevant name service.\n\n**Expand names through DNS records and zone transfers — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:services:check-1-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1298,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nNo useful SNMP response: return to the confirmed service list and choose its native client.\n\n[[tracks/01 Discovery.canvas|Identify applications and validate selected NSE checks → 01 Discovery]]",
+      "color": "2"
+    },
+    {
+      "id": "flow:services:check-2",
+      "type": "text",
+      "x": 560,
+      "y": 1928,
+      "width": 760,
+      "height": 324,
+      "text": "## Inspect database identity and grants\n\nUse this branch only for confirmed SQL Server with an accepted login. Other database clients are separate procedures.\n\n```sql\nSELECT SYSTEM_USER, ORIGINAL_LOGIN(), @@VERSION;\nSELECT IS_SRVROLEMEMBER('sysadmin');\n```\n\n**Use SQL Server rights, impersonation and command facilities — on this canvas**"
+    },
+    {
+      "id": "flow:services:check-2-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1928,
+      "width": 610,
+      "height": 204,
+      "text": "### A permitted impersonation or command facility\n\nCheck the effective login and the exact enabled operation before attempting an OS effect.\n\n**Use SQL Server rights, impersonation and command facilities — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:services:check-2-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 2177,
+      "width": 610,
+      "height": 180,
+      "text": "### MySQL/MariaDB identified instead of SQL Server\n\nUse the MySQL/MariaDB grants and file rules rather than SQL Server syntax.\n\n**Use MySQL/MariaDB data and file primitives — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:services:check-2-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1928,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nLogin succeeds but the action is denied: inspect grants under the same identity.\n\n**Use SQL Server rights, impersonation and command facilities — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "notes:services",
+      "type": "file",
+      "file": "notes/services.md",
+      "x": 60,
+      "y": 2587,
+      "width": 2100,
+      "height": 850
+    },
+    {
+      "id": "notes-label:services",
+      "type": "text",
+      "x": 2350,
+      "y": 2587,
+      "width": 1400,
+      "height": 180,
+      "text": "## Full procedures and alternatives\n\nThe adjacent embedded note is readable here. Scroll inside it for complete variants. Commands and decisions continue below.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-ftp:start",
+      "type": "text",
+      "x": 70,
+      "y": 3862,
+      "width": 350,
+      "height": 250,
+      "text": "## Use anonymous or authenticated FTP file access\n\nAn FTP banner or accessible listing",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ftp:discover",
+      "type": "text",
+      "x": 570,
+      "y": 3822,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\ncurl -v ftp://TARGET/\ncurl -v --user 'USER:PASSWORD' ftp://TARGET/\n```"
+    },
+    {
+      "id": "method:service-ftp:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 3802,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA listing identifies candidate artifacts; a completed RETR with recognizable bytes establishes read access.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-ftp:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 4048,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nValidate the account context, file contents, data-channel reachability and any separate write/consumer conditions.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-ftp:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 3752,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe relevant file is readable and contains a current typed secret: follow credential classification.\n\n**Verify:** Retrieve recognizable bytes or independently verify an uploaded canary; distinguish listing, read and write rights.\n\n[[notes/services.md#service-ftp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-ftp:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 4093,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nAnonymous login is denied: rule out anonymous access, retaining authenticated FTP as a separate possibility.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-ftp:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 4314,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nLogin works but data transfer hangs: inspect active/passive data routing before concluding file access is denied.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-ftp:action",
+      "type": "text",
+      "x": 3130,
+      "y": 3752,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nftp TARGET\n```\n\n[[notes/services.md#service-ftp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-ftp:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 4070,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ftp:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 4401,
+      "width": 620,
+      "height": 276,
+      "text": "### Inspect source, backups, configuration and repository artifacts\n\n**When:** JavaScript endpoints, backup names, exposed configuration or Git metadata\n\n**Still required:** Readable application artifact or a complete recoverable repository; preserve the public-source scope\n\n[[tracks/03 Web.canvas|Inspect source, backups, configuration and repository artifacts → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ftp:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 4732,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ssh:start",
+      "type": "text",
+      "x": 70,
+      "y": 5339,
+      "width": 350,
+      "height": 250,
+      "text": "## Use SSH passwords, keys and forwarding-capable access\n\nAn SSH service and a known password, private key or agent context",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ssh:discover",
+      "type": "text",
+      "x": 570,
+      "y": 5299,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nssh -v -p PORT USER@TARGET\nssh -v -i KEY -p PORT USER@TARGET\n```"
+    },
+    {
+      "id": "method:service-ssh:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 5279,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAccepted key authentication plus a verified shell identity establishes that specific login, not root or unrestricted forwarding.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-ssh:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 5525,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck actual account/shell/subsystem and separately inspect forwarding policy if a tunnel is needed.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-ssh:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 5229,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nThe intended user can run commands: establish host/privilege/network state.\n\n**Verify:** Run hostname and id in the resulting context; retain whether a shell, SFTP or only forwarding was actually granted.\n\n[[notes/services.md#service-ssh|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-ssh:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 5546,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe same valid key is not authorized for this user: rule out that username/key pairing.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-ssh:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 5767,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA passphrase prompt or host policy rejection requires key/context diagnosis; it is not evidence that all SSH access is unavailable.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-ssh:action",
+      "type": "text",
+      "x": 3130,
+      "y": 5229,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nssh -v -p PORT USER@TARGET\n```\n\n[[notes/services.md#service-ssh|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-ssh:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 5547,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n[[tracks/07 Linux Privilege Escalation.canvas|Establish Linux state and choose an escalation candidate → 07 Linux Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ssh:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 5854,
+      "width": 620,
+      "height": 252,
+      "text": "### Inspect and recover SSH private-key access\n\n**When:** A private key from a file read, share, repository or home directory\n\n**Still required:** Correct key format, passphrase if encrypted, matching server account/key authorization and accepted algorithm/policy\n\n[[tracks/05 Credentials.canvas|Inspect and recover SSH private-key access → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ssh:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 6161,
+      "width": 620,
+      "height": 252,
+      "text": "### Forward a selected service through an SSH client-side listener\n\n**When:** SSH reaches a server that can access the needed internal service\n\n**Still required:** Accepted SSH identity and forwarding policy; local listener availability and SSH-server-to-destination route\n\n[[tracks/10 Pivoting.canvas|Forward a selected service through an SSH client-side listener → 10 Pivoting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smtp:start",
+      "type": "text",
+      "x": 70,
+      "y": 6768,
+      "width": 350,
+      "height": 250,
+      "text": "## Enumerate SMTP identities and accessible mailbox protocols\n\nSMTP capabilities or mail-related account clues",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smtp:discover",
+      "type": "text",
+      "x": 570,
+      "y": 6728,
+      "width": 780,
+      "height": 300,
+      "text": "### Discover\n\n```text\nnc -nv TARGET 25\n\nEHLO example.invalid\nVRFY USER\nVRFY INVALID_CONTROL\nQUIT\n```"
+    },
+    {
+      "id": "method:service-smtp:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 6708,
+      "width": 580,
+      "height": 132,
+      "text": "### What the output establishes\n\nA reproducible reply difference can expose a possible mailbox identity.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-smtp:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 6930,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck catch-all policy and account context; recipient acceptance does not prove mailbox credentials or OS access.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-smtp:checks",
+      "type": "text",
+      "x": 570,
+      "y": 7088,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```bash\nnc -nv TARGET 25\n```"
+    },
+    {
+      "id": "method:service-smtp:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 6658,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nControls support a real account and compatible credentials are available: validate its permitted mailbox/service access.\n\n**Verify:** Record response/control differences and separate inferred account existence from successful mailbox authentication.\n\n[[notes/services.md#service-smtp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-smtp:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 6999,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nAll recipients are accepted by catch-all behavior: discard account-existence inference from this test.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-smtp:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 7220,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUniform policy replies leave usernames unknown; inspect another identity source.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-smtp:action",
+      "type": "text",
+      "x": 3130,
+      "y": 6658,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnc -nv TARGET PORT\n```\n\n[[notes/services.md#service-smtp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-smtp:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 6976,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smtp:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 7283,
+      "width": 620,
+      "height": 252,
+      "text": "### Expand names through DNS records and zone transfers\n\n**When:** A DNS server, domain name or host aliases\n\n**Still required:** Reachable DNS transport and relevant authoritative zone; AXFR requires an allowed TCP zone transfer\n\n**Expand names through DNS records and zone transfers — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smtp:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 7590,
+      "width": 620,
+      "height": 252,
+      "text": "### Enumerate SMB/RPC shares, files and identities\n\n**When:** SMB/RPC endpoints, domain clues or new credentials\n\n**Still required:** Reachable SMB/RPC; anonymous, guest, local or domain context must be explicit; share and filesystem ACLs both matter\n\n**Enumerate SMB/RPC shares, files and identities — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:service-dns:start",
+      "type": "text",
+      "x": 70,
+      "y": 8197,
+      "width": 350,
+      "height": 250,
+      "text": "## Expand names through DNS records and zone transfers\n\nA DNS server, domain name or host aliases",
+      "color": "5"
+    },
+    {
+      "id": "method:service-dns:discover",
+      "type": "text",
+      "x": 570,
+      "y": 8157,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\ndig @TARGET DOMAIN SOA\ndig @TARGET DOMAIN NS\ndig @TARGET DOMAIN AXFR\n```"
+    },
+    {
+      "id": "method:service-dns:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 8137,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn authoritative zone and returned records can expose hostnames, aliases and applications needing separate enumeration.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-dns:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 8383,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck each new name's scope/address and verify host/virtual-host behavior.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-dns:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 8087,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA permitted transfer returns a relevant new host: validate it through discovery.\n\n**Verify:** Identify responding server, record type, answer and zone authority; transfer refusal disproves only that transfer/context.\n\n[[notes/services.md#service-dns|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-dns:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 8428,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nTransfer refused rules out AXFR on this server/zone/context; ordinary records may remain useful.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-dns:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 8649,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA timeout or non-authoritative response requires authority/transport checks before any zone conclusion.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-dns:action",
+      "type": "text",
+      "x": 3130,
+      "y": 8087,
+      "width": 900,
+      "height": 324,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ndig @TARGET DOMAIN SOA\ndig @TARGET DOMAIN NS\ndig @TARGET DOMAIN A\ndig @TARGET DOMAIN MX\ndig @TARGET DOMAIN TXT\n```\n\n[[notes/services.md#service-dns|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-dns:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 8501,
+      "width": 620,
+      "height": 276,
+      "text": "### Validate the source path and discover hosts\n\n**When:** No response, a new subnet, or uncertainty about the interface and route\n\n**Still required:** Correct VPN/interface and explicit scope; discovery probes must be compatible with the path\n\n[[tracks/01 Discovery.canvas|Validate the source path and discover hosts → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-dns:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 8832,
+      "width": 620,
+      "height": 276,
+      "text": "### Discover virtual hosts and hostname-selected applications\n\n**When:** DNS names, redirects, certificate names or a default virtual-host response\n\n**Still required:** A destination listener, relevant domain candidates and controlled Host/SNI routing\n\n[[tracks/03 Web.canvas|Discover virtual hosts and hostname-selected applications → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-dns:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 9163,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish domain identity, DC, DNS, time and route\n\n**When:** Domain credentials or a domain-joined foothold\n\n**Still required:** Correct realm/domain and account qualification; reachable DC/services, usable DNS and acceptable clock skew\n\n[[tracks/09 Active Directory.canvas|Establish domain identity, DC, DNS, time and route → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-nfs:start",
+      "type": "text",
+      "x": 70,
+      "y": 9770,
+      "width": 350,
+      "height": 250,
+      "text": "## Inspect RPC/NFS exports and effective file identity\n\nRPC/NFS listeners or export information",
+      "color": "5"
+    },
+    {
+      "id": "method:service-nfs:discover",
+      "type": "text",
+      "x": 570,
+      "y": 9730,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nrpcinfo -p TARGET\nshowmount -e TARGET\n```"
+    },
+    {
+      "id": "method:service-nfs:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 9710,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn export lists a filesystem candidate and client policy; it does not establish file access or trusted UID 0.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-nfs:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 9956,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nUse the owning procedure to verify NFS version, allowed client, numeric identity mapping, read/write and squash/mount policy.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-nfs:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 9660,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe relevant mapped identity can read configuration: retrieve and classify its useful artifacts.\n\n**Verify:** Verify the export, mapped identity, actual bytes and any created file's server-side ownership.\n\n[[notes/services.md#service-nfs|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-nfs:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 10001,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe export permits a different client scope: rule out this source's mount route.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-nfs:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 10222,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nEmpty showmount can miss NFSv4 context; confirm version/export behavior before declaring no NFS access.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-nfs:action",
+      "type": "text",
+      "x": 3130,
+      "y": 9660,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nrpcinfo -p TARGET\nshowmount -e TARGET\n```\n\n[[notes/services.md#service-nfs|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-nfs:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 10002,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-nfs:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 10333,
+      "width": 620,
+      "height": 276,
+      "text": "### Exploit a permission-backed mount, NFS mapping or local service\n\n**When:** A writable/exported filesystem or a loopback-only service with useful privileges\n\n**Still required:** Relevant export/mount options or service authentication; effective identity, writable path and any privileged execution consumer\n\n[[tracks/07 Linux Privilege Escalation.canvas|Exploit a permission-backed mount, NFS mapping or local service → 07 Linux Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-nfs:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 10664,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n[[tracks/06 Shells and Transfers.canvas|Transfer over HTTP using Linux or Windows clients → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-rsync:start",
+      "type": "text",
+      "x": 70,
+      "y": 11271,
+      "width": 350,
+      "height": 250,
+      "text": "## Inspect rsync modules and retrieve selected artifacts\n\nAn rsync daemon banner, TCP/873 listener or disclosed rsync module",
+      "color": "5"
+    },
+    {
+      "id": "method:service-rsync:discover",
+      "type": "text",
+      "x": 570,
+      "y": 11231,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nnmap -sV -p 873 --script rsync-list-modules TARGET\nrsync rsync://TARGET/\nrsync --list-only rsync://TARGET/MODULE/\n```"
+    },
+    {
+      "id": "method:service-rsync:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 11211,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA visible module and file listing identify an rsync namespace; they do not establish write or execution.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-rsync:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 11457,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nRetrieve one selected file and verify its bytes; record anonymous or supplied-account context.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-rsync:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 11161,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe selected artifact is readable and useful: inspect it locally and route any credential or path clue.\n\n**Verify:** Verify the module, authentication context, path and retrieved bytes; do not infer write or execution from a visible name.\n\n[[notes/services.md#service-rsync|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-rsync:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 11502,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe module lists but the file read is denied: reject read access for that path/context.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-rsync:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 11723,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nNo module list may mean hidden modules rather than no rsync service; retain exact application evidence.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-rsync:action",
+      "type": "text",
+      "x": 3130,
+      "y": 11161,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnmap -sV -p 873 --script rsync-list-modules TARGET\nrsync rsync://TARGET/\nrsync --list-only rsync://TARGET/MODULE/\n```\n\n[[notes/services.md#service-rsync|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-rsync:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 11527,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-rsync:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 11858,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n[[tracks/06 Shells and Transfers.canvas|Transfer over HTTP using Linux or Windows clients → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-rsync:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 12165,
+      "width": 620,
+      "height": 252,
+      "text": "### Use SSH passwords, keys and forwarding-capable access\n\n**When:** An SSH service and a known password, private key or agent context\n\n**Still required:** Compatible authentication method, correct user, accepted key policy and the requested shell/subsystem permission\n\n**Use SSH passwords, keys and forwarding-capable access — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:service-tftp:start",
+      "type": "text",
+      "x": 70,
+      "y": 12772,
+      "width": 350,
+      "height": 250,
+      "text": "## Retrieve an evidence-backed file over TFTP\n\nA UDP/69 service plus a plausible filename from configuration, source or boot metadata",
+      "color": "5"
+    },
+    {
+      "id": "method:service-tftp:discover",
+      "type": "text",
+      "x": 570,
+      "y": 12732,
+      "width": 780,
+      "height": 252,
+      "text": "### Discover\n\n```text\ntftp TARGET\ntftp> binary\ntftp> get FILE\ntftp> quit\n```"
+    },
+    {
+      "id": "method:service-tftp:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 12712,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe exact known filename is retrievable; TFTP still exposes no general directory namespace.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-tftp:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 12958,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify recognizable bytes and provenance; distinguish read from any separately required write test.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-tftp:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 12662,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe intended artifact is recovered: inspect it and follow its concrete paths or credentials.\n\n**Verify:** Verify the local file's recognizable bytes and provenance; a client success message without the expected file is insufficient.\n\n[[notes/services.md#service-tftp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-tftp:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 13003,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA server error says the exact filename is unavailable or denied in this context: reject that name.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-tftp:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 13224,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nTimeout is ambiguous across UDP reachability, transfer-port policy and filename handling.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-tftp:action",
+      "type": "text",
+      "x": 3130,
+      "y": 12662,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\ntftp TARGET\ntftp> binary\ntftp> get FILE\ntftp> quit\n```\n\n[[notes/services.md#service-tftp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-tftp:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 13052,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-tftp:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 13383,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n[[tracks/06 Shells and Transfers.canvas|Transfer over HTTP using Linux or Windows clients → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-tftp:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 13690,
+      "width": 620,
+      "height": 252,
+      "text": "### Match a public exploit to the actual component and configuration\n\n**When:** A product/version clue, advisory or component-specific public PoC\n\n**Still required:** Exact vulnerable build/configuration, required access and endpoint behavior; reviewable source and a verifiable expected effect\n\n[[tracks/04 Public Exploits.canvas|Match a public exploit to the actual component and configuration → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smb:start",
+      "type": "text",
+      "x": 70,
+      "y": 14297,
+      "width": 350,
+      "height": 250,
+      "text": "## Enumerate SMB/RPC shares, files and identities\n\nSMB/RPC endpoints, domain clues or new credentials",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smb:discover",
+      "type": "text",
+      "x": 570,
+      "y": 14257,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nsmbclient -L //TARGET -N\nsmbclient -L //TARGET -U 'DOMAIN/USER'\n```"
+    },
+    {
+      "id": "method:service-smb:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 14237,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA share name supplies a filesystem investigation target; listing it does not prove read, write or service creation.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-smb:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 14483,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nConnect to the named share under the identity that listed it, then ls/get the exact object. Listing a share does not prove read or write. For a write candidate, verify the path operation and identify a separate execution consumer before treating it as access.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-smb:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 14187,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA relevant configuration can be retrieved: inspect its account/secret context.\n\n**Verify:** Prove the specific share/object action; a successful login or administrative indicator does not establish every remote-execution route.\n\n[[notes/services.md#service-smb|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-smb:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 14528,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe authenticated account cannot read that object: discard the read path for this identity, not all SMB opportunities.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-smb:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 14749,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nLogin succeeds but listing fails: check a justified known share path and separate share/NTFS authorization.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-smb:action",
+      "type": "text",
+      "x": 3130,
+      "y": 14187,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nsmbclient -N -L //TARGET\n```\n\n[[notes/services.md#service-smb|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-smb:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 14505,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smb:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 14836,
+      "width": 620,
+      "height": 252,
+      "text": "### Read domain shares, SYSVOL and NETLOGON for useful artifacts\n\n**When:** A valid domain identity and accessible file services\n\n**Still required:** Reachable SMB plus share/object read rights in the chosen identity context\n\n[[tracks/09 Active Directory.canvas|Read domain shares, SYSVOL and NETLOGON for useful artifacts → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-smb:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 15143,
+      "width": 620,
+      "height": 300,
+      "text": "### Execute through uploaded service creation using PsExec\n\n**When:** A destination grants administrative-share write and service-control rights\n\n**Still required:** SMB/SCM reachability, writable required share, effective service-creation/start rights and an accepted password/hash or supported Kerberos context\n\n[[tracks/09 Active Directory.canvas|Execute through uploaded service creation using PsExec → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-snmp:start",
+      "type": "text",
+      "x": 70,
+      "y": 15798,
+      "width": 350,
+      "height": 250,
+      "text": "## Extract configuration and process information through SNMP\n\nUDP/161 evidence or an exposed management plane",
+      "color": "5"
+    },
+    {
+      "id": "method:service-snmp:discover",
+      "type": "text",
+      "x": 570,
+      "y": 15758,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nsnmpwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1.1\n```"
+    },
+    {
+      "id": "method:service-snmp:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 15738,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA real OID response confirms the accepted read context and supplies software/name clues.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-snmp:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 15984,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nDetermine which useful views/branches are actually readable; process data and write rights are separate.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-snmp:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 15688,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA relevant interface/process branch returns useful data: follow the named subnet/application/credential.\n\n**Verify:** Preserve the OID, accepted security context and returned value; empty branches can reflect view restrictions.\n\n[[notes/services.md#service-snmp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-snmp:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 16029,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nAn explicit authorization failure rules out that security context/view.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-snmp:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 16226,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUDP silence can be routing, version, community or view policy; a timeout cannot choose between them.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-snmp:action",
+      "type": "text",
+      "x": 3130,
+      "y": 15688,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nonesixtyone -c COMMUNITY_FILE TARGET\nsnmpwalk -v2c -c COMMUNITY TARGET 1.3.6.1.2.1\n```\n\n[[notes/services.md#service-snmp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-snmp:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 16030,
+      "width": 620,
+      "height": 276,
+      "text": "### Validate the source path and discover hosts\n\n**When:** No response, a new subnet, or uncertainty about the interface and route\n\n**Still required:** Correct VPN/interface and explicit scope; discovery probes must be compatible with the path\n\n[[tracks/01 Discovery.canvas|Validate the source path and discover hosts → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-snmp:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 16361,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-snmp:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 16692,
+      "width": 620,
+      "height": 252,
+      "text": "### Match a public exploit to the actual component and configuration\n\n**When:** A product/version clue, advisory or component-specific public PoC\n\n**Still required:** Exact vulnerable build/configuration, required access and endpoint behavior; reviewable source and a verifiable expected effect\n\n[[tracks/04 Public Exploits.canvas|Match a public exploit to the actual component and configuration → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mysql:start",
+      "type": "text",
+      "x": 70,
+      "y": 17299,
+      "width": 350,
+      "height": 250,
+      "text": "## Use MySQL/MariaDB data and file primitives\n\nA MySQL-compatible service and valid application/database credentials",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mysql:discover",
+      "type": "text",
+      "x": 570,
+      "y": 17259,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nSELECT USER(),CURRENT_USER(),VERSION();\nSHOW GRANTS;\nSHOW VARIABLES LIKE 'secure_file_priv';\n```"
+    },
+    {
+      "id": "method:service-mysql:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 17239,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nSELECT permits data investigation; absent FILE/admin rights and the restricted directory constrain file/OS hypotheses.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-mysql:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 17485,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck exact grants, useful tables, destination OS permissions and an execution consumer before escalating a file operation.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-mysql:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 17189,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA useful readable table or fully validated file consumer exists: choose that precise primitive.\n\n**Verify:** Check current database identity, grants and actual returned data or written file through an independent observation.\n\n[[notes/services.md#service-mysql|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-mysql:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 17530,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nNo required FILE privilege rules out the proposed LOAD_FILE/OUTFILE chain for this account.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-mysql:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 17751,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nIncomplete grants or unknown server path keeps file capability unresolved; inspect before selecting it.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-mysql:action",
+      "type": "text",
+      "x": 3130,
+      "y": 17189,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nmysql -h TARGET -P PORT -u USER -p\n```\n\n[[notes/services.md#service-mysql|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-mysql:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 17507,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mysql:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 17838,
+      "width": 620,
+      "height": 276,
+      "text": "### Convert database rights into a file or operating-system effect\n\n**When:** Confirmed SQL control plus database file, execution or impersonation privileges\n\n**Still required:** DBMS-specific privilege and enabled facility; OS service identity, writable/readable destination and a compatible consumer\n\n[[tracks/03 Web.canvas|Convert database rights into a file or operating-system effect → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mysql:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 18169,
+      "width": 620,
+      "height": 300,
+      "text": "### Execute an uploaded file through a compatible handler\n\n**When:** Uploads are retrievable and the application stack suggests an executable file handler\n\n**Still required:** Controlled executable content survives validation; final storage/URL is handled by the compatible interpreter; process execution is permitted\n\n[[tracks/03 Web.canvas|Execute an uploaded file through a compatible handler → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mssql:start",
+      "type": "text",
+      "x": 70,
+      "y": 18824,
+      "width": 350,
+      "height": 250,
+      "text": "## Use SQL Server rights, impersonation and command facilities\n\nSQL Server credentials or a Windows identity accepted by the database",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mssql:discover",
+      "type": "text",
+      "x": 570,
+      "y": 18784,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nSELECT SYSTEM_USER, ORIGINAL_LOGIN(), @@VERSION;\nSELECT IS_SRVROLEMEMBER('sysadmin');\n```"
+    },
+    {
+      "id": "method:service-mssql:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 18764,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA valid login with sysadmin=0 is data/rights evidence, not permission to enable xp_cmdshell.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-mssql:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 19010,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nEnumerate actual database/server grants and useful impersonation; independently verify any OS facility and its identity.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-mssql:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 18714,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nRequired role/configuration and OS effect are verified: use the supported database-to-command method.\n\n**Verify:** Verify SQL identity and any OS effect with hostname/whoami; record service/proxy execution identity.\n\n[[notes/services.md#service-mssql|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-mssql:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 19055,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nNo facility/impersonation right rules out that proposed OS chain while readable data may remain.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-mssql:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 19276,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA failed role query or unknown proxy context needs a narrower rights check.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-mssql:action",
+      "type": "text",
+      "x": 3130,
+      "y": 18714,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nimpacket-mssqlclient 'USER@TARGET'\nimpacket-mssqlclient 'DOMAIN/USER@TARGET' -windows-auth\n```\n\n[[notes/services.md#service-mssql|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-mssql:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 19056,
+      "width": 620,
+      "height": 276,
+      "text": "### Convert database rights into a file or operating-system effect\n\n**When:** Confirmed SQL control plus database file, execution or impersonation privileges\n\n**Still required:** DBMS-specific privilege and enabled facility; OS service identity, writable/readable destination and a compatible consumer\n\n[[tracks/03 Web.canvas|Convert database rights into a file or operating-system effect → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mssql:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 19387,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-mssql:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 19718,
+      "width": 620,
+      "height": 252,
+      "text": "### Verify command execution, host and represented identity\n\n**When:** A PoC, injected command or remote client reports execution\n\n**Still required:** A functioning execution primitive and an observable output or controlled side effect\n\n[[tracks/06 Shells and Transfers.canvas|Verify command execution, host and represented identity → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-postgres:start",
+      "type": "text",
+      "x": 70,
+      "y": 20325,
+      "width": 350,
+      "height": 250,
+      "text": "## Use PostgreSQL data and privileged program execution\n\nPostgreSQL access or an application connection string",
+      "color": "5"
+    },
+    {
+      "id": "method:service-postgres:discover",
+      "type": "text",
+      "x": 570,
+      "y": 20285,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nSELECT current_user,session_user,version();\nSELECT rolname,rolsuper FROM pg_roles WHERE rolname=current_user;\n```"
+    },
+    {
+      "id": "method:service-postgres:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 20265,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn ordinary database role does not automatically have COPY PROGRAM or server-file access.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-postgres:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 20511,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nInspect effective role memberships and exact operation rights, then the database service's OS context.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-postgres:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 20215,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe needed execution/file role and a usable consumer are established: select that documented operation.\n\n**Verify:** Separate returned rows, file operations and command execution; prove the actual operating-system identity for the latter.\n\n[[notes/services.md#service-postgres|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-postgres:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 20556,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nNo superuser or required operation-specific privilege rules out the proposed program-execution route.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-postgres:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 20777,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUnknown inherited role rights leave the operation unresolved; enumerate memberships before deciding.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-postgres:action",
+      "type": "text",
+      "x": 3130,
+      "y": 20215,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\npsql -h TARGET -p PORT -U USER -d postgres\n```\n\n[[notes/services.md#service-postgres|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-postgres:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 20533,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-postgres:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 20864,
+      "width": 620,
+      "height": 276,
+      "text": "### Convert database rights into a file or operating-system effect\n\n**When:** Confirmed SQL control plus database file, execution or impersonation privileges\n\n**Still required:** DBMS-specific privilege and enabled facility; OS service identity, writable/readable destination and a compatible consumer\n\n[[tracks/03 Web.canvas|Convert database rights into a file or operating-system effect → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-postgres:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 21195,
+      "width": 620,
+      "height": 252,
+      "text": "### Verify command execution, host and represented identity\n\n**When:** A PoC, injected command or remote client reports execution\n\n**Still required:** A functioning execution primitive and an observable output or controlled side effect\n\n[[tracks/06 Shells and Transfers.canvas|Verify command execution, host and represented identity → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-redis:start",
+      "type": "text",
+      "x": 70,
+      "y": 21802,
+      "width": 350,
+      "height": 250,
+      "text": "## Inspect Redis access and persistence boundaries\n\nA Redis listener or application cache credentials",
+      "color": "5"
+    },
+    {
+      "id": "method:service-redis:discover",
+      "type": "text",
+      "x": 570,
+      "y": 21762,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nredis-cli -h TARGET -p PORT PING\n```"
+    },
+    {
+      "id": "method:service-redis:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 21742,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe connection is usable but command ACLs can remove persistence/configuration methods.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-redis:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 21988,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nInspect allowed operations, data visibility and actual persistence/destination/consumer conditions.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-redis:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 21692,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nUseful keys are readable or a fully permitted file-consumer chain exists: select that bounded capability.\n\n**Verify:** Verify authentication context, allowed commands and actual key/file effects without assuming old Redis exploit defaults.\n\n[[notes/services.md#service-redis|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-redis:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 22033,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nCONFIG denied rules out the familiar configuration-backed file-write route under this identity.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-redis:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 22254,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nPING alone leaves key and administrative rights unknown; inspect the selected permitted command.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-redis:action",
+      "type": "text",
+      "x": 3130,
+      "y": 21692,
+      "width": 900,
+      "height": 324,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnmap -Pn -sV --script redis-info -p PORT TARGET\nredis-cli -h TARGET -p PORT PING\nredis-cli -h TARGET -p PORT INFO\nredis-cli -h TARGET -p PORT ACL WHOAMI\nredis-cli -h TARGET -p PORT ACL LIST\n```\n\n[[notes/services.md#service-redis|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-redis:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 22106,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-redis:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 22437,
+      "width": 620,
+      "height": 276,
+      "text": "### Cross role, function or session authorization boundaries\n\n**When:** Administrative actions/routes or request methods visible from a lower role\n\n**Still required:** The lower-role identity can invoke a protected server-side action without its required authorization\n\n[[tracks/03 Web.canvas|Cross role, function or session authorization boundaries → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-redis:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 22768,
+      "width": 620,
+      "height": 252,
+      "text": "### Match a public exploit to the actual component and configuration\n\n**When:** A product/version clue, advisory or component-specific public PoC\n\n**Still required:** Exact vulnerable build/configuration, required access and endpoint behavior; reviewable source and a verifiable expected effect\n\n[[tracks/04 Public Exploits.canvas|Match a public exploit to the actual component and configuration → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-oracle:start",
+      "type": "text",
+      "x": 70,
+      "y": 23375,
+      "width": 350,
+      "height": 250,
+      "text": "## Triage Oracle listener and database identity\n\nAn Oracle TNS listener or connection descriptor",
+      "color": "5"
+    },
+    {
+      "id": "method:service-oracle:discover",
+      "type": "text",
+      "x": 570,
+      "y": 23335,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nnmap -Pn -sV -p 1521 TARGET\n```"
+    },
+    {
+      "id": "method:service-oracle:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 23315,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nListener/product evidence and a service name establish a connection candidate, not database credentials or DBA rights.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-oracle:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 23561,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nValidate the exact descriptor/account and inspect its permitted database action.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-oracle:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 23265,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe selected account logs in and grants a useful operation: enumerate within that role.\n\n**Verify:** Distinguish listener identification, database login and a permitted SQL action.\n\n[[notes/services.md#service-oracle|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-oracle:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 23606,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe descriptor names a nonexistent service: reject that connection string before judging passwords.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-oracle:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 23827,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nAn unidentified listener version or authentication error needs descriptor/account separation.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-oracle:action",
+      "type": "text",
+      "x": 3130,
+      "y": 23265,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnmap -Pn -sV --script oracle-tns-version -p 1521 TARGET\nnmap -Pn --script oracle-sid-brute -p 1521 TARGET\n```\n\n[[notes/services.md#service-oracle|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-oracle:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 23607,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-oracle:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 23914,
+      "width": 620,
+      "height": 252,
+      "text": "### Match a public exploit to the actual component and configuration\n\n**When:** A product/version clue, advisory or component-specific public PoC\n\n**Still required:** Exact vulnerable build/configuration, required access and endpoint behavior; reviewable source and a verifiable expected effect\n\n[[tracks/04 Public Exploits.canvas|Match a public exploit to the actual component and configuration → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-oracle:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 24221,
+      "width": 620,
+      "height": 276,
+      "text": "### Validate uncertain results and rebuild the service queue\n\n**When:** Scanners disagree, a result is ambiguous, or a new identity changes accessible behavior\n\n**Still required:** A selected endpoint and a test that can resolve the decision-changing uncertainty\n\n[[tracks/01 Discovery.canvas|Validate uncertain results and rebuild the service queue → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-remote:start",
+      "type": "text",
+      "x": 70,
+      "y": 24852,
+      "width": 350,
+      "height": 250,
+      "text": "## Validate RDP, WinRM, VNC and Telnet access contexts\n\nAn exposed remote-access application and compatible known credentials",
+      "color": "5"
+    },
+    {
+      "id": "method:service-remote:discover",
+      "type": "text",
+      "x": 570,
+      "y": 24812,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nTest-NetConnection TARGET -Port 3389\nTest-NetConnection TARGET -Port 5985\n```"
+    },
+    {
+      "id": "method:service-remote:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 24792,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nTransport offers an RDP candidate from this source; it does not establish remote-interactive rights.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-remote:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 25038,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck actual protocol, local/domain context, accepted authentication and endpoint/logon authorization.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-remote:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 24742,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe intended remote session opens and its identity is verified: enumerate the new host context.\n\n**Verify:** Verify destination hostname, represented identity and usable effect in the resulting session.\n\n[[notes/services.md#service-remote|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-remote:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 25083,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA known-valid identity lacks that logon right: reject this access form for the account.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-remote:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 25304,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA timeout cannot distinguish host firewall, route or absent service; verify the failed layer.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-remote:action",
+      "type": "text",
+      "x": 3130,
+      "y": 24742,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nxfreerdp3 /v:TARGET /u:USER /d:DOMAIN /auth-only /cert:ignore\n```\n\n[[notes/services.md#service-remote|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-remote:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 25060,
+      "width": 620,
+      "height": 300,
+      "text": "### Obtain an authorized RDP interactive session\n\n**When:** RDP is reachable and the identity may have remote-interactive logon rights\n\n**Still required:** Allowed account/session policy and compatible client/NLA/TLS; hash-based Restricted Admin has additional supported-policy/admin requirements\n\n[[tracks/09 Active Directory.canvas|Obtain an authorized RDP interactive session → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-remote:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 25415,
+      "width": 620,
+      "height": 276,
+      "text": "### Use WinRM, WinRS or PowerShell remoting\n\n**When:** A WinRM listener and a candidate endpoint-authorized account\n\n**Still required:** Reachable HTTP(S) listener, accepted authentication and endpoint/session configuration permissions; hash/ticket support depends on client/context\n\n[[tracks/09 Active Directory.canvas|Use WinRM, WinRS or PowerShell remoting → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-remote:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 25746,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n[[tracks/08 Windows Privilege Escalation.canvas|Establish Windows token, host and process context → 08 Windows Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ldap:start",
+      "type": "text",
+      "x": 70,
+      "y": 26353,
+      "width": 350,
+      "height": 250,
+      "text": "## Discover LDAP naming contexts and authenticated search\n\nLDAP/Kerberos listeners or a probable AD domain",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ldap:discover",
+      "type": "text",
+      "x": 570,
+      "y": 26313,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nldapsearch -x -LLL -H ldap://DC_IP -s base -b '' defaultNamingContext namingContexts\n```"
+    },
+    {
+      "id": "method:service-ldap:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 26293,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nRootDSE supplies the search base; it does not grant arbitrary anonymous subtree access.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-ldap:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 26539,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck bind identity, transport/signing requirements and read visibility on the selected objects.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-ldap:checks",
+      "type": "text",
+      "x": 570,
+      "y": 26553,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```bash\nldapsearch -x -H ldap://DC_IP -s base -b '' namingContexts defaultNamingContext\n```"
+    },
+    {
+      "id": "method:service-ldap:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 26243,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA correctly authenticated scoped search returns expected objects: continue domain mapping.\n\n**Verify:** Record DC, base DN, bind identity and actual returned attributes; RootDSE alone is not a complete directory dump.\n\n[[notes/services.md#service-ldap|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-ldap:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 26584,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nAnonymous subtree search is denied: reject anonymous enumeration while retaining a known-authenticated option.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-ldap:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 26805,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nAn empty result may be the wrong base/filter or ACL visibility; compare a known object.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-ldap:action",
+      "type": "text",
+      "x": 3130,
+      "y": 26243,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nldapsearch -x -LLL -H ldap://TARGET:389 -s base -b '' \\\n  defaultNamingContext rootDomainNamingContext configurationNamingContext dnsHostName\n```\n\n[[notes/services.md#service-ldap|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-ldap:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 26585,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish domain identity, DC, DNS, time and route\n\n**When:** Domain credentials or a domain-joined foothold\n\n**Still required:** Correct realm/domain and account qualification; reachable DC/services, usable DNS and acceptable clock skew\n\n[[tracks/09 Active Directory.canvas|Establish domain identity, DC, DNS, time and route → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ldap:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 26892,
+      "width": 620,
+      "height": 276,
+      "text": "### Enumerate directory objects with native, LDAP and PowerView approaches\n\n**When:** A directory bind or domain-joined identity can read relevant objects\n\n**Still required:** Correct search base and authentication transport; object/attribute visibility and compatible local utilities\n\n[[tracks/09 Active Directory.canvas|Enumerate directory objects with native, LDAP and PowerView approaches → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-ldap:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 27223,
+      "width": 620,
+      "height": 252,
+      "text": "### Request a selected service ticket for offline service-account recovery\n\n**When:** A user-owned SPN and a useful service-account relationship\n\n**Still required:** A valid domain authentication/TGT context, reachable KDC, target SPN and a feasible password/encryption candidate strategy\n\n[[tracks/09 Active Directory.canvas|Request a selected service ticket for offline service-account recovery → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-sip-irc:start",
+      "type": "text",
+      "x": 70,
+      "y": 27830,
+      "width": 350,
+      "height": 250,
+      "text": "## Investigate SIP/IRC identity and configuration clues\n\nA confirmed SIP or IRC application",
+      "color": "5"
+    },
+    {
+      "id": "method:service-sip-irc:discover",
+      "type": "text",
+      "x": 570,
+      "y": 27790,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nnmap -Pn -sV -p PORT TARGET\nnc -nv TARGET PORT\n```"
+    },
+    {
+      "id": "method:service-sip-irc:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 27770,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe real protocol and registration state determine the next client operation; the expected port label is insufficient.",
+      "color": "6"
+    },
+    {
+      "id": "method:service-sip-irc:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 28016,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify application/version, accepted interaction and exact exploit/access conditions.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-sip-irc:checks",
+      "type": "text",
+      "x": 570,
+      "y": 28054,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```bash\nnmap -Pn -sV -p PORT TARGET\n```"
+    },
+    {
+      "id": "method:service-sip-irc:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 27720,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nNormal protocol interaction exposes useful configuration or an exact vulnerable component: follow that candidate.\n\n**Verify:** Retain protocol responses and distinguish product clues from confirmed vulnerabilities.\n\n[[notes/services.md#service-sip-irc|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-sip-irc:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 28061,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nThe listener speaks another protocol: remove the SIP/IRC assumption.",
+      "color": "1"
+    },
+    {
+      "id": "method:service-sip-irc:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 28258,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA silent client-first or UDP service requires an appropriate protocol request; no greeting is not a version conclusion.",
+      "color": "2"
+    },
+    {
+      "id": "method:service-sip-irc:action",
+      "type": "text",
+      "x": 3130,
+      "y": 27720,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnmap -Pn -sU -sV --script sip-methods -p 5060 TARGET\nnmap -Pn -sT -sV --script sip-methods -p 5060 TARGET\n```\n\n[[notes/services.md#service-sip-irc|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:service-sip-irc:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 28062,
+      "width": 620,
+      "height": 252,
+      "text": "### Match a public exploit to the actual component and configuration\n\n**When:** A product/version clue, advisory or component-specific public PoC\n\n**Still required:** Exact vulnerable build/configuration, required access and endpoint behavior; reviewable source and a verifiable expected effect\n\n[[tracks/04 Public Exploits.canvas|Match a public exploit to the actual component and configuration → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-sip-irc:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 28369,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:service-sip-irc:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 28676,
+      "width": 620,
+      "height": 252,
+      "text": "### Identify applications and validate selected NSE checks\n\n**When:** A listener has a port-based label or uncertain version\n\n**Still required:** A reachable selected port; scripts must match the application and permitted assessment behavior\n\n[[tracks/01 Discovery.canvas|Identify applications and validate selected NSE checks → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:S13:start",
+      "type": "text",
+      "x": 70,
+      "y": 29283,
+      "width": 350,
+      "height": 250,
+      "text": "## Inspect a Java RMI registry before selecting an exploit\n\nservice detection or an application response identifies Java RMI on a selected port.",
+      "color": "5"
+    },
+    {
+      "id": "method:S13:discover",
+      "type": "text",
+      "x": 570,
+      "y": 29243,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nnmap -sV -p PORT --script rmi-dumpregistry TARGET\n\nnmap -p PORT --script rmi-vuln-classloader TARGET\n```"
+    },
+    {
+      "id": "method:S13:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 29223,
+      "width": 580,
+      "height": 228,
+      "text": "### What the output establishes\n\nenumerate bound names, classes, remote endpoints and codebase annotations without assuming the registry is exploitable:\n\n  bash\n  nmap -sV -p PORT --script rmi-dumpregistry TARGET",
+      "color": "6"
+    },
+    {
+      "id": "method:S13:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 29541,
+      "width": 580,
+      "height": 300,
+      "text": "### Missing prerequisite\n\nconfirm the selected endpoint is the actual registry/service, its class-loading/serialization behavior, Java/version prerequisites and whether any proposed test is intrusive. The Nmap class-loader probe is categorized intrusive and must not be the baseline:\n\n  bash\n  nmap -p PORT --script rmi-vuln-classloader TARGET\nACTION PROCEDURE PENDING: discovery/validation only.",
+      "color": "2"
+    },
+    {
+      "id": "method:S13:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 29173,
+      "width": 620,
+      "height": 324,
+      "text": "### Condition confirmed\n\nmatching component and vulnerable behavior → candidate for reviewed D16 procedure; no registry or prerequisite decisively absent → ruled out here; filtered/incomplete registry or ambiguous class loading → inconclusive.\n\n**Verify:** registry names or a vulnerable class-loader result are component evidence, not a session. A complete action must separately verify the executed identity and resulting capability.\n\n[[notes/services.md#S13|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:S13:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 29562,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nFollow the denied/absent-condition outcome in the linked procedure.",
+      "color": "1"
+    },
+    {
+      "id": "method:S13:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 29759,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nResolve the missing condition; do not infer execution from visibility.",
+      "color": "2"
+    },
+    {
+      "id": "method:S13:action",
+      "type": "text",
+      "x": 3130,
+      "y": 29173,
+      "width": 900,
+      "height": 228,
+      "text": "### Documented checks — action procedure pending\n\n```bash\nnmap -sV -p PORT --script rmi-dumpregistry TARGET\n```\n\n[[notes/services.md#S13|Full note & variants]]",
+      "color": "2"
+    },
+    {
+      "id": "method:S14:start",
+      "type": "text",
+      "x": 70,
+      "y": 30246,
+      "width": 350,
+      "height": 250,
+      "text": "## Classify a Tomcat Manager interface and accepted role\n\nthe application is confirmed as Apache Tomcat and a /manager/* interface responds.",
+      "color": "5"
+    },
+    {
+      "id": "method:S14:discover",
+      "type": "text",
+      "x": 570,
+      "y": 30206,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\ncurl -sk -D - \"https://TARGET:PORT/manager/html\" -o /dev/null\n  curl -sk -D - \"https://TARGET:PORT/manager/text/list\" -o /dev/null\n```"
+    },
+    {
+      "id": "method:S14:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 30186,
+      "width": 580,
+      "height": 252,
+      "text": "### What the output establishes\n\ninspect the selected interface and authentication boundary without spraying credentials:\n\n  bash\n  curl -sk -D - \"https://TARGET:PORT/manager/html\" -o /dev/null\n  curl -sk -D - \"https://TARGET:PORT/manager/text/list\" -o /dev/null",
+      "color": "6"
+    },
+    {
+      "id": "method:S14:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 30528,
+      "width": 580,
+      "height": 228,
+      "text": "### Missing prerequisite\n\nidentify the accepted account and manager role: manager-gui, manager-script, manager-jmx or manager-status. GUI access and text-script access are intentionally separate; a 401, 403 and application 404 have different meanings.\nACTION PROCEDURE PENDING: discovery/validation only.",
+      "color": "2"
+    },
+    {
+      "id": "method:S14:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 30136,
+      "width": 620,
+      "height": 324,
+      "text": "### Condition confirmed\n\naccepted deployment-capable role → ready for a reviewed product procedure; role/interface denies the required operation → ruled out for that role; proxy rewriting, wrong scheme/path or ambiguous realm → inconclusive.\n\n**Verify:** a manager listing proves the interface/role only. A deployable application, reachable context path and server-side execution identity require separate proof.\n\n[[notes/services.md#S14|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:S14:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 30525,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nFollow the denied/absent-condition outcome in the linked procedure.",
+      "color": "1"
+    },
+    {
+      "id": "method:S14:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 30722,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nResolve the missing condition; do not infer execution from visibility.",
+      "color": "2"
+    },
+    {
+      "id": "method:S14:action",
+      "type": "text",
+      "x": 3130,
+      "y": 30136,
+      "width": 900,
+      "height": 252,
+      "text": "### Documented checks — action procedure pending\n\n```bash\ncurl -sk -D - \"https://TARGET:PORT/manager/html\" -o /dev/null\n  curl -sk -D - \"https://TARGET:PORT/manager/text/list\" -o /dev/null\n```\n\n[[notes/services.md#S14|Full note & variants]]",
+      "color": "2"
+    },
+    {
+      "id": "method:S15:start",
+      "type": "text",
+      "x": 70,
+      "y": 31209,
+      "width": 350,
+      "height": 250,
+      "text": "## Follow an MSSQL linked server as a new SQL identity boundary\n\na working MSSQL login reveals one linked server or login mapping.",
+      "color": "5"
+    },
+    {
+      "id": "method:S15:discover",
+      "type": "text",
+      "x": 570,
+      "y": 31169,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nSee the linked discovery procedure.\n```"
+    },
+    {
+      "id": "method:S15:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 31149,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nenumerate sys.servers and sp_helplinkedsrvlogin, preserving local login, remote server, provider/data source and mapping.",
+      "color": "6"
+    },
+    {
+      "id": "method:S15:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 31395,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\ntest one read-only remote identity query through the supported RPC or data-access mechanism. Do not enable RPC, create mappings or change configuration for enumeration.",
+      "color": "2"
+    },
+    {
+      "id": "method:S15:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 31099,
+      "width": 620,
+      "height": 324,
+      "text": "### Condition confirmed\n\nmapped remote query succeeds → re-enter D07 for that server/identity; link exists but RPC/data access is decisively unavailable → ruled out for that mechanism; mapping/authentication/provider failure is unresolved → inconclusive/D31.\n\n**Verify:** record returned SYSTEM_USER, ORIGINAL_LOGIN() and the remote role result. A remote SQL query is not OS command execution.\n\n[[notes/services.md#S15|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:S15:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 31488,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nFollow the denied/absent-condition outcome in the linked procedure.",
+      "color": "1"
+    },
+    {
+      "id": "method:S15:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 31685,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nResolve the missing condition; do not infer execution from visibility.",
+      "color": "2"
+    },
+    {
+      "id": "track-title",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 2300,
+      "height": 270,
+      "color": "5",
+      "text": "# 02 Services\n\nAll workflows, commands, result interpretations and method connections for this track are on this canvas. Embedded notes contain the complete procedures and variants.\n\n[[START.canvas|Choose another track]]\n\nCross-track results link directly to the receiving track."
+    }
+  ],
+  "edges": [
+    {
+      "id": "flow:services:check-0--check-0-finding-0",
+      "fromNode": "flow:services:check-0",
+      "fromSide": "right",
+      "toNode": "flow:services:check-0-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A readable share contains config, backups or keys"
+    },
+    {
+      "id": "flow:services:check-0--check-0-finding-1",
+      "fromNode": "flow:services:check-0",
+      "fromSide": "right",
+      "toNode": "flow:services:check-0-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A working domain identity"
+    },
+    {
+      "id": "flow:services:check-0--check-0-fallback",
+      "fromNode": "flow:services:check-0",
+      "fromSide": "right",
+      "toNode": "flow:services:check-0-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SMB is denied: inspect another discovered protocol, not repeated guesses against the same identity."
+    },
+    {
+      "id": "flow:services:check-0--check-1",
+      "fromNode": "flow:services:check-0",
+      "fromSide": "bottom",
+      "toNode": "flow:services:check-1",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:services:check-1--check-1-finding-0",
+      "fromNode": "flow:services:check-1",
+      "fromSide": "right",
+      "toNode": "flow:services:check-1-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Process arguments or configuration contain an account value"
+    },
+    {
+      "id": "flow:services:check-1--check-1-finding-1",
+      "fromNode": "flow:services:check-1",
+      "fromSide": "right",
+      "toNode": "flow:services:check-1-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A hostname or directory-service clue"
+    },
+    {
+      "id": "flow:services:check-1--check-1-fallback",
+      "fromNode": "flow:services:check-1",
+      "fromSide": "right",
+      "toNode": "flow:services:check-1-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "No useful SNMP response: return to the confirmed service list and choose its native client."
+    },
+    {
+      "id": "flow:services:check-1--check-2",
+      "fromNode": "flow:services:check-1",
+      "fromSide": "bottom",
+      "toNode": "flow:services:check-2",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:services:check-2--check-2-finding-0",
+      "fromNode": "flow:services:check-2",
+      "fromSide": "right",
+      "toNode": "flow:services:check-2-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A permitted impersonation or command facility"
+    },
+    {
+      "id": "flow:services:check-2--check-2-finding-1",
+      "fromNode": "flow:services:check-2",
+      "fromSide": "right",
+      "toNode": "flow:services:check-2-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "MySQL/MariaDB identified instead of SQL Server"
+    },
+    {
+      "id": "flow:services:check-2--check-2-fallback",
+      "fromNode": "flow:services:check-2",
+      "fromSide": "right",
+      "toNode": "flow:services:check-2-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Login succeeds but the action is denied: inspect grants under the same identity."
+    },
+    {
+      "id": "flow:services:home--check-0",
+      "fromNode": "flow:services:home",
+      "fromSide": "right",
+      "toNode": "flow:services:check-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "start with current access"
+    },
+    {
+      "id": "method:service-ftp:start--discover",
+      "fromNode": "method:service-ftp:start",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-ftp:discover--interpret",
+      "fromNode": "method:service-ftp:discover",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-ftp:interpret--validate",
+      "fromNode": "method:service-ftp:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-ftp:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-ftp:validate--enabled",
+      "fromNode": "method:service-ftp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-ftp:validate--ruledout",
+      "fromNode": "method:service-ftp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-ftp:validate--unknown",
+      "fromNode": "method:service-ftp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-ftp:enabled--action",
+      "fromNode": "method:service-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-ftp:enabled--next-0",
+      "fromNode": "method:service-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-ftp:enabled--next-1",
+      "fromNode": "method:service-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "JavaScript endpoints, backup names, exposed configuration or Git metadata"
+    },
+    {
+      "id": "method:service-ftp:enabled--next-2",
+      "fromNode": "method:service-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ftp:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:service-ssh:start--discover",
+      "fromNode": "method:service-ssh:start",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-ssh:discover--interpret",
+      "fromNode": "method:service-ssh:discover",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-ssh:interpret--validate",
+      "fromNode": "method:service-ssh:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-ssh:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-ssh:validate--enabled",
+      "fromNode": "method:service-ssh:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-ssh:validate--ruledout",
+      "fromNode": "method:service-ssh:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-ssh:validate--unknown",
+      "fromNode": "method:service-ssh:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-ssh:enabled--action",
+      "fromNode": "method:service-ssh:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-ssh:enabled--next-0",
+      "fromNode": "method:service-ssh:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:service-ssh:enabled--next-1",
+      "fromNode": "method:service-ssh:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A private key from a file read, share, repository or home directory"
+    },
+    {
+      "id": "method:service-ssh:enabled--next-2",
+      "fromNode": "method:service-ssh:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SSH reaches a server that can access the needed internal service"
+    },
+    {
+      "id": "method:service-smtp:start--discover",
+      "fromNode": "method:service-smtp:start",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-smtp:discover--interpret",
+      "fromNode": "method:service-smtp:discover",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-smtp:interpret--validate",
+      "fromNode": "method:service-smtp:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-smtp:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-smtp:validate--checks",
+      "fromNode": "method:service-smtp:validate",
+      "fromSide": "left",
+      "toNode": "method:service-smtp:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:service-smtp:validate--enabled",
+      "fromNode": "method:service-smtp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-smtp:validate--ruledout",
+      "fromNode": "method:service-smtp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-smtp:validate--unknown",
+      "fromNode": "method:service-smtp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-smtp:enabled--action",
+      "fromNode": "method:service-smtp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-smtp:enabled--next-0",
+      "fromNode": "method:service-smtp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:service-smtp:enabled--next-1",
+      "fromNode": "method:service-smtp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A DNS server, domain name or host aliases"
+    },
+    {
+      "id": "method:service-smtp:enabled--next-2",
+      "fromNode": "method:service-smtp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smtp:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SMB/RPC endpoints, domain clues or new credentials"
+    },
+    {
+      "id": "method:service-dns:start--discover",
+      "fromNode": "method:service-dns:start",
+      "fromSide": "right",
+      "toNode": "method:service-dns:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-dns:discover--interpret",
+      "fromNode": "method:service-dns:discover",
+      "fromSide": "right",
+      "toNode": "method:service-dns:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-dns:interpret--validate",
+      "fromNode": "method:service-dns:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-dns:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-dns:validate--enabled",
+      "fromNode": "method:service-dns:validate",
+      "fromSide": "right",
+      "toNode": "method:service-dns:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-dns:validate--ruledout",
+      "fromNode": "method:service-dns:validate",
+      "fromSide": "right",
+      "toNode": "method:service-dns:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-dns:validate--unknown",
+      "fromNode": "method:service-dns:validate",
+      "fromSide": "right",
+      "toNode": "method:service-dns:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-dns:enabled--action",
+      "fromNode": "method:service-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-dns:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-dns:enabled--next-0",
+      "fromNode": "method:service-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-dns:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "No response, a new subnet, or uncertainty about the interface and route"
+    },
+    {
+      "id": "method:service-dns:enabled--next-1",
+      "fromNode": "method:service-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-dns:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "DNS names, redirects, certificate names or a default virtual-host response"
+    },
+    {
+      "id": "method:service-dns:enabled--next-2",
+      "fromNode": "method:service-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-dns:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Domain credentials or a domain-joined foothold"
+    },
+    {
+      "id": "method:service-nfs:start--discover",
+      "fromNode": "method:service-nfs:start",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-nfs:discover--interpret",
+      "fromNode": "method:service-nfs:discover",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-nfs:interpret--validate",
+      "fromNode": "method:service-nfs:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-nfs:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-nfs:validate--enabled",
+      "fromNode": "method:service-nfs:validate",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-nfs:validate--ruledout",
+      "fromNode": "method:service-nfs:validate",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-nfs:validate--unknown",
+      "fromNode": "method:service-nfs:validate",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-nfs:enabled--action",
+      "fromNode": "method:service-nfs:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-nfs:enabled--next-0",
+      "fromNode": "method:service-nfs:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-nfs:enabled--next-1",
+      "fromNode": "method:service-nfs:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A writable/exported filesystem or a loopback-only service with useful privileges"
+    },
+    {
+      "id": "method:service-nfs:enabled--next-2",
+      "fromNode": "method:service-nfs:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-nfs:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:service-rsync:start--discover",
+      "fromNode": "method:service-rsync:start",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-rsync:discover--interpret",
+      "fromNode": "method:service-rsync:discover",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-rsync:interpret--validate",
+      "fromNode": "method:service-rsync:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-rsync:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-rsync:validate--enabled",
+      "fromNode": "method:service-rsync:validate",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-rsync:validate--ruledout",
+      "fromNode": "method:service-rsync:validate",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-rsync:validate--unknown",
+      "fromNode": "method:service-rsync:validate",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-rsync:enabled--action",
+      "fromNode": "method:service-rsync:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-rsync:enabled--next-0",
+      "fromNode": "method:service-rsync:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-rsync:enabled--next-1",
+      "fromNode": "method:service-rsync:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:service-rsync:enabled--next-2",
+      "fromNode": "method:service-rsync:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-rsync:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An SSH service and a known password, private key or agent context"
+    },
+    {
+      "id": "method:service-tftp:start--discover",
+      "fromNode": "method:service-tftp:start",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-tftp:discover--interpret",
+      "fromNode": "method:service-tftp:discover",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-tftp:interpret--validate",
+      "fromNode": "method:service-tftp:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-tftp:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-tftp:validate--enabled",
+      "fromNode": "method:service-tftp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-tftp:validate--ruledout",
+      "fromNode": "method:service-tftp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-tftp:validate--unknown",
+      "fromNode": "method:service-tftp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-tftp:enabled--action",
+      "fromNode": "method:service-tftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-tftp:enabled--next-0",
+      "fromNode": "method:service-tftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-tftp:enabled--next-1",
+      "fromNode": "method:service-tftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:service-tftp:enabled--next-2",
+      "fromNode": "method:service-tftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-tftp:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A product/version clue, advisory or component-specific public PoC"
+    },
+    {
+      "id": "method:service-smb:start--discover",
+      "fromNode": "method:service-smb:start",
+      "fromSide": "right",
+      "toNode": "method:service-smb:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-smb:discover--interpret",
+      "fromNode": "method:service-smb:discover",
+      "fromSide": "right",
+      "toNode": "method:service-smb:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-smb:interpret--validate",
+      "fromNode": "method:service-smb:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-smb:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-smb:validate--enabled",
+      "fromNode": "method:service-smb:validate",
+      "fromSide": "right",
+      "toNode": "method:service-smb:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-smb:validate--ruledout",
+      "fromNode": "method:service-smb:validate",
+      "fromSide": "right",
+      "toNode": "method:service-smb:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-smb:validate--unknown",
+      "fromNode": "method:service-smb:validate",
+      "fromSide": "right",
+      "toNode": "method:service-smb:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-smb:enabled--action",
+      "fromNode": "method:service-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smb:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-smb:enabled--next-0",
+      "fromNode": "method:service-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smb:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-smb:enabled--next-1",
+      "fromNode": "method:service-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smb:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A valid domain identity and accessible file services"
+    },
+    {
+      "id": "method:service-smb:enabled--next-2",
+      "fromNode": "method:service-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-smb:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A destination grants administrative-share write and service-control rights"
+    },
+    {
+      "id": "method:service-snmp:start--discover",
+      "fromNode": "method:service-snmp:start",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-snmp:discover--interpret",
+      "fromNode": "method:service-snmp:discover",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-snmp:interpret--validate",
+      "fromNode": "method:service-snmp:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-snmp:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-snmp:validate--enabled",
+      "fromNode": "method:service-snmp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-snmp:validate--ruledout",
+      "fromNode": "method:service-snmp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-snmp:validate--unknown",
+      "fromNode": "method:service-snmp:validate",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-snmp:enabled--action",
+      "fromNode": "method:service-snmp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-snmp:enabled--next-0",
+      "fromNode": "method:service-snmp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "No response, a new subnet, or uncertainty about the interface and route"
+    },
+    {
+      "id": "method:service-snmp:enabled--next-1",
+      "fromNode": "method:service-snmp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-snmp:enabled--next-2",
+      "fromNode": "method:service-snmp:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A product/version clue, advisory or component-specific public PoC"
+    },
+    {
+      "id": "method:service-mysql:start--discover",
+      "fromNode": "method:service-mysql:start",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-mysql:discover--interpret",
+      "fromNode": "method:service-mysql:discover",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-mysql:interpret--validate",
+      "fromNode": "method:service-mysql:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-mysql:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-mysql:validate--enabled",
+      "fromNode": "method:service-mysql:validate",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-mysql:validate--ruledout",
+      "fromNode": "method:service-mysql:validate",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-mysql:validate--unknown",
+      "fromNode": "method:service-mysql:validate",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-mysql:enabled--action",
+      "fromNode": "method:service-mysql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-mysql:enabled--next-0",
+      "fromNode": "method:service-mysql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-mysql:enabled--next-1",
+      "fromNode": "method:service-mysql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Confirmed SQL control plus database file, execution or impersonation privileges"
+    },
+    {
+      "id": "method:service-mysql:enabled--next-2",
+      "fromNode": "method:service-mysql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Uploads are retrievable and the application stack suggests an executable file handler"
+    },
+    {
+      "id": "method:service-mssql:start--discover",
+      "fromNode": "method:service-mssql:start",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-mssql:discover--interpret",
+      "fromNode": "method:service-mssql:discover",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-mssql:interpret--validate",
+      "fromNode": "method:service-mssql:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-mssql:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-mssql:validate--enabled",
+      "fromNode": "method:service-mssql:validate",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-mssql:validate--ruledout",
+      "fromNode": "method:service-mssql:validate",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-mssql:validate--unknown",
+      "fromNode": "method:service-mssql:validate",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-mssql:enabled--action",
+      "fromNode": "method:service-mssql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-mssql:enabled--next-0",
+      "fromNode": "method:service-mssql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Confirmed SQL control plus database file, execution or impersonation privileges"
+    },
+    {
+      "id": "method:service-mssql:enabled--next-1",
+      "fromNode": "method:service-mssql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-mssql:enabled--next-2",
+      "fromNode": "method:service-mssql:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A PoC, injected command or remote client reports execution"
+    },
+    {
+      "id": "method:service-postgres:start--discover",
+      "fromNode": "method:service-postgres:start",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-postgres:discover--interpret",
+      "fromNode": "method:service-postgres:discover",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-postgres:interpret--validate",
+      "fromNode": "method:service-postgres:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-postgres:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-postgres:validate--enabled",
+      "fromNode": "method:service-postgres:validate",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-postgres:validate--ruledout",
+      "fromNode": "method:service-postgres:validate",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-postgres:validate--unknown",
+      "fromNode": "method:service-postgres:validate",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-postgres:enabled--action",
+      "fromNode": "method:service-postgres:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-postgres:enabled--next-0",
+      "fromNode": "method:service-postgres:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-postgres:enabled--next-1",
+      "fromNode": "method:service-postgres:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Confirmed SQL control plus database file, execution or impersonation privileges"
+    },
+    {
+      "id": "method:service-postgres:enabled--next-2",
+      "fromNode": "method:service-postgres:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-postgres:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A PoC, injected command or remote client reports execution"
+    },
+    {
+      "id": "method:service-redis:start--discover",
+      "fromNode": "method:service-redis:start",
+      "fromSide": "right",
+      "toNode": "method:service-redis:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-redis:discover--interpret",
+      "fromNode": "method:service-redis:discover",
+      "fromSide": "right",
+      "toNode": "method:service-redis:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-redis:interpret--validate",
+      "fromNode": "method:service-redis:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-redis:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-redis:validate--enabled",
+      "fromNode": "method:service-redis:validate",
+      "fromSide": "right",
+      "toNode": "method:service-redis:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-redis:validate--ruledout",
+      "fromNode": "method:service-redis:validate",
+      "fromSide": "right",
+      "toNode": "method:service-redis:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-redis:validate--unknown",
+      "fromNode": "method:service-redis:validate",
+      "fromSide": "right",
+      "toNode": "method:service-redis:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-redis:enabled--action",
+      "fromNode": "method:service-redis:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-redis:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-redis:enabled--next-0",
+      "fromNode": "method:service-redis:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-redis:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:service-redis:enabled--next-1",
+      "fromNode": "method:service-redis:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-redis:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Administrative actions/routes or request methods visible from a lower role"
+    },
+    {
+      "id": "method:service-redis:enabled--next-2",
+      "fromNode": "method:service-redis:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-redis:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A product/version clue, advisory or component-specific public PoC"
+    },
+    {
+      "id": "method:service-oracle:start--discover",
+      "fromNode": "method:service-oracle:start",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-oracle:discover--interpret",
+      "fromNode": "method:service-oracle:discover",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-oracle:interpret--validate",
+      "fromNode": "method:service-oracle:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-oracle:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-oracle:validate--enabled",
+      "fromNode": "method:service-oracle:validate",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-oracle:validate--ruledout",
+      "fromNode": "method:service-oracle:validate",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-oracle:validate--unknown",
+      "fromNode": "method:service-oracle:validate",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-oracle:enabled--action",
+      "fromNode": "method:service-oracle:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-oracle:enabled--next-0",
+      "fromNode": "method:service-oracle:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:service-oracle:enabled--next-1",
+      "fromNode": "method:service-oracle:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A product/version clue, advisory or component-specific public PoC"
+    },
+    {
+      "id": "method:service-oracle:enabled--next-2",
+      "fromNode": "method:service-oracle:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-oracle:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Scanners disagree, a result is ambiguous, or a new identity changes accessible behavior"
+    },
+    {
+      "id": "method:service-remote:start--discover",
+      "fromNode": "method:service-remote:start",
+      "fromSide": "right",
+      "toNode": "method:service-remote:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-remote:discover--interpret",
+      "fromNode": "method:service-remote:discover",
+      "fromSide": "right",
+      "toNode": "method:service-remote:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-remote:interpret--validate",
+      "fromNode": "method:service-remote:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-remote:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-remote:validate--enabled",
+      "fromNode": "method:service-remote:validate",
+      "fromSide": "right",
+      "toNode": "method:service-remote:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-remote:validate--ruledout",
+      "fromNode": "method:service-remote:validate",
+      "fromSide": "right",
+      "toNode": "method:service-remote:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-remote:validate--unknown",
+      "fromNode": "method:service-remote:validate",
+      "fromSide": "right",
+      "toNode": "method:service-remote:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-remote:enabled--action",
+      "fromNode": "method:service-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-remote:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-remote:enabled--next-0",
+      "fromNode": "method:service-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-remote:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "RDP is reachable and the identity may have remote-interactive logon rights"
+    },
+    {
+      "id": "method:service-remote:enabled--next-1",
+      "fromNode": "method:service-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-remote:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A WinRM listener and a candidate endpoint-authorized account"
+    },
+    {
+      "id": "method:service-remote:enabled--next-2",
+      "fromNode": "method:service-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-remote:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:service-ldap:start--discover",
+      "fromNode": "method:service-ldap:start",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-ldap:discover--interpret",
+      "fromNode": "method:service-ldap:discover",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-ldap:interpret--validate",
+      "fromNode": "method:service-ldap:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-ldap:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-ldap:validate--checks",
+      "fromNode": "method:service-ldap:validate",
+      "fromSide": "left",
+      "toNode": "method:service-ldap:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:service-ldap:validate--enabled",
+      "fromNode": "method:service-ldap:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-ldap:validate--ruledout",
+      "fromNode": "method:service-ldap:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-ldap:validate--unknown",
+      "fromNode": "method:service-ldap:validate",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-ldap:enabled--action",
+      "fromNode": "method:service-ldap:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-ldap:enabled--next-0",
+      "fromNode": "method:service-ldap:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Domain credentials or a domain-joined foothold"
+    },
+    {
+      "id": "method:service-ldap:enabled--next-1",
+      "fromNode": "method:service-ldap:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A directory bind or domain-joined identity can read relevant objects"
+    },
+    {
+      "id": "method:service-ldap:enabled--next-2",
+      "fromNode": "method:service-ldap:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-ldap:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A user-owned SPN and a useful service-account relationship"
+    },
+    {
+      "id": "method:service-sip-irc:start--discover",
+      "fromNode": "method:service-sip-irc:start",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:service-sip-irc:discover--interpret",
+      "fromNode": "method:service-sip-irc:discover",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:service-sip-irc:interpret--validate",
+      "fromNode": "method:service-sip-irc:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:service-sip-irc:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:service-sip-irc:validate--checks",
+      "fromNode": "method:service-sip-irc:validate",
+      "fromSide": "left",
+      "toNode": "method:service-sip-irc:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:service-sip-irc:validate--enabled",
+      "fromNode": "method:service-sip-irc:validate",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:service-sip-irc:validate--ruledout",
+      "fromNode": "method:service-sip-irc:validate",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:service-sip-irc:validate--unknown",
+      "fromNode": "method:service-sip-irc:validate",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:service-sip-irc:enabled--action",
+      "fromNode": "method:service-sip-irc:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:service-sip-irc:enabled--next-0",
+      "fromNode": "method:service-sip-irc:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A product/version clue, advisory or component-specific public PoC"
+    },
+    {
+      "id": "method:service-sip-irc:enabled--next-1",
+      "fromNode": "method:service-sip-irc:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:service-sip-irc:enabled--next-2",
+      "fromNode": "method:service-sip-irc:enabled",
+      "fromSide": "right",
+      "toNode": "method:service-sip-irc:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A listener has a port-based label or uncertain version"
+    },
+    {
+      "id": "method:S13:start--discover",
+      "fromNode": "method:S13:start",
+      "fromSide": "right",
+      "toNode": "method:S13:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:S13:discover--interpret",
+      "fromNode": "method:S13:discover",
+      "fromSide": "right",
+      "toNode": "method:S13:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:S13:interpret--validate",
+      "fromNode": "method:S13:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:S13:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:S13:validate--enabled",
+      "fromNode": "method:S13:validate",
+      "fromSide": "right",
+      "toNode": "method:S13:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:S13:validate--ruledout",
+      "fromNode": "method:S13:validate",
+      "fromSide": "right",
+      "toNode": "method:S13:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:S13:validate--unknown",
+      "fromNode": "method:S13:validate",
+      "fromSide": "right",
+      "toNode": "method:S13:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:S13:enabled--action",
+      "fromNode": "method:S13:enabled",
+      "fromSide": "right",
+      "toNode": "method:S13:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:S14:start--discover",
+      "fromNode": "method:S14:start",
+      "fromSide": "right",
+      "toNode": "method:S14:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:S14:discover--interpret",
+      "fromNode": "method:S14:discover",
+      "fromSide": "right",
+      "toNode": "method:S14:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:S14:interpret--validate",
+      "fromNode": "method:S14:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:S14:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:S14:validate--enabled",
+      "fromNode": "method:S14:validate",
+      "fromSide": "right",
+      "toNode": "method:S14:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:S14:validate--ruledout",
+      "fromNode": "method:S14:validate",
+      "fromSide": "right",
+      "toNode": "method:S14:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:S14:validate--unknown",
+      "fromNode": "method:S14:validate",
+      "fromSide": "right",
+      "toNode": "method:S14:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:S14:enabled--action",
+      "fromNode": "method:S14:enabled",
+      "fromSide": "right",
+      "toNode": "method:S14:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:S15:start--discover",
+      "fromNode": "method:S15:start",
+      "fromSide": "right",
+      "toNode": "method:S15:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:S15:discover--interpret",
+      "fromNode": "method:S15:discover",
+      "fromSide": "right",
+      "toNode": "method:S15:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:S15:interpret--validate",
+      "fromNode": "method:S15:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:S15:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:S15:validate--enabled",
+      "fromNode": "method:S15:validate",
+      "fromSide": "right",
+      "toNode": "method:S15:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:S15:validate--ruledout",
+      "fromNode": "method:S15:validate",
+      "fromSide": "right",
+      "toNode": "method:S15:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:S15:validate--unknown",
+      "fromNode": "method:S15:validate",
+      "fromSide": "right",
+      "toNode": "method:S15:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "route-2227",
+      "fromNode": "flow:services:check-0",
+      "fromSide": "right",
+      "toNode": "method:service-smb:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2231",
+      "fromNode": "flow:services:check-1",
+      "fromSide": "right",
+      "toNode": "method:service-snmp:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2233",
+      "fromNode": "flow:services:check-1-finding-1",
+      "fromSide": "right",
+      "toNode": "method:service-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2235",
+      "fromNode": "flow:services:check-2",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2236",
+      "fromNode": "flow:services:check-2-finding-0",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2237",
+      "fromNode": "flow:services:check-2-finding-1",
+      "fromSide": "right",
+      "toNode": "method:service-mysql:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2238",
+      "fromNode": "flow:services:check-2-fallback",
+      "fromSide": "right",
+      "toNode": "method:service-mssql:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2246",
+      "fromNode": "method:service-smtp:next-1",
+      "fromSide": "right",
+      "toNode": "method:service-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2247",
+      "fromNode": "method:service-smtp:next-2",
+      "fromSide": "right",
+      "toNode": "method:service-smb:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2256",
+      "fromNode": "method:service-rsync:next-2",
+      "fromSide": "right",
+      "toNode": "method:service-ssh:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "nodes": [
+    {
+      "id": "group-discovery",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 1367,
+      "label": "Discover attack surfaces",
+      "color": "5"
+    },
+    {
+      "id": "topic-discovery",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Discover attack surfaces",
+      "color": "5"
+    },
+    {
+      "id": "path-hosts",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/discovery.md#path-hosts|Validate the source path and discover hosts]]"
+    },
+    {
+      "id": "windows-discovery",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/discovery.md#windows-discovery|Enumerate reachable endpoints from a Windows source]]"
+    },
+    {
+      "id": "discovery-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 248,
+      "width": 360,
+      "height": 76,
+      "text": "Source and reachability",
+      "color": "1"
+    },
+    {
+      "id": "tcp-coverage",
+      "type": "text",
+      "x": 550,
+      "y": 522,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/discovery.md#tcp-coverage|Discover TCP ports with SYN or connect scans]]"
+    },
+    {
+      "id": "identify-app",
+      "type": "text",
+      "x": 550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/discovery.md#identify-app|Identify applications and validate selected NSE checks]]"
+    },
+    {
+      "id": "udp-coverage",
+      "type": "text",
+      "x": 550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/discovery.md#udp-coverage|Probe UDP and resolve ambiguous silence]]"
+    },
+    {
+      "id": "unknown-port",
+      "type": "text",
+      "x": 550,
+      "y": 855,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/discovery.md#unknown-port|Discriminate unknown listeners and use scanner alternatives]]"
+    },
+    {
+      "id": "discovery-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 681,
+      "width": 360,
+      "height": 82,
+      "text": "Transport coverage and application identity",
+      "color": "2"
+    },
+    {
+      "id": "result-validation",
+      "type": "text",
+      "x": 550,
+      "y": 1066,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/discovery.md#result-validation|Validate uncertain results and rebuild the service queue]]"
+    },
+    {
+      "id": "discovery-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 1059,
+      "width": 360,
+      "height": 76,
+      "text": "Evidence and re-enumeration",
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-discovery--discovery-family-0",
+      "fromNode": "topic-discovery",
+      "fromSide": "right",
+      "toNode": "discovery-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "discovery-family-0--path-hosts",
+      "fromNode": "discovery-family-0",
+      "fromSide": "right",
+      "toNode": "path-hosts",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "discovery-family-0--windows-discovery",
+      "fromNode": "discovery-family-0",
+      "fromSide": "right",
+      "toNode": "windows-discovery",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-discovery--discovery-family-1",
+      "fromNode": "topic-discovery",
+      "fromSide": "right",
+      "toNode": "discovery-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "discovery-family-1--tcp-coverage",
+      "fromNode": "discovery-family-1",
+      "fromSide": "right",
+      "toNode": "tcp-coverage",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "discovery-family-1--identify-app",
+      "fromNode": "discovery-family-1",
+      "fromSide": "right",
+      "toNode": "identify-app",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "discovery-family-1--udp-coverage",
+      "fromNode": "discovery-family-1",
+      "fromSide": "right",
+      "toNode": "udp-coverage",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "discovery-family-1--unknown-port",
+      "fromNode": "discovery-family-1",
+      "fromSide": "right",
+      "toNode": "unknown-port",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-discovery--discovery-family-2",
+      "fromNode": "topic-discovery",
+      "fromSide": "right",
+      "toNode": "discovery-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "discovery-family-2--result-validation",
+      "fromNode": "discovery-family-2",
+      "fromSide": "right",
+      "toNode": "result-validation",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "path-hosts--tcp-coverage",
+      "fromNode": "path-hosts",
+      "fromSide": "bottom",
+      "toNode": "tcp-coverage",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A route selects the expected interface/source",
+      "color": "#74829a"
+    },
+    {
+      "id": "tcp-coverage--identify-app",
+      "fromNode": "tcp-coverage",
+      "fromSide": "bottom",
+      "toNode": "identify-app",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "An open TCP port",
+      "color": "#74829a"
+    },
+    {
+      "id": "tcp-coverage--udp-coverage",
+      "fromNode": "tcp-coverage",
+      "fromSide": "bottom",
+      "toNode": "udp-coverage",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "identify-app--unknown-port",
+      "fromNode": "identify-app",
+      "fromSide": "bottom",
+      "toNode": "unknown-port",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "An unrecognized listener",
+      "color": "#74829a"
+    },
+    {
+      "id": "identify-app--result-validation",
+      "fromNode": "identify-app",
+      "fromSide": "bottom",
+      "toNode": "result-validation",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    }
+  ]
+}

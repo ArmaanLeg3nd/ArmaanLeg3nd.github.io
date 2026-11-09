@@ -1,4 +1,12 @@
 {
+  "notes/Attack_Surface_Maps.md": {
+    "choices": ["Discovery", "Services", "Web", "Public Exploits", "Credentials", "Shells and Transfers", "Linux Privilege Escalation", "Windows Privilege Escalation", "Active Directory", "Pivoting", "Execution Troubleshooting", "Evidence and Reporting"],
+    "disposition": "Track choices fold independently; each preserves its technique-name links and exact cheatsheet destinations."
+  },
+  "notes/Attack_Surface_Supplements.md": {
+    "choices": ["Inspect host-side RDP enablement and logon policy", "Read a classic LAPS password for one computer", "Read or decrypt a Windows LAPS password", "Recover and classify gMSA material", "Use a validated shadow-credential path", "Authenticate to LDAP with a mapped certificate", "Create a controlled machine account only for a selected AD path", "Evaluate DNSAdmins without assuming immediate execution", "Map WSUS client policy to a server-side authorization question", "Recognize SCCM client context and locate the management boundary", "Interpret an AD trust as a boundary, not a privilege transition", "Map an authentication, session or multistep web flow", "Inspect a Java RMI registry before selecting an exploit", "Classify a Tomcat Manager interface and accepted role", "Follow an MSSQL linked server as a new SQL identity boundary", "Inspect VSS/shadow-copy credential-source conditions", "Evaluate a direct Net-NTLMv2 relay path without spoofing", "Inspect AD-integrated DNS record control", "Separate an unconstrained-delegation flag from tickets actually present"],
+    "disposition": "Conditional surfaces fold independently with explicit discovery-only boundaries; retain exact surface anchors and complete commands."
+  },
   "README.md": {
     "choices": [],
     "disposition": "Navigation index: leave visible."

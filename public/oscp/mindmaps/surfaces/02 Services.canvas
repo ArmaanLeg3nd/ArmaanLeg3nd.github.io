@@ -1,0 +1,476 @@
+{
+  "nodes": [
+    {
+      "id": "group-services",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 3010,
+      "label": "Extract opportunities from services",
+      "color": "5"
+    },
+    {
+      "id": "topic-services",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Extract opportunities from services",
+      "color": "5"
+    },
+    {
+      "id": "service-ftp",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-ftp|Use anonymous or authenticated FTP file access]]"
+    },
+    {
+      "id": "service-ssh",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-ssh|Use SSH passwords, keys and forwarding-capable access]]"
+    },
+    {
+      "id": "service-nfs",
+      "type": "text",
+      "x": 550,
+      "y": 422,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-nfs|Inspect RPC/NFS exports and effective file identity]]"
+    },
+    {
+      "id": "service-rsync",
+      "type": "text",
+      "x": 550,
+      "y": 533,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-rsync|Inspect rsync modules and retrieve selected artifacts]]"
+    },
+    {
+      "id": "service-tftp",
+      "type": "text",
+      "x": 550,
+      "y": 644,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-tftp|Retrieve an evidence-backed file over TFTP]]"
+    },
+    {
+      "id": "service-smb",
+      "type": "text",
+      "x": 550,
+      "y": 755,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-smb|Enumerate SMB/RPC shares, files and identities]]"
+    },
+    {
+      "id": "services-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 470,
+      "width": 360,
+      "height": 76,
+      "text": "File and shell access",
+      "color": "1"
+    },
+    {
+      "id": "service-smtp",
+      "type": "text",
+      "x": 550,
+      "y": 966,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-smtp|Enumerate SMTP identities and accessible mailbox protocols]]"
+    },
+    {
+      "id": "service-dns",
+      "type": "text",
+      "x": 550,
+      "y": 1077,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-dns|Expand names through DNS records and zone transfers]]"
+    },
+    {
+      "id": "service-snmp",
+      "type": "text",
+      "x": 550,
+      "y": 1188,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-snmp|Extract configuration and process information through SNMP]]"
+    },
+    {
+      "id": "service-ldap",
+      "type": "text",
+      "x": 550,
+      "y": 1299,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-ldap|Discover LDAP naming contexts and authenticated search]]"
+    },
+    {
+      "id": "services-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 1125,
+      "width": 360,
+      "height": 76,
+      "text": "Identity and configuration disclosure",
+      "color": "2"
+    },
+    {
+      "id": "service-mysql",
+      "type": "text",
+      "x": 550,
+      "y": 1510,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-mysql|Use MySQL/MariaDB data and file primitives]]"
+    },
+    {
+      "id": "service-mssql",
+      "type": "text",
+      "x": 550,
+      "y": 1621,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-mssql|Use SQL Server rights, impersonation and command facilities]]"
+    },
+    {
+      "id": "service-postgres",
+      "type": "text",
+      "x": 550,
+      "y": 1732,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-postgres|Use PostgreSQL data and privileged program execution]]"
+    },
+    {
+      "id": "service-redis",
+      "type": "text",
+      "x": 550,
+      "y": 1843,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-redis|Inspect Redis access and persistence boundaries]]"
+    },
+    {
+      "id": "service-oracle",
+      "type": "text",
+      "x": 550,
+      "y": 1954,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-oracle|Triage Oracle listener and database identity]]"
+    },
+    {
+      "id": "services-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 1725,
+      "width": 360,
+      "height": 76,
+      "text": "Database privileges and primitives",
+      "color": "3"
+    },
+    {
+      "id": "service-remote",
+      "type": "text",
+      "x": 550,
+      "y": 2165,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-remote|Validate RDP, WinRM, VNC and Telnet access contexts]]"
+    },
+    {
+      "id": "service-sip-irc",
+      "type": "text",
+      "x": 550,
+      "y": 2276,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#service-sip-irc|Investigate SIP/IRC identity and configuration clues]]"
+    },
+    {
+      "id": "services-family-3",
+      "type": "text",
+      "x": 20,
+      "y": 2213,
+      "width": 360,
+      "height": 76,
+      "text": "Remote access and uncommon applications",
+      "color": "4"
+    },
+    {
+      "id": "S13",
+      "type": "text",
+      "x": 550,
+      "y": 2487,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#S13|Inspect a Java RMI registry before selecting an exploit]]"
+    },
+    {
+      "id": "S14",
+      "type": "text",
+      "x": 550,
+      "y": 2598,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#S14|Classify a Tomcat Manager interface and accepted role]]"
+    },
+    {
+      "id": "S15",
+      "type": "text",
+      "x": 550,
+      "y": 2709,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/services.md#S15|Follow an MSSQL linked server as a new SQL identity boundary]]"
+    },
+    {
+      "id": "services-family-4",
+      "type": "text",
+      "x": 20,
+      "y": 2591,
+      "width": 360,
+      "height": 76,
+      "text": "Conditional surfaces",
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-services--services-family-0",
+      "fromNode": "topic-services",
+      "fromSide": "right",
+      "toNode": "services-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-0--service-ftp",
+      "fromNode": "services-family-0",
+      "fromSide": "right",
+      "toNode": "service-ftp",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-0--service-ssh",
+      "fromNode": "services-family-0",
+      "fromSide": "right",
+      "toNode": "service-ssh",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-0--service-nfs",
+      "fromNode": "services-family-0",
+      "fromSide": "right",
+      "toNode": "service-nfs",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-0--service-rsync",
+      "fromNode": "services-family-0",
+      "fromSide": "right",
+      "toNode": "service-rsync",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-0--service-tftp",
+      "fromNode": "services-family-0",
+      "fromSide": "right",
+      "toNode": "service-tftp",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-0--service-smb",
+      "fromNode": "services-family-0",
+      "fromSide": "right",
+      "toNode": "service-smb",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-services--services-family-1",
+      "fromNode": "topic-services",
+      "fromSide": "right",
+      "toNode": "services-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-1--service-smtp",
+      "fromNode": "services-family-1",
+      "fromSide": "right",
+      "toNode": "service-smtp",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-1--service-dns",
+      "fromNode": "services-family-1",
+      "fromSide": "right",
+      "toNode": "service-dns",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-1--service-snmp",
+      "fromNode": "services-family-1",
+      "fromSide": "right",
+      "toNode": "service-snmp",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-1--service-ldap",
+      "fromNode": "services-family-1",
+      "fromSide": "right",
+      "toNode": "service-ldap",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-services--services-family-2",
+      "fromNode": "topic-services",
+      "fromSide": "right",
+      "toNode": "services-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-2--service-mysql",
+      "fromNode": "services-family-2",
+      "fromSide": "right",
+      "toNode": "service-mysql",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-2--service-mssql",
+      "fromNode": "services-family-2",
+      "fromSide": "right",
+      "toNode": "service-mssql",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-2--service-postgres",
+      "fromNode": "services-family-2",
+      "fromSide": "right",
+      "toNode": "service-postgres",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-2--service-redis",
+      "fromNode": "services-family-2",
+      "fromSide": "right",
+      "toNode": "service-redis",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-2--service-oracle",
+      "fromNode": "services-family-2",
+      "fromSide": "right",
+      "toNode": "service-oracle",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-services--services-family-3",
+      "fromNode": "topic-services",
+      "fromSide": "right",
+      "toNode": "services-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-3--service-remote",
+      "fromNode": "services-family-3",
+      "fromSide": "right",
+      "toNode": "service-remote",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-3--service-sip-irc",
+      "fromNode": "services-family-3",
+      "fromSide": "right",
+      "toNode": "service-sip-irc",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-services--services-family-4",
+      "fromNode": "topic-services",
+      "fromSide": "right",
+      "toNode": "services-family-4",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-4--S13",
+      "fromNode": "services-family-4",
+      "fromSide": "right",
+      "toNode": "S13",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-4--S14",
+      "fromNode": "services-family-4",
+      "fromSide": "right",
+      "toNode": "S14",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "services-family-4--S15",
+      "fromNode": "services-family-4",
+      "fromSide": "right",
+      "toNode": "S15",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "service-snmp--service-dns",
+      "fromNode": "service-snmp",
+      "fromSide": "bottom",
+      "toNode": "service-dns",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A hostname or directory-service clue",
+      "color": "#74829a"
+    },
+    {
+      "id": "service-mssql--service-mysql",
+      "fromNode": "service-mssql",
+      "fromSide": "bottom",
+      "toNode": "service-mysql",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "MySQL/MariaDB identified instead of SQL Server",
+      "color": "#74829a"
+    }
+  ]
+}

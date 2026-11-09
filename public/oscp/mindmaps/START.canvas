@@ -1,0 +1,220 @@
+{
+  "nodes": [
+    {
+      "id": "root",
+      "type": "text",
+      "x": 0,
+      "y": 500,
+      "width": 480,
+      "height": 107,
+      "text": "# OSCP attack-surface maps\n\nTechnique names → linked notes.\n\nChoose a surface map for coverage, or open the restored detailed track.",
+      "color": "5"
+    },
+    {
+      "id": "track-0",
+      "type": "text",
+      "x": 650,
+      "y": 0,
+      "width": 800,
+      "height": 76,
+      "text": "## 01 Discovery\n\n[[surfaces/01 Discovery.canvas|Technique map]]\n\n[[tracks/01 Discovery.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-1",
+      "type": "text",
+      "x": 650,
+      "y": 260,
+      "width": 800,
+      "height": 76,
+      "text": "## 02 Services\n\n[[surfaces/02 Services.canvas|Technique map]]\n\n[[tracks/02 Services.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-2",
+      "type": "text",
+      "x": 650,
+      "y": 520,
+      "width": 800,
+      "height": 76,
+      "text": "## 03 Web\n\n[[surfaces/03 Web.canvas|Technique map]]\n\n[[tracks/03 Web.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-3",
+      "type": "text",
+      "x": 650,
+      "y": 780,
+      "width": 800,
+      "height": 76,
+      "text": "## 04 Public Exploits\n\n[[surfaces/04 Public Exploits.canvas|Technique map]]\n\n[[tracks/04 Public Exploits.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-4",
+      "type": "text",
+      "x": 650,
+      "y": 1040,
+      "width": 800,
+      "height": 76,
+      "text": "## 05 Credentials\n\n[[surfaces/05 Credentials.canvas|Technique map]]\n\n[[tracks/05 Credentials.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-5",
+      "type": "text",
+      "x": 650,
+      "y": 1300,
+      "width": 800,
+      "height": 76,
+      "text": "## 06 Shells and Transfers\n\n[[surfaces/06 Shells and Transfers.canvas|Technique map]]\n\n[[tracks/06 Shells and Transfers.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-6",
+      "type": "text",
+      "x": 1600,
+      "y": 0,
+      "width": 800,
+      "height": 76,
+      "text": "## 07 Linux Privilege Escalation\n\n[[surfaces/07 Linux Privilege Escalation.canvas|Technique map]]\n\n[[tracks/07 Linux Privilege Escalation.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-7",
+      "type": "text",
+      "x": 1600,
+      "y": 260,
+      "width": 800,
+      "height": 76,
+      "text": "## 08 Windows Privilege Escalation\n\n[[surfaces/08 Windows Privilege Escalation.canvas|Technique map]]\n\n[[tracks/08 Windows Privilege Escalation.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-8",
+      "type": "text",
+      "x": 1600,
+      "y": 520,
+      "width": 800,
+      "height": 76,
+      "text": "## 09 Active Directory\n\n[[surfaces/09 Active Directory.canvas|Technique map]]\n\n[[tracks/09 Active Directory.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-9",
+      "type": "text",
+      "x": 1600,
+      "y": 780,
+      "width": 800,
+      "height": 76,
+      "text": "## 10 Pivoting\n\n[[surfaces/10 Pivoting.canvas|Technique map]]\n\n[[tracks/10 Pivoting.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-10",
+      "type": "text",
+      "x": 1600,
+      "y": 1040,
+      "width": 800,
+      "height": 76,
+      "text": "## 11 Execution Troubleshooting\n\n[[surfaces/11 Execution Troubleshooting.canvas|Technique map]]\n\n[[tracks/11 Execution Troubleshooting.canvas|Detailed track]]"
+    },
+    {
+      "id": "track-11",
+      "type": "text",
+      "x": 1600,
+      "y": 1300,
+      "width": 800,
+      "height": 76,
+      "text": "## 12 Evidence and Reporting\n\n[[surfaces/12 Evidence and Reporting.canvas|Technique map]]\n\n[[tracks/12 Evidence and Reporting.canvas|Detailed track]]"
+    }
+  ],
+  "edges": [
+    {
+      "id": "root--track-0",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-1",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-2",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-3",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-4",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-4",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-5",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-5",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-6",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-6",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-7",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-7",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-8",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-8",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-9",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-9",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-10",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-10",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "root--track-11",
+      "fromNode": "root",
+      "fromSide": "right",
+      "toNode": "track-11",
+      "toSide": "left",
+      "toEnd": "arrow"
+    }
+  ]
+}

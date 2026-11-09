@@ -24,7 +24,7 @@ for (const path of paths) {
 }
 const routes = new Set(pages.map(page=>page.slug));
 if (routes.size !== pages.length) throw new Error('Duplicate plain reference route');
-const assets = tracked.filter(path=>/^diagrams\/.*\.(svg|png)$/.test(path));
+const assets = tracked.filter(path=>/^diagrams\/.*\.(svg|png)$/.test(path)||/^mindmaps\/(?:surfaces|tracks)\/.*\.canvas$/.test(path)||path==='mindmaps/START.canvas'||path==='OSCP-Attack-Surface-Atlas.zip');
 for (const asset of assets) {
   const target = resolve(root,'public/oscp',asset);
   await mkdir(dirname(target),{recursive:true});

@@ -1,0 +1,2360 @@
+{
+  "nodes": [
+    {
+      "id": "topic-group:execution",
+      "type": "group",
+      "x": 0,
+      "y": 420,
+      "width": 4400,
+      "height": 18176,
+      "label": "Resolve payload execution obstacles",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-office",
+      "type": "group",
+      "x": 35,
+      "y": 2985,
+      "width": 4080,
+      "height": 1616,
+      "label": "Use a gated Office macro delivery chain",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-library",
+      "type": "group",
+      "x": 35,
+      "y": 4726,
+      "width": 4080,
+      "height": 1448,
+      "label": "Use a Windows Library/WebDAV/shortcut chain with explicit interaction",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-format",
+      "type": "group",
+      "x": 35,
+      "y": 6299,
+      "width": 4080,
+      "height": 2230,
+      "label": "Match an artifact to its executable consumer and runtime",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-parser",
+      "type": "group",
+      "x": 35,
+      "y": 8654,
+      "width": 4080,
+      "height": 1448,
+      "label": "Repair quoting, encoding and command-length boundaries",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-powershell",
+      "type": "group",
+      "x": 35,
+      "y": 10227,
+      "width": 4080,
+      "height": 1880,
+      "label": "Distinguish PowerShell policy, language mode and protected execution layers",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-controls",
+      "type": "group",
+      "x": 35,
+      "y": 12232,
+      "width": 4080,
+      "height": 1376,
+      "label": "Interpret endpoint-control evidence and select a justified alternative",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-handler",
+      "type": "group",
+      "x": 35,
+      "y": 13733,
+      "width": 4080,
+      "height": 1400,
+      "label": "Pair staged payloads with the correct handler and session lifecycle",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-framework",
+      "type": "group",
+      "x": 35,
+      "y": 15258,
+      "width": 4080,
+      "height": 1688,
+      "label": "Use a framework module with explicit target and feature constraints",
+      "color": "2"
+    },
+    {
+      "id": "method-group:execution-callback",
+      "type": "group",
+      "x": 35,
+      "y": 17071,
+      "width": 4080,
+      "height": 1400,
+      "label": "Diagnose connection direction, listener and session failures in order",
+      "color": "2"
+    },
+    {
+      "id": "topic:execution",
+      "type": "text",
+      "x": 60,
+      "y": 440,
+      "width": 1800,
+      "height": 140,
+      "text": "# Resolve payload execution obstacles\n\nStart with the saved delivery/trigger/parser/runtime/connection chain and the last state actually proved.",
+      "color": "2"
+    },
+    {
+      "id": "flow:execution:home",
+      "type": "text",
+      "x": 60,
+      "y": 620,
+      "width": 350,
+      "height": 240,
+      "text": "## Investigation flow\n\nResolve payload execution obstacles\n\n · \n\nBranches describe evidence and missing conditions. Follow one useful lead, then return to unfinished coverage.",
+      "color": "6"
+    },
+    {
+      "id": "flow:execution:check-0",
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "width": 760,
+      "height": 348,
+      "text": "## Find the first failed runtime boundary\n\nCheck bytes, file type, architecture and runtime before trying another payload.\n\n```bash\nfile FILE\nsha256sum FILE\nreadelf -l FILE 2>/dev/null\nuname -m\n```\n\n**Match an artifact to its executable consumer and runtime — on this canvas**"
+    },
+    {
+      "id": "flow:execution:check-0-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 620,
+      "width": 610,
+      "height": 180,
+      "text": "### Wrong architecture or executable format\n\nFix the artifact/build before re-running it.\n\n[[tracks/04 Public Exploits.canvas|Compile and minimally adapt an existing native or memory-corruption PoC → 04 Public Exploits]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:execution:check-0-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 845,
+      "width": 610,
+      "height": 180,
+      "text": "### The file reaches a different parser than expected\n\nInspect quoting, encoding and the exact invocation.\n\n**Repair quoting, encoding and command-length boundaries — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:execution:check-0-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nThe artifact runs but no session appears: inspect handler and packet direction.\n\n**Pair staged payloads with the correct handler and session lifecycle — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:execution:check-1",
+      "type": "text",
+      "x": 560,
+      "y": 1250,
+      "width": 760,
+      "height": 324,
+      "text": "## Match the payload handler and connection direction\n\nKeep the exact payload/session type, listener address and actual initiator together.\n\n```text\nshow options\njobs\nsessions\n```\n\n**Pair staged payloads with the correct handler and session lifecycle — on this canvas**"
+    },
+    {
+      "id": "flow:execution:check-1-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1250,
+      "width": 610,
+      "height": 180,
+      "text": "### Handler settings match but no packet arrives\n\nCheck the callback route from the target, including any pivot.\n\n**Diagnose connection direction, listener and session failures in order — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:execution:check-1-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 1475,
+      "width": 610,
+      "height": 180,
+      "text": "### A session opens under the expected identity\n\nVerify the host and make the command channel usable.\n\n[[tracks/06 Shells and Transfers.canvas|Verify command execution, host and represented identity → 06 Shells and Transfers]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:execution:check-1-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1250,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nA connection immediately dies: inspect the actual process/session lifecycle rather than assuming a working shell.\n\n**Use a framework module with explicit target and feature constraints — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "notes:execution",
+      "type": "file",
+      "file": "notes/execution.md",
+      "x": 60,
+      "y": 1885,
+      "width": 2100,
+      "height": 850
+    },
+    {
+      "id": "notes-label:execution",
+      "type": "text",
+      "x": 2350,
+      "y": 1885,
+      "width": 1400,
+      "height": 180,
+      "text": "## Full procedures and alternatives\n\nThe adjacent embedded note is readable here. Scroll inside it for complete variants. Commands and decisions continue below.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-office:start",
+      "type": "text",
+      "x": 70,
+      "y": 3160,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a gated Office macro delivery chain\n\nAn assigned client-side scenario includes Office and a document-open interaction",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-office:discover",
+      "type": "text",
+      "x": 570,
+      "y": 3120,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nGet-Item .\\FILE -Stream *\nGet-Content .\\FILE -Stream Zone.Identifier -ErrorAction SilentlyContinue\n```"
+    },
+    {
+      "id": "method:execution-office:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 3100,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nInternet-origin metadata and absent macro execution localize an earlier gate than network connectivity.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-office:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 3346,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck compatible Office, actual macro/user trigger and applicable policy; a delivered/opened document is not execution.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-office:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 3050,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe permitted interaction triggers the expected bounded command effect: choose the supported delivery chain.\n\n**Verify:** Verify the actual macro-triggered effect and user context; document receipt is not execution.\n\n[[notes/execution.md#execution-office|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-office:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 3391,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOffice/policy blocks the required macro path: reject this chain under those conditions.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-office:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 3612,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA missing callback with no trigger evidence leaves execution unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-office:action",
+      "type": "text",
+      "x": 3130,
+      "y": 3050,
+      "width": 900,
+      "height": 492,
+      "text": "### Procedure entry — full sequence in the note\n\n```vb\nSub AutoOpen()\n    RunProof\nEnd Sub\n\nSub Document_Open()\n    RunProof\nEnd Sub\n\nSub RunProof()\n    CreateObject(\"WScript.Shell\").Run _\n        \"cmd.exe /c whoami > %TEMP%\\oscp-marker.txt\", 0, True\nEnd Sub\n```\n\n[[notes/execution.md#execution-office|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-office:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 3632,
+      "width": 620,
+      "height": 252,
+      "text": "### Repair quoting, encoding and command-length boundaries\n\n**When:** A simple command works while a longer or nested payload fails\n\n**Still required:** Known outer request/template/database parser and inner shell; correct character encoding and transport length\n\n**Repair quoting, encoding and command-length boundaries — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-office:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 3939,
+      "width": 620,
+      "height": 276,
+      "text": "### Diagnose connection direction, listener and session failures in order\n\n**When:** Command execution or payload delivery exists but the expected usable channel does not\n\n**Still required:** A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence\n\n**Diagnose connection direction, listener and session failures in order — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-office:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 4270,
+      "width": 620,
+      "height": 276,
+      "text": "### Use Windows authenticated access or a PowerShell command channel\n\n**When:** Windows execution or valid credentials with an available remote service\n\n**Still required:** Accepted remote-service rights or compatible PowerShell execution; correct encoding, policy context and callback route\n\n[[tracks/06 Shells and Transfers.canvas|Use Windows authenticated access or a PowerShell command channel → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-library:start",
+      "type": "text",
+      "x": 70,
+      "y": 4901,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a Windows Library/WebDAV/shortcut chain with explicit interaction\n\nA client-side scenario permits a Library file and remote share presentation",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-library:discover",
+      "type": "text",
+      "x": 570,
+      "y": 4861,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nGet-Content .\\FILE.library-ms\nTest-NetConnection LHOST -Port PORT\n```"
+    },
+    {
+      "id": "method:execution-library:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 4841,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe resource can be presented while the executable user interaction is still absent.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-library:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 5087,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify compatible WebDAV/Library handling, actual shortcut target/launch, policy and its command effect.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-library:checks",
+      "type": "text",
+      "x": 570,
+      "y": 5125,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```powershell\nTest-NetConnection LHOST -Port PORT\nGet-Item .\\FILE -Stream *\n```"
+    },
+    {
+      "id": "method:execution-library:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 4791,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe intended launch and resulting user-context command are observed: use the supported chain.\n\n**Verify:** Verify the launched command's identity/effect and distinguish WebDAV requests from execution.\n\n[[notes/execution.md#execution-library|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-library:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 5132,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe client cannot consume the resource or never performs the required allowed launch: reject that interaction path.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-library:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 5353,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA WebDAV GET alone leaves code execution unproved.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-library:action",
+      "type": "text",
+      "x": 3130,
+      "y": 4791,
+      "width": 900,
+      "height": 348,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\ndelivered .Library-ms\n→ user opens library\n→ Explorer reaches WebDAV location\n→ user opens .lnk\n→ shortcut launches chosen command\n→ optional download/callback\n```\n\n[[notes/execution.md#execution-library|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-library:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 5229,
+      "width": 620,
+      "height": 252,
+      "text": "### Repair quoting, encoding and command-length boundaries\n\n**When:** A simple command works while a longer or nested payload fails\n\n**Still required:** Known outer request/template/database parser and inner shell; correct character encoding and transport length\n\n**Repair quoting, encoding and command-length boundaries — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-library:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 5536,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n**Match an artifact to its executable consumer and runtime — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-library:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 5843,
+      "width": 620,
+      "height": 276,
+      "text": "### Diagnose connection direction, listener and session failures in order\n\n**When:** Command execution or payload delivery exists but the expected usable channel does not\n\n**Still required:** A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence\n\n**Diagnose connection direction, listener and session failures in order — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-format:start",
+      "type": "text",
+      "x": 70,
+      "y": 6474,
+      "width": 350,
+      "height": 250,
+      "text": "## Match an artifact to its executable consumer and runtime\n\nA downloaded/generated artifact exists but does not run",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-format:discover",
+      "type": "text",
+      "x": 570,
+      "y": 6434,
+      "width": 780,
+      "height": 252,
+      "text": "### Discover\n\n```text\nfile FILE\nsha256sum FILE\nreadelf -l FILE 2>/dev/null\nuname -m\n```"
+    },
+    {
+      "id": "method:execution-format:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 6414,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn existing file can fail because its loader/runtime is missing; this is separate from callback failure.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-format:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 6660,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify exact architecture, loader/runtime, permissions, mount policy, line endings and integrity.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-format:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 6364,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe matching consumer loads intact bytes and the minimal effect works: choose that artifact.\n\n**Verify:** Verify matching bytes, consumer and actual minimal execution effect; on Windows inspect PE architecture/runtime and resulting process.\n\n[[notes/execution.md#execution-format|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-format:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 6705,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA PE/ELF/DLL or architecture mismatch is incompatible with the intended consumer: reject that artifact.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-format:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 6926,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA file-exists check without loader/hash evidence leaves the failure layer unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-format:action",
+      "type": "text",
+      "x": 3130,
+      "y": 6364,
+      "width": 900,
+      "height": 444,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\ntarget OS and build\ntarget process architecture\nartifact format\nloader/interpreter\nexecution identity and integrity\nworking directory and PATH\nrequired runtime/libraries\narguments and quoting\nnetwork direction\nhandler protocol\n```\n\n[[notes/execution.md#execution-format|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-format:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 6898,
+      "width": 620,
+      "height": 252,
+      "text": "### Compile and minimally adapt an existing native or memory-corruption PoC\n\n**When:** An existing C/C++ or platform-specific PoC matches the candidate\n\n**Still required:** Correct compiler/target architecture, runtime dependencies, documented payload constraints and validated exploit-specific constants\n\n[[tracks/04 Public Exploits.canvas|Compile and minimally adapt an existing native or memory-corruption PoC → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-format:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 7205,
+      "width": 620,
+      "height": 276,
+      "text": "### Generate a payload matching OS, process, format and handler\n\n**When:** An existing exploit/delivery primitive needs a binary or raw payload\n\n**Still required:** Verified target/process architecture, delivery format, callback route, payload constraints and a matching staged/stageless listener\n\n[[tracks/06 Shells and Transfers.canvas|Generate a payload matching OS, process, format and handler → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-format:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 7536,
+      "width": 620,
+      "height": 252,
+      "text": "### Repair quoting, encoding and command-length boundaries\n\n**When:** A simple command works while a longer or nested payload fails\n\n**Still required:** Known outer request/template/database parser and inner shell; correct character encoding and transport length\n\n**Repair quoting, encoding and command-length boundaries — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-format:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 7843,
+      "width": 620,
+      "height": 300,
+      "text": "### Use a gated Office macro delivery chain\n\n**When:** An assigned client-side scenario includes Office and a document-open interaction\n\n**Still required:** Compatible installed Office/macro support, a real required user interaction, executable document state and allowed macro/security policy\n\n**Use a gated Office macro delivery chain — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-format:next-4",
+      "type": "text",
+      "x": 3130,
+      "y": 8198,
+      "width": 620,
+      "height": 276,
+      "text": "### Use a Windows Library/WebDAV/shortcut chain with explicit interaction\n\n**When:** A client-side scenario permits a Library file and remote share presentation\n\n**Still required:** Compatible Windows consumer, reachable WebDAV resource, correctly handled shortcut and required user launch; policy permits the action\n\n**Use a Windows Library/WebDAV/shortcut chain with explicit interaction — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-parser:start",
+      "type": "text",
+      "x": 70,
+      "y": 8829,
+      "width": 350,
+      "height": 250,
+      "text": "## Repair quoting, encoding and command-length boundaries\n\nA simple command works while a longer or nested payload fails",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-parser:discover",
+      "type": "text",
+      "x": 570,
+      "y": 8789,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\ncurl -skG --data-urlencode 'PARAM=NORMAL_VALUE' http://TARGET:PORT/PATH\n```"
+    },
+    {
+      "id": "method:execution-parser:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 8769,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe break follows a shell-language/representation change, so network or exploit applicability need not have changed.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-parser:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 9015,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nConfirm outer decoding, actual inner shell, length and correct byte/string encoding with a small test.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-parser:checks",
+      "type": "text",
+      "x": 570,
+      "y": 9029,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```powershell\n$command = 'whoami'\n[Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))\n```"
+    },
+    {
+      "id": "method:execution-parser:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 8719,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe exact command survives every parser and its bounded effect is verified: use that representation.\n\n**Verify:** Verify received/executed command behavior at each parser boundary with small discriminating tests.\n\n[[notes/execution.md#execution-parser|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-parser:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 9060,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe selected shell does not implement the payload syntax: reject that unwrapped expression.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-parser:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 9281,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA generic server error without received/executed-command evidence needs a smaller discriminating test.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-parser:action",
+      "type": "text",
+      "x": 3130,
+      "y": 8719,
+      "width": 900,
+      "height": 324,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\ndocument/shortcut or HTTP/SQL/template input\n→ application parser\n→ VBA/WScript/application runtime\n→ cmd.exe /c, /bin/sh -c or PowerShell\n→ final command/payload\n```\n\n[[notes/execution.md#execution-parser|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-parser:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 9133,
+      "width": 620,
+      "height": 276,
+      "text": "### Prove visible or blind operating-system command injection\n\n**When:** An input appears in a command-like operation or causes shell-dependent behavior\n\n**Still required:** Input reaches command execution with an exploitable parsing boundary; process identity/runtime can perform the selected proof\n\n[[tracks/03 Web.canvas|Prove visible or blind operating-system command injection → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-parser:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 9464,
+      "width": 620,
+      "height": 252,
+      "text": "### Connect a Linux reverse shell through an available interpreter\n\n**When:** Linux command execution exists but an interactive channel is needed\n\n**Still required:** A confirmed Bash/Python/PHP/Netcat implementation, correct parser wrapping, target-to-listener route and compatible listener\n\n[[tracks/06 Shells and Transfers.canvas|Connect a Linux reverse shell through an available interpreter → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-parser:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 9771,
+      "width": 620,
+      "height": 276,
+      "text": "### Use Windows authenticated access or a PowerShell command channel\n\n**When:** Windows execution or valid credentials with an available remote service\n\n**Still required:** Accepted remote-service rights or compatible PowerShell execution; correct encoding, policy context and callback route\n\n[[tracks/06 Shells and Transfers.canvas|Use Windows authenticated access or a PowerShell command channel → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-powershell:start",
+      "type": "text",
+      "x": 70,
+      "y": 10402,
+      "width": 350,
+      "height": 250,
+      "text": "## Distinguish PowerShell policy, language mode and protected execution layers\n\nPowerShell reports scripts disabled, constrained syntax or an execution-control error",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-powershell:discover",
+      "type": "text",
+      "x": 570,
+      "y": 10362,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nGet-ExecutionPolicy -List\n$ExecutionContext.SessionState.LanguageMode\n$PSVersionTable\n```"
+    },
+    {
+      "id": "method:execution-powershell:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 10342,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA script policy gate is distinct from language-mode restrictions or an antimalware verdict.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-powershell:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 10588,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nIdentify the actual controlling policy and permitted execution path; encoding/policy arguments do not remove unrelated controls.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-powershell:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 10292,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nThe supported allowed operation executes in the verified context: choose it.\n\n**Verify:** Record the exact failing layer and demonstrate the chosen permitted operation's actual effect.\n\n[[notes/execution.md#execution-powershell|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-powershell:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 10609,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe required feature is unavailable under the effective enforced policy/language context: reject that implementation.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-powershell:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 10830,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUnknown policy precedence or no detailed error leaves the exact layer unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-powershell:action",
+      "type": "text",
+      "x": 3130,
+      "y": 10292,
+      "width": 900,
+      "height": 756,
+      "text": "### Procedure entry — full sequence in the note\n\n```powershell\nGet-ExecutionPolicy -List\n$ExecutionContext.SessionState.LanguageMode\n\nGet-MpComputerStatus |\n  Select-Object AntivirusEnabled,RealTimeProtectionEnabled,\n    BehaviorMonitorEnabled,IoavProtectionEnabled,AntivirusSignatureVersion\n\nGet-MpThreatDetection |\n  Select-Object InitialDetectionTime,ThreatID,ActionSuccess,Resources\n\nGet-AppLockerPolicy -Effective -Xml\n\nGet-WinEvent -LogName 'Microsoft-Windows-Windows Defender/Operational' `\n  -MaxEvents 50 -ErrorAction SilentlyContinue |\n  Select-Object TimeCreated,Id,LevelDisplayName,Message\n\nGet-WinEvent -LogName 'Microsoft-Windows-AppLocker/EXE and DLL' `\n  -MaxEvents 50 -ErrorAction SilentlyContinue |\n  Select-Object TimeCreated,Id,Message\n\nGet-WinEvent -LogName 'Microsoft-Windows-AppLocker/MSI and Script' `\n  -MaxEvents 50 -ErrorAction SilentlyContinue |\n  Select-Object TimeCreated,Id,Message\n```\n\n[[notes/execution.md#execution-powershell|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-powershell:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 11138,
+      "width": 620,
+      "height": 276,
+      "text": "### Interpret endpoint-control evidence and select a justified alternative\n\n**When:** An artifact disappears, a process is blocked, or execution is stopped with a policy/security event\n\n**Still required:** Observable evidence at the relevant boundary and a compatible alternative whose own prerequisites hold\n\n**Interpret endpoint-control evidence and select a justified alternative — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-powershell:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 11469,
+      "width": 620,
+      "height": 276,
+      "text": "### Use Windows authenticated access or a PowerShell command channel\n\n**When:** Windows execution or valid credentials with an available remote service\n\n**Still required:** Accepted remote-service rights or compatible PowerShell execution; correct encoding, policy context and callback route\n\n[[tracks/06 Shells and Transfers.canvas|Use Windows authenticated access or a PowerShell command channel → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-powershell:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 11800,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n[[tracks/08 Windows Privilege Escalation.canvas|Establish Windows token, host and process context → 08 Windows Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-controls:start",
+      "type": "text",
+      "x": 70,
+      "y": 12407,
+      "width": 350,
+      "height": 250,
+      "text": "## Interpret endpoint-control evidence and select a justified alternative\n\nAn artifact disappears, a process is blocked, or execution is stopped with a policy/security event",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-controls:discover",
+      "type": "text",
+      "x": 570,
+      "y": 12367,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nTest-Path .\\FILE\nGet-FileHash .\\FILE -Algorithm SHA256 -ErrorAction SilentlyContinue\n```"
+    },
+    {
+      "id": "method:execution-controls:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 12347,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA disappearing artifact narrows the boundary but does not identify a particular control without corroboration.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-controls:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 12593,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCorrelate file/process/event identity, time and exact action before selecting an alternative consumer.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-controls:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 12297,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nSpecific control evidence identifies the block and another permitted compatible method exists: select that alternative.\n\n**Verify:** Tie the observed block to the artifact/process and preserve the exact error/event context privately.\n\n[[notes/execution.md#execution-controls|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-controls:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 12638,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe file is intact and the actual error is wrong architecture: reject the detection hypothesis.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-controls:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 12859,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nNo event visibility leaves the cause possible/inconclusive; do not invent an AMSI/AV diagnosis.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-controls:action",
+      "type": "text",
+      "x": 3130,
+      "y": 12297,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```powershell\nGet-MpComputerStatus |\n  Select-Object AntivirusEnabled,RealTimeProtectionEnabled,BehaviorMonitorEnabled,IoavProtectionEnabled\n```\n\n[[notes/execution.md#execution-controls|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-controls:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 12639,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n**Match an artifact to its executable consumer and runtime — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-controls:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 12946,
+      "width": 620,
+      "height": 276,
+      "text": "### Repair a web PoC using the real HTTP transaction\n\n**When:** An exploit sends requests but authentication, routing or parsing differs from the target\n\n**Still required:** A valid baseline transaction with correct host, base path, session/CSRF state and request encoding\n\n[[tracks/04 Public Exploits.canvas|Repair a web PoC using the real HTTP transaction → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-controls:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 13277,
+      "width": 620,
+      "height": 276,
+      "text": "### Use WinRM, WinRS or PowerShell remoting\n\n**When:** A WinRM listener and a candidate endpoint-authorized account\n\n**Still required:** Reachable HTTP(S) listener, accepted authentication and endpoint/session configuration permissions; hash/ticket support depends on client/context\n\n[[tracks/09 Active Directory.canvas|Use WinRM, WinRS or PowerShell remoting → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-handler:start",
+      "type": "text",
+      "x": 70,
+      "y": 13908,
+      "width": 350,
+      "height": 250,
+      "text": "## Pair staged payloads with the correct handler and session lifecycle\n\nA payload connects without a session, or a handler/session exits unexpectedly",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-handler:discover",
+      "type": "text",
+      "x": 570,
+      "y": 13868,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nshow options\njobs\nsessions\n```"
+    },
+    {
+      "id": "method:execution-handler:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 13848,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe first-stage protocol may be reaching a receiver that cannot provide the remaining stage.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-handler:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 14094,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify exact payload/architecture/transport pair, listener bind, stage route and lifecycle.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-handler:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 13798,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA matching supported handler completes the intended session and identity is checked: use it.\n\n**Verify:** Verify the resulting session's host/identity and keep the listener/payload relationship explicit.\n\n[[notes/execution.md#execution-handler|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-handler:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 14139,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nThe handler is configured for another payload family: reject that pairing.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-handler:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 14336,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA connection without stage/command evidence leaves a usable session unproved.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-handler:action",
+      "type": "text",
+      "x": 3130,
+      "y": 13798,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nmsfvenom -l payloads | grep -E 'linux|windows' | grep -E 'x64|x86'\nmsfvenom --list formats\nmsfvenom -p PAYLOAD_NAME --list-options\n```\n\n[[notes/execution.md#execution-handler|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-handler:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 14164,
+      "width": 620,
+      "height": 252,
+      "text": "### Verify command execution, host and represented identity\n\n**When:** A PoC, injected command or remote client reports execution\n\n**Still required:** A functioning execution primitive and an observable output or controlled side effect\n\n[[tracks/06 Shells and Transfers.canvas|Verify command execution, host and represented identity → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-handler:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 14471,
+      "width": 620,
+      "height": 276,
+      "text": "### Diagnose connection direction, listener and session failures in order\n\n**When:** Command execution or payload delivery exists but the expected usable channel does not\n\n**Still required:** A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence\n\n**Diagnose connection direction, listener and session failures in order — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-handler:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 14802,
+      "width": 620,
+      "height": 276,
+      "text": "### Generate a payload matching OS, process, format and handler\n\n**When:** An existing exploit/delivery primitive needs a binary or raw payload\n\n**Still required:** Verified target/process architecture, delivery format, callback route, payload constraints and a matching staged/stageless listener\n\n[[tracks/06 Shells and Transfers.canvas|Generate a payload matching OS, process, format and handler → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-framework:start",
+      "type": "text",
+      "x": 70,
+      "y": 15433,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a framework module with explicit target and feature constraints\n\nA reviewed module fits a verified exploit prerequisite set",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-framework:discover",
+      "type": "text",
+      "x": 570,
+      "y": 15393,
+      "width": 780,
+      "height": 252,
+      "text": "### Discover\n\n```text\ninfo\nshow options\nshow targets\nshow payloads\n```"
+    },
+    {
+      "id": "method:execution-framework:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 15373,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe module describes conditions to investigate; its existence is not a vulnerability result.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-framework:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 15619,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify exact target/configuration, access, payload/route and current feature restrictions before selecting it.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-framework:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 15323,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe module conditions and intended effect are independently established: use it within the permitted context.\n\n**Verify:** Verify destination effect and identity outside the module's status message.\n\n[[notes/execution.md#execution-framework|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-framework:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 15664,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nThe required feature/target is absent: reject this module candidate.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-framework:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 15861,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA banner match without role/configuration evidence is inconclusive; do not use a check to replace prerequisite reasoning.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-framework:action",
+      "type": "text",
+      "x": 3130,
+      "y": 15323,
+      "width": 900,
+      "height": 564,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\nsearch type:exploit cve:CVE_ID\ninfo MODULE_PATH\nuse MODULE_PATH\nshow options\nshow advanced\nshow targets\nshow payloads\nset RHOSTS TARGET\nset RPORT PORT\nset TARGET TARGET_ID\nset PAYLOAD PAYLOAD_NAME\nset LHOST LHOST\nset LPORT LPORT\nshow missing\nrun\n```\n\n[[notes/execution.md#execution-framework|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-framework:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 15977,
+      "width": 620,
+      "height": 252,
+      "text": "### Verify command execution, host and represented identity\n\n**When:** A PoC, injected command or remote client reports execution\n\n**Still required:** A functioning execution primitive and an observable output or controlled side effect\n\n[[tracks/06 Shells and Transfers.canvas|Verify command execution, host and represented identity → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-framework:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 16284,
+      "width": 620,
+      "height": 276,
+      "text": "### Pair staged payloads with the correct handler and session lifecycle\n\n**When:** A payload connects without a session, or a handler/session exits unexpectedly\n\n**Still required:** Exact payload/architecture/transport pairing, correct listener binding, reachable staging path and suitable job/session configuration\n\n**Pair staged payloads with the correct handler and session lifecycle — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-framework:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 16615,
+      "width": 620,
+      "height": 276,
+      "text": "### Build the callback and delivery routes separately from the attack route\n\n**When:** A pivoted exploit reaches its target but its shell/download cannot return\n\n**Still required:** Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward\n\n[[tracks/10 Pivoting.canvas|Build the callback and delivery routes separately from the attack route → 10 Pivoting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-callback:start",
+      "type": "text",
+      "x": 70,
+      "y": 17246,
+      "width": 350,
+      "height": 250,
+      "text": "## Diagnose connection direction, listener and session failures in order\n\nCommand execution or payload delivery exists but the expected usable channel does not",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-callback:discover",
+      "type": "text",
+      "x": 570,
+      "y": 17206,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nss -lnt\nip route get TARGET\nsudo tcpdump -ni INTERFACE tcp port PORT\n```"
+    },
+    {
+      "id": "method:execution-callback:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 17186,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe channel failed before an observed connection; investigate trigger/advertised route/egress before terminal repair.",
+      "color": "6"
+    },
+    {
+      "id": "method:execution-callback:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 17432,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nName the process initiating the connection and its actual destination address/port. Check the listener bind and each route/pivot leg; if delivery works but no callback arrives, repair the return path before changing payload bytes.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-callback:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 17136,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe correct packet/session path works and identity is verified: use the resulting channel.\n\n**Verify:** Use command proof, packet evidence and actual channel behavior to identify the first failed boundary.\n\n[[notes/execution.md#execution-callback|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-callback:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 17477,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe advertised address is unreachable and not forwarded: reject that callback topology.",
+      "color": "1"
+    },
+    {
+      "id": "method:execution-callback:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 17698,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nNo packets without prior execution proof cannot distinguish a failed trigger from network failure.",
+      "color": "2"
+    },
+    {
+      "id": "method:execution-callback:action",
+      "type": "text",
+      "x": 3130,
+      "y": 17136,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnc -vz LHOST LPORT\ncurl -v --connect-timeout 5 http://LHOST:LPORT/\n```\n\n[[notes/execution.md#execution-callback|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:execution-callback:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 17478,
+      "width": 620,
+      "height": 276,
+      "text": "### Build the callback and delivery routes separately from the attack route\n\n**When:** A pivoted exploit reaches its target but its shell/download cannot return\n\n**Still required:** Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward\n\n[[tracks/10 Pivoting.canvas|Build the callback and delivery routes separately from the attack route → 10 Pivoting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-callback:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 17809,
+      "width": 620,
+      "height": 276,
+      "text": "### Pair staged payloads with the correct handler and session lifecycle\n\n**When:** A payload connects without a session, or a handler/session exits unexpectedly\n\n**Still required:** Exact payload/architecture/transport pairing, correct listener binding, reachable staging path and suitable job/session configuration\n\n**Pair staged payloads with the correct handler and session lifecycle — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:execution-callback:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 18140,
+      "width": 620,
+      "height": 276,
+      "text": "### Repair a limited Linux terminal\n\n**When:** A working shell lacks job control, terminal signals or interactive program support\n\n**Still required:** A working channel and available PTY mechanism; correct local-terminal control sequence\n\n[[tracks/06 Shells and Transfers.canvas|Repair a limited Linux terminal → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "track-title",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 2300,
+      "height": 270,
+      "color": "5",
+      "text": "# 11 Execution Troubleshooting\n\nAll workflows, commands, result interpretations and method connections for this track are on this canvas. Embedded notes contain the complete procedures and variants.\n\n[[START.canvas|Choose another track]]\n\nCross-track results link directly to the receiving track."
+    }
+  ],
+  "edges": [
+    {
+      "id": "flow:execution:check-0--check-0-finding-0",
+      "fromNode": "flow:execution:check-0",
+      "fromSide": "right",
+      "toNode": "flow:execution:check-0-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Wrong architecture or executable format"
+    },
+    {
+      "id": "flow:execution:check-0--check-0-finding-1",
+      "fromNode": "flow:execution:check-0",
+      "fromSide": "right",
+      "toNode": "flow:execution:check-0-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The file reaches a different parser than expected"
+    },
+    {
+      "id": "flow:execution:check-0--check-0-fallback",
+      "fromNode": "flow:execution:check-0",
+      "fromSide": "right",
+      "toNode": "flow:execution:check-0-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The artifact runs but no session appears: inspect handler and packet direction."
+    },
+    {
+      "id": "flow:execution:check-0--check-1",
+      "fromNode": "flow:execution:check-0",
+      "fromSide": "bottom",
+      "toNode": "flow:execution:check-1",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:execution:check-1--check-1-finding-0",
+      "fromNode": "flow:execution:check-1",
+      "fromSide": "right",
+      "toNode": "flow:execution:check-1-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Handler settings match but no packet arrives"
+    },
+    {
+      "id": "flow:execution:check-1--check-1-finding-1",
+      "fromNode": "flow:execution:check-1",
+      "fromSide": "right",
+      "toNode": "flow:execution:check-1-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A session opens under the expected identity"
+    },
+    {
+      "id": "flow:execution:check-1--check-1-fallback",
+      "fromNode": "flow:execution:check-1",
+      "fromSide": "right",
+      "toNode": "flow:execution:check-1-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A connection immediately dies: inspect the actual process/session lifecycle rather than assuming a working shell."
+    },
+    {
+      "id": "flow:execution:home--check-0",
+      "fromNode": "flow:execution:home",
+      "fromSide": "right",
+      "toNode": "flow:execution:check-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "start with current access"
+    },
+    {
+      "id": "method:execution-office:start--discover",
+      "fromNode": "method:execution-office:start",
+      "fromSide": "right",
+      "toNode": "method:execution-office:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-office:discover--interpret",
+      "fromNode": "method:execution-office:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-office:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-office:interpret--validate",
+      "fromNode": "method:execution-office:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-office:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-office:validate--enabled",
+      "fromNode": "method:execution-office:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-office:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-office:validate--ruledout",
+      "fromNode": "method:execution-office:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-office:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-office:validate--unknown",
+      "fromNode": "method:execution-office:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-office:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-office:enabled--action",
+      "fromNode": "method:execution-office:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-office:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-office:enabled--next-0",
+      "fromNode": "method:execution-office:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-office:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A simple command works while a longer or nested payload fails"
+    },
+    {
+      "id": "method:execution-office:enabled--next-1",
+      "fromNode": "method:execution-office:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-office:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Command execution or payload delivery exists but the expected usable channel does not"
+    },
+    {
+      "id": "method:execution-office:enabled--next-2",
+      "fromNode": "method:execution-office:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-office:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Windows execution or valid credentials with an available remote service"
+    },
+    {
+      "id": "method:execution-library:start--discover",
+      "fromNode": "method:execution-library:start",
+      "fromSide": "right",
+      "toNode": "method:execution-library:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-library:discover--interpret",
+      "fromNode": "method:execution-library:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-library:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-library:interpret--validate",
+      "fromNode": "method:execution-library:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-library:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-library:validate--checks",
+      "fromNode": "method:execution-library:validate",
+      "fromSide": "left",
+      "toNode": "method:execution-library:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:execution-library:validate--enabled",
+      "fromNode": "method:execution-library:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-library:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-library:validate--ruledout",
+      "fromNode": "method:execution-library:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-library:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-library:validate--unknown",
+      "fromNode": "method:execution-library:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-library:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-library:enabled--action",
+      "fromNode": "method:execution-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-library:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-library:enabled--next-0",
+      "fromNode": "method:execution-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-library:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A simple command works while a longer or nested payload fails"
+    },
+    {
+      "id": "method:execution-library:enabled--next-1",
+      "fromNode": "method:execution-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-library:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:execution-library:enabled--next-2",
+      "fromNode": "method:execution-library:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-library:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Command execution or payload delivery exists but the expected usable channel does not"
+    },
+    {
+      "id": "method:execution-format:start--discover",
+      "fromNode": "method:execution-format:start",
+      "fromSide": "right",
+      "toNode": "method:execution-format:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-format:discover--interpret",
+      "fromNode": "method:execution-format:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-format:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-format:interpret--validate",
+      "fromNode": "method:execution-format:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-format:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-format:validate--enabled",
+      "fromNode": "method:execution-format:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-format:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-format:validate--ruledout",
+      "fromNode": "method:execution-format:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-format:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-format:validate--unknown",
+      "fromNode": "method:execution-format:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-format:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-format:enabled--action",
+      "fromNode": "method:execution-format:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-format:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-format:enabled--next-0",
+      "fromNode": "method:execution-format:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-format:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing C/C++ or platform-specific PoC matches the candidate"
+    },
+    {
+      "id": "method:execution-format:enabled--next-1",
+      "fromNode": "method:execution-format:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-format:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing exploit/delivery primitive needs a binary or raw payload"
+    },
+    {
+      "id": "method:execution-format:enabled--next-2",
+      "fromNode": "method:execution-format:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-format:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A simple command works while a longer or nested payload fails"
+    },
+    {
+      "id": "method:execution-format:enabled--next-3",
+      "fromNode": "method:execution-format:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-format:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An assigned client-side scenario includes Office and a document-open interaction"
+    },
+    {
+      "id": "method:execution-format:enabled--next-4",
+      "fromNode": "method:execution-format:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-format:next-4",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A client-side scenario permits a Library file and remote share presentation"
+    },
+    {
+      "id": "method:execution-parser:start--discover",
+      "fromNode": "method:execution-parser:start",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-parser:discover--interpret",
+      "fromNode": "method:execution-parser:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-parser:interpret--validate",
+      "fromNode": "method:execution-parser:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-parser:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-parser:validate--checks",
+      "fromNode": "method:execution-parser:validate",
+      "fromSide": "left",
+      "toNode": "method:execution-parser:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:execution-parser:validate--enabled",
+      "fromNode": "method:execution-parser:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-parser:validate--ruledout",
+      "fromNode": "method:execution-parser:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-parser:validate--unknown",
+      "fromNode": "method:execution-parser:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-parser:enabled--action",
+      "fromNode": "method:execution-parser:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-parser:enabled--next-0",
+      "fromNode": "method:execution-parser:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An input appears in a command-like operation or causes shell-dependent behavior"
+    },
+    {
+      "id": "method:execution-parser:enabled--next-1",
+      "fromNode": "method:execution-parser:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Linux command execution exists but an interactive channel is needed"
+    },
+    {
+      "id": "method:execution-parser:enabled--next-2",
+      "fromNode": "method:execution-parser:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Windows execution or valid credentials with an available remote service"
+    },
+    {
+      "id": "method:execution-powershell:start--discover",
+      "fromNode": "method:execution-powershell:start",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-powershell:discover--interpret",
+      "fromNode": "method:execution-powershell:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-powershell:interpret--validate",
+      "fromNode": "method:execution-powershell:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-powershell:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-powershell:validate--enabled",
+      "fromNode": "method:execution-powershell:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-powershell:validate--ruledout",
+      "fromNode": "method:execution-powershell:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-powershell:validate--unknown",
+      "fromNode": "method:execution-powershell:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-powershell:enabled--action",
+      "fromNode": "method:execution-powershell:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-powershell:enabled--next-0",
+      "fromNode": "method:execution-powershell:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An artifact disappears, a process is blocked, or execution is stopped with a policy/security event"
+    },
+    {
+      "id": "method:execution-powershell:enabled--next-1",
+      "fromNode": "method:execution-powershell:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Windows execution or valid credentials with an available remote service"
+    },
+    {
+      "id": "method:execution-powershell:enabled--next-2",
+      "fromNode": "method:execution-powershell:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-powershell:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:execution-controls:start--discover",
+      "fromNode": "method:execution-controls:start",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-controls:discover--interpret",
+      "fromNode": "method:execution-controls:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-controls:interpret--validate",
+      "fromNode": "method:execution-controls:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-controls:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-controls:validate--enabled",
+      "fromNode": "method:execution-controls:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-controls:validate--ruledout",
+      "fromNode": "method:execution-controls:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-controls:validate--unknown",
+      "fromNode": "method:execution-controls:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-controls:enabled--action",
+      "fromNode": "method:execution-controls:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-controls:enabled--next-0",
+      "fromNode": "method:execution-controls:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:execution-controls:enabled--next-1",
+      "fromNode": "method:execution-controls:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An exploit sends requests but authentication, routing or parsing differs from the target"
+    },
+    {
+      "id": "method:execution-controls:enabled--next-2",
+      "fromNode": "method:execution-controls:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A WinRM listener and a candidate endpoint-authorized account"
+    },
+    {
+      "id": "method:execution-handler:start--discover",
+      "fromNode": "method:execution-handler:start",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-handler:discover--interpret",
+      "fromNode": "method:execution-handler:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-handler:interpret--validate",
+      "fromNode": "method:execution-handler:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-handler:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-handler:validate--enabled",
+      "fromNode": "method:execution-handler:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-handler:validate--ruledout",
+      "fromNode": "method:execution-handler:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-handler:validate--unknown",
+      "fromNode": "method:execution-handler:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-handler:enabled--action",
+      "fromNode": "method:execution-handler:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-handler:enabled--next-0",
+      "fromNode": "method:execution-handler:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A PoC, injected command or remote client reports execution"
+    },
+    {
+      "id": "method:execution-handler:enabled--next-1",
+      "fromNode": "method:execution-handler:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Command execution or payload delivery exists but the expected usable channel does not"
+    },
+    {
+      "id": "method:execution-handler:enabled--next-2",
+      "fromNode": "method:execution-handler:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing exploit/delivery primitive needs a binary or raw payload"
+    },
+    {
+      "id": "method:execution-framework:start--discover",
+      "fromNode": "method:execution-framework:start",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-framework:discover--interpret",
+      "fromNode": "method:execution-framework:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-framework:interpret--validate",
+      "fromNode": "method:execution-framework:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-framework:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-framework:validate--enabled",
+      "fromNode": "method:execution-framework:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-framework:validate--ruledout",
+      "fromNode": "method:execution-framework:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-framework:validate--unknown",
+      "fromNode": "method:execution-framework:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-framework:enabled--action",
+      "fromNode": "method:execution-framework:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-framework:enabled--next-0",
+      "fromNode": "method:execution-framework:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A PoC, injected command or remote client reports execution"
+    },
+    {
+      "id": "method:execution-framework:enabled--next-1",
+      "fromNode": "method:execution-framework:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A payload connects without a session, or a handler/session exits unexpectedly"
+    },
+    {
+      "id": "method:execution-framework:enabled--next-2",
+      "fromNode": "method:execution-framework:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A pivoted exploit reaches its target but its shell/download cannot return"
+    },
+    {
+      "id": "method:execution-callback:start--discover",
+      "fromNode": "method:execution-callback:start",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:execution-callback:discover--interpret",
+      "fromNode": "method:execution-callback:discover",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:execution-callback:interpret--validate",
+      "fromNode": "method:execution-callback:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:execution-callback:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:execution-callback:validate--enabled",
+      "fromNode": "method:execution-callback:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:execution-callback:validate--ruledout",
+      "fromNode": "method:execution-callback:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:execution-callback:validate--unknown",
+      "fromNode": "method:execution-callback:validate",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:execution-callback:enabled--action",
+      "fromNode": "method:execution-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:execution-callback:enabled--next-0",
+      "fromNode": "method:execution-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A pivoted exploit reaches its target but its shell/download cannot return"
+    },
+    {
+      "id": "method:execution-callback:enabled--next-1",
+      "fromNode": "method:execution-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A payload connects without a session, or a handler/session exits unexpectedly"
+    },
+    {
+      "id": "method:execution-callback:enabled--next-2",
+      "fromNode": "method:execution-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A working shell lacks job control, terminal signals or interactive program support"
+    },
+    {
+      "id": "route-2532",
+      "fromNode": "flow:execution:check-0",
+      "fromSide": "right",
+      "toNode": "method:execution-format:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2534",
+      "fromNode": "flow:execution:check-0-finding-1",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2535",
+      "fromNode": "flow:execution:check-0-fallback",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2536",
+      "fromNode": "flow:execution:check-1",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2537",
+      "fromNode": "flow:execution:check-1-finding-0",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2539",
+      "fromNode": "flow:execution:check-1-fallback",
+      "fromSide": "right",
+      "toNode": "method:execution-framework:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2540",
+      "fromNode": "method:execution-office:next-0",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2541",
+      "fromNode": "method:execution-office:next-1",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2543",
+      "fromNode": "method:execution-library:next-0",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2544",
+      "fromNode": "method:execution-library:next-1",
+      "fromSide": "right",
+      "toNode": "method:execution-format:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2545",
+      "fromNode": "method:execution-library:next-2",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2548",
+      "fromNode": "method:execution-format:next-2",
+      "fromSide": "right",
+      "toNode": "method:execution-parser:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2549",
+      "fromNode": "method:execution-format:next-3",
+      "fromSide": "right",
+      "toNode": "method:execution-office:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2550",
+      "fromNode": "method:execution-format:next-4",
+      "fromSide": "right",
+      "toNode": "method:execution-library:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2554",
+      "fromNode": "method:execution-powershell:next-0",
+      "fromSide": "right",
+      "toNode": "method:execution-controls:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2557",
+      "fromNode": "method:execution-controls:next-0",
+      "fromSide": "right",
+      "toNode": "method:execution-format:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2561",
+      "fromNode": "method:execution-handler:next-1",
+      "fromSide": "right",
+      "toNode": "method:execution-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2564",
+      "fromNode": "method:execution-framework:next-1",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2567",
+      "fromNode": "method:execution-callback:next-1",
+      "fromSide": "right",
+      "toNode": "method:execution-handler:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    }
+  ]
+}

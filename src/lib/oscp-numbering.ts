@@ -22,7 +22,8 @@ const topicCodes:Record<string,string>={
 };
 const shared:Record<string,string>={
  'README.md':'0.0','notes/Master_Notes.md':'0.1','notes/Attack_Strategy_Map.md':'0.2',
- 'notes/Speedrun_Breakdown.md':'0.3','notes/Recognition_Practice.md':'0.4','notes/GetSH_Coverage.md':'0.5'
+ 'notes/Speedrun_Breakdown.md':'0.3','notes/Recognition_Practice.md':'0.4','notes/GetSH_Coverage.md':'0.5',
+ 'notes/Attack_Surface_Maps.md':'0.6','notes/Attack_Surface_Supplements.md':'0.7'
 };
 export function cleanTitle(title:string){return title.replace(/^\d+(?:\.\d+)*[.)]?\s+/,'');}
 const ad=new Map(snapshot.sections.map(s=>[s.path,s]));

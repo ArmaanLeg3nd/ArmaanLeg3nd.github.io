@@ -1,0 +1,1332 @@
+{
+  "nodes": [
+    {
+      "id": "group-ad-mapping",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 1689,
+      "label": "Map Active Directory attack paths",
+      "color": "5"
+    },
+    {
+      "id": "group-ad-identities",
+      "type": "group",
+      "x": 1480,
+      "y": -50,
+      "width": 1410,
+      "height": 4109,
+      "label": "Gain a more useful domain identity",
+      "color": "5"
+    },
+    {
+      "id": "group-lateral-movement",
+      "type": "group",
+      "x": 2980,
+      "y": -50,
+      "width": 1410,
+      "height": 1900,
+      "label": "Move to another host",
+      "color": "5"
+    },
+    {
+      "id": "topic-ad-mapping",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Map Active Directory attack paths",
+      "color": "5"
+    },
+    {
+      "id": "domain-state",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#domain-state|Establish domain identity, DC, DNS, time and route]]"
+    },
+    {
+      "id": "domain-directory",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#domain-directory|Enumerate directory objects with native, LDAP and PowerView approaches]]"
+    },
+    {
+      "id": "ad-mapping-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 248,
+      "width": 360,
+      "height": 76,
+      "text": "Domain context and directory objects",
+      "color": "1"
+    },
+    {
+      "id": "domain-shares",
+      "type": "text",
+      "x": 550,
+      "y": 522,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#domain-shares|Read domain shares, SYSVOL and NETLOGON for useful artifacts]]"
+    },
+    {
+      "id": "domain-spns",
+      "type": "text",
+      "x": 550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#domain-spns|Identify service accounts and SPNs worth investigating]]"
+    },
+    {
+      "id": "ad-mapping-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 570,
+      "width": 360,
+      "height": 76,
+      "text": "Artifacts and service identities",
+      "color": "2"
+    },
+    {
+      "id": "domain-acl",
+      "type": "text",
+      "x": 550,
+      "y": 844,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#domain-acl|Validate effective directory-object control]]"
+    },
+    {
+      "id": "domain-hosts",
+      "type": "text",
+      "x": 550,
+      "y": 955,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#domain-hosts|Validate host access and volatile session candidates]]"
+    },
+    {
+      "id": "domain-graph",
+      "type": "text",
+      "x": 550,
+      "y": 1066,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#domain-graph|Collect focused BloodHound data and validate an attack path]]"
+    },
+    {
+      "id": "ad-mapping-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 948,
+      "width": 360,
+      "height": 82,
+      "text": "Effective rights, host access and path ranking",
+      "color": "3"
+    },
+    {
+      "id": "S11",
+      "type": "text",
+      "x": 550,
+      "y": 1277,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#S11|Interpret an AD trust as a boundary, not a privilege transition]]"
+    },
+    {
+      "id": "S18",
+      "type": "text",
+      "x": 550,
+      "y": 1388,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-mapping.md#S18|Inspect AD-integrated DNS record control]]"
+    },
+    {
+      "id": "ad-mapping-family-3",
+      "type": "text",
+      "x": 20,
+      "y": 1325,
+      "width": 360,
+      "height": 76,
+      "text": "Conditional surfaces",
+      "color": "4"
+    },
+    {
+      "id": "topic-ad-identities",
+      "type": "text",
+      "x": 1500,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Gain a more useful domain identity",
+      "color": "5"
+    },
+    {
+      "id": "ad-lsass",
+      "type": "text",
+      "x": 2050,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-lsass|Obtain accessible live logon-session credential material]]"
+    },
+    {
+      "id": "ad-sam",
+      "type": "text",
+      "x": 2050,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-sam|Extract local account hashes from matched SAM and SYSTEM]]"
+    },
+    {
+      "id": "ad-security",
+      "type": "text",
+      "x": 2050,
+      "y": 422,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-security|Extract LSA secrets and cached-domain verifiers]]"
+    },
+    {
+      "id": "ad-dpapi",
+      "type": "text",
+      "x": 2050,
+      "y": 533,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-dpapi|Use Credential Manager and DPAPI with the protecting context]]"
+    },
+    {
+      "id": "ad-ntds",
+      "type": "text",
+      "x": 2050,
+      "y": 644,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-ntds|Parse an offline domain database or select a justified remote collection path]]"
+    },
+    {
+      "id": "ad-identities-family-0",
+      "type": "text",
+      "x": 1520,
+      "y": 415,
+      "width": 360,
+      "height": 76,
+      "text": "Host credential sources",
+      "color": "1"
+    },
+    {
+      "id": "kerberos-asrep",
+      "type": "text",
+      "x": 2050,
+      "y": 855,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#kerberos-asrep|Request AS-REP material for an account without preauthentication]]"
+    },
+    {
+      "id": "kerberos-roast",
+      "type": "text",
+      "x": 2050,
+      "y": 966,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#kerberos-roast|Request a selected service ticket for offline service-account recovery]]"
+    },
+    {
+      "id": "ad-targeted-roast",
+      "type": "text",
+      "x": 2050,
+      "y": 1077,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-targeted-roast|Create a temporary SPN through an effective object right]]"
+    },
+    {
+      "id": "ad-identities-family-1",
+      "type": "text",
+      "x": 1520,
+      "y": 959,
+      "width": 360,
+      "height": 76,
+      "text": "Password-derived ticket recovery",
+      "color": "2"
+    },
+    {
+      "id": "kerberos-tickets",
+      "type": "text",
+      "x": 2050,
+      "y": 1288,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#kerberos-tickets|Inventory, convert and import tickets in the correct logon context]]"
+    },
+    {
+      "id": "kerberos-silver",
+      "type": "text",
+      "x": 2050,
+      "y": 1399,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#kerberos-silver|Forge a service-scoped ticket from the correct service key]]"
+    },
+    {
+      "id": "ad-identities-family-2",
+      "type": "text",
+      "x": 1520,
+      "y": 1336,
+      "width": 360,
+      "height": 76,
+      "text": "Ticket capabilities",
+      "color": "3"
+    },
+    {
+      "id": "ad-password-reset",
+      "type": "text",
+      "x": 2050,
+      "y": 1610,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-password-reset|Reset a target account password through a validated directory right]]"
+    },
+    {
+      "id": "ad-group-control",
+      "type": "text",
+      "x": 2050,
+      "y": 1721,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-group-control|Add a controlled identity to a group through effective membership rights]]"
+    },
+    {
+      "id": "ad-owner-dacl",
+      "type": "text",
+      "x": 2050,
+      "y": 1832,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-owner-dacl|Convert ownership or DACL control into a narrower useful right]]"
+    },
+    {
+      "id": "ad-dcsync",
+      "type": "text",
+      "x": 2050,
+      "y": 1943,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-dcsync|Use validated directory replication rights for bounded credential proof]]"
+    },
+    {
+      "id": "ad-identities-family-3",
+      "type": "text",
+      "x": 1520,
+      "y": 1769,
+      "width": 360,
+      "height": 82,
+      "text": "Object-backed identity changes and replication",
+      "color": "4"
+    },
+    {
+      "id": "ad-gpo",
+      "type": "text",
+      "x": 2050,
+      "y": 2154,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-gpo|Conditional: trace GPO control to privileged policy consumption]]"
+    },
+    {
+      "id": "ad-delegation",
+      "type": "text",
+      "x": 2050,
+      "y": 2265,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-delegation|Conditional: use a validated delegation or RBCD relationship]]"
+    },
+    {
+      "id": "ad-certificates",
+      "type": "text",
+      "x": 2050,
+      "y": 2376,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#ad-certificates|Conditional: validate an AD CS enrollment-to-authentication path]]"
+    },
+    {
+      "id": "kerberos-golden",
+      "type": "text",
+      "x": 2050,
+      "y": 2487,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#kerberos-golden|Conditional: understand a realm-wide TGT forgery from KRBTGT material]]"
+    },
+    {
+      "id": "ad-identities-family-4",
+      "type": "text",
+      "x": 1520,
+      "y": 2313,
+      "width": 360,
+      "height": 82,
+      "text": "Conditional policy, delegation and certificate paths",
+      "color": "5"
+    },
+    {
+      "id": "S02",
+      "type": "text",
+      "x": 2050,
+      "y": 2698,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S02|Read a classic LAPS password for one computer]]"
+    },
+    {
+      "id": "S03",
+      "type": "text",
+      "x": 2050,
+      "y": 2809,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S03|Read or decrypt a Windows LAPS password]]"
+    },
+    {
+      "id": "S04",
+      "type": "text",
+      "x": 2050,
+      "y": 2920,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S04|Recover and classify gMSA material]]"
+    },
+    {
+      "id": "S05",
+      "type": "text",
+      "x": 2050,
+      "y": 3031,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S05|Use a validated shadow-credential path]]"
+    },
+    {
+      "id": "S06",
+      "type": "text",
+      "x": 2050,
+      "y": 3142,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S06|Authenticate to LDAP with a mapped certificate]]"
+    },
+    {
+      "id": "S07",
+      "type": "text",
+      "x": 2050,
+      "y": 3253,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S07|Create a controlled machine account only for a selected AD path]]"
+    },
+    {
+      "id": "S08",
+      "type": "text",
+      "x": 2050,
+      "y": 3364,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S08|Evaluate DNSAdmins without assuming immediate execution]]"
+    },
+    {
+      "id": "S09",
+      "type": "text",
+      "x": 2050,
+      "y": 3475,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S09|Map WSUS client policy to a server-side authorization question]]"
+    },
+    {
+      "id": "S10",
+      "type": "text",
+      "x": 2050,
+      "y": 3586,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S10|Recognize SCCM client context and locate the management boundary]]"
+    },
+    {
+      "id": "S16",
+      "type": "text",
+      "x": 2050,
+      "y": 3697,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S16|Inspect VSS/shadow-copy credential-source conditions]]"
+    },
+    {
+      "id": "S19",
+      "type": "text",
+      "x": 2050,
+      "y": 3808,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/ad-identities.md#S19|Separate an unconstrained-delegation flag from tickets actually present]]"
+    },
+    {
+      "id": "ad-identities-family-5",
+      "type": "text",
+      "x": 1520,
+      "y": 3246,
+      "width": 360,
+      "height": 76,
+      "text": "Conditional surfaces",
+      "color": "6"
+    },
+    {
+      "id": "topic-lateral-movement",
+      "type": "text",
+      "x": 3000,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Move to another host",
+      "color": "5"
+    },
+    {
+      "id": "move-preflight",
+      "type": "text",
+      "x": 3550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-preflight|Match route, destination service and effective authorization]]"
+    },
+    {
+      "id": "move-auth-material",
+      "type": "text",
+      "x": 3550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-auth-material|Select password, NT hash, key-to-ticket or ticket authentication]]"
+    },
+    {
+      "id": "lateral-movement-family-0",
+      "type": "text",
+      "x": 3020,
+      "y": 248,
+      "width": 360,
+      "height": 82,
+      "text": "Route, authorization and authentication material",
+      "color": "1"
+    },
+    {
+      "id": "move-services",
+      "type": "text",
+      "x": 3550,
+      "y": 522,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-services|Execute through uploaded service creation using PsExec]]"
+    },
+    {
+      "id": "move-smbexec",
+      "type": "text",
+      "x": 3550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-smbexec|Execute commands through service command lines and SMB output]]"
+    },
+    {
+      "id": "move-tasks",
+      "type": "text",
+      "x": 3550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-tasks|Execute through remote Task Scheduler]]"
+    },
+    {
+      "id": "lateral-movement-family-1",
+      "type": "text",
+      "x": 3020,
+      "y": 626,
+      "width": 360,
+      "height": 76,
+      "text": "Service and scheduled-task execution",
+      "color": "2"
+    },
+    {
+      "id": "move-wmi",
+      "type": "text",
+      "x": 3550,
+      "y": 955,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-wmi|Execute through WMI or native CIM over DCOM]]"
+    },
+    {
+      "id": "move-dcom",
+      "type": "text",
+      "x": 3550,
+      "y": 1066,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-dcom|Execute through an authorized DCOM application object]]"
+    },
+    {
+      "id": "move-winrm",
+      "type": "text",
+      "x": 3550,
+      "y": 1177,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-winrm|Use WinRM, WinRS or PowerShell remoting]]"
+    },
+    {
+      "id": "lateral-movement-family-2",
+      "type": "text",
+      "x": 3020,
+      "y": 1059,
+      "width": 360,
+      "height": 76,
+      "text": "Management protocol execution",
+      "color": "3"
+    },
+    {
+      "id": "move-rdp",
+      "type": "text",
+      "x": 3550,
+      "y": 1388,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#move-rdp|Obtain an authorized RDP interactive session]]"
+    },
+    {
+      "id": "lateral-movement-family-3",
+      "type": "text",
+      "x": 3020,
+      "y": 1381,
+      "width": 360,
+      "height": 76,
+      "text": "Interactive access",
+      "color": "4"
+    },
+    {
+      "id": "S17",
+      "type": "text",
+      "x": 3550,
+      "y": 1599,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/lateral-movement.md#S17|Evaluate a direct Net-NTLMv2 relay path without spoofing]]"
+    },
+    {
+      "id": "lateral-movement-family-4",
+      "type": "text",
+      "x": 3020,
+      "y": 1592,
+      "width": 360,
+      "height": 76,
+      "text": "Conditional surfaces",
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-ad-mapping--ad-mapping-family-0",
+      "fromNode": "topic-ad-mapping",
+      "fromSide": "right",
+      "toNode": "ad-mapping-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-0--domain-state",
+      "fromNode": "ad-mapping-family-0",
+      "fromSide": "right",
+      "toNode": "domain-state",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-0--domain-directory",
+      "fromNode": "ad-mapping-family-0",
+      "fromSide": "right",
+      "toNode": "domain-directory",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-mapping--ad-mapping-family-1",
+      "fromNode": "topic-ad-mapping",
+      "fromSide": "right",
+      "toNode": "ad-mapping-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-1--domain-shares",
+      "fromNode": "ad-mapping-family-1",
+      "fromSide": "right",
+      "toNode": "domain-shares",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-1--domain-spns",
+      "fromNode": "ad-mapping-family-1",
+      "fromSide": "right",
+      "toNode": "domain-spns",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-mapping--ad-mapping-family-2",
+      "fromNode": "topic-ad-mapping",
+      "fromSide": "right",
+      "toNode": "ad-mapping-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-2--domain-acl",
+      "fromNode": "ad-mapping-family-2",
+      "fromSide": "right",
+      "toNode": "domain-acl",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-2--domain-hosts",
+      "fromNode": "ad-mapping-family-2",
+      "fromSide": "right",
+      "toNode": "domain-hosts",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-2--domain-graph",
+      "fromNode": "ad-mapping-family-2",
+      "fromSide": "right",
+      "toNode": "domain-graph",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-mapping--ad-mapping-family-3",
+      "fromNode": "topic-ad-mapping",
+      "fromSide": "right",
+      "toNode": "ad-mapping-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-3--S11",
+      "fromNode": "ad-mapping-family-3",
+      "fromSide": "right",
+      "toNode": "S11",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-mapping-family-3--S18",
+      "fromNode": "ad-mapping-family-3",
+      "fromSide": "right",
+      "toNode": "S18",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-identities--ad-identities-family-0",
+      "fromNode": "topic-ad-identities",
+      "fromSide": "right",
+      "toNode": "ad-identities-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-0--ad-lsass",
+      "fromNode": "ad-identities-family-0",
+      "fromSide": "right",
+      "toNode": "ad-lsass",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-0--ad-sam",
+      "fromNode": "ad-identities-family-0",
+      "fromSide": "right",
+      "toNode": "ad-sam",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-0--ad-security",
+      "fromNode": "ad-identities-family-0",
+      "fromSide": "right",
+      "toNode": "ad-security",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-0--ad-dpapi",
+      "fromNode": "ad-identities-family-0",
+      "fromSide": "right",
+      "toNode": "ad-dpapi",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-0--ad-ntds",
+      "fromNode": "ad-identities-family-0",
+      "fromSide": "right",
+      "toNode": "ad-ntds",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-identities--ad-identities-family-1",
+      "fromNode": "topic-ad-identities",
+      "fromSide": "right",
+      "toNode": "ad-identities-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-1--kerberos-asrep",
+      "fromNode": "ad-identities-family-1",
+      "fromSide": "right",
+      "toNode": "kerberos-asrep",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-1--kerberos-roast",
+      "fromNode": "ad-identities-family-1",
+      "fromSide": "right",
+      "toNode": "kerberos-roast",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-1--ad-targeted-roast",
+      "fromNode": "ad-identities-family-1",
+      "fromSide": "right",
+      "toNode": "ad-targeted-roast",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-identities--ad-identities-family-2",
+      "fromNode": "topic-ad-identities",
+      "fromSide": "right",
+      "toNode": "ad-identities-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-2--kerberos-tickets",
+      "fromNode": "ad-identities-family-2",
+      "fromSide": "right",
+      "toNode": "kerberos-tickets",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-2--kerberos-silver",
+      "fromNode": "ad-identities-family-2",
+      "fromSide": "right",
+      "toNode": "kerberos-silver",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-identities--ad-identities-family-3",
+      "fromNode": "topic-ad-identities",
+      "fromSide": "right",
+      "toNode": "ad-identities-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-3--ad-password-reset",
+      "fromNode": "ad-identities-family-3",
+      "fromSide": "right",
+      "toNode": "ad-password-reset",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-3--ad-group-control",
+      "fromNode": "ad-identities-family-3",
+      "fromSide": "right",
+      "toNode": "ad-group-control",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-3--ad-owner-dacl",
+      "fromNode": "ad-identities-family-3",
+      "fromSide": "right",
+      "toNode": "ad-owner-dacl",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-3--ad-dcsync",
+      "fromNode": "ad-identities-family-3",
+      "fromSide": "right",
+      "toNode": "ad-dcsync",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-identities--ad-identities-family-4",
+      "fromNode": "topic-ad-identities",
+      "fromSide": "right",
+      "toNode": "ad-identities-family-4",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-4--ad-gpo",
+      "fromNode": "ad-identities-family-4",
+      "fromSide": "right",
+      "toNode": "ad-gpo",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-4--ad-delegation",
+      "fromNode": "ad-identities-family-4",
+      "fromSide": "right",
+      "toNode": "ad-delegation",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-4--ad-certificates",
+      "fromNode": "ad-identities-family-4",
+      "fromSide": "right",
+      "toNode": "ad-certificates",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-4--kerberos-golden",
+      "fromNode": "ad-identities-family-4",
+      "fromSide": "right",
+      "toNode": "kerberos-golden",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-ad-identities--ad-identities-family-5",
+      "fromNode": "topic-ad-identities",
+      "fromSide": "right",
+      "toNode": "ad-identities-family-5",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S02",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S02",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S03",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S03",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S04",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S04",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S05",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S05",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S06",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S06",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S07",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S07",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S08",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S08",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S09",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S09",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S10",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S10",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S16",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S16",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "ad-identities-family-5--S19",
+      "fromNode": "ad-identities-family-5",
+      "fromSide": "right",
+      "toNode": "S19",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-lateral-movement--lateral-movement-family-0",
+      "fromNode": "topic-lateral-movement",
+      "fromSide": "right",
+      "toNode": "lateral-movement-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-0--move-preflight",
+      "fromNode": "lateral-movement-family-0",
+      "fromSide": "right",
+      "toNode": "move-preflight",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-0--move-auth-material",
+      "fromNode": "lateral-movement-family-0",
+      "fromSide": "right",
+      "toNode": "move-auth-material",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-lateral-movement--lateral-movement-family-1",
+      "fromNode": "topic-lateral-movement",
+      "fromSide": "right",
+      "toNode": "lateral-movement-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-1--move-services",
+      "fromNode": "lateral-movement-family-1",
+      "fromSide": "right",
+      "toNode": "move-services",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-1--move-smbexec",
+      "fromNode": "lateral-movement-family-1",
+      "fromSide": "right",
+      "toNode": "move-smbexec",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-1--move-tasks",
+      "fromNode": "lateral-movement-family-1",
+      "fromSide": "right",
+      "toNode": "move-tasks",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-lateral-movement--lateral-movement-family-2",
+      "fromNode": "topic-lateral-movement",
+      "fromSide": "right",
+      "toNode": "lateral-movement-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-2--move-wmi",
+      "fromNode": "lateral-movement-family-2",
+      "fromSide": "right",
+      "toNode": "move-wmi",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-2--move-dcom",
+      "fromNode": "lateral-movement-family-2",
+      "fromSide": "right",
+      "toNode": "move-dcom",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-2--move-winrm",
+      "fromNode": "lateral-movement-family-2",
+      "fromSide": "right",
+      "toNode": "move-winrm",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-lateral-movement--lateral-movement-family-3",
+      "fromNode": "topic-lateral-movement",
+      "fromSide": "right",
+      "toNode": "lateral-movement-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-3--move-rdp",
+      "fromNode": "lateral-movement-family-3",
+      "fromSide": "right",
+      "toNode": "move-rdp",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-lateral-movement--lateral-movement-family-4",
+      "fromNode": "topic-lateral-movement",
+      "fromSide": "right",
+      "toNode": "lateral-movement-family-4",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "lateral-movement-family-4--S17",
+      "fromNode": "lateral-movement-family-4",
+      "fromSide": "right",
+      "toNode": "S17",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "domain-state--domain-directory",
+      "fromNode": "domain-state",
+      "fromSide": "bottom",
+      "toNode": "domain-directory",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Domain/DC preflight works",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-graph--domain-acl",
+      "fromNode": "domain-graph",
+      "fromSide": "bottom",
+      "toNode": "domain-acl",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A useful object-control edge",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-graph--domain-hosts",
+      "fromNode": "domain-graph",
+      "fromSide": "bottom",
+      "toNode": "domain-hosts",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A host/session edge",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-graph--domain-spns",
+      "fromNode": "domain-graph",
+      "fromSide": "bottom",
+      "toNode": "domain-spns",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "An account with an SPN",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-graph--domain-directory",
+      "fromNode": "domain-graph",
+      "fromSide": "bottom",
+      "toNode": "domain-directory",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "kerberos-tickets--ad-lsass",
+      "fromNode": "kerberos-tickets",
+      "fromSide": "bottom",
+      "toNode": "ad-lsass",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A privileged local token and an accessible credential source",
+      "color": "#74829a"
+    },
+    {
+      "id": "kerberos-tickets--domain-directory",
+      "fromNode": "kerberos-tickets",
+      "fromSide": "bottom",
+      "toNode": "domain-directory",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "kerberos-asrep--kerberos-roast",
+      "fromNode": "kerberos-asrep",
+      "fromSide": "bottom",
+      "toNode": "kerberos-roast",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A normal service account with an SPN",
+      "color": "#74829a"
+    },
+    {
+      "id": "kerberos-asrep--domain-acl",
+      "fromNode": "kerberos-asrep",
+      "fromSide": "bottom",
+      "toNode": "domain-acl",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-acl--ad-password-reset",
+      "fromNode": "domain-acl",
+      "fromSide": "bottom",
+      "toNode": "ad-password-reset",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Effective password-reset right on the intended user",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-acl--ad-group-control",
+      "fromNode": "domain-acl",
+      "fromSide": "bottom",
+      "toNode": "ad-group-control",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Effective write to a useful group's member attribute",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-acl--ad-owner-dacl",
+      "fromNode": "domain-acl",
+      "fromSide": "bottom",
+      "toNode": "ad-owner-dacl",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "WriteOwner/WriteDacl on the target object",
+      "color": "#74829a"
+    },
+    {
+      "id": "domain-acl--domain-directory",
+      "fromNode": "domain-acl",
+      "fromSide": "bottom",
+      "toNode": "domain-directory",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "move-preflight--move-winrm",
+      "fromNode": "move-preflight",
+      "fromSide": "bottom",
+      "toNode": "move-winrm",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "WinRM is reachable and the account has endpoint rights",
+      "color": "#74829a"
+    },
+    {
+      "id": "move-preflight--move-services",
+      "fromNode": "move-preflight",
+      "fromSide": "bottom",
+      "toNode": "move-services",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "SMB/RPC is reachable and service-control rights are confirmed",
+      "color": "#74829a"
+    },
+    {
+      "id": "move-preflight--move-auth-material",
+      "fromNode": "move-preflight",
+      "fromSide": "bottom",
+      "toNode": "move-auth-material",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "move-auth-material--move-services",
+      "fromNode": "move-auth-material",
+      "fromSide": "bottom",
+      "toNode": "move-services",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Accepted authentication plus remote service rights",
+      "color": "#74829a"
+    },
+    {
+      "id": "move-auth-material--move-wmi",
+      "fromNode": "move-auth-material",
+      "fromSide": "bottom",
+      "toNode": "move-wmi",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "WMI/task rights with RPC/DCOM connectivity",
+      "color": "#74829a"
+    }
+  ]
+}
