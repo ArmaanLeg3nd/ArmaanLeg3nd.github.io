@@ -1,0 +1,187 @@
+{
+  "nodes": [
+    {
+      "id": "group-integration",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 1045,
+      "label": "Complete attacks and retain reproducible evidence",
+      "color": "5"
+    },
+    {
+      "id": "topic-integration",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Complete attacks and retain reproducible evidence",
+      "color": "5"
+    },
+    {
+      "id": "attack-state",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/integration.md#attack-state|Maintain state and select the next evidence-producing test]]"
+    },
+    {
+      "id": "attack-chains",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/integration.md#attack-chains|Integrate a standalone or assumed-breach AD attack]]"
+    },
+    {
+      "id": "attack-recovery",
+      "type": "text",
+      "x": 550,
+      "y": 422,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/integration.md#attack-recovery|Recover from dead ends without repeating disproven paths]]"
+    },
+    {
+      "id": "integration-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 304,
+      "width": 360,
+      "height": 76,
+      "text": "State, chain selection and recovery",
+      "color": "1"
+    },
+    {
+      "id": "attack-evidence",
+      "type": "text",
+      "x": 550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/integration.md#attack-evidence|Capture state-transition, proof and exploit-adaptation evidence]]"
+    },
+    {
+      "id": "attack-report",
+      "type": "text",
+      "x": 550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/integration.md#attack-report|Build and validate the report and submission artifacts]]"
+    },
+    {
+      "id": "integration-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 681,
+      "width": 360,
+      "height": 76,
+      "text": "Transition evidence and reporting",
+      "color": "2"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-integration--integration-family-0",
+      "fromNode": "topic-integration",
+      "fromSide": "right",
+      "toNode": "integration-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "integration-family-0--attack-state",
+      "fromNode": "integration-family-0",
+      "fromSide": "right",
+      "toNode": "attack-state",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "integration-family-0--attack-chains",
+      "fromNode": "integration-family-0",
+      "fromSide": "right",
+      "toNode": "attack-chains",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "integration-family-0--attack-recovery",
+      "fromNode": "integration-family-0",
+      "fromSide": "right",
+      "toNode": "attack-recovery",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-integration--integration-family-1",
+      "fromNode": "topic-integration",
+      "fromSide": "right",
+      "toNode": "integration-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "integration-family-1--attack-evidence",
+      "fromNode": "integration-family-1",
+      "fromSide": "right",
+      "toNode": "attack-evidence",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "integration-family-1--attack-report",
+      "fromNode": "integration-family-1",
+      "fromSide": "right",
+      "toNode": "attack-report",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "attack-evidence--attack-state",
+      "fromNode": "attack-evidence",
+      "fromSide": "bottom",
+      "toNode": "attack-state",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A new identity, host or route",
+      "color": "#74829a"
+    },
+    {
+      "id": "attack-evidence--attack-report",
+      "fromNode": "attack-evidence",
+      "fromSide": "bottom",
+      "toNode": "attack-report",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "The final objective is evidenced",
+      "color": "#74829a"
+    },
+    {
+      "id": "attack-evidence--attack-chains",
+      "fromNode": "attack-evidence",
+      "fromSide": "bottom",
+      "toNode": "attack-chains",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "attack-recovery--attack-state",
+      "fromNode": "attack-recovery",
+      "fromSide": "bottom",
+      "toNode": "attack-state",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A new credential or route has not been used for enumeration",
+      "color": "#74829a"
+    }
+  ]
+}

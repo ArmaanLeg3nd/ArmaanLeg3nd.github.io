@@ -1,0 +1,4269 @@
+{
+  "nodes": [
+    {
+      "id": "topic-group:pivoting",
+      "type": "group",
+      "x": 0,
+      "y": 420,
+      "width": 4400,
+      "height": 29864,
+      "label": "Reach internal services",
+      "color": "5"
+    },
+    {
+      "id": "method-group:pivot-state",
+      "type": "group",
+      "x": 35,
+      "y": 3615,
+      "width": 4080,
+      "height": 3506,
+      "label": "Discover pivot interfaces, routes and internal service context",
+      "color": "5"
+    },
+    {
+      "id": "method-group:fixed-forward",
+      "type": "group",
+      "x": 35,
+      "y": 7246,
+      "width": 4080,
+      "height": 1400,
+      "label": "Relay a single TCP service through a fixed forward",
+      "color": "5"
+    },
+    {
+      "id": "method-group:ssh-local",
+      "type": "group",
+      "x": 35,
+      "y": 8771,
+      "width": 4080,
+      "height": 1448,
+      "label": "Forward a selected service through an SSH client-side listener",
+      "color": "5"
+    },
+    {
+      "id": "method-group:ssh-dynamic",
+      "type": "group",
+      "x": 35,
+      "y": 10344,
+      "width": 4080,
+      "height": 1376,
+      "label": "Provide SOCKS access through SSH dynamic forwarding",
+      "color": "5"
+    },
+    {
+      "id": "method-group:ssh-remote",
+      "type": "group",
+      "x": 35,
+      "y": 11845,
+      "width": 4080,
+      "height": 1448,
+      "label": "Expose an SSH-client-side destination through a server-side remote listener",
+      "color": "5"
+    },
+    {
+      "id": "method-group:ssh-remote-dynamic",
+      "type": "group",
+      "x": 35,
+      "y": 13418,
+      "width": 4080,
+      "height": 1400,
+      "label": "Expose a server-side SOCKS proxy through remote dynamic SSH forwarding",
+      "color": "5"
+    },
+    {
+      "id": "method-group:proxy-clients",
+      "type": "group",
+      "x": 35,
+      "y": 14943,
+      "width": 4080,
+      "height": 1376,
+      "label": "Use ProxyChains, native SOCKS clients and SSH jump paths appropriately",
+      "color": "5"
+    },
+    {
+      "id": "method-group:sshuttle-route",
+      "type": "group",
+      "x": 35,
+      "y": 16444,
+      "width": 4080,
+      "height": 1376,
+      "label": "Route a selected subnet through sshuttle",
+      "color": "5"
+    },
+    {
+      "id": "method-group:windows-forward",
+      "type": "group",
+      "x": 35,
+      "y": 17945,
+      "width": 4080,
+      "height": 1424,
+      "label": "Forward from Windows with OpenSSH, Plink or Netsh",
+      "color": "5"
+    },
+    {
+      "id": "method-group:chisel-reverse",
+      "type": "group",
+      "x": 35,
+      "y": 19494,
+      "width": 4080,
+      "height": 1328,
+      "label": "Use a reverse Chisel SOCKS or fixed TCP tunnel",
+      "color": "5"
+    },
+    {
+      "id": "method-group:chisel-forward",
+      "type": "group",
+      "x": 35,
+      "y": 20947,
+      "width": 4080,
+      "height": 1448,
+      "label": "Use forward Chisel SOCKS and version-supported UDP routing",
+      "color": "5"
+    },
+    {
+      "id": "method-group:ligolo-route",
+      "type": "group",
+      "x": 35,
+      "y": 22520,
+      "width": 4080,
+      "height": 1352,
+      "label": "Route a selected internal subnet through Ligolo-ng",
+      "color": "5"
+    },
+    {
+      "id": "method-group:pivot-dns",
+      "type": "group",
+      "x": 35,
+      "y": 23997,
+      "width": 4080,
+      "height": 1755,
+      "label": "Preserve DNS, Kerberos names and time across a pivot",
+      "color": "5"
+    },
+    {
+      "id": "method-group:pivot-callback",
+      "type": "group",
+      "x": 35,
+      "y": 25877,
+      "width": 4080,
+      "height": 1352,
+      "label": "Build the callback and delivery routes separately from the attack route",
+      "color": "5"
+    },
+    {
+      "id": "method-group:pivot-multihop",
+      "type": "group",
+      "x": 35,
+      "y": 27354,
+      "width": 4080,
+      "height": 1352,
+      "label": "Compose multiple pivots and validate every connection leg",
+      "color": "5"
+    },
+    {
+      "id": "method-group:pivot-dns-tunnel",
+      "type": "group",
+      "x": 35,
+      "y": 28831,
+      "width": 4080,
+      "height": 1328,
+      "label": "Conditional: tunnel through controlled DNS infrastructure",
+      "color": "5"
+    },
+    {
+      "id": "topic:pivoting",
+      "type": "text",
+      "x": 60,
+      "y": 440,
+      "width": 1800,
+      "height": 140,
+      "text": "# Reach internal services\n\nStart from the pivot's current shell/process or accepted SSH access; another reachable subnet and an operational tunnel are not assumed.",
+      "color": "5"
+    },
+    {
+      "id": "flow:pivoting:home",
+      "type": "text",
+      "x": 60,
+      "y": 620,
+      "width": 350,
+      "height": 240,
+      "text": "## Investigation flow\n\nReach internal services\n\n · \n\nBranches describe evidence and missing conditions. Follow one useful lead, then return to unfinished coverage.",
+      "color": "6"
+    },
+    {
+      "id": "flow:pivoting:check-0",
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "width": 760,
+      "height": 348,
+      "text": "## Enumerate what the pivot can actually reach\n\nRun route/listener checks on the pivot itself; do not infer its access from the attacker machine.\n\n```bash\nip addr\nip route\nss -lntup\n```\n\n**Discover pivot interfaces, routes and internal service context — on this canvas**"
+    },
+    {
+      "id": "flow:pivoting:check-0-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 620,
+      "width": 610,
+      "height": 180,
+      "text": "### One internal TCP endpoint is reachable from the pivot\n\nDraw the local/pivot listener and initiator before choosing a fixed forward.\n\n**Forward a selected service through an SSH client-side listener — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:pivoting:check-0-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 845,
+      "width": 610,
+      "height": 180,
+      "text": "### Several internal services need proxy/routed access\n\nMatch the client protocol to SOCKS or a TUN route.\n\n**Provide SOCKS access through SSH dynamic forwarding — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:pivoting:check-0-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 620,
+      "width": 610,
+      "height": 180,
+      "text": "### Unresolved / alternate check\n\nThe pivot cannot reach the destination: fix that leg before adding a tunnel.\n\n**Discover pivot interfaces, routes and internal service context — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:pivoting:check-1",
+      "type": "text",
+      "x": 560,
+      "y": 1250,
+      "width": 760,
+      "height": 396,
+      "text": "## Use SSH forwarding for the required direction\n\nUse this when the attacker can SSH to a pivot that can reach the destination; remote forwarding reverses the listener placement.\n\n```bash\nssh -N \\\n  -L 127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT \\\n  -p SSH_PORT USER@PIVOT \\\n  -o ExitOnForwardFailure=yes \\\n  -o ServerAliveInterval=30 -o ServerAliveCountMax=3\n```\n\n**Forward a selected service through an SSH client-side listener — on this canvas**"
+    },
+    {
+      "id": "flow:pivoting:check-1-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1250,
+      "width": 610,
+      "height": 180,
+      "text": "### The forwarded service responds through the listener\n\nRe-enumerate that destination with the matching service client.\n\n[[tracks/01 Discovery.canvas|Identify applications and validate selected NSE checks → 01 Discovery]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:pivoting:check-1-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 1475,
+      "width": 610,
+      "height": 180,
+      "text": "### Only the pivot can initiate the tunnel connection\n\nSelect the reverse/listener arrangement deliberately.\n\n**Expose an SSH-client-side destination through a server-side remote listener — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:pivoting:check-1-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1250,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nThe listener exists but the app fails: test destination reachability and DNS through the chosen path.\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:pivoting:check-2",
+      "type": "text",
+      "x": 560,
+      "y": 1880,
+      "width": 760,
+      "height": 300,
+      "text": "## Use Ligolo for a justified routed requirement\n\nUse the version-specific agent/proxy procedure and route setup. A tunnel session alone is not a working destination route.\n\n```bash\n./proxy -selfcert -laddr 0.0.0.0:LIGOLO_PORT\n```\n\n**Route a selected internal subnet through Ligolo-ng — on this canvas**"
+    },
+    {
+      "id": "flow:pivoting:check-2-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1880,
+      "width": 610,
+      "height": 180,
+      "text": "### The selected subnet is routed and the destination responds\n\nRe-run service discovery from that new position.\n\n[[tracks/01 Discovery.canvas|Identify applications and validate selected NSE checks → 01 Discovery]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:pivoting:check-2-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 2105,
+      "width": 610,
+      "height": 180,
+      "text": "### Delivery works but the payload callback fails\n\nBuild and verify the separately needed return/callback path.\n\n**Build the callback and delivery routes separately from the attack route — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:pivoting:check-2-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1880,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nRoute/session setup fails: inspect the route, interface privileges and each connection leg.\n\n**Discover pivot interfaces, routes and internal service context — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "notes:pivoting",
+      "type": "file",
+      "file": "notes/pivoting.md",
+      "x": 60,
+      "y": 2515,
+      "width": 2100,
+      "height": 850
+    },
+    {
+      "id": "notes-label:pivoting",
+      "type": "text",
+      "x": 2350,
+      "y": 2515,
+      "width": 1400,
+      "height": 180,
+      "text": "## Full procedures and alternatives\n\nThe adjacent embedded note is readable here. Scroll inside it for complete variants. Commands and decisions continue below.",
+      "color": "6"
+    },
+    {
+      "id": "method:pivot-state:start",
+      "type": "text",
+      "x": 70,
+      "y": 3790,
+      "width": 350,
+      "height": 250,
+      "text": "## Discover pivot interfaces, routes and internal service context\n\nA foothold exposes an interface/subnet or a loopback-only service",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:discover",
+      "type": "text",
+      "x": 570,
+      "y": 3750,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nip addr\nip route\nss -lntup\n```"
+    },
+    {
+      "id": "method:pivot-state:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 3730,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA second network or loopback listener supplies a new vantage candidate; forwarding is not automatically enabled.",
+      "color": "6"
+    },
+    {
+      "id": "method:pivot-state:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 3976,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nRead interfaces/routes/listeners on the pivot and probe the internal destination from that host. Draw both legs and the initiator; only choose SSH/SOCKS/Ligolo after the destination leg works.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-state:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 3680,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe pivot reaches the needed endpoint and a supported tunnel can carry the client: choose that route.\n\n**Verify:** Record source, pivot, destination, protocol, listener placement and required return path.\n\n[[notes/pivoting.md#pivot-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-state:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 4021,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nThe new subnet is outside assigned scope: do not use it as an attack route.",
+      "color": "1"
+    },
+    {
+      "id": "method:pivot-state:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 4218,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nInterface/route presence alone does not prove destination/firewall access.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-state:action",
+      "type": "text",
+      "x": 3130,
+      "y": 3680,
+      "width": 900,
+      "height": 444,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\nAPPLICATION TOOL\n  -> local listener / SOCKS endpoint / TUN route\n  -> tunnel transport endpoint\n  -> pivot exit\n  -> internal destination service\n\nCALLBACK TARGET\n  -> pivot listener or routable address\n  -> relay/tunnel\n  -> final listener\n```\n\n[[notes/pivoting.md#pivot-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-state:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 4214,
+      "width": 620,
+      "height": 252,
+      "text": "### Relay a single TCP service through a fixed forward\n\n**When:** One reachable pivot can connect to one internal TCP destination\n\n**Still required:** A bindable pivot listener, source-to-listener access and pivot-to-destination connectivity\n\n**Relay a single TCP service through a fixed forward — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 4521,
+      "width": 620,
+      "height": 252,
+      "text": "### Forward a selected service through an SSH client-side listener\n\n**When:** SSH reaches a server that can access the needed internal service\n\n**Still required:** Accepted SSH identity and forwarding policy; local listener availability and SSH-server-to-destination route\n\n**Forward a selected service through an SSH client-side listener — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 4828,
+      "width": 620,
+      "height": 276,
+      "text": "### Use a reverse Chisel SOCKS or fixed TCP tunnel\n\n**When:** A pivot can make outbound HTTP/WebSocket connections to the tunnel server\n\n**Still required:** Compatible reviewed client/server, server reverse mode, reachable server port and pivot-to-destination access\n\n**Use a reverse Chisel SOCKS or fixed TCP tunnel — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 5159,
+      "width": 620,
+      "height": 276,
+      "text": "### Route a selected internal subnet through Ligolo-ng\n\n**When:** Several protocols/subnets require a route-style interface through an agent\n\n**Still required:** Compatible proxy/agent, permitted local interface/route management, reachable carrier and selected assigned subnet\n\n**Route a selected internal subnet through Ligolo-ng — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-4",
+      "type": "text",
+      "x": 3130,
+      "y": 5490,
+      "width": 620,
+      "height": 276,
+      "text": "### Expose a server-side SOCKS proxy through remote dynamic SSH forwarding\n\n**When:** Only the pivot can initiate SSH, but several client-selected internal destinations are needed\n\n**Still required:** A supporting OpenSSH client, allowed remote forwarding, listener binding and SOCKS-compatible tool clients\n\n**Expose a server-side SOCKS proxy through remote dynamic SSH forwarding — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-5",
+      "type": "text",
+      "x": 3130,
+      "y": 5821,
+      "width": 620,
+      "height": 276,
+      "text": "### Route a selected subnet through sshuttle\n\n**When:** Multiple internal TCP destinations need transparent application access over SSH\n\n**Still required:** Working SSH/Python environment, local routing/firewall privileges and explicitly selected supported traffic/subnets\n\n**Route a selected subnet through sshuttle — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-6",
+      "type": "text",
+      "x": 3130,
+      "y": 6152,
+      "width": 620,
+      "height": 276,
+      "text": "### Forward from Windows with OpenSSH, Plink or Netsh\n\n**When:** The pivot is Windows and available networking utilities constrain the route\n\n**Still required:** Compatible OpenSSH/Plink authentication or administrative Netsh/IP Helper context; correct listener and destination paths\n\n**Forward from Windows with OpenSSH, Plink or Netsh — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-7",
+      "type": "text",
+      "x": 3130,
+      "y": 6483,
+      "width": 620,
+      "height": 276,
+      "text": "### Use forward Chisel SOCKS and version-supported UDP routing\n\n**When:** The assessment-side client can reach a pivot-side tunnel server\n\n**Still required:** Compatible client/server roles, reachable carrier, correctly placed SOCKS listener and explicitly supported UDP-aware mode when required\n\n**Use forward Chisel SOCKS and version-supported UDP routing — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-state:next-8",
+      "type": "text",
+      "x": 3130,
+      "y": 6814,
+      "width": 620,
+      "height": 252,
+      "text": "### Compose multiple pivots and validate every connection leg\n\n**When:** A second internal network is reachable only from a later foothold\n\n**Still required:** A working first route, explicit second carrier/listener directions and correct per-hop DNS/return paths\n\n**Compose multiple pivots and validate every connection leg — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:fixed-forward:start",
+      "type": "text",
+      "x": 70,
+      "y": 7421,
+      "width": 350,
+      "height": 250,
+      "text": "## Relay a single TCP service through a fixed forward\n\nOne reachable pivot can connect to one internal TCP destination",
+      "color": "5"
+    },
+    {
+      "id": "method:fixed-forward:discover",
+      "type": "text",
+      "x": 570,
+      "y": 7381,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nip route get TARGET\nss -lnt\n```"
+    },
+    {
+      "id": "method:fixed-forward:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 7361,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA single TCP service can fit a fixed relay without assuming a full routed network.",
+      "color": "6"
+    },
+    {
+      "id": "method:fixed-forward:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 7607,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nConfirm both legs, bind address/permission and any additional dynamic ports or return path.",
+      "color": "2"
+    },
+    {
+      "id": "method:fixed-forward:checks",
+      "type": "text",
+      "x": 570,
+      "y": 7645,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nss -lnt\nip route get TARGET\n```"
+    },
+    {
+      "id": "method:fixed-forward:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 7311,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nBoth legs and the destination handshake work: choose a fixed TCP relay.\n\n**Verify:** Verify application behavior through the listener and keep the transport's destination explicit.\n\n[[notes/pivoting.md#fixed-forward|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:fixed-forward:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 7628,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe protocol needs unprovided UDP or dynamic connections: reject this one-port topology.",
+      "color": "1"
+    },
+    {
+      "id": "method:fixed-forward:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 7849,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA listen socket without the destination handshake leaves the remote leg unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:fixed-forward:action",
+      "type": "text",
+      "x": 3130,
+      "y": 7311,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nsocat -ddd TCP-LISTEN:LOCAL_PORT,bind=PIVOT_REACHABLE_IP,reuseaddr,fork \\\n  TCP:INTERNAL_HOST:INTERNAL_PORT\n```\n\n[[notes/pivoting.md#fixed-forward|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:fixed-forward:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 7653,
+      "width": 620,
+      "height": 276,
+      "text": "### Use SQL Server rights, impersonation and command facilities\n\n**When:** SQL Server credentials or a Windows identity accepted by the database\n\n**Still required:** Correct SQL versus Windows authentication; database role and configuration must permit the requested operation\n\n[[tracks/02 Services.canvas|Use SQL Server rights, impersonation and command facilities → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:fixed-forward:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 7984,
+      "width": 620,
+      "height": 276,
+      "text": "### Use MySQL/MariaDB data and file primitives\n\n**When:** A MySQL-compatible service and valid application/database credentials\n\n**Still required:** Database authentication and exact schema/file privileges; secure_file_priv and server filesystem identity constrain file actions\n\n[[tracks/02 Services.canvas|Use MySQL/MariaDB data and file primitives → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:fixed-forward:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 8315,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-local:start",
+      "type": "text",
+      "x": 70,
+      "y": 8946,
+      "width": 350,
+      "height": 250,
+      "text": "## Forward a selected service through an SSH client-side listener\n\nSSH reaches a server that can access the needed internal service",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-local:discover",
+      "type": "text",
+      "x": 570,
+      "y": 8906,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nssh -v -p SSH_PORT USER@PIVOT\nss -lnt\n```"
+    },
+    {
+      "id": "method:ssh-local:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 8886,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nClient-side listener plus server-side destination is the -L direction; destination loopback belongs to the SSH server.",
+      "color": "6"
+    },
+    {
+      "id": "method:ssh-local:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 9132,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify forwarding policy, local bind and server-to-destination application access.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-local:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 8836,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nThe permitted local forward delivers the service handshake: choose -L.\n\n**Verify:** Verify listening address plus the destination application's handshake and preserve correct hostname/SPN semantics when needed.\n\n[[notes/pivoting.md#ssh-local|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-local:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 9153,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe server cannot reach the selected destination: reject this topology regardless of valid SSH login.",
+      "color": "1"
+    },
+    {
+      "id": "method:ssh-local:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 9374,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nSSH login alone leaves forwarding policy unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-local:action",
+      "type": "text",
+      "x": 3130,
+      "y": 8836,
+      "width": 900,
+      "height": 324,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nssh -N \\\n  -L 127.0.0.1:LOCAL_PORT:INTERNAL_HOST:INTERNAL_PORT \\\n  -p SSH_PORT USER@PIVOT \\\n  -o ExitOnForwardFailure=yes \\\n  -o ServerAliveInterval=30 -o ServerAliveCountMax=3\n```\n\n[[notes/pivoting.md#ssh-local|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-local:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 9250,
+      "width": 620,
+      "height": 276,
+      "text": "### Use MySQL/MariaDB data and file primitives\n\n**When:** A MySQL-compatible service and valid application/database credentials\n\n**Still required:** Database authentication and exact schema/file privileges; secure_file_priv and server filesystem identity constrain file actions\n\n[[tracks/02 Services.canvas|Use MySQL/MariaDB data and file primitives → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-local:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 9581,
+      "width": 620,
+      "height": 276,
+      "text": "### Use SQL Server rights, impersonation and command facilities\n\n**When:** SQL Server credentials or a Windows identity accepted by the database\n\n**Still required:** Correct SQL versus Windows authentication; database role and configuration must permit the requested operation\n\n[[tracks/02 Services.canvas|Use SQL Server rights, impersonation and command facilities → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-local:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 9912,
+      "width": 620,
+      "height": 252,
+      "text": "### Preserve DNS, Kerberos names and time across a pivot\n\n**When:** An IP connection works while hostname/Kerberos access fails\n\n**Still required:** Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-dynamic:start",
+      "type": "text",
+      "x": 70,
+      "y": 10519,
+      "width": 350,
+      "height": 250,
+      "text": "## Provide SOCKS access through SSH dynamic forwarding\n\nSeveral internal TCP services need access through one SSH server",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-dynamic:discover",
+      "type": "text",
+      "x": 570,
+      "y": 10479,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nssh -v -p SSH_PORT USER@PIVOT\n```"
+    },
+    {
+      "id": "method:ssh-dynamic:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 10459,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nMultiple client-selected TCP destinations suggest a dynamic SOCKS listener rather than many fixed forwards.",
+      "color": "6"
+    },
+    {
+      "id": "method:ssh-dynamic:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 10705,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck SSH forwarding, listener bind, native/intercepted client support and DNS resolution location.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-dynamic:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 10409,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nProxy-aware clients reach the selected applications: choose dynamic SOCKS.\n\n**Verify:** Verify one application through the proxy, then check each client's actual proxy and DNS behavior.\n\n[[notes/pivoting.md#ssh-dynamic|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-dynamic:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 10726,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe needed operation relies on raw/unsupported UDP traffic: reject ordinary TCP SOCKS for that operation.",
+      "color": "1"
+    },
+    {
+      "id": "method:ssh-dynamic:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 10947,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA working SSH session without a proxy-aware test leaves application/proxy compatibility unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-dynamic:action",
+      "type": "text",
+      "x": 3130,
+      "y": 10409,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nssh -N -D 127.0.0.1:1080 -p SSH_PORT USER@PIVOT \\\n  -o ExitOnForwardFailure=yes \\\n  -o ServerAliveInterval=30 -o ServerAliveCountMax=3\n```\n\n[[notes/pivoting.md#ssh-dynamic|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-dynamic:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 10775,
+      "width": 620,
+      "height": 252,
+      "text": "### Use ProxyChains, native SOCKS clients and SSH jump paths appropriately\n\n**When:** A SOCKS listener or an SSH jump host is already available\n\n**Still required:** Client/proxy transport compatibility, correct proxy configuration and controlled name resolution\n\n**Use ProxyChains, native SOCKS clients and SSH jump paths appropriately — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-dynamic:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 11082,
+      "width": 620,
+      "height": 276,
+      "text": "### Discover TCP ports with SYN or connect scans\n\n**When:** An assigned host needs an initial service queue or full TCP coverage\n\n**Still required:** SYN scanning needs raw-packet privileges; connect scanning needs OS TCP connections; specify selected versus full port coverage\n\n[[tracks/01 Discovery.canvas|Discover TCP ports with SYN or connect scans → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-dynamic:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 11413,
+      "width": 620,
+      "height": 252,
+      "text": "### Preserve DNS, Kerberos names and time across a pivot\n\n**When:** An IP connection works while hostname/Kerberos access fails\n\n**Still required:** Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote:start",
+      "type": "text",
+      "x": 70,
+      "y": 12020,
+      "width": 350,
+      "height": 250,
+      "text": "## Expose an SSH-client-side destination through a server-side remote listener\n\nThe useful side can initiate SSH outward but cannot accept an inbound management connection",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote:discover",
+      "type": "text",
+      "x": 570,
+      "y": 11980,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nssh -v USER@SSH_SERVER\n```"
+    },
+    {
+      "id": "method:ssh-remote:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 11960,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe useful listener is on the SSH server while the destination is reached from the client side: a remote forward candidate.",
+      "color": "6"
+    },
+    {
+      "id": "method:ssh-remote:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 12206,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify remote-forward permission, server bind/GatewayPorts policy and pivot-side destination reachability.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-remote:checks",
+      "type": "text",
+      "x": 570,
+      "y": 12220,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nssh -v USER@SSH_SERVER\nss -lnt\n```"
+    },
+    {
+      "id": "method:ssh-remote:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 11910,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe server-side listener carries the intended service: choose the -R fixed forward.\n\n**Verify:** Verify listener placement/bind and actual destination application response.\n\n[[notes/pivoting.md#ssh-remote|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-remote:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 12251,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOnly a loopback listener is available but another host must connect and no approved bind path exists: reject that exposure design.",
+      "color": "1"
+    },
+    {
+      "id": "method:ssh-remote:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 12472,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nAccepted outbound SSH does not prove remote listener policy.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-remote:action",
+      "type": "text",
+      "x": 3130,
+      "y": 11910,
+      "width": 900,
+      "height": 324,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nssh -N \\\n  -R 127.0.0.1:KALI_PORT:INTERNAL_HOST:INTERNAL_PORT \\\n  -p KALI_SSH_PORT KALI_USER@LHOST \\\n  -o ExitOnForwardFailure=yes \\\n  -o ServerAliveInterval=30 -o ServerAliveCountMax=3\n```\n\n[[notes/pivoting.md#ssh-remote|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-remote:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 12324,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 12655,
+      "width": 620,
+      "height": 252,
+      "text": "### Enumerate SMB/RPC shares, files and identities\n\n**When:** SMB/RPC endpoints, domain clues or new credentials\n\n**Still required:** Reachable SMB/RPC; anonymous, guest, local or domain context must be explicit; share and filesystem ACLs both matter\n\n[[tracks/02 Services.canvas|Enumerate SMB/RPC shares, files and identities → 02 Services]]",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 12962,
+      "width": 620,
+      "height": 276,
+      "text": "### Build the callback and delivery routes separately from the attack route\n\n**When:** A pivoted exploit reaches its target but its shell/download cannot return\n\n**Still required:** Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward\n\n**Build the callback and delivery routes separately from the attack route — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:start",
+      "type": "text",
+      "x": 70,
+      "y": 13593,
+      "width": 350,
+      "height": 250,
+      "text": "## Expose a server-side SOCKS proxy through remote dynamic SSH forwarding\n\nOnly the pivot can initiate SSH, but several client-selected internal destinations are needed",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:discover",
+      "type": "text",
+      "x": 570,
+      "y": 13553,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nssh -V\n```"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 13533,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nRemote listener placement plus per-connection SOCKS destination selection suggests remote dynamic forwarding.",
+      "color": "6"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 13779,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck implementation support, remote-forward policy, listener binding and proxy-client/DNS compatibility.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 13483,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA supported remote dynamic listener carries the intended TCP clients: choose that mode.\n\n**Verify:** Verify the listener's actual location and source-side exit by application evidence.\n\n[[notes/pivoting.md#ssh-remote-dynamic|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 13824,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe installed SSH client does not support the syntax or policy forbids it: reject that variant.",
+      "color": "1"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 14045,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA version string without a controlled forwarding/application test leaves policy/transport unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:action",
+      "type": "text",
+      "x": 3130,
+      "y": 13483,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nssh -N -R 127.0.0.1:1080 -p KALI_SSH_PORT KALI_USER@LHOST \\\n  -o ExitOnForwardFailure=yes \\\n  -o ServerAliveInterval=30 -o ServerAliveCountMax=3\n```\n\n[[notes/pivoting.md#ssh-remote-dynamic|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 13849,
+      "width": 620,
+      "height": 252,
+      "text": "### Use ProxyChains, native SOCKS clients and SSH jump paths appropriately\n\n**When:** A SOCKS listener or an SSH jump host is already available\n\n**Still required:** Client/proxy transport compatibility, correct proxy configuration and controlled name resolution\n\n**Use ProxyChains, native SOCKS clients and SSH jump paths appropriately — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 14156,
+      "width": 620,
+      "height": 300,
+      "text": "### Expose an SSH-client-side destination through a server-side remote listener\n\n**When:** The useful side can initiate SSH outward but cannot accept an inbound management connection\n\n**Still required:** Outbound SSH route, accepted identity, server forwarding/GatewayPorts policy and reachability to the chosen client-side destination\n\n**Expose an SSH-client-side destination through a server-side remote listener — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 14511,
+      "width": 620,
+      "height": 252,
+      "text": "### Preserve DNS, Kerberos names and time across a pivot\n\n**When:** An IP connection works while hostname/Kerberos access fails\n\n**Still required:** Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:proxy-clients:start",
+      "type": "text",
+      "x": 70,
+      "y": 15118,
+      "width": 350,
+      "height": 250,
+      "text": "## Use ProxyChains, native SOCKS clients and SSH jump paths appropriately\n\nA SOCKS listener or an SSH jump host is already available",
+      "color": "5"
+    },
+    {
+      "id": "method:proxy-clients:discover",
+      "type": "text",
+      "x": 570,
+      "y": 15078,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\ncurl --socks5-hostname 127.0.0.1:SOCKS_PORT http://TARGET:PORT/\n```"
+    },
+    {
+      "id": "method:proxy-clients:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 15058,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nOne supported TCP application works; the proxy does not automatically carry raw packets or arbitrary DNS/UDP.",
+      "color": "6"
+    },
+    {
+      "id": "method:proxy-clients:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 15304,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck native versus intercepted support, connect-only scanner modes, name resolution and every required protocol leg.",
+      "color": "2"
+    },
+    {
+      "id": "method:proxy-clients:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 15008,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe actual client's application handshake works through the chosen proxy/jump: use it.\n\n**Verify:** Verify destination application and resolver behavior through the intended path.\n\n[[notes/pivoting.md#proxy-clients|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:proxy-clients:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 15349,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA static/raw/UDP-only client is incompatible with this proxy wrapper: choose another transport.",
+      "color": "1"
+    },
+    {
+      "id": "method:proxy-clients:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 15570,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA reachable SOCKS port without an end-to-end service test leaves the exit path unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:proxy-clients:action",
+      "type": "text",
+      "x": 3130,
+      "y": 15008,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nssh -J PIVOT_USER@PIVOT TARGET_USER@INTERNAL_HOST\n```\n\n[[notes/pivoting.md#proxy-clients|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:proxy-clients:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 15326,
+      "width": 620,
+      "height": 276,
+      "text": "### Discover TCP ports with SYN or connect scans\n\n**When:** An assigned host needs an initial service queue or full TCP coverage\n\n**Still required:** SYN scanning needs raw-packet privileges; connect scanning needs OS TCP connections; specify selected versus full port coverage\n\n[[tracks/01 Discovery.canvas|Discover TCP ports with SYN or connect scans → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:proxy-clients:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 15657,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:proxy-clients:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 15988,
+      "width": 620,
+      "height": 276,
+      "text": "### Route a selected internal subnet through Ligolo-ng\n\n**When:** Several protocols/subnets require a route-style interface through an agent\n\n**Still required:** Compatible proxy/agent, permitted local interface/route management, reachable carrier and selected assigned subnet\n\n**Route a selected internal subnet through Ligolo-ng — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:sshuttle-route:start",
+      "type": "text",
+      "x": 70,
+      "y": 16619,
+      "width": 350,
+      "height": 250,
+      "text": "## Route a selected subnet through sshuttle\n\nMultiple internal TCP destinations need transparent application access over SSH",
+      "color": "5"
+    },
+    {
+      "id": "method:sshuttle-route:discover",
+      "type": "text",
+      "x": 570,
+      "y": 16579,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nssh -v USER@PIVOT\npython3 --version\nip route\n```"
+    },
+    {
+      "id": "method:sshuttle-route:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 16559,
+      "width": 580,
+      "height": 180,
+      "text": "### What the output establishes\n\nAn SSH carrier and compatible endpoints make a transparent selected-subnet route a candidate; local Python output alone does not prove the remote runtime.",
+      "color": "6"
+    },
+    {
+      "id": "method:sshuttle-route:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 16829,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify local route/firewall permissions, remote runtime, supported transport/mode and explicitly selected subnet/DNS behavior.",
+      "color": "2"
+    },
+    {
+      "id": "method:sshuttle-route:checks",
+      "type": "text",
+      "x": 570,
+      "y": 16867,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nssh -v USER@PIVOT\npython3 --version\n```"
+    },
+    {
+      "id": "method:sshuttle-route:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 16509,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe selected application traffic works through the compatible mode: choose sshuttle.\n\n**Verify:** Verify the actual application path and ensure only assigned subnets are selected.\n\n[[notes/pivoting.md#sshuttle-route|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:sshuttle-route:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 16850,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nRequired local permission or remote support is unavailable: reject this route implementation.",
+      "color": "1"
+    },
+    {
+      "id": "method:sshuttle-route:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 17071,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nTCP success does not establish unsupported UDP/raw behavior; test the actual requirement.",
+      "color": "2"
+    },
+    {
+      "id": "method:sshuttle-route:action",
+      "type": "text",
+      "x": 3130,
+      "y": 16509,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nsudo sshuttle --dns \\\n  -r SSH_USER@PIVOT:SSH_PORT \\\n  INTERNAL_SUBNET ANOTHER_SUBNET\n```\n\n[[notes/pivoting.md#sshuttle-route|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:sshuttle-route:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 16875,
+      "width": 620,
+      "height": 252,
+      "text": "### Preserve DNS, Kerberos names and time across a pivot\n\n**When:** An IP connection works while hostname/Kerberos access fails\n\n**Still required:** Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:sshuttle-route:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 17182,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:sshuttle-route:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 17513,
+      "width": 620,
+      "height": 252,
+      "text": "### Provide SOCKS access through SSH dynamic forwarding\n\n**When:** Several internal TCP services need access through one SSH server\n\n**Still required:** SSH forwarding allowed and clients that support SOCKS or compatible interception; DNS behavior must be chosen explicitly\n\n**Provide SOCKS access through SSH dynamic forwarding — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-forward:start",
+      "type": "text",
+      "x": 70,
+      "y": 18120,
+      "width": 350,
+      "height": 250,
+      "text": "## Forward from Windows with OpenSSH, Plink or Netsh\n\nThe pivot is Windows and available networking utilities constrain the route",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-forward:discover",
+      "type": "text",
+      "x": 570,
+      "y": 18080,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nGet-Command ssh,plink,netsh -ErrorAction SilentlyContinue\nGet-Service iphlpsvc\nTest-NetConnection TARGET -Port PORT\n```"
+    },
+    {
+      "id": "method:windows-forward:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 18060,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nWindows has a carrier/destination candidate; Netsh administrative state and user-space SSH requirements differ.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-forward:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 18306,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nChoose the supported tool, verify listener/bind/firewall and correct connection direction; check its exact rights.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-forward:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 18010,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe selected implementation carries the application and cleanup state is known: use it.\n\n**Verify:** Verify actual listener, route and application, then remove created portproxy/firewall state as appropriate.\n\n[[notes/pivoting.md#windows-forward|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-forward:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 18351,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nNo admin rights for portproxy rules out that Netsh route, not a valid user-space SSH option.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-forward:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 18572,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA running IP Helper service alone does not establish permission or a working forward.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-forward:action",
+      "type": "text",
+      "x": 3130,
+      "y": 18010,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nwhere ssh.exe\nssh.exe -V\nssh.exe -N -R 127.0.0.1:1080 KALI_USER@LHOST -p KALI_SSH_PORT -o ExitOnForwardFailure=yes -o ServerAliveInterval=30\n```\n\n[[notes/pivoting.md#windows-forward|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-forward:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 18400,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-forward:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 18731,
+      "width": 620,
+      "height": 252,
+      "text": "### Forward a selected service through an SSH client-side listener\n\n**When:** SSH reaches a server that can access the needed internal service\n\n**Still required:** Accepted SSH identity and forwarding policy; local listener availability and SSH-server-to-destination route\n\n**Forward a selected service through an SSH client-side listener — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-forward:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 19038,
+      "width": 620,
+      "height": 276,
+      "text": "### Build the callback and delivery routes separately from the attack route\n\n**When:** A pivoted exploit reaches its target but its shell/download cannot return\n\n**Still required:** Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward\n\n**Build the callback and delivery routes separately from the attack route — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-reverse:start",
+      "type": "text",
+      "x": 70,
+      "y": 19669,
+      "width": 350,
+      "height": 250,
+      "text": "## Use a reverse Chisel SOCKS or fixed TCP tunnel\n\nA pivot can make outbound HTTP/WebSocket connections to the tunnel server",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-reverse:discover",
+      "type": "text",
+      "x": 570,
+      "y": 19629,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nchisel --version\nchisel server --help\nchisel client --help\n```"
+    },
+    {
+      "id": "method:chisel-reverse:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 19609,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe outbound carrier and server-side listener requirement identify a reverse-tunnel topology.",
+      "color": "6"
+    },
+    {
+      "id": "method:chisel-reverse:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 19855,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify server reverse mode, fingerprint, carrier upgrade, listener bind and pivot-to-destination compatibility.",
+      "color": "2"
+    },
+    {
+      "id": "method:chisel-reverse:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 19559,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe carrier and intended service handshake succeed: choose the matching reverse remote.\n\n**Verify:** Verify tunnel establishment and end-to-end application behavior; a connected carrier alone is insufficient.\n\n[[notes/pivoting.md#chisel-reverse|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:chisel-reverse:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 19900,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe carrier/upgrade is blocked with no permitted route: reject this tunnel path.",
+      "color": "1"
+    },
+    {
+      "id": "method:chisel-reverse:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 20121,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA connected carrier without application response leaves listener/exit/client behavior unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:chisel-reverse:action",
+      "type": "text",
+      "x": 3130,
+      "y": 19559,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\nchisel server --reverse --port CHISEL_PORT\n```\n\n[[notes/pivoting.md#chisel-reverse|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:chisel-reverse:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 19877,
+      "width": 620,
+      "height": 252,
+      "text": "### Use ProxyChains, native SOCKS clients and SSH jump paths appropriately\n\n**When:** A SOCKS listener or an SSH jump host is already available\n\n**Still required:** Client/proxy transport compatibility, correct proxy configuration and controlled name resolution\n\n**Use ProxyChains, native SOCKS clients and SSH jump paths appropriately — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-reverse:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 20184,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-reverse:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 20515,
+      "width": 620,
+      "height": 252,
+      "text": "### Preserve DNS, Kerberos names and time across a pivot\n\n**When:** An IP connection works while hostname/Kerberos access fails\n\n**Still required:** Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-forward:start",
+      "type": "text",
+      "x": 70,
+      "y": 21122,
+      "width": 350,
+      "height": 250,
+      "text": "## Use forward Chisel SOCKS and version-supported UDP routing\n\nThe assessment-side client can reach a pivot-side tunnel server",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-forward:discover",
+      "type": "text",
+      "x": 570,
+      "y": 21082,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nchisel --version\nchisel client --help\n```"
+    },
+    {
+      "id": "method:chisel-forward:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 21062,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nForward placement and actual client transport determine the mode; a UDP-capable tunnel binary does not make every wrapper UDP-capable.",
+      "color": "6"
+    },
+    {
+      "id": "method:chisel-forward:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 21308,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify compatible peers, server SOCKS setting, listener route and the real application's UDP/TCP support.",
+      "color": "2"
+    },
+    {
+      "id": "method:chisel-forward:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 21012,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe intended application's required transport works end to end: use that configured mode.\n\n**Verify:** Verify the actual required transport end to end, with correct listener/exit placement.\n\n[[notes/pivoting.md#chisel-forward|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:chisel-forward:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 21353,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nA TCP-only wrapper is used for a UDP-only operation: reject that combination.",
+      "color": "1"
+    },
+    {
+      "id": "method:chisel-forward:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 21550,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nTCP success without UDP-aware client/firewall evidence leaves UDP unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:chisel-forward:action",
+      "type": "text",
+      "x": 3130,
+      "y": 21012,
+      "width": 900,
+      "height": 348,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\n# Pivot/server side\nchisel server --socks5 --port CHISEL_PORT\n\n# Kali/client side\nchisel client --fingerprint 'SERVER_FINGERPRINT' PIVOT:CHISEL_PORT \\\n  127.0.0.1:1080:socks\n```\n\n[[notes/pivoting.md#chisel-forward|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:chisel-forward:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 21450,
+      "width": 620,
+      "height": 276,
+      "text": "### Route a selected internal subnet through Ligolo-ng\n\n**When:** Several protocols/subnets require a route-style interface through an agent\n\n**Still required:** Compatible proxy/agent, permitted local interface/route management, reachable carrier and selected assigned subnet\n\n**Route a selected internal subnet through Ligolo-ng — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-forward:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 21781,
+      "width": 620,
+      "height": 252,
+      "text": "### Use ProxyChains, native SOCKS clients and SSH jump paths appropriately\n\n**When:** A SOCKS listener or an SSH jump host is already available\n\n**Still required:** Client/proxy transport compatibility, correct proxy configuration and controlled name resolution\n\n**Use ProxyChains, native SOCKS clients and SSH jump paths appropriately — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:chisel-forward:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 22088,
+      "width": 620,
+      "height": 252,
+      "text": "### Preserve DNS, Kerberos names and time across a pivot\n\n**When:** An IP connection works while hostname/Kerberos access fails\n\n**Still required:** Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ligolo-route:start",
+      "type": "text",
+      "x": 70,
+      "y": 22695,
+      "width": 350,
+      "height": 250,
+      "text": "## Route a selected internal subnet through Ligolo-ng\n\nSeveral protocols/subnets require a route-style interface through an agent",
+      "color": "5"
+    },
+    {
+      "id": "method:ligolo-route:discover",
+      "type": "text",
+      "x": 570,
+      "y": 22655,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nip route\nip link\n./proxy -h\n```"
+    },
+    {
+      "id": "method:ligolo-route:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 22635,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA selected internal network and proxy-incompatible client suggest a route-style agent, subject to its own transport behavior.",
+      "color": "6"
+    },
+    {
+      "id": "method:ligolo-route:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 22881,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify compatible proxy/agent, local privileges, carrier, selected route/interface, DNS and any separate reverse listener.",
+      "color": "2"
+    },
+    {
+      "id": "method:ligolo-route:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 22585,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe routed application test works on the selected subnet: choose the agent route.\n\n**Verify:** Verify route/interface ownership, destination application and each necessary reverse listener.\n\n[[notes/pivoting.md#ligolo-route|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ligolo-route:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 22926,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA conflicting/unmodifiable route prevents this design: reject it or select an approved alternate subnet mapping.",
+      "color": "1"
+    },
+    {
+      "id": "method:ligolo-route:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 23147,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nAgent connection alone does not prove interface, route or destination reachability.",
+      "color": "2"
+    },
+    {
+      "id": "method:ligolo-route:action",
+      "type": "text",
+      "x": 3130,
+      "y": 22585,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\n./proxy -selfcert -laddr 0.0.0.0:LIGOLO_PORT\n```\n\n[[notes/pivoting.md#ligolo-route|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:ligolo-route:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 22903,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:ligolo-route:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 23234,
+      "width": 620,
+      "height": 252,
+      "text": "### Preserve DNS, Kerberos names and time across a pivot\n\n**When:** An IP connection works while hostname/Kerberos access fails\n\n**Still required:** Reachable correct resolver/KDC path, matching target SPN/hostname, realm configuration and acceptable time\n\n**Preserve DNS, Kerberos names and time across a pivot — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:ligolo-route:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 23541,
+      "width": 620,
+      "height": 276,
+      "text": "### Build the callback and delivery routes separately from the attack route\n\n**When:** A pivoted exploit reaches its target but its shell/download cannot return\n\n**Still required:** Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward\n\n**Build the callback and delivery routes separately from the attack route — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns:start",
+      "type": "text",
+      "x": 70,
+      "y": 24172,
+      "width": 350,
+      "height": 250,
+      "text": "## Preserve DNS, Kerberos names and time across a pivot\n\nAn IP connection works while hostname/Kerberos access fails",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns:discover",
+      "type": "text",
+      "x": 570,
+      "y": 24132,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\ngetent hosts TARGET_HOST\nklist\ndate -u\n```"
+    },
+    {
+      "id": "method:pivot-dns:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 24112,
+      "width": 580,
+      "height": 132,
+      "text": "### What the output establishes\n\nThe route and credential may be valid while name/SPN context is wrong.",
+      "color": "6"
+    },
+    {
+      "id": "method:pivot-dns:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 24334,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck intended DNS source/result, realm/service name, time and KDC/service routes separately.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-dns:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 24062,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nCorrect naming/time and routes produce accepted service authentication: use that identity-preserving path.\n\n**Verify:** Verify resolved destination, ticket/server principal and actual authenticated application action.\n\n[[notes/pivoting.md#pivot-dns|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-dns:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 24403,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nThe ticket names another service/host: reject it for this operation.",
+      "color": "1"
+    },
+    {
+      "id": "method:pivot-dns:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 24600,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nSuccessful IP transport without named service evidence does not settle Kerberos.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-dns:action",
+      "type": "text",
+      "x": 3130,
+      "y": 24062,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ngetent hosts INTERNAL_FQDN\ncurl --socks5-hostname 127.0.0.1:1080 http://INTERNAL_FQDN:PORT/\nklist\nKRB5_TRACE=/dev/stderr kvno cifs/TARGET_HOST\n```\n\n[[notes/pivoting.md#pivot-dns|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-dns:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 24452,
+      "width": 620,
+      "height": 276,
+      "text": "### Inventory, convert and import tickets in the correct logon context\n\n**When:** A valid ticket/cache or a long-term key that can request a TGT\n\n**Still required:** Matching client/realm/service, valid lifetime, compatible format and available KDC/service routes; ticket import affects a specific context\n\n[[tracks/09 Active Directory.canvas|Inventory, convert and import tickets in the correct logon context → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 24783,
+      "width": 620,
+      "height": 276,
+      "text": "### Select password, NT hash, key-to-ticket or ticket authentication\n\n**When:** A password, actual NT hash, AES/NT long-term key or ticket is available\n\n**Still required:** Credential type accepted by the chosen protocol/client, correct identity/domain, naming/time and destination authorization\n\n[[tracks/09 Active Directory.canvas|Select password, NT hash, key-to-ticket or ticket authentication → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 25114,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish domain identity, DC, DNS, time and route\n\n**When:** Domain credentials or a domain-joined foothold\n\n**Still required:** Correct realm/domain and account qualification; reachable DC/services, usable DNS and acceptable clock skew\n\n[[tracks/09 Active Directory.canvas|Establish domain identity, DC, DNS, time and route → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 25421,
+      "width": 620,
+      "height": 276,
+      "text": "### Conditional: tunnel through controlled DNS infrastructure\n\n**When:** DNS is an available carrier while simpler permitted routes are unavailable\n\n**Still required:** Controlled/delegated domain or supported direct setup, reachable DNS path, compatible server/client and allowed execution\n\n**Conditional: tunnel through controlled DNS infrastructure — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-callback:start",
+      "type": "text",
+      "x": 70,
+      "y": 26052,
+      "width": 350,
+      "height": 250,
+      "text": "## Build the callback and delivery routes separately from the attack route\n\nA pivoted exploit reaches its target but its shell/download cannot return",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-callback:discover",
+      "type": "text",
+      "x": 570,
+      "y": 26012,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nss -lnt\nip route get TARGET\n```"
+    },
+    {
+      "id": "method:pivot-callback:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 25992,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA working initiating proxy path does not route a target's new connection back to that private interface.",
+      "color": "6"
+    },
+    {
+      "id": "method:pivot-callback:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 26238,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck the target's route, listener bind, chosen reverse forward/agent listener and final handler.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-callback:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 25942,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe target-initiated leg reaches the intended receiver and effect is verified: use the return route.\n\n**Verify:** Verify the target-initiated connection from its source context and the final session or downloaded bytes.\n\n[[notes/pivoting.md#pivot-callback|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-callback:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 26283,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe target cannot reach the advertised address and no selected forward provides it: reject that callback address/design.",
+      "color": "1"
+    },
+    {
+      "id": "method:pivot-callback:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 26504,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nNo packets without execution proof leaves trigger and route separately unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-callback:action",
+      "type": "text",
+      "x": 3130,
+      "y": 25942,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\nKali -> tunnel -> internal service       # access path\ninternal target -> pivot -> Kali listener # callback path\n```\n\n[[notes/pivoting.md#pivot-callback|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-callback:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 26284,
+      "width": 620,
+      "height": 276,
+      "text": "### Diagnose connection direction, listener and session failures in order\n\n**When:** Command execution or payload delivery exists but the expected usable channel does not\n\n**Still required:** A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence\n\n[[tracks/11 Execution Troubleshooting.canvas|Diagnose connection direction, listener and session failures in order → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-callback:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 26615,
+      "width": 620,
+      "height": 252,
+      "text": "### Connect a Linux reverse shell through an available interpreter\n\n**When:** Linux command execution exists but an interactive channel is needed\n\n**Still required:** A confirmed Bash/Python/PHP/Netcat implementation, correct parser wrapping, target-to-listener route and compatible listener\n\n[[tracks/06 Shells and Transfers.canvas|Connect a Linux reverse shell through an available interpreter → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-callback:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 26922,
+      "width": 620,
+      "height": 252,
+      "text": "### Transfer over HTTP using Linux or Windows clients\n\n**When:** A tool/artifact must reach a target that can make an HTTP request\n\n**Still required:** Correct server bind and served directory; target-to-server route, available downloader and writable destination\n\n[[tracks/06 Shells and Transfers.canvas|Transfer over HTTP using Linux or Windows clients → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-multihop:start",
+      "type": "text",
+      "x": 70,
+      "y": 27529,
+      "width": 350,
+      "height": 250,
+      "text": "## Compose multiple pivots and validate every connection leg\n\nA second internal network is reachable only from a later foothold",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-multihop:discover",
+      "type": "text",
+      "x": 570,
+      "y": 27489,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nhostname\nip route\nss -lnt\n```"
+    },
+    {
+      "id": "method:pivot-multihop:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 27469,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe break lies beyond a known working leg; a connected second carrier is not a complete final route.",
+      "color": "6"
+    },
+    {
+      "id": "method:pivot-multihop:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 27715,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nTest each listener-to-destination leg, names and return traffic independently from the correct source.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-multihop:checks",
+      "type": "text",
+      "x": 570,
+      "y": 27777,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```bash\nip route\nss -lnt\n```"
+    },
+    {
+      "id": "method:pivot-multihop:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 27419,
+      "width": 620,
+      "height": 252,
+      "text": "### Condition confirmed\n\nEvery required application leg is verified: use the composed route.\n\n**Verify:** Validate each hop with an application-aware test before chaining the final client.\n\n[[notes/pivoting.md#pivot-multihop|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-multihop:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 27736,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOne required hop cannot reach the destination under the selected topology: reject that composition.",
+      "color": "1"
+    },
+    {
+      "id": "method:pivot-multihop:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 27957,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA final timeout without per-leg tests cannot identify which hop failed.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-multihop:action",
+      "type": "text",
+      "x": 3130,
+      "y": 27419,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\nKali -> tunnel A -> PIVOT_A -> tunnel B -> PIVOT_B -> INTERNAL_HOST:PORT\n```\n\n[[notes/pivoting.md#pivot-multihop|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-multihop:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 27737,
+      "width": 620,
+      "height": 252,
+      "text": "### Discover pivot interfaces, routes and internal service context\n\n**When:** A foothold exposes an interface/subnet or a loopback-only service\n\n**Still required:** A usable pivot process/identity and explicit scope; both forward and return directions must be understood\n\n**Discover pivot interfaces, routes and internal service context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-multihop:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 28044,
+      "width": 620,
+      "height": 276,
+      "text": "### Build the callback and delivery routes separately from the attack route\n\n**When:** A pivoted exploit reaches its target but its shell/download cannot return\n\n**Still required:** Target-to-listener/download-server path, correct advertised address and compatible reverse listener/forward\n\n**Build the callback and delivery routes separately from the attack route — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-multihop:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 28375,
+      "width": 620,
+      "height": 276,
+      "text": "### Match route, destination service and effective authorization\n\n**When:** A credential appears valid but the destination's usable access is unknown\n\n**Still required:** Real source-to-service route, correct identity context and protocol-specific execution/logon rights\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:start",
+      "type": "text",
+      "x": 70,
+      "y": 29006,
+      "width": 350,
+      "height": 250,
+      "text": "## Conditional: tunnel through controlled DNS infrastructure\n\nDNS is an available carrier while simpler permitted routes are unavailable",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:discover",
+      "type": "text",
+      "x": 570,
+      "y": 28966,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\ndig DOMAIN NS\n```"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 28946,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nDelegation is an infrastructure prerequisite; an NS record alone does not prove ownership or an operational tunnel.",
+      "color": "6"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 29192,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nConfirm authorized control, resolver path, compatible client/server/runtime and supported intended operation.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 28896,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe controlled carrier and required application operation work: use this constrained fallback.\n\n**Verify:** Verify the actual carrier and intended forwarded action; retain delegation and connectivity prerequisites.\n\n[[notes/pivoting.md#pivot-dns-tunnel|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 29237,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nNo approved domain/control or required DNS path exists: reject this design.",
+      "color": "1"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 29434,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nAn isolated DNS callback does not establish a stable tunnel or full route.",
+      "color": "2"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:action",
+      "type": "text",
+      "x": 3130,
+      "y": 28896,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ndnscat2-server --secret=SHARED_SECRET TUNNEL_DOMAIN\n```\n\n[[notes/pivoting.md#pivot-dns-tunnel|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 29214,
+      "width": 620,
+      "height": 252,
+      "text": "### Relay a single TCP service through a fixed forward\n\n**When:** One reachable pivot can connect to one internal TCP destination\n\n**Still required:** A bindable pivot listener, source-to-listener access and pivot-to-destination connectivity\n\n**Relay a single TCP service through a fixed forward — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 29521,
+      "width": 620,
+      "height": 252,
+      "text": "### Discover pivot interfaces, routes and internal service context\n\n**When:** A foothold exposes an interface/subnet or a loopback-only service\n\n**Still required:** A usable pivot process/identity and explicit scope; both forward and return directions must be understood\n\n**Discover pivot interfaces, routes and internal service context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 29828,
+      "width": 620,
+      "height": 276,
+      "text": "### Maintain state and select the next evidence-producing test\n\n**When:** Several hosts, identities, routes or competing hypotheses need coordination\n\n**Still required:** Explicit scope/objective and a record of observations, unknowns and available capabilities\n\n[[tracks/12 Evidence and Reporting.canvas|Maintain state and select the next evidence-producing test → 12 Evidence and Reporting]]",
+      "color": "5"
+    },
+    {
+      "id": "track-title",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 2300,
+      "height": 270,
+      "color": "5",
+      "text": "# 10 Pivoting\n\nAll workflows, commands, result interpretations and method connections for this track are on this canvas. Embedded notes contain the complete procedures and variants.\n\n[[START.canvas|Choose another track]]\n\nCross-track results link directly to the receiving track."
+    }
+  ],
+  "edges": [
+    {
+      "id": "flow:pivoting:check-0--check-0-finding-0",
+      "fromNode": "flow:pivoting:check-0",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-0-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "One internal TCP endpoint is reachable from the pivot"
+    },
+    {
+      "id": "flow:pivoting:check-0--check-0-finding-1",
+      "fromNode": "flow:pivoting:check-0",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-0-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several internal services need proxy/routed access"
+    },
+    {
+      "id": "flow:pivoting:check-0--check-0-fallback",
+      "fromNode": "flow:pivoting:check-0",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-0-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The pivot cannot reach the destination: fix that leg before adding a tunnel."
+    },
+    {
+      "id": "flow:pivoting:check-0--check-1",
+      "fromNode": "flow:pivoting:check-0",
+      "fromSide": "bottom",
+      "toNode": "flow:pivoting:check-1",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:pivoting:check-1--check-1-finding-0",
+      "fromNode": "flow:pivoting:check-1",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-1-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The forwarded service responds through the listener"
+    },
+    {
+      "id": "flow:pivoting:check-1--check-1-finding-1",
+      "fromNode": "flow:pivoting:check-1",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-1-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Only the pivot can initiate the tunnel connection"
+    },
+    {
+      "id": "flow:pivoting:check-1--check-1-fallback",
+      "fromNode": "flow:pivoting:check-1",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-1-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The listener exists but the app fails: test destination reachability and DNS through the chosen path."
+    },
+    {
+      "id": "flow:pivoting:check-1--check-2",
+      "fromNode": "flow:pivoting:check-1",
+      "fromSide": "bottom",
+      "toNode": "flow:pivoting:check-2",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:pivoting:check-2--check-2-finding-0",
+      "fromNode": "flow:pivoting:check-2",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-2-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The selected subnet is routed and the destination responds"
+    },
+    {
+      "id": "flow:pivoting:check-2--check-2-finding-1",
+      "fromNode": "flow:pivoting:check-2",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-2-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Delivery works but the payload callback fails"
+    },
+    {
+      "id": "flow:pivoting:check-2--check-2-fallback",
+      "fromNode": "flow:pivoting:check-2",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-2-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Route/session setup fails: inspect the route, interface privileges and each connection leg."
+    },
+    {
+      "id": "flow:pivoting:home--check-0",
+      "fromNode": "flow:pivoting:home",
+      "fromSide": "right",
+      "toNode": "flow:pivoting:check-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "start with current access"
+    },
+    {
+      "id": "method:pivot-state:start--discover",
+      "fromNode": "method:pivot-state:start",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:pivot-state:discover--interpret",
+      "fromNode": "method:pivot-state:discover",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:pivot-state:interpret--validate",
+      "fromNode": "method:pivot-state:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:pivot-state:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:pivot-state:validate--enabled",
+      "fromNode": "method:pivot-state:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:pivot-state:validate--ruledout",
+      "fromNode": "method:pivot-state:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:pivot-state:validate--unknown",
+      "fromNode": "method:pivot-state:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:pivot-state:enabled--action",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-0",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "One reachable pivot can connect to one internal TCP destination"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-1",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SSH reaches a server that can access the needed internal service"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-2",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A pivot can make outbound HTTP/WebSocket connections to the tunnel server"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-3",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several protocols/subnets require a route-style interface through an agent"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-4",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-4",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Only the pivot can initiate SSH, but several client-selected internal destinations are needed"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-5",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-5",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Multiple internal TCP destinations need transparent application access over SSH"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-6",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-6",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The pivot is Windows and available networking utilities constrain the route"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-7",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-7",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The assessment-side client can reach a pivot-side tunnel server"
+    },
+    {
+      "id": "method:pivot-state:enabled--next-8",
+      "fromNode": "method:pivot-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:next-8",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A second internal network is reachable only from a later foothold"
+    },
+    {
+      "id": "method:fixed-forward:start--discover",
+      "fromNode": "method:fixed-forward:start",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:fixed-forward:discover--interpret",
+      "fromNode": "method:fixed-forward:discover",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:fixed-forward:interpret--validate",
+      "fromNode": "method:fixed-forward:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:fixed-forward:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:fixed-forward:validate--checks",
+      "fromNode": "method:fixed-forward:validate",
+      "fromSide": "left",
+      "toNode": "method:fixed-forward:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:fixed-forward:validate--enabled",
+      "fromNode": "method:fixed-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:fixed-forward:validate--ruledout",
+      "fromNode": "method:fixed-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:fixed-forward:validate--unknown",
+      "fromNode": "method:fixed-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:fixed-forward:enabled--action",
+      "fromNode": "method:fixed-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:fixed-forward:enabled--next-0",
+      "fromNode": "method:fixed-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SQL Server credentials or a Windows identity accepted by the database"
+    },
+    {
+      "id": "method:fixed-forward:enabled--next-1",
+      "fromNode": "method:fixed-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A MySQL-compatible service and valid application/database credentials"
+    },
+    {
+      "id": "method:fixed-forward:enabled--next-2",
+      "fromNode": "method:fixed-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:ssh-local:start--discover",
+      "fromNode": "method:ssh-local:start",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:ssh-local:discover--interpret",
+      "fromNode": "method:ssh-local:discover",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:ssh-local:interpret--validate",
+      "fromNode": "method:ssh-local:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:ssh-local:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:ssh-local:validate--enabled",
+      "fromNode": "method:ssh-local:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:ssh-local:validate--ruledout",
+      "fromNode": "method:ssh-local:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:ssh-local:validate--unknown",
+      "fromNode": "method:ssh-local:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:ssh-local:enabled--action",
+      "fromNode": "method:ssh-local:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:ssh-local:enabled--next-0",
+      "fromNode": "method:ssh-local:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A MySQL-compatible service and valid application/database credentials"
+    },
+    {
+      "id": "method:ssh-local:enabled--next-1",
+      "fromNode": "method:ssh-local:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SQL Server credentials or a Windows identity accepted by the database"
+    },
+    {
+      "id": "method:ssh-local:enabled--next-2",
+      "fromNode": "method:ssh-local:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An IP connection works while hostname/Kerberos access fails"
+    },
+    {
+      "id": "method:ssh-dynamic:start--discover",
+      "fromNode": "method:ssh-dynamic:start",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:ssh-dynamic:discover--interpret",
+      "fromNode": "method:ssh-dynamic:discover",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:ssh-dynamic:interpret--validate",
+      "fromNode": "method:ssh-dynamic:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:ssh-dynamic:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:ssh-dynamic:validate--enabled",
+      "fromNode": "method:ssh-dynamic:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:ssh-dynamic:validate--ruledout",
+      "fromNode": "method:ssh-dynamic:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:ssh-dynamic:validate--unknown",
+      "fromNode": "method:ssh-dynamic:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:ssh-dynamic:enabled--action",
+      "fromNode": "method:ssh-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:ssh-dynamic:enabled--next-0",
+      "fromNode": "method:ssh-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A SOCKS listener or an SSH jump host is already available"
+    },
+    {
+      "id": "method:ssh-dynamic:enabled--next-1",
+      "fromNode": "method:ssh-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An assigned host needs an initial service queue or full TCP coverage"
+    },
+    {
+      "id": "method:ssh-dynamic:enabled--next-2",
+      "fromNode": "method:ssh-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An IP connection works while hostname/Kerberos access fails"
+    },
+    {
+      "id": "method:ssh-remote:start--discover",
+      "fromNode": "method:ssh-remote:start",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:ssh-remote:discover--interpret",
+      "fromNode": "method:ssh-remote:discover",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:ssh-remote:interpret--validate",
+      "fromNode": "method:ssh-remote:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:ssh-remote:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:ssh-remote:validate--checks",
+      "fromNode": "method:ssh-remote:validate",
+      "fromSide": "left",
+      "toNode": "method:ssh-remote:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:ssh-remote:validate--enabled",
+      "fromNode": "method:ssh-remote:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:ssh-remote:validate--ruledout",
+      "fromNode": "method:ssh-remote:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:ssh-remote:validate--unknown",
+      "fromNode": "method:ssh-remote:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:ssh-remote:enabled--action",
+      "fromNode": "method:ssh-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:ssh-remote:enabled--next-0",
+      "fromNode": "method:ssh-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:ssh-remote:enabled--next-1",
+      "fromNode": "method:ssh-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SMB/RPC endpoints, domain clues or new credentials"
+    },
+    {
+      "id": "method:ssh-remote:enabled--next-2",
+      "fromNode": "method:ssh-remote:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A pivoted exploit reaches its target but its shell/download cannot return"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:start--discover",
+      "fromNode": "method:ssh-remote-dynamic:start",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:discover--interpret",
+      "fromNode": "method:ssh-remote-dynamic:discover",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:interpret--validate",
+      "fromNode": "method:ssh-remote-dynamic:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:ssh-remote-dynamic:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:validate--enabled",
+      "fromNode": "method:ssh-remote-dynamic:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:validate--ruledout",
+      "fromNode": "method:ssh-remote-dynamic:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:validate--unknown",
+      "fromNode": "method:ssh-remote-dynamic:validate",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:enabled--action",
+      "fromNode": "method:ssh-remote-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:enabled--next-0",
+      "fromNode": "method:ssh-remote-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A SOCKS listener or an SSH jump host is already available"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:enabled--next-1",
+      "fromNode": "method:ssh-remote-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The useful side can initiate SSH outward but cannot accept an inbound management connection"
+    },
+    {
+      "id": "method:ssh-remote-dynamic:enabled--next-2",
+      "fromNode": "method:ssh-remote-dynamic:enabled",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An IP connection works while hostname/Kerberos access fails"
+    },
+    {
+      "id": "method:proxy-clients:start--discover",
+      "fromNode": "method:proxy-clients:start",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:proxy-clients:discover--interpret",
+      "fromNode": "method:proxy-clients:discover",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:proxy-clients:interpret--validate",
+      "fromNode": "method:proxy-clients:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:proxy-clients:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:proxy-clients:validate--enabled",
+      "fromNode": "method:proxy-clients:validate",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:proxy-clients:validate--ruledout",
+      "fromNode": "method:proxy-clients:validate",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:proxy-clients:validate--unknown",
+      "fromNode": "method:proxy-clients:validate",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:proxy-clients:enabled--action",
+      "fromNode": "method:proxy-clients:enabled",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:proxy-clients:enabled--next-0",
+      "fromNode": "method:proxy-clients:enabled",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An assigned host needs an initial service queue or full TCP coverage"
+    },
+    {
+      "id": "method:proxy-clients:enabled--next-1",
+      "fromNode": "method:proxy-clients:enabled",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:proxy-clients:enabled--next-2",
+      "fromNode": "method:proxy-clients:enabled",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several protocols/subnets require a route-style interface through an agent"
+    },
+    {
+      "id": "method:sshuttle-route:start--discover",
+      "fromNode": "method:sshuttle-route:start",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:sshuttle-route:discover--interpret",
+      "fromNode": "method:sshuttle-route:discover",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:sshuttle-route:interpret--validate",
+      "fromNode": "method:sshuttle-route:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:sshuttle-route:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:sshuttle-route:validate--checks",
+      "fromNode": "method:sshuttle-route:validate",
+      "fromSide": "left",
+      "toNode": "method:sshuttle-route:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:sshuttle-route:validate--enabled",
+      "fromNode": "method:sshuttle-route:validate",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:sshuttle-route:validate--ruledout",
+      "fromNode": "method:sshuttle-route:validate",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:sshuttle-route:validate--unknown",
+      "fromNode": "method:sshuttle-route:validate",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:sshuttle-route:enabled--action",
+      "fromNode": "method:sshuttle-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:sshuttle-route:enabled--next-0",
+      "fromNode": "method:sshuttle-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An IP connection works while hostname/Kerberos access fails"
+    },
+    {
+      "id": "method:sshuttle-route:enabled--next-1",
+      "fromNode": "method:sshuttle-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:sshuttle-route:enabled--next-2",
+      "fromNode": "method:sshuttle-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several internal TCP services need access through one SSH server"
+    },
+    {
+      "id": "method:windows-forward:start--discover",
+      "fromNode": "method:windows-forward:start",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-forward:discover--interpret",
+      "fromNode": "method:windows-forward:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-forward:interpret--validate",
+      "fromNode": "method:windows-forward:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-forward:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-forward:validate--enabled",
+      "fromNode": "method:windows-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-forward:validate--ruledout",
+      "fromNode": "method:windows-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-forward:validate--unknown",
+      "fromNode": "method:windows-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-forward:enabled--action",
+      "fromNode": "method:windows-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-forward:enabled--next-0",
+      "fromNode": "method:windows-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:windows-forward:enabled--next-1",
+      "fromNode": "method:windows-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SSH reaches a server that can access the needed internal service"
+    },
+    {
+      "id": "method:windows-forward:enabled--next-2",
+      "fromNode": "method:windows-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A pivoted exploit reaches its target but its shell/download cannot return"
+    },
+    {
+      "id": "method:chisel-reverse:start--discover",
+      "fromNode": "method:chisel-reverse:start",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:chisel-reverse:discover--interpret",
+      "fromNode": "method:chisel-reverse:discover",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:chisel-reverse:interpret--validate",
+      "fromNode": "method:chisel-reverse:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:chisel-reverse:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:chisel-reverse:validate--enabled",
+      "fromNode": "method:chisel-reverse:validate",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:chisel-reverse:validate--ruledout",
+      "fromNode": "method:chisel-reverse:validate",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:chisel-reverse:validate--unknown",
+      "fromNode": "method:chisel-reverse:validate",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:chisel-reverse:enabled--action",
+      "fromNode": "method:chisel-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:chisel-reverse:enabled--next-0",
+      "fromNode": "method:chisel-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A SOCKS listener or an SSH jump host is already available"
+    },
+    {
+      "id": "method:chisel-reverse:enabled--next-1",
+      "fromNode": "method:chisel-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:chisel-reverse:enabled--next-2",
+      "fromNode": "method:chisel-reverse:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An IP connection works while hostname/Kerberos access fails"
+    },
+    {
+      "id": "method:chisel-forward:start--discover",
+      "fromNode": "method:chisel-forward:start",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:chisel-forward:discover--interpret",
+      "fromNode": "method:chisel-forward:discover",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:chisel-forward:interpret--validate",
+      "fromNode": "method:chisel-forward:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:chisel-forward:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:chisel-forward:validate--enabled",
+      "fromNode": "method:chisel-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:chisel-forward:validate--ruledout",
+      "fromNode": "method:chisel-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:chisel-forward:validate--unknown",
+      "fromNode": "method:chisel-forward:validate",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:chisel-forward:enabled--action",
+      "fromNode": "method:chisel-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:chisel-forward:enabled--next-0",
+      "fromNode": "method:chisel-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several protocols/subnets require a route-style interface through an agent"
+    },
+    {
+      "id": "method:chisel-forward:enabled--next-1",
+      "fromNode": "method:chisel-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A SOCKS listener or an SSH jump host is already available"
+    },
+    {
+      "id": "method:chisel-forward:enabled--next-2",
+      "fromNode": "method:chisel-forward:enabled",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An IP connection works while hostname/Kerberos access fails"
+    },
+    {
+      "id": "method:ligolo-route:start--discover",
+      "fromNode": "method:ligolo-route:start",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:ligolo-route:discover--interpret",
+      "fromNode": "method:ligolo-route:discover",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:ligolo-route:interpret--validate",
+      "fromNode": "method:ligolo-route:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:ligolo-route:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:ligolo-route:validate--enabled",
+      "fromNode": "method:ligolo-route:validate",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:ligolo-route:validate--ruledout",
+      "fromNode": "method:ligolo-route:validate",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:ligolo-route:validate--unknown",
+      "fromNode": "method:ligolo-route:validate",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:ligolo-route:enabled--action",
+      "fromNode": "method:ligolo-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:ligolo-route:enabled--next-0",
+      "fromNode": "method:ligolo-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:ligolo-route:enabled--next-1",
+      "fromNode": "method:ligolo-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An IP connection works while hostname/Kerberos access fails"
+    },
+    {
+      "id": "method:ligolo-route:enabled--next-2",
+      "fromNode": "method:ligolo-route:enabled",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A pivoted exploit reaches its target but its shell/download cannot return"
+    },
+    {
+      "id": "method:pivot-dns:start--discover",
+      "fromNode": "method:pivot-dns:start",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:pivot-dns:discover--interpret",
+      "fromNode": "method:pivot-dns:discover",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:pivot-dns:interpret--validate",
+      "fromNode": "method:pivot-dns:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:pivot-dns:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:pivot-dns:validate--enabled",
+      "fromNode": "method:pivot-dns:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:pivot-dns:validate--ruledout",
+      "fromNode": "method:pivot-dns:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:pivot-dns:validate--unknown",
+      "fromNode": "method:pivot-dns:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:pivot-dns:enabled--action",
+      "fromNode": "method:pivot-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:pivot-dns:enabled--next-0",
+      "fromNode": "method:pivot-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A valid ticket/cache or a long-term key that can request a TGT"
+    },
+    {
+      "id": "method:pivot-dns:enabled--next-1",
+      "fromNode": "method:pivot-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password, actual NT hash, AES/NT long-term key or ticket is available"
+    },
+    {
+      "id": "method:pivot-dns:enabled--next-2",
+      "fromNode": "method:pivot-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Domain credentials or a domain-joined foothold"
+    },
+    {
+      "id": "method:pivot-dns:enabled--next-3",
+      "fromNode": "method:pivot-dns:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "DNS is an available carrier while simpler permitted routes are unavailable"
+    },
+    {
+      "id": "method:pivot-callback:start--discover",
+      "fromNode": "method:pivot-callback:start",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:pivot-callback:discover--interpret",
+      "fromNode": "method:pivot-callback:discover",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:pivot-callback:interpret--validate",
+      "fromNode": "method:pivot-callback:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:pivot-callback:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:pivot-callback:validate--enabled",
+      "fromNode": "method:pivot-callback:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:pivot-callback:validate--ruledout",
+      "fromNode": "method:pivot-callback:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:pivot-callback:validate--unknown",
+      "fromNode": "method:pivot-callback:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:pivot-callback:enabled--action",
+      "fromNode": "method:pivot-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:pivot-callback:enabled--next-0",
+      "fromNode": "method:pivot-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Command execution or payload delivery exists but the expected usable channel does not"
+    },
+    {
+      "id": "method:pivot-callback:enabled--next-1",
+      "fromNode": "method:pivot-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Linux command execution exists but an interactive channel is needed"
+    },
+    {
+      "id": "method:pivot-callback:enabled--next-2",
+      "fromNode": "method:pivot-callback:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A tool/artifact must reach a target that can make an HTTP request"
+    },
+    {
+      "id": "method:pivot-multihop:start--discover",
+      "fromNode": "method:pivot-multihop:start",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:pivot-multihop:discover--interpret",
+      "fromNode": "method:pivot-multihop:discover",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:pivot-multihop:interpret--validate",
+      "fromNode": "method:pivot-multihop:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:pivot-multihop:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:pivot-multihop:validate--checks",
+      "fromNode": "method:pivot-multihop:validate",
+      "fromSide": "left",
+      "toNode": "method:pivot-multihop:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:pivot-multihop:validate--enabled",
+      "fromNode": "method:pivot-multihop:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:pivot-multihop:validate--ruledout",
+      "fromNode": "method:pivot-multihop:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:pivot-multihop:validate--unknown",
+      "fromNode": "method:pivot-multihop:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:pivot-multihop:enabled--action",
+      "fromNode": "method:pivot-multihop:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:pivot-multihop:enabled--next-0",
+      "fromNode": "method:pivot-multihop:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A foothold exposes an interface/subnet or a loopback-only service"
+    },
+    {
+      "id": "method:pivot-multihop:enabled--next-1",
+      "fromNode": "method:pivot-multihop:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A pivoted exploit reaches its target but its shell/download cannot return"
+    },
+    {
+      "id": "method:pivot-multihop:enabled--next-2",
+      "fromNode": "method:pivot-multihop:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A credential appears valid but the destination's usable access is unknown"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:start--discover",
+      "fromNode": "method:pivot-dns-tunnel:start",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:discover--interpret",
+      "fromNode": "method:pivot-dns-tunnel:discover",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:interpret--validate",
+      "fromNode": "method:pivot-dns-tunnel:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:pivot-dns-tunnel:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:validate--enabled",
+      "fromNode": "method:pivot-dns-tunnel:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:validate--ruledout",
+      "fromNode": "method:pivot-dns-tunnel:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:validate--unknown",
+      "fromNode": "method:pivot-dns-tunnel:validate",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:enabled--action",
+      "fromNode": "method:pivot-dns-tunnel:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:enabled--next-0",
+      "fromNode": "method:pivot-dns-tunnel:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "One reachable pivot can connect to one internal TCP destination"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:enabled--next-1",
+      "fromNode": "method:pivot-dns-tunnel:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A foothold exposes an interface/subnet or a loopback-only service"
+    },
+    {
+      "id": "method:pivot-dns-tunnel:enabled--next-2",
+      "fromNode": "method:pivot-dns-tunnel:enabled",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several hosts, identities, routes or competing hypotheses need coordination"
+    },
+    {
+      "id": "route-2840",
+      "fromNode": "flow:pivoting:check-0",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2841",
+      "fromNode": "flow:pivoting:check-0-finding-0",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2842",
+      "fromNode": "flow:pivoting:check-0-finding-1",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2843",
+      "fromNode": "flow:pivoting:check-0-fallback",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2844",
+      "fromNode": "flow:pivoting:check-1",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2846",
+      "fromNode": "flow:pivoting:check-1-finding-1",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2847",
+      "fromNode": "flow:pivoting:check-1-fallback",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2848",
+      "fromNode": "flow:pivoting:check-2",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2850",
+      "fromNode": "flow:pivoting:check-2-finding-1",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2851",
+      "fromNode": "flow:pivoting:check-2-fallback",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2852",
+      "fromNode": "method:pivot-state:next-0",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2853",
+      "fromNode": "method:pivot-state:next-1",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2854",
+      "fromNode": "method:pivot-state:next-2",
+      "fromSide": "right",
+      "toNode": "method:chisel-reverse:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2855",
+      "fromNode": "method:pivot-state:next-3",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2856",
+      "fromNode": "method:pivot-state:next-4",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote-dynamic:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2857",
+      "fromNode": "method:pivot-state:next-5",
+      "fromSide": "right",
+      "toNode": "method:sshuttle-route:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2858",
+      "fromNode": "method:pivot-state:next-6",
+      "fromSide": "right",
+      "toNode": "method:windows-forward:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2859",
+      "fromNode": "method:pivot-state:next-7",
+      "fromSide": "right",
+      "toNode": "method:chisel-forward:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2860",
+      "fromNode": "method:pivot-state:next-8",
+      "fromSide": "right",
+      "toNode": "method:pivot-multihop:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2866",
+      "fromNode": "method:ssh-local:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2867",
+      "fromNode": "method:ssh-dynamic:next-0",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2869",
+      "fromNode": "method:ssh-dynamic:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2872",
+      "fromNode": "method:ssh-remote:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2873",
+      "fromNode": "method:ssh-remote-dynamic:next-0",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2874",
+      "fromNode": "method:ssh-remote-dynamic:next-1",
+      "fromSide": "right",
+      "toNode": "method:ssh-remote:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2875",
+      "fromNode": "method:ssh-remote-dynamic:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2878",
+      "fromNode": "method:proxy-clients:next-2",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2879",
+      "fromNode": "method:sshuttle-route:next-0",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2881",
+      "fromNode": "method:sshuttle-route:next-2",
+      "fromSide": "right",
+      "toNode": "method:ssh-dynamic:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2883",
+      "fromNode": "method:windows-forward:next-1",
+      "fromSide": "right",
+      "toNode": "method:ssh-local:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2884",
+      "fromNode": "method:windows-forward:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2885",
+      "fromNode": "method:chisel-reverse:next-0",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2887",
+      "fromNode": "method:chisel-reverse:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2888",
+      "fromNode": "method:chisel-forward:next-0",
+      "fromSide": "right",
+      "toNode": "method:ligolo-route:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2889",
+      "fromNode": "method:chisel-forward:next-1",
+      "fromSide": "right",
+      "toNode": "method:proxy-clients:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2890",
+      "fromNode": "method:chisel-forward:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2892",
+      "fromNode": "method:ligolo-route:next-1",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2893",
+      "fromNode": "method:ligolo-route:next-2",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2897",
+      "fromNode": "method:pivot-dns:next-3",
+      "fromSide": "right",
+      "toNode": "method:pivot-dns-tunnel:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2901",
+      "fromNode": "method:pivot-multihop:next-0",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2902",
+      "fromNode": "method:pivot-multihop:next-1",
+      "fromSide": "right",
+      "toNode": "method:pivot-callback:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2904",
+      "fromNode": "method:pivot-dns-tunnel:next-0",
+      "fromSide": "right",
+      "toNode": "method:fixed-forward:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2905",
+      "fromNode": "method:pivot-dns-tunnel:next-1",
+      "fromSide": "right",
+      "toNode": "method:pivot-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    }
+  ]
+}

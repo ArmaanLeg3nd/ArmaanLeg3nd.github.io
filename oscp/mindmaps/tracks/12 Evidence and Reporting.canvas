@@ -1,0 +1,1502 @@
+{
+  "nodes": [
+    {
+      "id": "topic-group:integration",
+      "type": "group",
+      "x": 0,
+      "y": 420,
+      "width": 4400,
+      "height": 11411,
+      "label": "Complete attacks and retain reproducible evidence",
+      "color": "6"
+    },
+    {
+      "id": "method-group:attack-state",
+      "type": "group",
+      "x": 35,
+      "y": 2985,
+      "width": 4080,
+      "height": 1851,
+      "label": "Maintain state and select the next evidence-producing test",
+      "color": "6"
+    },
+    {
+      "id": "method-group:attack-chains",
+      "type": "group",
+      "x": 35,
+      "y": 4961,
+      "width": 4080,
+      "height": 1899,
+      "label": "Integrate a standalone or assumed-breach AD attack",
+      "color": "6"
+    },
+    {
+      "id": "method-group:attack-recovery",
+      "type": "group",
+      "x": 35,
+      "y": 6985,
+      "width": 4080,
+      "height": 1148,
+      "label": "Recover from dead ends without repeating disproven paths",
+      "color": "6"
+    },
+    {
+      "id": "method-group:attack-evidence",
+      "type": "group",
+      "x": 35,
+      "y": 8258,
+      "width": 4080,
+      "height": 1755,
+      "label": "Capture state-transition, proof and exploit-adaptation evidence",
+      "color": "6"
+    },
+    {
+      "id": "method-group:attack-report",
+      "type": "group",
+      "x": 35,
+      "y": 10138,
+      "width": 4080,
+      "height": 1568,
+      "label": "Build and validate the report and submission artifacts",
+      "color": "6"
+    },
+    {
+      "id": "topic:integration",
+      "type": "text",
+      "x": 60,
+      "y": 440,
+      "width": 1800,
+      "height": 140,
+      "text": "# Complete attacks and retain reproducible evidence\n\nStart with assigned scope/objectives and saved observations; no complete path or report-ready evidence is assumed.",
+      "color": "6"
+    },
+    {
+      "id": "flow:integration:home",
+      "type": "text",
+      "x": 60,
+      "y": 620,
+      "width": 350,
+      "height": 240,
+      "text": "## Investigation flow\n\nComplete attacks and retain reproducible evidence\n\n · \n\nBranches describe evidence and missing conditions. Follow one useful lead, then return to unfinished coverage.",
+      "color": "6"
+    },
+    {
+      "id": "flow:integration:check-0",
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "width": 760,
+      "height": 324,
+      "text": "## Capture the access transition while it is reproducible\n\nKeep commands/output, host and identity beside the transition that produced them.\n\n```bash\nhostname\nid\nip addr\n```\n\n**Capture state-transition, proof and exploit-adaptation evidence — on this canvas**"
+    },
+    {
+      "id": "flow:integration:check-0-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 620,
+      "width": 610,
+      "height": 180,
+      "text": "### A new identity, host or route\n\nRe-enumerate from that exact new position.\n\n**Maintain state and select the next evidence-producing test — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:integration:check-0-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 845,
+      "width": 610,
+      "height": 180,
+      "text": "### The final objective is evidenced\n\nBuild the report from the reproducible chain.\n\n**Build and validate the report and submission artifacts — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:integration:check-0-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nA transition lacks proof: repeat its specific verification before connecting it to another method.\n\n**Integrate a standalone or assumed-breach AD attack — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:integration:check-1",
+      "type": "text",
+      "x": 560,
+      "y": 1250,
+      "width": 760,
+      "height": 300,
+      "text": "## When stuck, return to the last working boundary\n\nPreserve the working session/route. Change one failed layer at a time.\n\n```text\nLAST WORKING STATE | FIRST FAILED BOUNDARY | EXACT ERROR | CHANGED CONDITION | DISCRIMINATING TEST\n```\n\n**Recover from dead ends without repeating disproven paths — on this canvas**"
+    },
+    {
+      "id": "flow:integration:check-1-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1250,
+      "width": 610,
+      "height": 180,
+      "text": "### Authentication works but an action is denied\n\nInspect service/object authorization under that same identity.\n\n[[tracks/09 Active Directory.canvas|Match route, destination service and effective authorization → 09 Active Directory]]",
+      "color": "4"
+    },
+    {
+      "id": "flow:integration:check-1-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 1475,
+      "width": 610,
+      "height": 180,
+      "text": "### A new credential or route has not been used for enumeration\n\nUpdate the host/identity/route state and revisit the accessible surface.\n\n**Maintain state and select the next evidence-producing test — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:integration:check-1-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1250,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nSeveral guesses added no evidence: switch to a missing enumeration check, not a more exotic payload.\n\n[[tracks/01 Discovery.canvas|Validate uncertain results and rebuild the service queue → 01 Discovery]]",
+      "color": "2"
+    },
+    {
+      "id": "notes:integration",
+      "type": "file",
+      "file": "notes/integration.md",
+      "x": 60,
+      "y": 1885,
+      "width": 2100,
+      "height": 850
+    },
+    {
+      "id": "notes-label:integration",
+      "type": "text",
+      "x": 2350,
+      "y": 1885,
+      "width": 1400,
+      "height": 180,
+      "text": "## Full procedures and alternatives\n\nThe adjacent embedded note is readable here. Scroll inside it for complete variants. Commands and decisions continue below.",
+      "color": "6"
+    },
+    {
+      "id": "method:attack-state:start",
+      "type": "text",
+      "x": 70,
+      "y": 3160,
+      "width": 350,
+      "height": 250,
+      "text": "## Maintain state and select the next evidence-producing test\n\nSeveral hosts, identities, routes or competing hypotheses need coordination",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-state:discover",
+      "type": "text",
+      "x": 570,
+      "y": 3120,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nFor each candidate record:\nHOST | IDENTITY | ROUTE | OBSERVED CAPABILITY | MISSING CONDITION | NEXT DISCRIMINATING TEST\n```"
+    },
+    {
+      "id": "method:attack-state:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 3100,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe ledger distinguishes an unvalidated hypothesis from an enabled candidate and a missing coverage question.",
+      "color": "6"
+    },
+    {
+      "id": "method:attack-state:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 3346,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify the next test resolves a stated uncertainty and its expected outcomes change the decision.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-state:checks",
+      "type": "text",
+      "x": 570,
+      "y": 3384,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```text\nHOST | IDENTITY | CREDENTIAL TYPE | ROUTE | OBSERVATION | HYPOTHESIS | MISSING PREREQUISITE | NEXT TEST\n```"
+    },
+    {
+      "id": "method:attack-state:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 3050,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA candidate has the necessary evidence and a discriminating test: prioritize it by gain/cost/impact.\n\n**Verify:** Every proposed action must name the uncertainty it resolves and the result that changes the decision.\n\n[[notes/integration.md#attack-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-state:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 3391,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe action repeats an unchanged disproven context: reject it as the next test.",
+      "color": "1"
+    },
+    {
+      "id": "method:attack-state:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 3612,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nMissing source/identity/route records require state reconstruction first.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-state:action",
+      "type": "text",
+      "x": 3130,
+      "y": 3050,
+      "width": 900,
+      "height": 372,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\nscope and explicit exclusions\nobjective and required evidence\nstarting identity/credential and whether it is local, domain or application scoped\nsource host, interface, route and DNS context\nallowed/restricted tools and the current Metasploit target decision\ncase directory and note/evidence locations\ncleanup or restoration obligations\n```\n\n[[notes/integration.md#attack-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-state:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 3512,
+      "width": 620,
+      "height": 276,
+      "text": "### Validate uncertain results and rebuild the service queue\n\n**When:** Scanners disagree, a result is ambiguous, or a new identity changes accessible behavior\n\n**Still required:** A selected endpoint and a test that can resolve the decision-changing uncertainty\n\n[[tracks/01 Discovery.canvas|Validate uncertain results and rebuild the service queue → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-state:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 3843,
+      "width": 620,
+      "height": 276,
+      "text": "### Collect focused BloodHound data and validate an attack path\n\n**When:** Directory relationships are too broad for manual comparison or a candidate chain needs ranking\n\n**Still required:** Compatible collector/deployment, explicit scope, directory rights and separate permission/connectivity for host/session collection\n\n[[tracks/09 Active Directory.canvas|Collect focused BloodHound data and validate an attack path → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-state:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 4174,
+      "width": 620,
+      "height": 276,
+      "text": "### Recover from dead ends without repeating disproven paths\n\n**When:** Repeated attempts add no new evidence or several layers have been changed at once\n\n**Still required:** A saved last-known-working state, recorded errors and a bounded next uncertainty\n\n**Recover from dead ends without repeating disproven paths — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-state:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 4505,
+      "width": 620,
+      "height": 276,
+      "text": "### Integrate a standalone or assumed-breach AD attack\n\n**When:** Individual techniques are understood but the full path must be selected independently\n\n**Still required:** An assigned objective and current host/identity/route map; each next method's enabling conditions must be produced or discovered\n\n**Integrate a standalone or assumed-breach AD attack — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-chains:start",
+      "type": "text",
+      "x": 70,
+      "y": 5136,
+      "width": 350,
+      "height": 250,
+      "text": "## Integrate a standalone or assumed-breach AD attack\n\nIndividual techniques are understood but the full path must be selected independently",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-chains:discover",
+      "type": "text",
+      "x": 570,
+      "y": 5096,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nCURRENT RESULT -> CANDIDATE NEXT METHOD -> REQUIRED INPUT -> MISSING PROOF\n```"
+    },
+    {
+      "id": "method:attack-chains:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 5076,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA file read does not itself create a shell; the chain needs an actual credential/identity transition.",
+      "color": "6"
+    },
+    {
+      "id": "method:attack-chains:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 5322,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify every produced material type, account, route and service-specific right before connecting the next step.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-chains:checks",
+      "type": "text",
+      "x": 570,
+      "y": 5336,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```text\nOBSERVATION -> ENABLED METHOD -> VERIFIED CAPABILITY -> NEW STATE -> RE-ENUMERATION\n```"
+    },
+    {
+      "id": "method:attack-chains:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 5026,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nEach receiving method's prerequisites are supplied by verified state: follow the connected chain.\n\n**Verify:** For every transition record its prerequisite evidence and independently verified effect; no step is complete because the next tool launched.\n\n[[notes/integration.md#attack-chains|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-chains:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 5367,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe proposed next method requires a capability not produced or available: reject that handoff.",
+      "color": "1"
+    },
+    {
+      "id": "method:attack-chains:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 5588,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nAn inferred secret or stale account association keeps the chain provisional.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-chains:action",
+      "type": "text",
+      "x": 3130,
+      "y": 5026,
+      "width": 900,
+      "height": 444,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\nstarting credential\n→ local/domain identity + DNS/time/DC context\n→ reachable host/service map\n→ users/groups/computers/shares/SPNs/ACLs/sessions\n→ ranked identity or host transition\n→ compatible password/hash/ticket use\n→ verified session/new identity\n→ re-enumeration\n→ route/movement to next host\n→ higher domain privilege/objective\n```\n\n[[notes/integration.md#attack-chains|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-chains:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 5560,
+      "width": 620,
+      "height": 276,
+      "text": "### Read files through directory traversal\n\n**When:** A download/path parameter or URL segment influences a local filename\n\n**Still required:** Untrusted path reaches a filesystem read outside its intended directory; process identity can read the requested file\n\n[[tracks/03 Web.canvas|Read files through directory traversal → 03 Web]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-chains:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 5891,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-chains:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 6198,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish domain identity, DC, DNS, time and route\n\n**When:** Domain credentials or a domain-joined foothold\n\n**Still required:** Correct realm/domain and account qualification; reachable DC/services, usable DNS and acceptable clock skew\n\n[[tracks/09 Active Directory.canvas|Establish domain identity, DC, DNS, time and route → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-chains:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 6505,
+      "width": 620,
+      "height": 300,
+      "text": "### Capture state-transition, proof and exploit-adaptation evidence\n\n**When:** Access, privilege, identity or route changes, or a report will need reproduction\n\n**Still required:** Known destination/identity, observable effect and a private evidence destination; actual exam proof requirements must be read from current official guidance\n\n**Capture state-transition, proof and exploit-adaptation evidence — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-recovery:start",
+      "type": "text",
+      "x": 70,
+      "y": 7160,
+      "width": 350,
+      "height": 250,
+      "text": "## Recover from dead ends without repeating disproven paths\n\nRepeated attempts add no new evidence or several layers have been changed at once",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-recovery:discover",
+      "type": "text",
+      "x": 570,
+      "y": 7120,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nLAST VERIFIED STATE | FIRST NEW FAILURE | EXACT ERROR | CHANGED CONDITION | NEXT CONTROL\n```"
+    },
+    {
+      "id": "method:attack-recovery:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 7100,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nRepeated payload changes are not testing the first missing transfer/route condition.",
+      "color": "6"
+    },
+    {
+      "id": "method:attack-recovery:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 7346,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nReproduce the last proof and isolate one new condition at a time; preserve rejected paths and return conditions.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-recovery:checks",
+      "type": "text",
+      "x": 570,
+      "y": 7360,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```text\nLAST WORKING STATE | FIRST FAILED BOUNDARY | EXACT ERROR | CHANGED CONDITION | DISCRIMINATING TEST\n```"
+    },
+    {
+      "id": "method:attack-recovery:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 7050,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe new test identifies/fixes the actual boundary or justifies another enabled path: proceed.\n\n**Verify:** The recovery action should create new evidence and preserve the reason an old path was rejected.\n\n[[notes/integration.md#attack-recovery|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-recovery:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 7391,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe same absent prerequisite remains unchanged: reject another identical attempt.",
+      "color": "1"
+    },
+    {
+      "id": "method:attack-recovery:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 7612,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUnknown last-working state calls for a small reproducible baseline rather than another full chain.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-recovery:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 7140,
+      "width": 620,
+      "height": 276,
+      "text": "### Diagnose connection direction, listener and session failures in order\n\n**When:** Command execution or payload delivery exists but the expected usable channel does not\n\n**Still required:** A recorded first execution proof, correct advertised route, active compatible listener and observable connection evidence\n\n[[tracks/11 Execution Troubleshooting.canvas|Diagnose connection direction, listener and session failures in order → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-recovery:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 7471,
+      "width": 620,
+      "height": 276,
+      "text": "### Validate uncertain results and rebuild the service queue\n\n**When:** Scanners disagree, a result is ambiguous, or a new identity changes accessible behavior\n\n**Still required:** A selected endpoint and a test that can resolve the decision-changing uncertainty\n\n[[tracks/01 Discovery.canvas|Validate uncertain results and rebuild the service queue → 01 Discovery]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-recovery:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 7802,
+      "width": 620,
+      "height": 276,
+      "text": "### Maintain state and select the next evidence-producing test\n\n**When:** Several hosts, identities, routes or competing hypotheses need coordination\n\n**Still required:** Explicit scope/objective and a record of observations, unknowns and available capabilities\n\n**Maintain state and select the next evidence-producing test — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-evidence:start",
+      "type": "text",
+      "x": 70,
+      "y": 8433,
+      "width": 350,
+      "height": 250,
+      "text": "## Capture state-transition, proof and exploit-adaptation evidence\n\nAccess, privilege, identity or route changes, or a report will need reproduction",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-evidence:discover",
+      "type": "text",
+      "x": 570,
+      "y": 8393,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nhostname\nid\nip addr\n```"
+    },
+    {
+      "id": "method:attack-evidence:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 8373,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA success screenshot or identity line can be real while the reproduction path is incomplete.",
+      "color": "6"
+    },
+    {
+      "id": "method:attack-evidence:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 8619,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCapture the exact source/destination, method, material context, transition, relevant proof and adaptation steps privately.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-evidence:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 8323,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe transition can be independently reconstructed from retained evidence: promote that verified result to the report.\n\n**Verify:** Tie evidence to the correct target and transition, with no invented success or missing reproduction step.\n\n[[notes/integration.md#attack-evidence|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-evidence:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 8664,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe record comes from the wrong host/context: reject it as proof for this objective.",
+      "color": "1"
+    },
+    {
+      "id": "method:attack-evidence:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 8885,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA tool success string without observed effect leaves the access claim unproved.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-evidence:action",
+      "type": "text",
+      "x": 3130,
+      "y": 8323,
+      "width": 900,
+      "height": 324,
+      "text": "### Procedure entry — full sequence in the note\n\n```bash\ndate -Is\nhostname\nid\nip addr\nip route\n```\n\n[[notes/integration.md#attack-evidence|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-evidence:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 8737,
+      "width": 620,
+      "height": 276,
+      "text": "### Build and validate the report and submission artifacts\n\n**When:** Verified findings and private transition evidence are ready for reporting\n\n**Still required:** Complete reproduction path, required screenshots/proofs, suitable document tooling and the current submission naming/archive rules\n\n**Build and validate the report and submission artifacts — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-evidence:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 9068,
+      "width": 620,
+      "height": 276,
+      "text": "### Maintain state and select the next evidence-producing test\n\n**When:** Several hosts, identities, routes or competing hypotheses need coordination\n\n**Still required:** Explicit scope/objective and a record of observations, unknowns and available capabilities\n\n**Maintain state and select the next evidence-producing test — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-evidence:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 9399,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Linux state and choose an escalation candidate\n\n**When:** A new Linux foothold or an identity/privilege change\n\n**Still required:** A working command channel and accurate effective identity, group, mount and process context\n\n[[tracks/07 Linux Privilege Escalation.canvas|Establish Linux state and choose an escalation candidate → 07 Linux Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-evidence:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 9706,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n[[tracks/08 Windows Privilege Escalation.canvas|Establish Windows token, host and process context → 08 Windows Privilege Escalation]]",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-report:start",
+      "type": "text",
+      "x": 70,
+      "y": 10313,
+      "width": 350,
+      "height": 250,
+      "text": "## Build and validate the report and submission artifacts\n\nVerified findings and private transition evidence are ready for reporting",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-report:discover",
+      "type": "text",
+      "x": 570,
+      "y": 10273,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\npdfinfo REPORT.pdf\n7z l REPORT.7z\nmd5sum REPORT.7z\n```"
+    },
+    {
+      "id": "method:attack-report:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 10253,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe container is valid while a reproduction instruction is unreadable; inspect rendered content as well as file structure.",
+      "color": "6"
+    },
+    {
+      "id": "method:attack-report:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 10499,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify complete reproduction, legible pages, current required names/content and upload/local checksum when applicable.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-report:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 10203,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nAll rendered/content/archive checks pass: use the validated submission artifact.\n\n**Verify:** Verify reproduction, legible pages, correct required names/content and matching local/upload checksum when applicable.\n\n[[notes/integration.md#attack-report|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-report:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 10544,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nMissing/clipped proof or wrong archive content fails readiness despite successful compression.",
+      "color": "1"
+    },
+    {
+      "id": "method:attack-report:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 10765,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nMetadata alone leaves visual content and reproduction completeness unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:attack-report:action",
+      "type": "text",
+      "x": 3130,
+      "y": 10203,
+      "width": 900,
+      "height": 396,
+      "text": "### Procedure entry — full sequence in the note\n\n```text\nstarting state and scope\n→ decisive enumeration\n→ prerequisite/vulnerability validation\n→ exact exploitation action\n→ session/identity verification\n→ privilege or movement transition\n→ final objective evidence\n→ cleanup/restoration\n```\n\n[[notes/integration.md#attack-report|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:attack-report:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 10689,
+      "width": 620,
+      "height": 300,
+      "text": "### Capture state-transition, proof and exploit-adaptation evidence\n\n**When:** Access, privilege, identity or route changes, or a report will need reproduction\n\n**Still required:** Known destination/identity, observable effect and a private evidence destination; actual exam proof requirements must be read from current official guidance\n\n**Capture state-transition, proof and exploit-adaptation evidence — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-report:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 11044,
+      "width": 620,
+      "height": 276,
+      "text": "### Recover from dead ends without repeating disproven paths\n\n**When:** Repeated attempts add no new evidence or several layers have been changed at once\n\n**Still required:** A saved last-known-working state, recorded errors and a bounded next uncertainty\n\n**Recover from dead ends without repeating disproven paths — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:attack-report:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 11375,
+      "width": 620,
+      "height": 276,
+      "text": "### Maintain state and select the next evidence-producing test\n\n**When:** Several hosts, identities, routes or competing hypotheses need coordination\n\n**Still required:** Explicit scope/objective and a record of observations, unknowns and available capabilities\n\n**Maintain state and select the next evidence-producing test — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "track-title",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 2300,
+      "height": 270,
+      "color": "5",
+      "text": "# 12 Evidence and Reporting\n\nAll workflows, commands, result interpretations and method connections for this track are on this canvas. Embedded notes contain the complete procedures and variants.\n\n[[START.canvas|Choose another track]]\n\nCross-track results link directly to the receiving track."
+    }
+  ],
+  "edges": [
+    {
+      "id": "flow:integration:check-0--check-0-finding-0",
+      "fromNode": "flow:integration:check-0",
+      "fromSide": "right",
+      "toNode": "flow:integration:check-0-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new identity, host or route"
+    },
+    {
+      "id": "flow:integration:check-0--check-0-finding-1",
+      "fromNode": "flow:integration:check-0",
+      "fromSide": "right",
+      "toNode": "flow:integration:check-0-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The final objective is evidenced"
+    },
+    {
+      "id": "flow:integration:check-0--check-0-fallback",
+      "fromNode": "flow:integration:check-0",
+      "fromSide": "right",
+      "toNode": "flow:integration:check-0-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A transition lacks proof: repeat its specific verification before connecting it to another method."
+    },
+    {
+      "id": "flow:integration:check-0--check-1",
+      "fromNode": "flow:integration:check-0",
+      "fromSide": "bottom",
+      "toNode": "flow:integration:check-1",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:integration:check-1--check-1-finding-0",
+      "fromNode": "flow:integration:check-1",
+      "fromSide": "right",
+      "toNode": "flow:integration:check-1-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Authentication works but an action is denied"
+    },
+    {
+      "id": "flow:integration:check-1--check-1-finding-1",
+      "fromNode": "flow:integration:check-1",
+      "fromSide": "right",
+      "toNode": "flow:integration:check-1-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new credential or route has not been used for enumeration"
+    },
+    {
+      "id": "flow:integration:check-1--check-1-fallback",
+      "fromNode": "flow:integration:check-1",
+      "fromSide": "right",
+      "toNode": "flow:integration:check-1-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several guesses added no evidence: switch to a missing enumeration check, not a more exotic payload."
+    },
+    {
+      "id": "flow:integration:home--check-0",
+      "fromNode": "flow:integration:home",
+      "fromSide": "right",
+      "toNode": "flow:integration:check-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "start with current access"
+    },
+    {
+      "id": "method:attack-state:start--discover",
+      "fromNode": "method:attack-state:start",
+      "fromSide": "right",
+      "toNode": "method:attack-state:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:attack-state:discover--interpret",
+      "fromNode": "method:attack-state:discover",
+      "fromSide": "right",
+      "toNode": "method:attack-state:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:attack-state:interpret--validate",
+      "fromNode": "method:attack-state:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:attack-state:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:attack-state:validate--checks",
+      "fromNode": "method:attack-state:validate",
+      "fromSide": "left",
+      "toNode": "method:attack-state:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:attack-state:validate--enabled",
+      "fromNode": "method:attack-state:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-state:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:attack-state:validate--ruledout",
+      "fromNode": "method:attack-state:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-state:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:attack-state:validate--unknown",
+      "fromNode": "method:attack-state:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-state:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:attack-state:enabled--action",
+      "fromNode": "method:attack-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-state:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:attack-state:enabled--next-0",
+      "fromNode": "method:attack-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-state:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Scanners disagree, a result is ambiguous, or a new identity changes accessible behavior"
+    },
+    {
+      "id": "method:attack-state:enabled--next-1",
+      "fromNode": "method:attack-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-state:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Directory relationships are too broad for manual comparison or a candidate chain needs ranking"
+    },
+    {
+      "id": "method:attack-state:enabled--next-2",
+      "fromNode": "method:attack-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-state:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Repeated attempts add no new evidence or several layers have been changed at once"
+    },
+    {
+      "id": "method:attack-state:enabled--next-3",
+      "fromNode": "method:attack-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-state:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Individual techniques are understood but the full path must be selected independently"
+    },
+    {
+      "id": "method:attack-chains:start--discover",
+      "fromNode": "method:attack-chains:start",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:attack-chains:discover--interpret",
+      "fromNode": "method:attack-chains:discover",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:attack-chains:interpret--validate",
+      "fromNode": "method:attack-chains:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:attack-chains:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:attack-chains:validate--checks",
+      "fromNode": "method:attack-chains:validate",
+      "fromSide": "left",
+      "toNode": "method:attack-chains:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:attack-chains:validate--enabled",
+      "fromNode": "method:attack-chains:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:attack-chains:validate--ruledout",
+      "fromNode": "method:attack-chains:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:attack-chains:validate--unknown",
+      "fromNode": "method:attack-chains:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:attack-chains:enabled--action",
+      "fromNode": "method:attack-chains:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:attack-chains:enabled--next-0",
+      "fromNode": "method:attack-chains:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A download/path parameter or URL segment influences a local filename"
+    },
+    {
+      "id": "method:attack-chains:enabled--next-1",
+      "fromNode": "method:attack-chains:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:attack-chains:enabled--next-2",
+      "fromNode": "method:attack-chains:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Domain credentials or a domain-joined foothold"
+    },
+    {
+      "id": "method:attack-chains:enabled--next-3",
+      "fromNode": "method:attack-chains:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Access, privilege, identity or route changes, or a report will need reproduction"
+    },
+    {
+      "id": "method:attack-recovery:start--discover",
+      "fromNode": "method:attack-recovery:start",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:attack-recovery:discover--interpret",
+      "fromNode": "method:attack-recovery:discover",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:attack-recovery:interpret--validate",
+      "fromNode": "method:attack-recovery:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:attack-recovery:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:attack-recovery:validate--checks",
+      "fromNode": "method:attack-recovery:validate",
+      "fromSide": "left",
+      "toNode": "method:attack-recovery:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:attack-recovery:validate--enabled",
+      "fromNode": "method:attack-recovery:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:attack-recovery:validate--ruledout",
+      "fromNode": "method:attack-recovery:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:attack-recovery:validate--unknown",
+      "fromNode": "method:attack-recovery:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:attack-recovery:enabled--next-0",
+      "fromNode": "method:attack-recovery:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Command execution or payload delivery exists but the expected usable channel does not"
+    },
+    {
+      "id": "method:attack-recovery:enabled--next-1",
+      "fromNode": "method:attack-recovery:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Scanners disagree, a result is ambiguous, or a new identity changes accessible behavior"
+    },
+    {
+      "id": "method:attack-recovery:enabled--next-2",
+      "fromNode": "method:attack-recovery:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several hosts, identities, routes or competing hypotheses need coordination"
+    },
+    {
+      "id": "method:attack-evidence:start--discover",
+      "fromNode": "method:attack-evidence:start",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:attack-evidence:discover--interpret",
+      "fromNode": "method:attack-evidence:discover",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:attack-evidence:interpret--validate",
+      "fromNode": "method:attack-evidence:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:attack-evidence:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:attack-evidence:validate--enabled",
+      "fromNode": "method:attack-evidence:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:attack-evidence:validate--ruledout",
+      "fromNode": "method:attack-evidence:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:attack-evidence:validate--unknown",
+      "fromNode": "method:attack-evidence:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:attack-evidence:enabled--action",
+      "fromNode": "method:attack-evidence:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:attack-evidence:enabled--next-0",
+      "fromNode": "method:attack-evidence:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Verified findings and private transition evidence are ready for reporting"
+    },
+    {
+      "id": "method:attack-evidence:enabled--next-1",
+      "fromNode": "method:attack-evidence:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several hosts, identities, routes or competing hypotheses need coordination"
+    },
+    {
+      "id": "method:attack-evidence:enabled--next-2",
+      "fromNode": "method:attack-evidence:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Linux foothold or an identity/privilege change"
+    },
+    {
+      "id": "method:attack-evidence:enabled--next-3",
+      "fromNode": "method:attack-evidence:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:attack-report:start--discover",
+      "fromNode": "method:attack-report:start",
+      "fromSide": "right",
+      "toNode": "method:attack-report:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:attack-report:discover--interpret",
+      "fromNode": "method:attack-report:discover",
+      "fromSide": "right",
+      "toNode": "method:attack-report:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:attack-report:interpret--validate",
+      "fromNode": "method:attack-report:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:attack-report:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:attack-report:validate--enabled",
+      "fromNode": "method:attack-report:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-report:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:attack-report:validate--ruledout",
+      "fromNode": "method:attack-report:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-report:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:attack-report:validate--unknown",
+      "fromNode": "method:attack-report:validate",
+      "fromSide": "right",
+      "toNode": "method:attack-report:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:attack-report:enabled--action",
+      "fromNode": "method:attack-report:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-report:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:attack-report:enabled--next-0",
+      "fromNode": "method:attack-report:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-report:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Access, privilege, identity or route changes, or a report will need reproduction"
+    },
+    {
+      "id": "method:attack-report:enabled--next-1",
+      "fromNode": "method:attack-report:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-report:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Repeated attempts add no new evidence or several layers have been changed at once"
+    },
+    {
+      "id": "method:attack-report:enabled--next-2",
+      "fromNode": "method:attack-report:enabled",
+      "fromSide": "right",
+      "toNode": "method:attack-report:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Several hosts, identities, routes or competing hypotheses need coordination"
+    },
+    {
+      "id": "route-2907",
+      "fromNode": "flow:integration:check-0",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2908",
+      "fromNode": "flow:integration:check-0-finding-0",
+      "fromSide": "right",
+      "toNode": "method:attack-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2909",
+      "fromNode": "flow:integration:check-0-finding-1",
+      "fromSide": "right",
+      "toNode": "method:attack-report:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2910",
+      "fromNode": "flow:integration:check-0-fallback",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2911",
+      "fromNode": "flow:integration:check-1",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2913",
+      "fromNode": "flow:integration:check-1-finding-1",
+      "fromSide": "right",
+      "toNode": "method:attack-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2917",
+      "fromNode": "method:attack-state:next-2",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2918",
+      "fromNode": "method:attack-state:next-3",
+      "fromSide": "right",
+      "toNode": "method:attack-chains:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2922",
+      "fromNode": "method:attack-chains:next-3",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2925",
+      "fromNode": "method:attack-recovery:next-2",
+      "fromSide": "right",
+      "toNode": "method:attack-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2926",
+      "fromNode": "method:attack-evidence:next-0",
+      "fromSide": "right",
+      "toNode": "method:attack-report:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2927",
+      "fromNode": "method:attack-evidence:next-1",
+      "fromSide": "right",
+      "toNode": "method:attack-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2930",
+      "fromNode": "method:attack-report:next-0",
+      "fromSide": "right",
+      "toNode": "method:attack-evidence:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2931",
+      "fromNode": "method:attack-report:next-1",
+      "fromSide": "right",
+      "toNode": "method:attack-recovery:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2932",
+      "fromNode": "method:attack-report:next-2",
+      "fromSide": "right",
+      "toNode": "method:attack-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    }
+  ]
+}

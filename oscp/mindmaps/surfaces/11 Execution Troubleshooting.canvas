@@ -1,0 +1,273 @@
+{
+  "nodes": [
+    {
+      "id": "group-execution",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 1589,
+      "label": "Resolve payload execution obstacles",
+      "color": "5"
+    },
+    {
+      "id": "topic-execution",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Resolve payload execution obstacles",
+      "color": "5"
+    },
+    {
+      "id": "execution-office",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-office|Use a gated Office macro delivery chain]]"
+    },
+    {
+      "id": "execution-library",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-library|Use a Windows Library/WebDAV/shortcut chain with explicit interaction]]"
+    },
+    {
+      "id": "execution-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 248,
+      "width": 360,
+      "height": 76,
+      "text": "Client-side delivery and interaction",
+      "color": "1"
+    },
+    {
+      "id": "execution-format",
+      "type": "text",
+      "x": 550,
+      "y": 522,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-format|Match an artifact to its executable consumer and runtime]]"
+    },
+    {
+      "id": "execution-parser",
+      "type": "text",
+      "x": 550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-parser|Repair quoting, encoding and command-length boundaries]]"
+    },
+    {
+      "id": "execution-powershell",
+      "type": "text",
+      "x": 550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-powershell|Distinguish PowerShell policy, language mode and protected execution layers]]"
+    },
+    {
+      "id": "execution-controls",
+      "type": "text",
+      "x": 550,
+      "y": 855,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-controls|Interpret endpoint-control evidence and select a justified alternative]]"
+    },
+    {
+      "id": "execution-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 681,
+      "width": 360,
+      "height": 76,
+      "text": "Format, parser and control boundaries",
+      "color": "2"
+    },
+    {
+      "id": "execution-handler",
+      "type": "text",
+      "x": 550,
+      "y": 1066,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-handler|Pair staged payloads with the correct handler and session lifecycle]]"
+    },
+    {
+      "id": "execution-framework",
+      "type": "text",
+      "x": 550,
+      "y": 1177,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-framework|Use a framework module with explicit target and feature constraints]]"
+    },
+    {
+      "id": "execution-callback",
+      "type": "text",
+      "x": 550,
+      "y": 1288,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/execution.md#execution-callback|Diagnose connection direction, listener and session failures in order]]"
+    },
+    {
+      "id": "execution-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 1170,
+      "width": 360,
+      "height": 76,
+      "text": "Handlers, framework state and callbacks",
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-execution--execution-family-0",
+      "fromNode": "topic-execution",
+      "fromSide": "right",
+      "toNode": "execution-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-0--execution-office",
+      "fromNode": "execution-family-0",
+      "fromSide": "right",
+      "toNode": "execution-office",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-0--execution-library",
+      "fromNode": "execution-family-0",
+      "fromSide": "right",
+      "toNode": "execution-library",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-execution--execution-family-1",
+      "fromNode": "topic-execution",
+      "fromSide": "right",
+      "toNode": "execution-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-1--execution-format",
+      "fromNode": "execution-family-1",
+      "fromSide": "right",
+      "toNode": "execution-format",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-1--execution-parser",
+      "fromNode": "execution-family-1",
+      "fromSide": "right",
+      "toNode": "execution-parser",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-1--execution-powershell",
+      "fromNode": "execution-family-1",
+      "fromSide": "right",
+      "toNode": "execution-powershell",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-1--execution-controls",
+      "fromNode": "execution-family-1",
+      "fromSide": "right",
+      "toNode": "execution-controls",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-execution--execution-family-2",
+      "fromNode": "topic-execution",
+      "fromSide": "right",
+      "toNode": "execution-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-2--execution-handler",
+      "fromNode": "execution-family-2",
+      "fromSide": "right",
+      "toNode": "execution-handler",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-2--execution-framework",
+      "fromNode": "execution-family-2",
+      "fromSide": "right",
+      "toNode": "execution-framework",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-family-2--execution-callback",
+      "fromNode": "execution-family-2",
+      "fromSide": "right",
+      "toNode": "execution-callback",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "execution-format--execution-parser",
+      "fromNode": "execution-format",
+      "fromSide": "bottom",
+      "toNode": "execution-parser",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "The file reaches a different parser than expected",
+      "color": "#74829a"
+    },
+    {
+      "id": "execution-format--execution-handler",
+      "fromNode": "execution-format",
+      "fromSide": "bottom",
+      "toNode": "execution-handler",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "execution-handler--execution-callback",
+      "fromNode": "execution-handler",
+      "fromSide": "bottom",
+      "toNode": "execution-callback",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Handler settings match but no packet arrives",
+      "color": "#74829a"
+    },
+    {
+      "id": "execution-handler--execution-framework",
+      "fromNode": "execution-handler",
+      "fromSide": "bottom",
+      "toNode": "execution-framework",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    }
+  ]
+}

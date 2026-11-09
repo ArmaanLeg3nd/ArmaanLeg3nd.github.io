@@ -1,0 +1,498 @@
+{
+  "nodes": [
+    {
+      "id": "group-linux-privesc",
+      "type": "group",
+      "x": -20,
+      "y": -50,
+      "width": 1410,
+      "height": 2566,
+      "label": "Escalate privileges on Linux",
+      "color": "5"
+    },
+    {
+      "id": "topic-linux-privesc",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 1360,
+      "height": 76,
+      "text": "Escalate privileges on Linux",
+      "color": "5"
+    },
+    {
+      "id": "linux-state",
+      "type": "text",
+      "x": 550,
+      "y": 200,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-state|Establish Linux state and choose an escalation candidate]]"
+    },
+    {
+      "id": "linux-permissions",
+      "type": "text",
+      "x": 550,
+      "y": 311,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-permissions|Prove effective file, directory, ACL and mount control]]"
+    },
+    {
+      "id": "linux-secrets",
+      "type": "text",
+      "x": 550,
+      "y": 422,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-secrets|Recover credentials from Linux user, service and process trails]]"
+    },
+    {
+      "id": "linux-privesc-family-0",
+      "type": "text",
+      "x": 20,
+      "y": 304,
+      "width": 360,
+      "height": 76,
+      "text": "Identity, permissions and secret sources",
+      "color": "1"
+    },
+    {
+      "id": "linux-sudo",
+      "type": "text",
+      "x": 550,
+      "y": 633,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-sudo|Use an allowed sudo operation to cross a privilege boundary]]"
+    },
+    {
+      "id": "linux-preload",
+      "type": "text",
+      "x": 550,
+      "y": 744,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-preload|Load a controlled library through a permitted sudo environment]]"
+    },
+    {
+      "id": "linux-suid",
+      "type": "text",
+      "x": 550,
+      "y": 855,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-suid|Use a SUID or SGID program's exposed privileged primitive]]"
+    },
+    {
+      "id": "linux-capabilities",
+      "type": "text",
+      "x": 550,
+      "y": 966,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-capabilities|Use a file capability that enables a specific privileged operation]]"
+    },
+    {
+      "id": "linux-privesc-family-1",
+      "type": "text",
+      "x": 20,
+      "y": 792,
+      "width": 360,
+      "height": 76,
+      "text": "Delegated and executable privilege",
+      "color": "2"
+    },
+    {
+      "id": "linux-jobs",
+      "type": "text",
+      "x": 550,
+      "y": 1177,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-jobs|Control a script, binary or configuration consumed by a privileged job/service]]"
+    },
+    {
+      "id": "linux-path",
+      "type": "text",
+      "x": 550,
+      "y": 1288,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-path|Hijack an unqualified helper through controlled PATH resolution]]"
+    },
+    {
+      "id": "linux-wildcard",
+      "type": "text",
+      "x": 550,
+      "y": 1399,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-wildcard|Turn wildcard-expanded filenames into privileged command options]]"
+    },
+    {
+      "id": "linux-policy",
+      "type": "text",
+      "x": 550,
+      "y": 1510,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-policy|Change a writable account or privilege-policy file]]"
+    },
+    {
+      "id": "linux-library",
+      "type": "text",
+      "x": 550,
+      "y": 1621,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-library|Control a privileged program's shared-library resolution]]"
+    },
+    {
+      "id": "linux-privesc-family-2",
+      "type": "text",
+      "x": 20,
+      "y": 1392,
+      "width": 360,
+      "height": 76,
+      "text": "Privileged consumers and resolution",
+      "color": "3"
+    },
+    {
+      "id": "linux-containers",
+      "type": "text",
+      "x": 550,
+      "y": 1832,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-containers|Use privileged group, daemon or container-management control]]"
+    },
+    {
+      "id": "linux-mounts",
+      "type": "text",
+      "x": 550,
+      "y": 1943,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-mounts|Exploit a permission-backed mount, NFS mapping or local service]]"
+    },
+    {
+      "id": "linux-kernel",
+      "type": "text",
+      "x": 550,
+      "y": 2054,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-kernel|Select an evidence-matched Linux software or kernel exploit]]"
+    },
+    {
+      "id": "linux-privesc-family-3",
+      "type": "text",
+      "x": 20,
+      "y": 1936,
+      "width": 360,
+      "height": 76,
+      "text": "Daemon, mount and software routes",
+      "color": "4"
+    },
+    {
+      "id": "linux-enumerators",
+      "type": "text",
+      "x": 550,
+      "y": 2265,
+      "width": 760,
+      "height": 76,
+      "text": "[[notes/linux-privesc.md#linux-enumerators|Use enumeration tools to generate manually testable candidates]]"
+    },
+    {
+      "id": "linux-privesc-family-4",
+      "type": "text",
+      "x": 20,
+      "y": 2258,
+      "width": 360,
+      "height": 76,
+      "text": "Candidate generation",
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "topic-linux-privesc--linux-privesc-family-0",
+      "fromNode": "topic-linux-privesc",
+      "fromSide": "right",
+      "toNode": "linux-privesc-family-0",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-0--linux-state",
+      "fromNode": "linux-privesc-family-0",
+      "fromSide": "right",
+      "toNode": "linux-state",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-0--linux-permissions",
+      "fromNode": "linux-privesc-family-0",
+      "fromSide": "right",
+      "toNode": "linux-permissions",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-0--linux-secrets",
+      "fromNode": "linux-privesc-family-0",
+      "fromSide": "right",
+      "toNode": "linux-secrets",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-linux-privesc--linux-privesc-family-1",
+      "fromNode": "topic-linux-privesc",
+      "fromSide": "right",
+      "toNode": "linux-privesc-family-1",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-1--linux-sudo",
+      "fromNode": "linux-privesc-family-1",
+      "fromSide": "right",
+      "toNode": "linux-sudo",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-1--linux-preload",
+      "fromNode": "linux-privesc-family-1",
+      "fromSide": "right",
+      "toNode": "linux-preload",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-1--linux-suid",
+      "fromNode": "linux-privesc-family-1",
+      "fromSide": "right",
+      "toNode": "linux-suid",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-1--linux-capabilities",
+      "fromNode": "linux-privesc-family-1",
+      "fromSide": "right",
+      "toNode": "linux-capabilities",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-linux-privesc--linux-privesc-family-2",
+      "fromNode": "topic-linux-privesc",
+      "fromSide": "right",
+      "toNode": "linux-privesc-family-2",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-2--linux-jobs",
+      "fromNode": "linux-privesc-family-2",
+      "fromSide": "right",
+      "toNode": "linux-jobs",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-2--linux-path",
+      "fromNode": "linux-privesc-family-2",
+      "fromSide": "right",
+      "toNode": "linux-path",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-2--linux-wildcard",
+      "fromNode": "linux-privesc-family-2",
+      "fromSide": "right",
+      "toNode": "linux-wildcard",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-2--linux-policy",
+      "fromNode": "linux-privesc-family-2",
+      "fromSide": "right",
+      "toNode": "linux-policy",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-2--linux-library",
+      "fromNode": "linux-privesc-family-2",
+      "fromSide": "right",
+      "toNode": "linux-library",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-linux-privesc--linux-privesc-family-3",
+      "fromNode": "topic-linux-privesc",
+      "fromSide": "right",
+      "toNode": "linux-privesc-family-3",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-3--linux-containers",
+      "fromNode": "linux-privesc-family-3",
+      "fromSide": "right",
+      "toNode": "linux-containers",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-3--linux-mounts",
+      "fromNode": "linux-privesc-family-3",
+      "fromSide": "right",
+      "toNode": "linux-mounts",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-3--linux-kernel",
+      "fromNode": "linux-privesc-family-3",
+      "fromSide": "right",
+      "toNode": "linux-kernel",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "topic-linux-privesc--linux-privesc-family-4",
+      "fromNode": "topic-linux-privesc",
+      "fromSide": "right",
+      "toNode": "linux-privesc-family-4",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-privesc-family-4--linux-enumerators",
+      "fromNode": "linux-privesc-family-4",
+      "fromSide": "right",
+      "toNode": "linux-enumerators",
+      "toSide": "left",
+      "toEnd": "arrow"
+    },
+    {
+      "id": "linux-enumerators--linux-sudo",
+      "fromNode": "linux-enumerators",
+      "fromSide": "bottom",
+      "toNode": "linux-sudo",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "sudo/NOPASSWD or an allowed binary",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-enumerators--linux-suid",
+      "fromNode": "linux-enumerators",
+      "fromSide": "bottom",
+      "toNode": "linux-suid",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A root-owned SUID binary",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-enumerators--linux-capabilities",
+      "fromNode": "linux-enumerators",
+      "fromSide": "bottom",
+      "toNode": "linux-capabilities",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A useful file capability",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-enumerators--linux-secrets",
+      "fromNode": "linux-enumerators",
+      "fromSide": "bottom",
+      "toNode": "linux-secrets",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A password, key or application config",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-enumerators--linux-state",
+      "fromNode": "linux-enumerators",
+      "fromSide": "bottom",
+      "toNode": "linux-state",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-sudo--linux-preload",
+      "fromNode": "linux-sudo",
+      "fromSide": "bottom",
+      "toNode": "linux-preload",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "LD_PRELOAD is explicitly permitted/preserved",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-sudo--linux-suid",
+      "fromNode": "linux-sudo",
+      "fromSide": "bottom",
+      "toNode": "linux-suid",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-jobs--linux-path",
+      "fromNode": "linux-jobs",
+      "fromSide": "bottom",
+      "toNode": "linux-path",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A privileged job invokes a helper without an absolute path",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-suid--linux-capabilities",
+      "fromNode": "linux-suid",
+      "fromSide": "bottom",
+      "toNode": "linux-capabilities",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "An executable has a useful file capability",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-suid--linux-permissions",
+      "fromNode": "linux-suid",
+      "fromSide": "bottom",
+      "toNode": "linux-permissions",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "A root-consumed file/parent is writable",
+      "color": "#74829a"
+    },
+    {
+      "id": "linux-suid--linux-secrets",
+      "fromNode": "linux-suid",
+      "fromSide": "bottom",
+      "toNode": "linux-secrets",
+      "toSide": "top",
+      "toEnd": "arrow",
+      "label": "Otherwise / unresolved",
+      "color": "#74829a"
+    }
+  ]
+}
