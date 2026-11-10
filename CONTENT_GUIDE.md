@@ -16,6 +16,8 @@ The shared Notes navigation, primary tool entry and OSCP project action all lead
 
 Edit the reviewed local source, then run `node scripts/sync-nstsec.mjs <reviewed-source-checkout>`. This converts GitBook hints, embeds and attachments, rewrites local links, copies source assets and pins rendered content in `src/content/oscp-nstsec.snapshot.json`. Builds do not require the private vault. Keep additions brief and inside the owning technique. Source preservation does not certify old examples as current or exam-permitted. Run `node --test tests/nstsec.test.mjs` after building to check routes, assets and the landing redirect.
 
+Rich notes search is owned by `src/lib/nstsec-search-index.ts` (decoded section/alternative indexing), `src/lib/nstsec-search.ts` (literal matching/excerpts) and `src/scripts/nstsec-search.ts` (safe DOM rendering and keyboard/hash handling). Keep results grouped by page with compact occurrence excerpts; do not duplicate procedures into a search-only content layer. Run `node --experimental-strip-types --test tests/nstsec-search.test.mjs tests/nstsec.test.mjs` after a build. The JSON index must escape HTML script terminators, syntax spans must not break command words, and links into disclosures must reveal their target.
+
 The public site contains the project index at `/` and `/projects/`, plus interactive workspaces under `/tools/`.
 
 ## Interactive tools

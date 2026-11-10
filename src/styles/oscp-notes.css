@@ -86,8 +86,20 @@ aside a:hover { color: var(--link); text-decoration: underline; }
 aside .sub { padding-left: 10px; }
 footer { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 20px; font-size: 12px; color: var(--muted); }
 footer span { display: block; }
-#results { border: 1px solid var(--line); background: #fafbfc; border-radius: 5px; padding: 12px; margin-bottom: 28px; max-height: 340px; overflow: auto; }
-#results a { display: block; padding: 7px 10px; }
+#results { border: 1px solid var(--line); background: white; border-radius: 6px; margin-bottom: 28px; max-height: min(65vh, 640px); overflow: auto; overscroll-behavior: contain; }
+.search-summary { margin: 0; padding: 10px 16px; background: var(--soft); border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+.search-result { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.search-result:last-child { border-bottom: 0; }
+.search-result-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.search-result-title { font-size: 14px; font-weight: 650; overflow-wrap: anywhere; }
+.search-count { flex-shrink: 0; color: var(--muted); font-size: 11px; white-space: nowrap; }
+.search-track { display: block; color: var(--muted); font-size: 11px; margin-top: 1px; }
+.search-occurrence { display: block; margin-top: 9px; padding: 7px 9px; border-left: 2px solid #dce6f5; border-radius: 0 3px 3px 0; text-decoration: none; }
+.search-occurrence:hover,.search-occurrence:focus-visible { background: #f2f6fc; }
+.search-section { display: block; font-size: 11px; font-weight: 600; color: #385675; overflow-wrap: anywhere; }
+.search-excerpt { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+#results mark { background: #fff0c2; color: #624509 !important; padding: 0 2px; }
+@media(max-width:380px) { .search-result { padding: 12px; } .search-result-top { flex-wrap: wrap; gap: 2px 8px; } }
 @media(min-width:1700px) { main { margin-left: calc(var(--sidebar) + (100vw - var(--sidebar) - 1250px)/2); } }
 @media(max-width:1150px) { aside { display: none; } main { margin-right: 40px; } header { grid-template-columns: 180px 1fr 140px; } }
 @media(max-width:760px) {
