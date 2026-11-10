@@ -3,6 +3,7 @@ import {readFile,writeFile,mkdir,readdir,copyFile} from 'node:fs/promises';
 import {resolve,dirname,relative} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createMarkdownProcessor} from '@astrojs/markdown-remark';
+import {collectExploitLinks,renderExploitLinks} from '../src/lib/nstsec-exploit-links.mjs';
 const source=resolve(process.argv[2]||'');
 if(!process.argv[2])throw new Error('Provide the reviewed NSTSec checkout');
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -79,6 +80,12 @@ for(const [track,urls] of tracks){
 }
 const renderedTools=await processor.render(toolMarkdown);
 pages.push({depth:0,title:'Extra tools to obtain',path:'tools.md',slug:'tools',url:'/oscp/nstsec/tools/',html:renderedTools.code,headings:renderedTools.metadata.headings});
+const exploitLinks=collectExploitLinks(pages);
+const finderSource=await readFile(resolve(source,'public-exploit-finder.md'),'utf8');
+for(const marker of ['<!-- host-exploit-suggesters -->','<!-- existing-exploit-links -->'])if(finderSource.split(marker).length!==2)throw new Error('Finder needs exactly one '+marker);
+const finderMarkdown=finderSource.replace('<!-- host-exploit-suggesters -->',renderExploitLinks(exploitLinks,'suggesters')).replace('<!-- existing-exploit-links -->',renderExploitLinks(exploitLinks,'references')).replace(/\]\(services-exploitation\/README\.md#/g,'](/oscp/nstsec/services-exploitation/#');
+const finder=await processor.render(finderMarkdown);
+pages.push({depth:0,title:'Public exploit finder',path:'public-exploit-finder.md',slug:'public-exploit-finder',url:'/oscp/nstsec/public-exploit-finder/',html:finder.code,headings:finder.metadata.headings});
 await writeFile(resolve(root,'src/content/oscp-nstsec.snapshot.json'),JSON.stringify({source:'https://github.com/Astaruf/OSCP-notes',revision:'f6917994cbca3d2470f744962f84b30bc545e31e',pages,assets,tools})+'\n');
-console.log(`Indexed ${tools.length} tools / families across ${pages.length-1} source pages`);
+console.log(`Indexed ${tools.length} tools / families across ${entries.length} track pages; ${exploitLinks.length} exploit reference families`);
 console.log(`Prepared ${pages.length} pages and ${assets.length} assets`);

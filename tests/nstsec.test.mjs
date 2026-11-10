@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
+import {collectExploitLinks} from '../src/lib/nstsec-exploit-links.mjs';
 const root=new URL('../',import.meta.url);
 const snapshot=JSON.parse(readFileSync(new URL('src/content/oscp-nstsec.snapshot.json',root),'utf8'));
 test('adapted track pages and all local destinations exist in the built site',()=>{
- assert.equal(snapshot.pages.length,43);
- assert.equal(snapshot.pages.filter(p=>!p.depth&&p.path!=='tools.md').length,8);
+ assert.equal(snapshot.pages.length,44);
+ assert.equal(snapshot.pages.filter(p=>!p.depth&&!['tools.md','public-exploit-finder.md'].includes(p.path)).length,8);
  const missing=new Set();
  for(const p of snapshot.pages){
   const file=new URL('dist'+p.url+'index.html',root);
@@ -23,6 +24,37 @@ test('adapted track pages and all local destinations exist in the built site',()
  }
  assert.deepEqual([...missing],[]);
 });
+test('exploit finder aggregates actual owning links without copying procedures or adding a track',()=>{
+ const finder=snapshot.pages.find(p=>p.path==='public-exploit-finder.md');
+ assert.ok(finder);assert.ok(!finder.html.includes('<pre'));assert.ok(!finder.html.includes('<!--'));
+ for(const url of ['https://www.exploit-db.com/','https://packetstorm.news/','https://www.rapid7.com/db/','https://nvd.nist.gov/vuln/search'])assert.ok(finder.html.includes('href="'+url+'"'));
+ const entries=collectExploitLinks(snapshot.pages);
+ for(const name of ['WES-NG','Linux Exploit Suggester 2','Watson — legacy alternative','ZeroLogon public PoC and recovery guidance','Windows kernel exploit collection'])assert.ok(entries.some(e=>e.name===name));
+ for(const entry of entries){
+  assert.equal(new Set(entry.mentions.map(m=>m.owner+' '+m.url)).size,entry.mentions.length);
+  for(const mention of entry.mentions){
+   const [url,anchor]=mention.owner.split('#');const owner=snapshot.pages.find(p=>p.url===url);
+   assert.ok(owner&&!['tools.md','public-exploit-finder.md'].includes(owner.path));
+   assert.ok(owner.html.includes('href="'+mention.url.replaceAll('&','&amp;')+'"'));
+   assert.ok(!anchor||owner.html.includes('id="'+anchor+'"'));
+   assert.ok(finder.html.includes('href="'+mention.owner+'"'));
+   assert.ok(finder.html.includes('href="'+mention.url.replaceAll('&','&amp;')+'"'));
+  }
+ }
+ const windows=snapshot.pages.find(p=>p.path==='privilege-escalation/windows-privesc.md').html.replace(/<[^>]*>/g,'');
+ assert.ok(windows.includes('python3 wes.py --update')&&windows.includes('--muc-lookup'));
+ assert.ok(!windows.includes('CVE-2018-8210'));
+ const html=readFileSync(new URL('dist'+finder.url+'index.html',root),'utf8');
+ assert.ok(html.includes('aria-current="page">Public exploit finder</a>'));
+});
+
+test('exploit aggregation ignores missing and unrelated resources and does not index itself',()=>{
+ const page={title:'Windows',path:'windows.md',url:'/windows/',html:'<h2 id="finding">Finding</h2><a href="https://github.com/bitsadmin/wesng">WES</a><a href="https://github.com/bitsadmin/wesng">duplicate</a><a href="https://github.com/bitsadmin/wesng-evil">unrelated</a>'};
+ const result=collectExploitLinks([page,{...page,path:'public-exploit-finder.md',url:'/finder/'}]);
+ assert.equal(result.length,1);assert.equal(result[0].mentions.length,1);assert.equal(result[0].mentions[0].owner,'/windows/#finding');
+ assert.deepEqual(collectExploitLinks([]),[]);
+});
+
 test('tool index links each catalogued tool to its source notes and resolves fragments',()=>{
  assert.ok(snapshot.tools.length>25&&snapshot.tools.length<70);
  for(const name of ['Nmap and NSE','curl','GNU coreutils','Hydra','PowerShell and built-in cmdlets','linPEAS','winPEAS','PowerView','Mimikatz'])assert.ok(!snapshot.tools.some(t=>t.name===name),name+': stock tool should be omitted');

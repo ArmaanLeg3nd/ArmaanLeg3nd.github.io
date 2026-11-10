@@ -58,3 +58,11 @@ test('default notes search reaches proof handling and exploit repair handoffs',(
  assert.ok(searchNotes(searchPages,'cross-compilation').results.some(r=>r.page.url==='/oscp/nstsec/services-exploitation/'));
  assert.ok(searchNotes(searchPages,'diagnostic order').results.some(r=>r.page.url==='/oscp/nstsec/shells/'));
 });
+
+test('exploit finder is searchable without displacing the owning WES procedure',()=>{
+ const finder=searchNotes(searchPages,'Public exploit finder').results.find(r=>r.page.url==='/oscp/nstsec/public-exploit-finder/');
+ assert.ok(finder);
+ const wes=searchNotes(searchPages,'wes.py');
+ assert.ok(wes.results.some(r=>r.page.url==='/oscp/nstsec/privilege-escalation/windows-privesc/'));
+ assert.ok(searchNotes(searchPages,'WES-NG').results.some(r=>r.page.url==='/oscp/nstsec/public-exploit-finder/'));
+});
