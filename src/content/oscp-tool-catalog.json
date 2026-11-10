@@ -98,7 +98,7 @@
  ["Active Directory and credential tools","Kerberoast scripts and tgsrepcrack","https://github.com/nidem/kerberoast","kerberoast,getuserspns.ps1,tgsrepcrack"],
  ["Active Directory and credential tools","Spray-Passwords","https://github.com/ZilentJack/Spray-Passwords","spray-passwords,spray-passwords.ps1","Original repository currently returns 404; no replacement source verified."],
  ["Active Directory and credential tools","Ticket converter","https://github.com/Zer1t0/ticket_converter","ticket_converter"],
- ["Active Directory and credential tools","ZeroLogon PoC (source example)","https://github.com/risksense/zerologon","zerologon,set_empty_pw"],
+ ["Active Directory and credential tools","ZeroLogon PoC (source example)","https://github.com/dirkjanm/CVE-2020-1472","zerologon,set_empty_pw"],
  ["Active Directory and credential tools","samdump2","https://www.kali.org/tools/samdump2/","samdump2"],
  ["Active Directory and credential tools","creddump7","https://github.com/CiscoCXSecurity/creddump7","creddump7"],
  ["Active Directory and credential tools","pwdump / fgdump (legacy tool directory)","https://www.openwall.com/passwords/windows-pwdump","pwdump,fgdump"],

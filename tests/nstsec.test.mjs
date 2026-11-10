@@ -121,3 +121,21 @@ test('parent capabilities remain discoverable after consolidation',()=>{
  };
  for(const [path,ids] of Object.entries(aliases))for(const id of ids)assert.ok(page(path).includes('id="'+id+'"'),path+'#'+id);
 });
+
+test('readiness cleanup removes obsolete advice and unsafe default mutations',()=>{
+ const page=path=>snapshot.pages.find(p=>p.path===path).html.replace(/<[^>]*>/g,'');
+ const kerberos=page('active-directory/ad-attacking-kerberos.md'),movement=page('active-directory/ad-lateral-movement.md');
+ assert.ok(!kerberos.includes('impacket_0_9_19')&&!kerberos.includes('pip install .'));
+ assert.ok(kerberos.includes('impacket-GetUserSPNs')&&kerberos.includes('-request-user'));
+ assert.ok(!movement.includes('only use the TGT on the machine it was created for'));
+ assert.ok(!movement.includes('Affects ALL Windows Server versions'));
+ assert.ok(movement.includes('impacket-ticketConverter')&&movement.includes('-user-id USER_RID'));
+ assert.ok(!movement.includes('AllowUnencrypted')&&!movement.includes('trustedhosts -value *'));
+ const sql=page('web-application-attacks/sql-injection.md');
+ assert.ok(!sql.includes('FLUSHALL'));
+ assert.ok(sql.includes('CONFIG SET dir ORIGINAL_DIR')&&sql.includes('DEL STAGING_KEY'));
+ assert.ok(!page('transfer-files/README.md').includes('net localgroup administrators /add'));
+ const linux=page('privilege-escalation/linux-privesc.md');
+ assert.ok(!linux.includes('–k')&&!linux.includes('rpm –qa')&&!linux.includes("&gt; hash.txt'"));
+ assert.ok(!page('privilege-escalation/windows-privesc.md').includes('winPEASany.exe quiet'));
+});

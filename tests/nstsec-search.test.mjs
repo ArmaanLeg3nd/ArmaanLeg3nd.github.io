@@ -50,3 +50,11 @@ test('every generated section and alternative link resolves without changing not
  for(const p of snapshot.pages){const prepared=preparedNotes.get(p.url);assert.deepEqual(code(prepared.html),code(p.html),p.path);
  const ids=[...prepared.html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);for(const s of prepared.index.sections)if(s.anchor)assert.ok(ids.includes(s.anchor),p.path+'#'+s.anchor);}
 });
+
+test('default notes search reaches proof handling and exploit repair handoffs',()=>{
+ const proof=searchNotes(searchPages,'proof.txt');
+ const shell=proof.results.find(r=>r.page.url==='/oscp/nstsec/shells/');
+ assert.ok(shell);assert.ok(shell.previews.some(p=>p.url.endsWith('#capture-proof-and-retain-reproduction-steps')));
+ assert.ok(searchNotes(searchPages,'cross-compilation').results.some(r=>r.page.url==='/oscp/nstsec/services-exploitation/'));
+ assert.ok(searchNotes(searchPages,'diagnostic order').results.some(r=>r.page.url==='/oscp/nstsec/shells/'));
+});
