@@ -4,8 +4,8 @@ import {readFileSync,existsSync} from 'node:fs';
 const root=new URL('../',import.meta.url);
 const snapshot=JSON.parse(readFileSync(new URL('src/content/oscp-nstsec.snapshot.json',root),'utf8'));
 test('adapted track pages and all local destinations exist in the built site',()=>{
- assert.equal(snapshot.pages.length,44);
- assert.equal(snapshot.pages.filter(p=>!p.depth&&!['tools.md','automation.md'].includes(p.path)).length,8);
+ assert.equal(snapshot.pages.length,43);
+ assert.equal(snapshot.pages.filter(p=>!p.depth&&p.path!=='tools.md').length,8);
  const missing=new Set();
  for(const p of snapshot.pages){
   const file=new URL('dist'+p.url+'index.html',root);
@@ -31,7 +31,8 @@ test('tool index links each catalogued tool to its source notes and resolves fra
  for(const name of ['Mynmap','LinEnum','windows-privesc-check','Neo4j'])assert.ok(!snapshot.tools.some(t=>t.name===name),name+': retired routine dependency');
  const index=snapshot.pages.find(p=>p.path==='tools.md');
  assert.ok(index);
- assert.ok(index.html.includes('What to obtain')&&index.html.includes('Network Scan')&&index.html.includes('Active Directory'));
+ assert.ok(!index.html.includes('What to obtain'));
+ assert.ok(index.html.includes('Used in this track')&&index.html.includes('Network Scan')&&index.html.includes('Active Directory'));
  for(const tool of snapshot.tools){
   assert.ok(index.html.includes(tool.url.replaceAll('&','&amp;')),tool.name+': upstream link');
   assert.ok(tool.mentions.length,tool.name+': no owning page');
@@ -39,6 +40,7 @@ test('tool index links each catalogued tool to its source notes and resolves fra
    const [url,fragment]=mention.url.split('#');
    const page=snapshot.pages.find(p=>p.url===url);
    assert.ok(page,tool.name+': receiving page');
+   for(const source of mention.sources)assert.ok(page.html.includes('href="'+source+'"'),tool.name+': indexed link must exist on the track page');
    if(fragment)assert.ok(page.html.includes('id="'+fragment+'"'),tool.name+': section fragment');
   }
  }
@@ -49,8 +51,9 @@ test('the reference entry redirects to the adapted collection',()=>{
 });
 test('automation replaces only the overlapping first passes and retains focused work',()=>{
  const page=path=>snapshot.pages.find(p=>p.path===path).html;
- assert.ok(page('automation.md').includes('What replaces what'));
- assert.ok(page('automation.md').includes('href="/oscp/nstsec/tools/"'));
+ assert.ok(!snapshot.pages.some(p=>p.path==='automation.md'));
+ assert.ok(page('services-exploitation/80-443-http-s.md').includes('ffuf.json'));
+ assert.ok(page('services-exploitation/139-445-smb.md').includes('toolkit.py access'));
  assert.ok(page('network-scan.md').includes('--autorecon-plugins'));
  assert.ok(page('network-scan.md').includes('--remote'));
  assert.ok(!page('network-scan.md').includes('./port-scan.sh'));

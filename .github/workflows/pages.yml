@@ -31,7 +31,7 @@ jobs:
           for name in ('index.html', 'oscp/index.html', 'oscp/nstsec/index.html', 'oscp/nstsec/tools/index.html'):
               assert Path(name).is_file(), f'Missing built page: {name}'
           tools = Path('oscp/nstsec/tools/index.html').read_text()
-          assert 'Extra tools to obtain' in tools and 'What to obtain' in tools
+          assert 'Extra tools to obtain' in tools and 'Used in this track' in tools
           Path('_deployment.json').write_text(json.dumps({'revision': os.environ['DEPLOYMENT_SHA']}) + '\n')
           print('Static pages validated; deployment revision recorded.')
           PY
@@ -81,7 +81,7 @@ jobs:
               try:
                   assert json.loads(fetch('_deployment.json'))['revision'] == expected, 'Old deployment revision'
                   page = fetch('oscp/nstsec/tools/')
-                  assert 'Extra tools to obtain' in page and 'What to obtain' in page, 'Expected tool page is not live'
+                  assert 'Extra tools to obtain' in page and 'Used in this track' in page, 'Expected tool page is not live'
                   print('Verified published revision:', expected)
                   print('Verified tool page:', base + 'oscp/nstsec/tools/')
                   break

@@ -43,33 +43,38 @@ const extras=JSON.parse(await readFile(resolve(root,'src/content/oscp-extra-tool
 const escapeRegex=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const escapeHTML=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 const tools=[];
-for(const [group,name,url,aliases,note=''] of catalog){
- if(!extras.tools[name])continue;
+for(const [group,name,url,aliases] of catalog){
+ if(!extras.tools.includes(name))continue;
  const regex=new RegExp('(?<![a-z0-9_])(?:'+aliases.split(',').map(escapeRegex).join('|')+')(?=\\b|$)','i');
+ const canonical=new URL(url);
+ const matchesSource=link=>{
+  const actual=new URL(link.replaceAll('&amp;','&'));
+  const base=canonical.pathname.replace(/\/$/,'').toLowerCase();
+  const path=actual.pathname.replace(/\/$/,'').toLowerCase();
+  return actual.hostname.toLowerCase()===canonical.hostname.toLowerCase()&&(path===base||path.startsWith(base+'/'));
+ };
  const mentions=[];
  for(const page of pages){
-  const visible=page.html.replace(/<[^>]+>/g,' ');
-  const sourceLinks=[...page.html.matchAll(/href="(https?:[^"]+)"/g)].map(m=>m[1]).join(' ');
-  const code=[...page.html.matchAll(/<pre[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/g)].map(m=>m[1].replace(/<[^>]+>/g,' ')).join('\n');
-  const evidence=group==='Built-in utilities and runtimes'?code:visible+' '+sourceLinks;
-  if(!regex.test(evidence))continue;
+  const sourceLinks=[...new Set([...page.html.matchAll(/href="(https?:[^"]+)"/g)].map(m=>m[1]).filter(matchesSource))];
+  if(!sourceLinks.length)continue;
   const heading=page.headings.find(h=>regex.test(h.text))?.slug;
-  mentions.push({title:page.title,url:page.url+(heading?'#'+heading:'')});
+  mentions.push({title:page.title,url:page.url+(heading?'#'+heading:''),sources:sourceLinks});
  }
- if(mentions.length)tools.push({group,name,url,mentions,aliases,note,obtain:extras.tools[name]});
+ if(mentions.length)tools.push({group,name,url:mentions[0].sources[0],mentions});
 }
-let toolMarkdown='# Extra tools to obtain\n\nAdditional tools and scripts used in each track: open the project link to obtain the tool, or the notes link for its use. Stock Kali commands and built-in utilities are omitted.\n\n'+extras.baseline+' See the [Kali package baseline]('+extras.source+'). Packaged PEASS, PowerSploit and Mimikatz are omitted from this extra-install list; target-side files may still need to be transferred. These are conditional dependencies, not a list to install wholesale.\n';
+let toolMarkdown='# Extra tools to obtain\n\nExtra tool links collected from the individual track pages. Open the linked notes for setup, commands and when to use each tool. Standard Kali commands and built-in utilities are omitted.\n';
 let track='';const tracks=new Map();
-for(const page of pages.filter(p=>p.path!=='automation.md')){if(!page.depth){track=page.title;tracks.set(track,[]);}tracks.get(track)?.push(page.url);}
+for(const page of pages){if(!page.depth){track=page.title;tracks.set(track,[]);}tracks.get(track)?.push(page.url);}
 for(const [track,urls] of tracks){
  const selected=tools.filter(t=>t.mentions.some(m=>urls.includes(m.url.split('#')[0])));
  if(!selected.length)continue;
- toolMarkdown+='\n## '+track+'\n\n| Tool / upstream source | What to obtain | Used in this track |\n| --- | --- | --- |\n';
+ toolMarkdown+='\n## '+track+'\n\n| Tool links | Used in this track |\n| --- | --- |\n';
  for(const tool of selected.sort((a,b)=>a.name.localeCompare(b.name))){
   const refs=tool.mentions.filter(m=>urls.includes(m.url.split('#')[0])).map(m=>'<a href="'+escapeHTML(m.url)+'">'+escapeHTML(m.title)+'</a>');
   const links=refs.length>3?'<details><summary>'+refs.length+' pages</summary>'+refs.join('<br>')+'</details>':refs.join('<br>');
-  const note=tool.note?'<br><small class="tool-aliases">'+escapeHTML(tool.note)+'</small>':'';
-  toolMarkdown+='| ['+tool.name+']('+tool.url+')'+note+' | '+tool.obtain+' | '+links+' |\n';
+  const sources=[...new Set(tool.mentions.filter(m=>urls.includes(m.url.split('#')[0])).flatMap(m=>m.sources))];
+  const sourceLinks=sources.map((url,index)=>'<a href="'+escapeHTML(url.replaceAll('&amp;','&'))+'">'+escapeHTML(index?tool.name+' — source '+(index+1):tool.name)+'</a>').join('<br>');
+  toolMarkdown+='| '+sourceLinks+' | '+links+' |\n';
  }
 }
 const renderedTools=await processor.render(toolMarkdown);
