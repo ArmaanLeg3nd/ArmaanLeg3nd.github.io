@@ -1,8 +1,9 @@
 ---
 import {plainPages,plainURL,renderPlain,renderIndex,renderPageIndex} from '../../lib/oscp-plain';
 import {workflows,workflowFor,startingPanel,resourceLinks} from '../../lib/oscp-workflows';
-export function getStaticPaths(){return [...plainPages.map(page=>({params:{slug:page.slug||undefined},props:{page,workflow:undefined}})),...workflows.map(workflow=>({params:{slug:'workflows/'+workflow.id},props:{page:{path:'workflows/'+workflow.id,slug:'workflows/'+workflow.id,title:workflow.title,markdown:''},workflow}}))];}
+export function getStaticPaths(){return [{params:{slug:undefined},props:{page:plainPages.find(p=>!p.slug)!,workflow:undefined}},...plainPages.map(page=>({params:{slug:page.slug||'library'},props:{page,workflow:undefined}})),...workflows.map(workflow=>({params:{slug:'workflows/'+workflow.id},props:{page:{path:'workflows/'+workflow.id,slug:'workflows/'+workflow.id,title:workflow.title,markdown:''},workflow}}))];}
 const {page,workflow}=Astro.props;
+if(!Astro.params.slug)return Astro.redirect('/oscp/nstsec/');
 const rendered=workflow?{html:'',headings:[]}:await renderPlain(page);
 let {html}=rendered;
 const {headings}=rendered;

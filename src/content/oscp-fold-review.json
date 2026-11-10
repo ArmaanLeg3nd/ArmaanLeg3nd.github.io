@@ -1,4 +1,5 @@
 {
+  "notes/Automation_Toolkit.md": {"choices": [], "disposition": "Tool-selection overview: keep the stage comparison, source review and policy limits visible; no alternative attack procedure is folded."},
   "notes/Attack_Surface_Maps.md": {
     "choices": ["Discovery", "Services", "Web", "Public Exploits", "Credentials", "Shells and Transfers", "Linux Privilege Escalation", "Windows Privilege Escalation", "Active Directory", "Pivoting", "Execution Troubleshooting", "Evidence and Reporting"],
     "disposition": "Track choices fold independently; each preserves its technique-name links and exact cheatsheet destinations."

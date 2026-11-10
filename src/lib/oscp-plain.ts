@@ -18,7 +18,7 @@ const processor=createMarkdownProcessor({syntaxHighlight:false,smartypants:false
 const plainProcessor=createMarkdownProcessor({syntaxHighlight:false,smartypants:false});
 const cache=new Map<string,Promise<{html:string;headings:Heading[]}>>();
 const publicRoots=['https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/blob/main/','https://raw.githubusercontent.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/main/'];
-export function plainURL(page:PlainPage){return '/oscp/'+(page.slug?page.slug+'/':'');}
+export function plainURL(page:PlainPage){return '/oscp/'+(page.slug?page.slug+'/':'library/');}
 export function localTarget(target:string,sourcePath:string) {
  if(target.startsWith('#')||/^(?:mailto:|anytype:)/i.test(target))return target;
  let relative=target;const publicRoot=publicRoots.find(root=>target.startsWith(root));

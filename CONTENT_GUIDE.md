@@ -1,5 +1,11 @@
 # Project index
 
+## Adapted OSCP working notes
+
+`/oscp/` now leads to `/oscp/nstsec/`, the compact working collection adapted from Astaruf/NSTSec. The former reference landing remains at `/oscp/library/`; existing detailed procedure URLs remain available. The adaptation was authorized for the owner's configured personal deployment. Attribution is retained; no upstream license is implied.
+
+Edit the reviewed local source, then run `node scripts/sync-nstsec.mjs <reviewed-source-checkout>`. This converts GitBook hints, embeds and attachments, rewrites local links, copies source assets and pins rendered content in `src/content/oscp-nstsec.snapshot.json`. Builds do not require the private vault. Keep additions brief and inside the owning technique. Source preservation does not certify old examples as current or exam-permitted. Run `node --test tests/nstsec.test.mjs` after building to check routes, assets and the landing redirect.
+
 The public site contains the project index at `/` and `/projects/`, plus interactive workspaces under `/tools/`.
 
 ## Interactive tools
