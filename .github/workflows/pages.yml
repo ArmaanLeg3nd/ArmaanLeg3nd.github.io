@@ -1,0 +1,93 @@
+name: Publish website
+
+on:
+  push:
+    branches: [active-ghub-page]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages-production
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.ref == 'refs/heads/active-ghub-page'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Validate static site and record deployment revision
+        env:
+          DEPLOYMENT_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          for name in ('index.html', 'oscp/index.html', 'oscp/nstsec/index.html', 'oscp/nstsec/tools/index.html'):
+              assert Path(name).is_file(), f'Missing built page: {name}'
+          tools = Path('oscp/nstsec/tools/index.html').read_text()
+          assert 'Extra tools to obtain' in tools and 'What to obtain' in tools
+          Path('_deployment.json').write_text(json.dumps({'revision': os.environ['DEPLOYMENT_SHA']}) + '\n')
+          print('Static pages validated; deployment revision recorded.')
+          PY
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+          include-hidden-files: true
+
+  deploy:
+    needs: package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+        with:
+          timeout: '1200000'
+
+  verify:
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Verify published revision and tool page
+        env:
+          SITE_URL: ${{ needs.deploy.outputs.page_url }}
+          DEPLOYMENT_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.request
+          base = os.environ['SITE_URL'].rstrip('/') + '/'
+          expected = os.environ['DEPLOYMENT_SHA']
+          def fetch(path):
+              request = urllib.request.Request(base + path + '?revision=' + expected, headers={'Cache-Control': 'no-cache'})
+              with urllib.request.urlopen(request, timeout=15) as response:
+                  return response.read().decode()
+          for attempt in range(15):
+              try:
+                  assert json.loads(fetch('_deployment.json'))['revision'] == expected, 'Old deployment revision'
+                  page = fetch('oscp/nstsec/tools/')
+                  assert 'Extra tools to obtain' in page and 'What to obtain' in page, 'Expected tool page is not live'
+                  print('Verified published revision:', expected)
+                  print('Verified tool page:', base + 'oscp/nstsec/tools/')
+                  break
+              except Exception as error:
+                  if attempt == 14:
+                      raise SystemExit('Live verification failed: ' + str(error))
+                  print('Waiting for live content:', str(error))
+                  time.sleep(10)
+          PY
