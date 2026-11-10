@@ -24,9 +24,12 @@ test('adapted track pages and all local destinations exist in the built site',()
  assert.deepEqual([...missing],[]);
 });
 test('tool index links each catalogued tool to its source notes and resolves fragments',()=>{
- assert.ok(snapshot.tools.length>100);
+ assert.ok(snapshot.tools.length>25&&snapshot.tools.length<70);
+ for(const name of ['Nmap and NSE','curl','GNU coreutils','Hydra','PowerShell and built-in cmdlets','linPEAS','winPEAS','PowerView','Mimikatz'])assert.ok(!snapshot.tools.some(t=>t.name===name),name+': stock tool should be omitted');
+ for(const name of ['Seatbelt','SharpUp','nmapAutomator','Linux Smart Enumeration','Rubeus'])assert.ok(snapshot.tools.some(t=>t.name===name),name+': extra should be included');
  const index=snapshot.pages.find(p=>p.path==='tools.md');
  assert.ok(index);
+ assert.ok(index.html.includes('What to obtain')&&index.html.includes('Network Scan')&&index.html.includes('Active Directory'));
  for(const tool of snapshot.tools){
   assert.ok(index.html.includes(tool.url.replaceAll('&','&amp;')),tool.name+': upstream link');
   assert.ok(tool.mentions.length,tool.name+': no owning page');

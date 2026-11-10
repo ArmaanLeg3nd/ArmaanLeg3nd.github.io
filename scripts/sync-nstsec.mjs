@@ -39,10 +39,12 @@ for(const entry of entries){
  pages.push({...entry,slug:slug(entry.path),url:route(entry.path),html:rendered.code,headings:rendered.metadata.headings});
 }
 const catalog=JSON.parse(await readFile(resolve(root,'src/content/oscp-tool-catalog.json'),'utf8'));
+const extras=JSON.parse(await readFile(resolve(root,'src/content/oscp-extra-tools.json'),'utf8'));
 const escapeRegex=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const escapeHTML=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 const tools=[];
 for(const [group,name,url,aliases,note=''] of catalog){
+ if(!extras.tools[name])continue;
  const regex=new RegExp('(?<![a-z0-9_])(?:'+aliases.split(',').map(escapeRegex).join('|')+')(?=\\b|$)','i');
  const mentions=[];
  for(const page of pages){
@@ -54,22 +56,24 @@ for(const [group,name,url,aliases,note=''] of catalog){
   const heading=page.headings.find(h=>regex.test(h.text))?.slug;
   mentions.push({title:page.title,url:page.url+(heading?'#'+heading:'')});
  }
- if(mentions.length)tools.push({group,name,url,mentions,aliases,note});
+ if(mentions.length)tools.push({group,name,url,mentions,aliases,note,obtain:extras.tools[name]});
 }
-let toolMarkdown='# Tools and resources\n\nFind a tool’s project or documentation, then open the notes that use it. Built-in commands and related scripts are grouped under their parent toolkit.\n\nLinks identify tools mentioned in these notes; they are not an exam-permission list. Legacy names are kept so older examples remain searchable.\n';
-for(const group of [...new Set(tools.map(t=>t.group))]){
- toolMarkdown+='\n## '+group+'\n\n| Tool / project or documentation | Mentioned in |\n| --- | --- |\n';
- for(const tool of tools.filter(t=>t.group===group).sort((a,b)=>a.name.localeCompare(b.name))){
-  const refs=tool.mentions.map(m=>'<a href="'+escapeHTML(m.url)+'">'+escapeHTML(m.title)+'</a>');
+let toolMarkdown='# Extra tools to obtain\n\nAdditional tools and scripts used in each track: open the project link to obtain the tool, or the notes link for its use. Stock Kali commands and built-in utilities are omitted.\n\n'+extras.baseline+' See the [Kali package baseline]('+extras.source+'). Packaged PEASS, PowerSploit and Mimikatz are omitted from this extra-install list; target-side files may still need to be transferred. These are conditional dependencies, not a list to install wholesale.\n';
+let track='';const tracks=new Map();
+for(const page of pages){if(!page.depth){track=page.title;tracks.set(track,[]);}tracks.get(track)?.push(page.url);}
+for(const [track,urls] of tracks){
+ const selected=tools.filter(t=>t.mentions.some(m=>urls.includes(m.url.split('#')[0])));
+ if(!selected.length)continue;
+ toolMarkdown+='\n## '+track+'\n\n| Tool / upstream source | What to obtain | Used in this track |\n| --- | --- | --- |\n';
+ for(const tool of selected.sort((a,b)=>a.name.localeCompare(b.name))){
+  const refs=tool.mentions.filter(m=>urls.includes(m.url.split('#')[0])).map(m=>'<a href="'+escapeHTML(m.url)+'">'+escapeHTML(m.title)+'</a>');
   const links=refs.length>3?'<details><summary>'+refs.length+' pages</summary>'+refs.join('<br>')+'</details>':refs.join('<br>');
-  const aliases=tool.aliases.split(',');
-  const names=aliases.length>1?'<br><small class="tool-aliases">'+aliases.map(escapeHTML).join(' · ')+'</small>':'';
   const note=tool.note?'<br><small class="tool-aliases">'+escapeHTML(tool.note)+'</small>':'';
-  toolMarkdown+='| ['+tool.name+']('+tool.url+')'+names+note+' | '+links+' |\n';
+  toolMarkdown+='| ['+tool.name+']('+tool.url+')'+note+' | '+tool.obtain+' | '+links+' |\n';
  }
 }
 const renderedTools=await processor.render(toolMarkdown);
-pages.push({depth:0,title:'Tools and resources',path:'tools.md',slug:'tools',url:'/oscp/nstsec/tools/',html:renderedTools.code,headings:renderedTools.metadata.headings});
+pages.push({depth:0,title:'Extra tools to obtain',path:'tools.md',slug:'tools',url:'/oscp/nstsec/tools/',html:renderedTools.code,headings:renderedTools.metadata.headings});
 await writeFile(resolve(root,'src/content/oscp-nstsec.snapshot.json'),JSON.stringify({source:'https://github.com/Astaruf/OSCP-notes',revision:'f6917994cbca3d2470f744962f84b30bc545e31e',pages,assets,tools})+'\n');
 console.log(`Indexed ${tools.length} tools / families across ${pages.length-1} source pages`);
 console.log(`Prepared ${pages.length} pages and ${assets.length} assets`);
