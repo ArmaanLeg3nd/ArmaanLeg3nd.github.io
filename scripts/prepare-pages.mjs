@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 const root = await realpath(fileURLToPath(new URL('../',import.meta.url)));
 const source = await realpath(resolve(root,'dist'));
 const target = await realpath(resolve(root,'.deploy'));
+const workflowPath='.github/workflows/pages.yml';
+const workflow=await readFile(resolve(root,workflowPath));
 if (source !== resolve(root,'dist') || target !== resolve(root,'.deploy') || !target.startsWith(root+sep)) throw new Error('Unexpected source/deployment path.');
 const git = (...args) => execFileSync('git',['-C',target,...args],{encoding:'utf8'}).trim();
 if (git('status','--porcelain')) throw new Error('Deployment checkout has existing changes.');
@@ -23,6 +25,7 @@ async function files(directory) {
 }
 const buildFiles=await files(source), wanted=new Set(buildFiles.map(path => relative(source,path).split(sep).join('/')));
 wanted.add('.nojekyll');
+wanted.add(workflowPath);
 let removed=0;
 for(const file of git('ls-files','-z').split('\0').filter(Boolean)) {
   const path=resolve(target,file), rel=relative(target,path);
@@ -34,4 +37,6 @@ for(const path of buildFiles) {
   await mkdir(dirname(output),{recursive:true});await writeFile(output,await readFile(path));
 }
 await writeFile(resolve(target,'.nojekyll'),'');
+await mkdir(dirname(resolve(target,workflowPath)),{recursive:true});
+await writeFile(resolve(target,workflowPath),workflow);
 console.log(`Prepared ${buildFiles.length} build files; removed ${removed} obsolete tracked files. Git metadata preserved.`);

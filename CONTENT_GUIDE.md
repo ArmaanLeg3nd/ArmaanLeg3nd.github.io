@@ -68,6 +68,8 @@ npm run preview -- --host 127.0.0.1 --port 4321
 
 ## Hosting
 
+Publishing uses the repository-controlled `.github/workflows/pages.yml` on `active-ghub-page`, with GitHub Pages configured for Actions (`build_type: workflow`). The default/source branch owns the workflow; `prepare-pages.mjs` copies it into the deployment checkout and preserves it during later publications. The workflow packages the already validated static build, serializes deployments, allows 20 minutes for the Pages deploy step and then checks the live `_deployment.json` revision plus the extra-tools page. A push or artifact upload is not publication success. Confirm the workflow's verify job and live content before reporting a deployment complete. This adds verification and timeout control; it does not bypass the GitHub Pages backend.
+
 The site is hosted at https://armaanleg3nd.github.io/ from the `active-ghub-page` branch of `ArmaanLeg3nd/ArmaanLeg3nd.github.io`. Production contains only the built `dist/` files, including `.nojekyll`. Source is maintained on `codex/project-index`.
 
 Publish by copying a verified build into a clean checkout of `active-ghub-page`, committing it, and pushing normally. Keep the existing branch history; no force push is needed. To roll back, revert the deployment commit on that branch.
