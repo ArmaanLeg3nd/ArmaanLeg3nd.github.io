@@ -17,7 +17,7 @@ for(const file of await readdir(resolve(source,'.gitbook/assets'))){
  const target=resolve(root,'public/oscp/nstsec/assets',file);await mkdir(dirname(target),{recursive:true});await copyFile(resolve(source,'.gitbook/assets',file),target);assets.push(file);
 }
 const rebase=(target,path)=>{
- if(target.startsWith('#')||/^(?:[a-z]+:|\/\/)/i.test(target))return target;
+ if(target.startsWith('#')||target.startsWith('/')||/^(?:[a-z]+:|\/\/)/i.test(target))return target;
  const url=new URL(target,'https://local.invalid/'+path), dest=decodeURIComponent(url.pathname.slice(1));
  if(paths.has(dest))return route(dest)+url.hash;
  if(dest==='README.md'||dest==='WORKING-INDEX.md')return '/oscp/nstsec/';
@@ -60,7 +60,7 @@ for(const [group,name,url,aliases,note=''] of catalog){
 }
 let toolMarkdown='# Extra tools to obtain\n\nAdditional tools and scripts used in each track: open the project link to obtain the tool, or the notes link for its use. Stock Kali commands and built-in utilities are omitted.\n\n'+extras.baseline+' See the [Kali package baseline]('+extras.source+'). Packaged PEASS, PowerSploit and Mimikatz are omitted from this extra-install list; target-side files may still need to be transferred. These are conditional dependencies, not a list to install wholesale.\n';
 let track='';const tracks=new Map();
-for(const page of pages){if(!page.depth){track=page.title;tracks.set(track,[]);}tracks.get(track)?.push(page.url);}
+for(const page of pages.filter(p=>p.path!=='automation.md')){if(!page.depth){track=page.title;tracks.set(track,[]);}tracks.get(track)?.push(page.url);}
 for(const [track,urls] of tracks){
  const selected=tools.filter(t=>t.mentions.some(m=>urls.includes(m.url.split('#')[0])));
  if(!selected.length)continue;

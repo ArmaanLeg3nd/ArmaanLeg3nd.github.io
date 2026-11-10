@@ -1,4 +1,11 @@
 [
+ ["Network and web","AutoRecon","https://github.com/AutoRecon/AutoRecon","autorecon"],
+ ["Services and databases","enum4linux-ng","https://github.com/cddmp/enum4linux-ng","enum4linux-ng"],
+ ["Linux enumeration and escalation","pspy","https://github.com/DominicBreuker/pspy","pspy,pspy64,pspy32"],
+ ["Windows enumeration and escalation","PrivescCheck","https://github.com/itm4n/PrivescCheck","privesccheck,invoke-privesccheck"],
+ ["Active Directory and credential tools","ldapdomaindump","https://github.com/dirkjanm/ldapdomaindump","ldapdomaindump"],
+ ["Active Directory and credential tools","Our enumeration launchers","https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/tree/main/scripts/enum-toolkit","toolkit.py,invoke-enumtoolkit.ps1"],
+ ["Active Directory and credential tools","Our native AD / host helpers","https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference/tree/main/scripts/ad-map","invoke-admap,get-hostsurface"],
  ["Network and web","Nmap and NSE","https://nmap.org/","nmap,nse"],
  ["Network and web","Mynmap","https://github.com/Astaruf/mynmap","mynmap,port-scan.sh","Original repository currently returns 404; retained to identify the script in the notes."],
  ["Network and web","nmapAutomator","https://github.com/21y4d/nmapAutomator","nmapautomator"],
