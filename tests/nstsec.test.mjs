@@ -27,7 +27,8 @@ test('tool index links each catalogued tool to its source notes and resolves fra
  assert.ok(snapshot.tools.length>25&&snapshot.tools.length<70);
  for(const name of ['Nmap and NSE','curl','GNU coreutils','Hydra','PowerShell and built-in cmdlets','linPEAS','winPEAS','PowerView','Mimikatz'])assert.ok(!snapshot.tools.some(t=>t.name===name),name+': stock tool should be omitted');
  for(const name of ['Seatbelt','SharpUp','nmapAutomator','Linux Smart Enumeration','Rubeus'])assert.ok(snapshot.tools.some(t=>t.name===name),name+': extra should be included');
- for(const name of ['AutoRecon','pspy','PrivescCheck','enum4linux-ng','ldapdomaindump','Our enumeration launchers','Our native AD / host helpers'])assert.ok(snapshot.tools.some(t=>t.name===name),name+': selected automation should be indexed');
+ for(const name of ['AutoRecon','pspy','PrivescCheck','enum4linux-ng','ldapdomaindump','Our native AD / host helpers'])assert.ok(snapshot.tools.some(t=>t.name===name),name+': selected automation should be indexed');
+ assert.ok(!snapshot.tools.some(t=>t.name==='Our enumeration launchers'),'unreferenced wrappers are not an extra dependency');
  for(const name of ['Mynmap','LinEnum','windows-privesc-check','Neo4j'])assert.ok(!snapshot.tools.some(t=>t.name===name),name+': retired routine dependency');
  const index=snapshot.pages.find(p=>p.path==='tools.md');
  assert.ok(index);
@@ -53,8 +54,16 @@ test('automation replaces only the overlapping first passes and retains focused 
  const page=path=>snapshot.pages.find(p=>p.path===path).html;
  assert.ok(!snapshot.pages.some(p=>p.path==='automation.md'));
  assert.ok(page('services-exploitation/80-443-http-s.md').includes('ffuf.json'));
- assert.ok(page('services-exploitation/139-445-smb.md').includes('toolkit.py access'));
- assert.ok(page('network-scan.md').includes('--autorecon-plugins'));
+ assert.ok(page('services-exploitation/139-445-smb.md').includes('nxc smb HOST_FQDN --use-kcache --shares --pass-pol'));
+ assert.ok(page('network-scan.md').includes('top-tcp-ports,all-tcp-ports'));
+ assert.match(page('network-scan.md'),/exclude-tags = (?:&quot;|")default/);
+ assert.ok(page('network-scan.md').includes('--config ./autorecon.toml'));
+ for(const item of snapshot.pages)assert.ok(!/toolkit\.py|Invoke-EnumToolkit/.test(item.html),item.url+': no custom launcher dependency');
+ assert.ok(page('privilege-escalation/linux-privesc.md').includes('timeout --signal=INT 120s'));
+ assert.ok(page('privilege-escalation/windows-privesc.md').includes('Get-HostSurface.ps1'));
+ assert.ok(page('active-directory/ad-automatic-enumeration.md').includes('Invoke-ADMap.ps1'));
+ assert.ok(page('services-exploitation/80-443-http-s.md').includes('id="basic-path-discovery-with-the-web-launcher"'));
+ assert.ok(page('services-exploitation/139-445-smb.md').includes('id="existing-ticket-smb-inventory-with-our-launcher"'));
  assert.ok(page('network-scan.md').includes('--remote'));
  assert.ok(!page('network-scan.md').includes('./port-scan.sh'));
  assert.ok(page('services-exploitation/139-445-smb.md').includes('-Gm'));

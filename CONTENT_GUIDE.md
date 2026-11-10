@@ -8,6 +8,8 @@ The Extra tools to obtain page at `/oscp/nstsec/tools/` is a links-only aggregat
 
 Tool selection, replacement boundaries, setup and commands belong inside the relevant existing track pages. There is no standalone automation content page; its former URL redirects to the overview. Keep focused non-overlapping modes when retiring a broad default pass. Native helpers remain fallbacks/focused checks; launchers add evidence handling rather than collection coverage.
 
+Working notes now invoke upstream tools directly. The inline Network Scan profile owns useful AutoRecon selection/concurrency; native AD/host collectors remain because they implement collection/correlation. Existing enumeration-launcher source files are retained but are not a notes dependency or an indexed extra tool without an owning-page source link. Preserve legacy heading anchors when removing wrapper-specific headings.
+
 The shared Notes navigation, primary tool entry and OSCP project action all lead to `/oscp/`. `src/styles/oscp-notes.css` owns the standalone light presentation; do not inherit the portfolio theme or reintroduce source-specific heading colors. The track browser collapses on small screens, while desktop retains separate left tracks and right page contents. The local workspace's default reference is the corresponding reviewed source collection; extended study resources are secondary.
 
 `/oscp/` now leads to `/oscp/nstsec/`, the compact working collection adapted from Astaruf/NSTSec. The former reference landing remains at `/oscp/library/`; existing detailed procedure URLs remain available. The adaptation was authorized for the owner's configured personal deployment. Attribution is retained; no upstream license is implied.

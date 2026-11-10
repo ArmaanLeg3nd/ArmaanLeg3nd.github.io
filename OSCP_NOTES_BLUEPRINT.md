@@ -80,7 +80,7 @@ The manual-enumeration subdirectory is physically nested but its three entries c
 
 | Existing home | What belongs there |
 | --- | --- |
-| Network Scan | Manual scan baseline, AutoRecon follow-up, scope/coverage, saved output and distinct selected-port alternatives; shared enumeration-launcher setup and limits. |
+| Network Scan | Manual scan baseline, AutoRecon follow-up, scope/coverage, saved output and distinct selected-port alternatives; one inline AutoRecon profile/setup and useful run controls. |
 | Individual service pages | Service recognition, anonymous/authenticated enumeration, service-specific tool choices, focused validation and useful failure decisions. HTTP path discovery belongs on HTTP; ticket-based SMB inventory belongs on SMB. |
 | Web Application Attacks | Application mapping on the landing; complete attack procedures in the existing injection/inclusion/client-side pages. Link HTTP discovery rather than repeating it. |
 | Brute Forcing | Default credentials, wordlists/profiling/mangling and service-specific guessing variants with relevant constraints. |
