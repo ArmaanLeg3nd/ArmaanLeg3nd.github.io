@@ -4,6 +4,14 @@ import type { SearchPage } from '../lib/nstsec-search';
 const input = document.querySelector<HTMLInputElement>('#find')!;
 const results = document.querySelector<HTMLDivElement>('#results')!;
 const status = document.querySelector<HTMLDivElement>('#search-status')!;
+const backdrop = document.querySelector<HTMLDivElement>('#search-backdrop')!;
+let isOpen = false;
+function setOpen(open: boolean) {
+  isOpen = open; results.hidden = !open; backdrop.hidden = !open;
+  document.body.classList.toggle('search-open', open);
+  input.setAttribute('aria-expanded', String(open));
+}
+function closeSearch() { input.focus(); setOpen(false); }
 const pages: SearchPage[] = JSON.parse(document.querySelector('#notes-search-data')?.textContent || '[]');
 function highlighted(text: string, query: string) {
   const fragment = document.createDocumentFragment();
@@ -19,9 +27,13 @@ function highlighted(text: string, query: string) {
 }
 function update() {
   const found = searchNotes(pages, input.value);
-  results.replaceChildren(); results.hidden = !found.query;
-  input.setAttribute('aria-expanded', String(!!found.query));
-  if (!found.query) { status.textContent = ''; return; }
+  results.replaceChildren();
+  if (!found.query) {
+    status.textContent = '';
+    const prompt = document.createElement('p'); prompt.className = 'search-empty';
+    prompt.textContent = 'Search tools, commands and techniques across your notes.';
+    results.append(prompt); appendHelp(); return;
+  }
   const description = found.pages
     ? `${found.matches} match${found.matches === 1 ? '' : 'es'} in ${found.pages} page${found.pages === 1 ? '' : 's'}${found.pages > found.results.length ? ` · showing ${found.results.length}` : ''}`
     : 'No matches. Try a tool name, command option or shorter phrase.';
@@ -47,16 +59,35 @@ function update() {
     }
     results.append(card);
   }
+  appendHelp();
 }
-function clear() { input.value = ''; update(); input.focus(); }
-input.addEventListener('input', update);
+function appendHelp() {
+  const help = document.createElement('div'); help.className = 'search-help';
+  for (const [key, label] of [['↑ ↓', 'browse'], ['Enter', 'open'], ['Esc', 'close']]) {
+    const item = document.createElement('span'), keyboard = document.createElement('kbd');
+    keyboard.textContent = key; item.append(keyboard, document.createTextNode(' ' + label)); help.append(item);
+  }
+  results.append(help);
+}
+input.addEventListener('input', () => { update(); setOpen(true); });
+input.addEventListener('focus', () => { update(); setOpen(true); });
+backdrop.addEventListener('click', closeSearch);
+document.addEventListener('pointerdown', event => {
+  const target = event.target as Node;
+  if (isOpen && !input.parentElement?.contains(target) && !results.contains(target)) setOpen(false);
+});
+document.addEventListener('keydown', event => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); input.focus(); update(); setOpen(true); }
+  if (event.key === 'Escape' && isOpen) { event.preventDefault(); closeSearch(); }
+});
+document.addEventListener('focusin', event => { if (event.target !== input && !results.contains(event.target as Node)) setOpen(false); });
 input.addEventListener('keydown', event => {
-  if (event.key === 'Escape') clear();
+  if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeSearch(); return; }
   if (event.key === 'ArrowDown') { const first = results.querySelector<HTMLAnchorElement>('a'); if (first) { event.preventDefault(); first.focus(); } }
   if (event.key === 'Enter' && !event.isComposing) results.querySelector<HTMLAnchorElement>('a')?.click();
 });
 results.addEventListener('keydown', event => {
-  if (event.key === 'Escape') { clear(); return; }
+  if (event.key === 'Escape') { closeSearch(); return; }
   if (!['ArrowDown', 'ArrowUp'].includes(event.key)) return;
   const links = [...results.querySelectorAll<HTMLAnchorElement>('a')], current = links.indexOf(document.activeElement as HTMLAnchorElement);
   if (current < 0) return;
@@ -73,7 +104,7 @@ function revealSection() {
 window.addEventListener('hashchange', revealSection);
 results.addEventListener('click', event => {
   const link = (event.target as HTMLElement).closest('a');
-  if (link && new URL(link.href).pathname === location.pathname) setTimeout(revealSection, 0);
+  if (link) { setOpen(false); if (new URL(link.href).pathname === location.pathname) setTimeout(revealSection, 0); }
 });
 revealSection();
 const browser = document.querySelector<HTMLDetailsElement>('#track-browser')!, narrow = matchMedia('(max-width: 760px)');

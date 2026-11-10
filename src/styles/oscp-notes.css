@@ -86,8 +86,18 @@ aside a:hover { color: var(--link); text-decoration: underline; }
 aside .sub { padding-left: 10px; }
 footer { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 20px; font-size: 12px; color: var(--muted); }
 footer span { display: block; }
-#results { border: 1px solid var(--line); background: white; border-radius: 6px; margin-bottom: 28px; max-height: min(65vh, 640px); overflow: auto; overscroll-behavior: contain; }
-.search-summary { margin: 0; padding: 10px 16px; background: var(--soft); border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+html { scrollbar-gutter: stable; }
+body.search-open { overflow: hidden; }
+body.search-open header { z-index: 62; }
+body.search-open .search-label input { background: white; border-color: #86ade7; box-shadow: 0 0 0 3px #e5efff; }
+#search-backdrop { position: fixed; inset: 0; z-index: 60; background: rgb(22 32 49 / .28); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+#results { position: fixed; z-index: 61; top: calc(var(--header) + 14px); left: 50%; transform: translateX(-50%); width: min(780px, calc(100% - 32px)); border: 1px solid #dce3ed; background: white; border-radius: 12px; margin: 0; max-height: min(72vh, calc(100dvh - var(--header) - 40px)); overflow: auto; overscroll-behavior: contain; box-shadow: 0 24px 80px rgb(18 31 52 / .22), 0 4px 16px rgb(18 31 52 / .08); }
+.search-help { position: sticky; bottom: 0; display: flex; gap: 14px; padding: 9px 16px; border-top: 1px solid var(--line); background: #fafbfc; color: var(--muted); font-size: 11px; }
+.search-help kbd { font: inherit; color: #385675; }
+.search-empty { margin: 0; padding: 28px 20px; color: var(--muted); font-size: 13px; }
+@media(max-width:760px) { #results { top: calc(var(--header) + 8px); width: calc(100% - 24px); max-height: calc(100dvh - var(--header) - 24px); border-radius: 10px; } }
+@media print { #search-backdrop { display: none !important; } body.search-open { overflow: visible; } }
+.search-summary { position: sticky; top: 0; z-index: 1; margin: 0; padding: 10px 16px; background: var(--soft); border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 .search-result { padding: 14px 16px; border-bottom: 1px solid var(--line); }
 .search-result:last-child { border-bottom: 0; }
 .search-result-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
