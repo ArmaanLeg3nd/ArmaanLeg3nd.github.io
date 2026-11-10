@@ -85,7 +85,12 @@ for(const [track,urls] of tracks){
 const setups=collectToolSetups(setupSources,tools);
 const setupTemplate=await readFile(resolve(source,'tool-setup.md'),'utf8');
 const trackLinks=toolMarkdown.slice(toolMarkdown.indexOf('\n## '));
-const renderedTools=await processor.render(renderToolSetupPage(setupTemplate,setups,trackLinks));
+const bundled=JSON.parse(await readFile(resolve(root,'src/content/oscp-bundled-tools.json'),'utf8'));
+const bundledLinks='| Tool / family | Kali package | Used in these notes |\n| --- | --- | --- |\n'+bundled.tools.map(t=>{
+ const owner=pages.find(p=>p.path===t.ownerPath);if(!owner)throw new Error('Missing bundled tool owner: '+t.name);
+ return '| '+t.name+' | '+t.packages.map(p=>'`'+p+'`').join(', ')+' | ['+owner.title+']('+owner.url+') |';
+}).join('\n');
+const renderedTools=await processor.render(renderToolSetupPage(setupTemplate,setups,trackLinks,bundledLinks));
 pages.push({depth:0,title:'Extra tools to obtain',path:'tools.md',slug:'tools',url:'/oscp/nstsec/tools/',html:renderedTools.code,headings:renderedTools.metadata.headings});
 const exploitLinks=collectExploitLinks(pages);
 const finderSource=await readFile(resolve(source,'public-exploit-finder.md'),'utf8');

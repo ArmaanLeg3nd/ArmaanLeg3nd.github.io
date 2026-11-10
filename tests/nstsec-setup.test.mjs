@@ -37,7 +37,21 @@ test('setup collection fails closed on missing, duplicate, unknown or unsafe pac
  assert.throws(()=>collectToolSetups([source(meta)],[]),/no owning/);
  assert.throws(()=>collectToolSetups([source({...meta,packages:['one;other']})],[{name:'One'}]),/Invalid package/);
  const setups=collectToolSetups([source(meta)],[{name:'One'}]);
- const template=['baseline-packages','baseline-kali','baseline-linux','baseline-windows','optional-setups','track-tool-links'].map(k=>'<!-- '+k+' -->').join('\n');
+ const template=['baseline-packages','baseline-kali','baseline-linux','baseline-windows','optional-setups','track-tool-links','bundled-tool-lookup'].map(k=>'<!-- '+k+' -->').join('\n');
  const output=renderToolSetupPage(template,setups,'links');assert.equal(output.split('sudo apt install one').length-1,1);
  assert.throws(()=>renderToolSetupPage('missing',setups,''),/exactly one/);
+});
+
+test('stock Kali tools stay discoverable and newly identified extras have setup',()=>{
+ const utility=snapshot.pages.find(p=>p.path==='tools.md');const text=plain(utility.html);
+ const bundled=JSON.parse(readFileSync(new URL('../src/content/oscp-bundled-tools.json',import.meta.url),'utf8'));
+ for(const name of ['ffuf','NetExec','WPScan','Impacket examples','Nmap and NSE']){
+  assert.ok(bundled.tools.some(t=>t.name===name),name);assert.ok(text.includes(name));
+ }
+ assert.ok(text.includes('sudo apt install ffuf'));
+ for(const name of ['Process Monitor','RSAT Active Directory PowerShell','oletools: MacroRaptor','SecLists','sqlcmd','MongoDB shell','Get-SPN.ps1','exe2hex'])assert.ok(snapshot.tools.some(t=>t.name===name),name);
+ assert.ok(!snapshot.tools.some(t=>t.name==='w3af'));
+ const smtp=snapshot.pages.find(p=>p.path==='services-exploitation/25-465-587-smtp.md');
+ assert.ok(plain(smtp.html).includes('python3 vrfy.py TARGET USER'));
+ assert.ok(!plain(smtp.html).includes('print banner'));
 });

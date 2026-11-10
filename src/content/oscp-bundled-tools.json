@@ -1,0 +1,554 @@
+{
+  "basis": "Kali kali-linux-default 2026.4.2 dependency/recommendation closure plus Debian Essential base; installed package presence not used as proof of default",
+  "tools": [
+    {
+      "name": "Apache HTTP Server",
+      "packages": [
+        "apache2"
+      ],
+      "ownerPath": "web-application-attacks/file-inclusion-vulnerabilty.md"
+    },
+    {
+      "name": "Bash",
+      "packages": [
+        "bash"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "BIND tools: dig and host",
+      "packages": [
+        "bind9-dnsutils",
+        "bind9-host"
+      ],
+      "ownerPath": "services-exploitation/53-dns.md"
+    },
+    {
+      "name": "BusyBox",
+      "packages": [
+        "busybox"
+      ],
+      "ownerPath": "transfer-files/README.md"
+    },
+    {
+      "name": "CeWL",
+      "packages": [
+        "cewl"
+      ],
+      "ownerPath": "brute-forcing.md"
+    },
+    {
+      "name": "creddump7",
+      "packages": [
+        "creddump7"
+      ],
+      "ownerPath": "privilege-escalation/windows-privesc.md"
+    },
+    {
+      "name": "Crunch",
+      "packages": [
+        "crunch"
+      ],
+      "ownerPath": "brute-forcing.md"
+    },
+    {
+      "name": "curl",
+      "packages": [
+        "curl"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "DIRB",
+      "packages": [
+        "dirb"
+      ],
+      "ownerPath": "services-exploitation/80-443-http-s.md"
+    },
+    {
+      "name": "dpkg",
+      "packages": [
+        "dpkg"
+      ],
+      "ownerPath": "privilege-escalation/manual-enumeration/linux-enumeration.md"
+    },
+    {
+      "name": "enum4linux",
+      "packages": [
+        "enum4linux"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "Evil-WinRM",
+      "packages": [
+        "evil-winrm"
+      ],
+      "ownerPath": "active-directory/ad-lateral-movement.md"
+    },
+    {
+      "name": "ffuf",
+      "packages": [
+        "ffuf"
+      ],
+      "ownerPath": "services-exploitation/53-dns.md"
+    },
+    {
+      "name": "FTP client",
+      "packages": [
+        "ftp"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "GNU coreutils",
+      "packages": [
+        "coreutils"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "GNU findutils",
+      "packages": [
+        "findutils"
+      ],
+      "ownerPath": "services-exploitation/80-443-http-s.md"
+    },
+    {
+      "name": "GNU grep",
+      "packages": [
+        "grep"
+      ],
+      "ownerPath": "services-exploitation/389-636-3268-3269-ldap.md"
+    },
+    {
+      "name": "GNU sed",
+      "packages": [
+        "sed"
+      ],
+      "ownerPath": "brute-forcing.md"
+    },
+    {
+      "name": "Gobuster",
+      "packages": [
+        "gobuster"
+      ],
+      "ownerPath": "services-exploitation/53-dns.md"
+    },
+    {
+      "name": "Hashcat",
+      "packages": [
+        "hashcat"
+      ],
+      "ownerPath": "privilege-escalation/windows-privesc.md"
+    },
+    {
+      "name": "Hydra",
+      "packages": [
+        "hydra"
+      ],
+      "ownerPath": "brute-forcing.md"
+    },
+    {
+      "name": "Impacket examples",
+      "packages": [
+        "python3-impacket",
+        "impacket-scripts"
+      ],
+      "ownerPath": "services-exploitation/135-593-msrpc.md"
+    },
+    {
+      "name": "iproute2: ip and ss",
+      "packages": [
+        "iproute2"
+      ],
+      "ownerPath": "privilege-escalation/manual-enumeration/linux-enumeration.md"
+    },
+    {
+      "name": "John the Ripper and kirbi2john",
+      "packages": [
+        "john"
+      ],
+      "ownerPath": "services-exploitation/389-636-3268-3269-ldap.md"
+    },
+    {
+      "name": "kmod: lsmod and modinfo",
+      "packages": [
+        "kmod"
+      ],
+      "ownerPath": "privilege-escalation/manual-enumeration/linux-enumeration.md"
+    },
+    {
+      "name": "ldap3",
+      "packages": [
+        "python3-ldap3"
+      ],
+      "ownerPath": "services-exploitation/389-636-3268-3269-ldap.md"
+    },
+    {
+      "name": "linPEAS",
+      "packages": [
+        "peass"
+      ],
+      "ownerPath": "privilege-escalation/linux-privesc.md"
+    },
+    {
+      "name": "Linux capabilities: getcap",
+      "packages": [
+        "libcap2-bin"
+      ],
+      "ownerPath": "privilege-escalation/linux-privesc.md"
+    },
+    {
+      "name": "Masscan",
+      "packages": [
+        "masscan"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "Medusa",
+      "packages": [
+        "medusa"
+      ],
+      "ownerPath": "brute-forcing.md"
+    },
+    {
+      "name": "Metasploit / msfvenom / Meterpreter",
+      "packages": [
+        "metasploit-framework"
+      ],
+      "ownerPath": "services-exploitation/3306-mysql.md"
+    },
+    {
+      "name": "Mimikatz",
+      "packages": [
+        "mimikatz"
+      ],
+      "ownerPath": "active-directory/ad-authentication.md"
+    },
+    {
+      "name": "mkpasswd",
+      "packages": [
+        "whois"
+      ],
+      "ownerPath": "privilege-escalation/linux-privesc.md"
+    },
+    {
+      "name": "MySQL client",
+      "packages": [
+        "mariadb-client"
+      ],
+      "ownerPath": "services-exploitation/3306-mysql.md"
+    },
+    {
+      "name": "NBTscan",
+      "packages": [
+        "nbtscan"
+      ],
+      "ownerPath": "services-exploitation/139-445-smb.md"
+    },
+    {
+      "name": "Net-SNMP: snmpwalk",
+      "packages": [
+        "snmp"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "net-tools: ifconfig and route",
+      "packages": [
+        "net-tools"
+      ],
+      "ownerPath": "web-application-attacks/file-inclusion-vulnerabilty.md"
+    },
+    {
+      "name": "Netcat",
+      "packages": [
+        "netcat-traditional",
+        "windows-binaries"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "NetExec",
+      "packages": [
+        "netexec"
+      ],
+      "ownerPath": "services-exploitation/139-445-smb.md"
+    },
+    {
+      "name": "NFS utilities: showmount",
+      "packages": [
+        "nfs-common"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "Nikto",
+      "packages": [
+        "nikto"
+      ],
+      "ownerPath": "services-exploitation/80-443-http-s.md"
+    },
+    {
+      "name": "Nmap and NSE",
+      "packages": [
+        "nmap"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "Nuclei",
+      "packages": [
+        "nuclei"
+      ],
+      "ownerPath": "services-exploitation/80-443-http-s.md"
+    },
+    {
+      "name": "onesixtyone",
+      "packages": [
+        "onesixtyone"
+      ],
+      "ownerPath": "services-exploitation/161-snmp.md"
+    },
+    {
+      "name": "OpenLDAP: ldapsearch",
+      "packages": [
+        "ldap-utils"
+      ],
+      "ownerPath": "services-exploitation/389-636-3268-3269-ldap.md"
+    },
+    {
+      "name": "OpenSSH: ssh and scp",
+      "packages": [
+        "openssh-client"
+      ],
+      "ownerPath": "services-exploitation/README.md"
+    },
+    {
+      "name": "OpenSSL",
+      "packages": [
+        "openssl"
+      ],
+      "ownerPath": "services-exploitation/25-465-587-smtp.md"
+    },
+    {
+      "name": "Passing-the-hash toolkit",
+      "packages": [
+        "passing-the-hash"
+      ],
+      "ownerPath": "privilege-escalation/windows-privesc.md"
+    },
+    {
+      "name": "Pentestmonkey PHP reverse shell",
+      "packages": [
+        "webshells"
+      ],
+      "ownerPath": "shells/reverse-bind-shells.md"
+    },
+    {
+      "name": "PHP",
+      "packages": [
+        "php"
+      ],
+      "ownerPath": "services-exploitation/80-443-http-s.md"
+    },
+    {
+      "name": "PostgreSQL: psql",
+      "packages": [
+        "postgresql-client"
+      ],
+      "ownerPath": "services-exploitation/5432-postgres.md"
+    },
+    {
+      "name": "PowerUp",
+      "packages": [
+        "powersploit"
+      ],
+      "ownerPath": "privilege-escalation/windows-privesc.md"
+    },
+    {
+      "name": "PowerView",
+      "packages": [
+        "powersploit"
+      ],
+      "ownerPath": "active-directory/ad-manual-enumeration.md"
+    },
+    {
+      "name": "ProxyChains-NG",
+      "packages": [
+        "proxychains4"
+      ],
+      "ownerPath": "shells/reverse-bind-shells.md"
+    },
+    {
+      "name": "pwdump / fgdump (legacy tool directory)",
+      "packages": [
+        "windows-binaries"
+      ],
+      "ownerPath": "privilege-escalation/windows-privesc.md"
+    },
+    {
+      "name": "Python",
+      "packages": [
+        "python3"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "rdesktop",
+      "packages": [
+        "rdesktop"
+      ],
+      "ownerPath": "active-directory/ad-lateral-movement.md"
+    },
+    {
+      "name": "Redis CLI",
+      "packages": [
+        "redis-tools"
+      ],
+      "ownerPath": "web-application-attacks/sql-injection.md"
+    },
+    {
+      "name": "rpcclient and smbclient",
+      "packages": [
+        "smbclient"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "Ruby",
+      "packages": [
+        "ruby"
+      ],
+      "ownerPath": "transfer-files/README.md"
+    },
+    {
+      "name": "samdump2",
+      "packages": [
+        "samdump2"
+      ],
+      "ownerPath": "privilege-escalation/windows-privesc.md"
+    },
+    {
+      "name": "SearchSploit / Exploit-DB",
+      "packages": [
+        "exploitdb"
+      ],
+      "ownerPath": "services-exploitation/README.md"
+    },
+    {
+      "name": "SMBMap",
+      "packages": [
+        "smbmap"
+      ],
+      "ownerPath": "services-exploitation/139-445-smb.md"
+    },
+    {
+      "name": "Socat",
+      "packages": [
+        "socat"
+      ],
+      "ownerPath": "transfer-files/README.md"
+    },
+    {
+      "name": "SQLite CLI",
+      "packages": [
+        "sqlite3"
+      ],
+      "ownerPath": "web-application-attacks/sql-injection.md"
+    },
+    {
+      "name": "sqsh",
+      "packages": [
+        "sqsh"
+      ],
+      "ownerPath": "web-application-attacks/sql-injection.md"
+    },
+    {
+      "name": "sudo",
+      "packages": [
+        "sudo"
+      ],
+      "ownerPath": "network-scan.md"
+    },
+    {
+      "name": "systemd: systemctl",
+      "packages": [
+        "systemd"
+      ],
+      "ownerPath": "privilege-escalation/linux-privesc.md"
+    },
+    {
+      "name": "Telnet",
+      "packages": [
+        "telnet"
+      ],
+      "ownerPath": "services-exploitation/21-ftp.md"
+    },
+    {
+      "name": "UPX",
+      "packages": [
+        "upx-ucl"
+      ],
+      "ownerPath": "transfer-files/windows-downloads.md"
+    },
+    {
+      "name": "util-linux: mount, lsblk, namei and su",
+      "packages": [
+        "util-linux"
+      ],
+      "ownerPath": "services-exploitation/111-nfs-rpc.md"
+    },
+    {
+      "name": "Wapiti",
+      "packages": [
+        "wapiti"
+      ],
+      "ownerPath": "services-exploitation/80-443-http-s.md"
+    },
+    {
+      "name": "Wfuzz",
+      "packages": [
+        "wfuzz"
+      ],
+      "ownerPath": "services-exploitation/53-dns.md"
+    },
+    {
+      "name": "Wget",
+      "packages": [
+        "wget"
+      ],
+      "ownerPath": "services-exploitation/21-ftp.md"
+    },
+    {
+      "name": "WhatWeb",
+      "packages": [
+        "whatweb"
+      ],
+      "ownerPath": "services-exploitation/80-443-http-s.md"
+    },
+    {
+      "name": "WHOIS",
+      "packages": [
+        "whois"
+      ],
+      "ownerPath": "services-exploitation/53-dns.md"
+    },
+    {
+      "name": "winPEAS",
+      "packages": [
+        "peass"
+      ],
+      "ownerPath": "privilege-escalation/windows-privesc.md"
+    },
+    {
+      "name": "WPScan",
+      "packages": [
+        "wpscan"
+      ],
+      "ownerPath": "web-application-attacks/README.md"
+    }
+  ]
+}

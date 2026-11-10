@@ -13,7 +13,6 @@
     "Feroxbuster",
     "dirsearch",
     "Wapiti",
-    "w3af",
     "ZAP",
     "Nuclei",
     "CrackMapExec (legacy)",
@@ -51,9 +50,21 @@
     "Chameleon",
     "Simple PHP Web Shell",
     "PHP web shell (drag0s)",
-    "PHP web shell (itsKindred)",
     "JSP shells (LaiKash)",
     "JSP-Webshells (threedr3am)",
-    "Web shell collection (tennc)"
+    "Web shell collection (tennc)",
+    "SecLists",
+    "MongoDB shell",
+    "sqlcmd",
+    "FreeRDP",
+    "PuTTY / Plink",
+    "exe2hex",
+    "Process Monitor",
+    "RSAT Active Directory PowerShell",
+    "Probable Wordlists",
+    "WordList Compendium",
+    "Google fuzzing dictionaries",
+    "Jhaddix content-discovery list",
+    "CrackStation dictionary"
   ]
 }

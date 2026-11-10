@@ -48,7 +48,7 @@
  ["Services and databases","sqsh","https://sourceforge.net/projects/sqsh/","sqsh"],
  ["Passwords and wordlists","Hydra","https://github.com/vanhauser-thc/thc-hydra","hydra"],
  ["Passwords and wordlists","Medusa","https://github.com/jmk-foofus/medusa","medusa"],
- ["Passwords and wordlists","John the Ripper and kirbi2john","https://github.com/openwall/john","john,kirbi2john"],
+ ["Passwords and wordlists","John the Ripper and kirbi2john","https://github.com/openwall/john","john,kirbi2john,keepass2john,zip2john,ssh2john"],
  ["Passwords and wordlists","Hashcat","https://hashcat.net/hashcat/","hashcat"],
  ["Passwords and wordlists","CeWL","https://github.com/digininja/CeWL","cewl"],
  ["Passwords and wordlists","Crunch","https://www.kali.org/tools/crunch/","crunch"],
@@ -150,5 +150,8 @@
  ["Built-in utilities and runtimes","NFS utilities: showmount","https://linux-nfs.org/","showmount"],
  ["Built-in utilities and runtimes","kmod: lsmod and modinfo","https://github.com/kmod-project/kmod","lsmod,modinfo"],
  ["Built-in utilities and runtimes","dpkg","https://www.dpkg.org/","dpkg"],
- ["Built-in utilities and runtimes","RPM","https://rpm.org/","rpm"]
+ ["Built-in utilities and runtimes","RPM","https://rpm.org/","rpm"],
+ ["Services and databases","NetExec","https://github.com/Pennyw0rth/NetExec","netexec,nxc"],
+ ["Network and web","WPScan","https://github.com/wpscanteam/wpscan","wpscan"],
+ ["Windows enumeration and escalation","Process Monitor","https://learn.microsoft.com/en-us/sysinternals/downloads/procmon","procmon,procmon64.exe"]
 ]
