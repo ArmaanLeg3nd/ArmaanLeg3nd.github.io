@@ -51,7 +51,7 @@ test('the reference entry redirects to the adapted collection',()=>{
  assert.ok(existsSync(new URL('dist/oscp/reference/INDEX/index.html',root)));
 });
 test('automation replaces only the overlapping first passes and retains focused work',()=>{
- const page=path=>snapshot.pages.find(p=>p.path===path).html;
+ const page=path=>snapshot.pages.find(p=>p.path===path).html.replace(/<\/?span\b[^>]*>/g,'');
  assert.ok(!snapshot.pages.some(p=>p.path==='automation.md'));
  assert.ok(page('services-exploitation/80-443-http-s.md').includes('ffuf.json'));
  assert.ok(page('services-exploitation/139-445-smb.md').includes('nxc smb HOST_FQDN --use-kcache --shares --pass-pol'));
@@ -99,7 +99,7 @@ test('every local section handoff has a receiving anchor',()=>{
 });
 
 test('parent capabilities remain discoverable after consolidation',()=>{
- const page=path=>snapshot.pages.find(p=>p.path===path).html;
+ const page=path=>snapshot.pages.find(p=>p.path===path).html.replace(/<\/?span\b[^>]*>/g,'');
  assert.ok(page('services-exploitation/21-ftp.md').includes('href="/oscp/nstsec/brute-forcing/#ftp"'));
  assert.ok(!page('services-exploitation/21-ftp.md').includes('Brute Forcing SSH'));
  assert.ok(page('brute-forcing.md').includes('ftp-found.txt TARGET ftp'));

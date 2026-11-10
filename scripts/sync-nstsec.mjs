@@ -11,7 +11,7 @@ const entries=[...summary.matchAll(/^([ \t]*)\* \[([^\]]+)\]\(([^)]+)\)/gm)].fil
 const slug=path=>path.replace(/(?:^|\/)README\.md$/,'').replace(/\.md$/,'').replace(/\/$/,'');
 const route=path=>'/oscp/nstsec/'+(slug(path)?slug(path)+'/':'');
 const paths=new Set(entries.map(e=>e.path));
-const processor=await createMarkdownProcessor({syntaxHighlight:false,smartypants:false});
+const processor=await createMarkdownProcessor({syntaxHighlight:'shiki',shikiConfig:{theme:'github-light',langAlias:{'visual-basic':'vb',vba:'vb',url:'text'},transformers:[{code(node){node.children.push({type:'text',value:'\n'});}}]},smartypants:false});
 const assets=[];
 for(const file of await readdir(resolve(source,'.gitbook/assets'))){
  const target=resolve(root,'public/oscp/nstsec/assets',file);await mkdir(dirname(target),{recursive:true});await copyFile(resolve(source,'.gitbook/assets',file),target);assets.push(file);

@@ -107,3 +107,7 @@ footer span { display: block; }
 }
 @media(max-width:380px) { .track-index { grid-template-columns: 1fr; } }
 @media print { header,.track-browser,aside,#results,footer { display: none; } main { margin: 0; max-width: none; } pre { white-space: pre-wrap; overflow-wrap: anywhere; } a { color: inherit; } }
+
+/* Syntax is rendered at build time; keep the same quiet light code surface. */
+pre.astro-code { background: var(--soft) !important; }
+pre.astro-code code { background: transparent; padding: 0; }
