@@ -91,9 +91,11 @@ test('every local section handoff has a receiving anchor',()=>{
  for(const p of snapshot.pages)for(const m of p.html.matchAll(/href="([^"]*)"/g)){
   let u;try{u=new URL(m[1].replaceAll('&amp;','&'),'https://local'+p.url);}catch{continue;}
   if(u.origin!=='https://local'||!u.hash)continue;
-  const target=snapshot.pages.find(q=>q.url===u.pathname);if(!target)continue;
+  const target=snapshot.pages.find(q=>q.url===u.pathname);
+  const built=new URL('dist'+decodeURIComponent(u.pathname)+(u.pathname.endsWith('/')?'index.html':''),root);
+  const html=target?.html||(existsSync(built)?readFileSync(built,'utf8'):'');
   const id=decodeURIComponent(u.hash.slice(1));
-  if(![...target.html.matchAll(/\bid="([^"]+)"/g)].some(x=>x[1]===id))missing.push(p.path+' -> '+u.pathname+u.hash);
+  if(![...html.matchAll(/\bid="([^"]+)"/g)].some(x=>x[1]===id))missing.push(p.path+' -> '+u.pathname+u.hash);
  }
  assert.deepEqual(missing,[]);
 });
