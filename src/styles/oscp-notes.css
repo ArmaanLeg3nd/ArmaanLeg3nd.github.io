@@ -45,7 +45,7 @@ h1 { margin: 0 0 24px; font-size: clamp(27px, 2.4vw, 34px); letter-spacing: -.03
 h2 { margin: 44px 0 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); font-size: 22px; letter-spacing: -.02em; }
 h3 { margin: 30px 0 12px; font-size: 18px; }
 h4 { margin: 24px 0 10px; font-size: 16px; }
-h1 mark,h2 mark,h3 mark,h4 mark { color: inherit !important; background: transparent; padding: 0; }
+h1 mark,h2 mark,h3 mark,h4 mark { box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: .04em .2em; }
 h1 strong,h2 strong,h3 strong,h4 strong { font-weight: inherit; }
 p { margin: 14px 0; }
 li { margin: 5px 0; }
@@ -60,7 +60,14 @@ code { font-family: 'Cascadia Code', Consolas, 'Liberation Mono', monospace; }
 :not(pre)>code { background: #eef1f5; border-radius: 3px; padding: 2px 5px; font-size: .9em; overflow-wrap: anywhere; }
 blockquote { margin: 20px 0; border-left: 3px solid #9ab5dc; background: #f2f6fc; padding: 4px 18px; border-radius: 0 4px 4px 0; }
 blockquote p { margin: 8px 0; }
-mark { color: inherit !important; background: #fff0c2; border-radius: 2px; padding: 1px 3px; }
+/* Keep the parent notes' authored emphasis, with accessible filled highlights. */
+mark { color: #624509 !important; background: #fff0c2; border-radius: 3px; padding: 1px 4px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+mark[style*="color:red"] { color: #9b2635 !important; background: #fde8eb; }
+mark[style*="color:blue"] { color: #194d91 !important; background: #e5efff; }
+mark[style*="color:yellow"] { color: #624509 !important; background: #fff0c2; }
+mark code { color: inherit; background: transparent; padding: 0; }
+aside mark,aside mark[style] { color: inherit !important; background: transparent; padding: 0; }
+@media print { mark { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
 article details { border: 1px solid var(--line); border-radius: 4px; margin: 18px 0; padding: 10px 15px; }
 article details>summary { color: #445168; cursor: pointer; font-size: 14px; font-weight: 600; }
 img { display: block; max-width: 100%; height: auto; margin: 20px 0; border-radius: 4px; }
