@@ -79,6 +79,25 @@ The manual-enumeration subdirectory is physically nested but its three entries c
 
 ## 3. Content ownership
 
+### Extra tools preparation page (November 2026 revision)
+
+The owner explicitly expanded `/oscp/nstsec/tools/` from a links directory into an ordered preparation view. This replaces the former links-only rule; it does not create another track or move attack execution procedures out of their owners.
+
+1. **Start here:** all Bash setup runs inside Kali unless labelled for a Windows build machine; complete the baseline, choose alternatives deliberately, and distinguish a checkout from a runnable installation.
+2. **Prepare the workspace:** one shared prerequisite/package block, stable `~/oscp/tools/{repos,venvs,downloads,bin,artifacts}` paths, a current-shell PATH export and optional one-time shell persistence. Target work uses separate `~/oscp/work/TARGET/{staging,evidence}` directories.
+3. **Install tools used on Kali:** combine baseline APT dependencies into one ordered block; show necessary non-package setup openly. Optional tools must not join the baseline merely because they are linked.
+4. **Prepare target artifacts:** visible Linux/Windows baseline download/copy steps, architecture/runtime/companion-file cues and local file checks. Packaged PEAS artifacts are included as shared preparation even though PEAS is not an extra-install directory entry. Do not run target collectors during preparation.
+5. **Optional tools and configuration:** one collapsed entry per alternative/conditional addition. Clearly label Windows .NET build requirements, old packages/PoCs, source-only collections and local services. BloodHound configuration includes prerequisites, interactive setup, private credentials, local UI verification and collector compatibility; it is not an unconditional service startup.
+6. **Verify preparation:** local command/version/help and artifact checks, plus web login when a service is selected. Explain that these do not establish target execution, exploitability or exam permission.
+
+**Canonical ownership:** each indexed extra tool has exactly one `tool-setup` marked block in its owning track Markdown. Its JSON marker holds the exact catalogue name, stage, baseline/optional selection and APT package list; its body owns setup, necessary configuration, verification and a `setup-*` anchor. The body is rendered on its owner and transcluded into the utility. Old overlapping setup is replaced or linked. Source URLs and operational usage remain in the track. The vault `tool-setup.md` template owns only shared preparation and section order, not independent per-tool procedures. It is not in SUMMARY or rendered as another route.
+
+**Generation:** `src/lib/nstsec-tool-setup.mjs` validates one complete setup per actual indexed tool, rejects duplicate/missing/unknown entries and invalid package metadata, groups baseline packages and transcludes snippets. `sync-nstsec.mjs` derives the utility from that template plus owning Markdown. Baseline package commands are grouped once on the utility; target preparation omits only those already-grouped install lines. Tool sources and the all-links-by-track disclosure remain derived from actual track links. Existing track anchors are retained.
+
+**Editorial rules:** use ordinary upstream commands, not a universal installer wrapper. Keep shared prerequisites once, preserve full companion directories, select only relevant target files for staging, and keep optional dependencies out of baseline commands. Do not overwrite existing checkouts silently, bypass managed Python, auto-run exploit code or imply Linux compilation of legacy Windows .NET projects. Put installation/version test evidence privately; keep only useful operational limits on the public page.
+
+**Validation:** test complete catalogue coverage, canonical owner/anchor matches, transclusion of setup commands, package deduplication, baseline/optional separation, local links and old anchors, search, eight tracks and build/type checks. Verify the published commands in Kali where possible. Record downloads/file checks, help/syntax checks, service readiness and actual target execution separately. No target activity is implied by authorization to test Kali setup.
+
 ### Public exploit finder utility (November 2026 addition)
 
 The owner explicitly requested `/oscp/nstsec/public-exploit-finder/` as a cross-track link directory. It sits beside Extra tools to obtain, outside the eight track groups, and appears in ordinary notes search. This is a deliberate exception to avoiding new navigation layers: exploit discovery spans service, Linux, Windows and AD pages, while a compact directory lets the reader find a public source without duplicating those procedures.
@@ -90,7 +109,7 @@ The owner explicitly requested `/oscp/nstsec/public-exploit-finder/` as a cross-
 - **Maintenance:** add or correct a source link at the procedure first, classify a genuinely new family if useful, then regenerate. Remove directory entries automatically when no owning link remains. Keep historical or conditional sources labelled; do not present a precompiled artifact as a verified match. Utility-page links must not count as owning instructions in Extra tools.
 - **Validation:** preserve eight visible track groups; verify every generated source/backlink/fragment, absence of copied command blocks, deduplication, exclusion of unrelated URL prefixes and search discoverability. Check current official policy before claiming permission; using a Metasploit module remains subject to its restrictions even when the database listing is public.
 
-The existing `tools.md` directory still owns only extra dependency links; this utility owns public-exploit discovery links. Neither becomes a separate source of operational instructions.
+The existing `tools.md` directory owns preparation and extra dependency links; this finder owns public-exploit discovery links. Operational attack procedures stay in the tracks.
 
 | Existing home | What belongs there |
 | --- | --- |
@@ -108,7 +127,7 @@ The existing `tools.md` directory still owns only extra dependency links; this u
 | Hash Cracking Techniques | Offline recovery and useful hash-format/tool selection. |
 | Transfer Files | Shared download/transfer baseline and transport choices; Windows directional variants stay on existing download/upload pages. |
 | Shells | Direction and landed identity on the landing; connection/payload variants and web-shell procedures on their existing pages. |
-| Extra tools to obtain | Aggregated actual extra-tool hyperlinks from the owning pages and backlinks to those notes. No independent setup, commands, ranking or recommendations. |
+| Extra tools to obtain | Ordered Kali preparation, target artifact preparation, optional configuration and local checks, transcluded from canonical owning-page setup blocks; retains upstream links/backlinks. No duplicated attack procedures. |
 | Public exploit finder | Public search/advisory destinations and derived selected exploit/suggester hyperlinks with owning-section backlinks. No duplicated setup or execution procedures. |
 
 These are ownership boundaries, not a claim that every inherited section already satisfies them. If a change crosses tracks, put the full procedure in one home and link to its exact relevant section from the other.
@@ -148,7 +167,7 @@ When replacing a custom wrapper in the concise notes, design the direct workflow
 - Keep the baseline focused. Put complete variants for different access contexts, selected coverage, multiple assigned hosts, constrained connectivity or genuinely useful controls beside it. Do not make every optional setting part of every invocation or impose repeated When/Baseline/Interpretation/Next headings.
 - Retain custom native collectors or correlations when they provide useful functionality rather than merely launching another tool. For individual questions, prefer an appropriate direct upstream or built-in check. Do not expand one useful collector into pages of duplicated low-level commands.
 - Source-check options and relevant versions, inspect plugin behaviour and current exam restrictions, then verify the direct invocation in an authorized context before calling it live-validated. Testing a wrapper does not automatically validate a revised direct profile. Note material changes in coverage, defaults or removed safeguards in private review evidence; retain operational cues where they affect safe/correct use.
-- Replace superseded wrapper instructions in place and consolidate duplication. Preserve the eight tracks, existing page ownership and useful links. Extra tools to obtain remains an aggregation of actual upstream links from those pages. Wrapper source files are not deleted merely because the notes switch to direct commands; deletion requires an explicit scope decision.
+- Replace superseded wrapper instructions in place and consolidate duplication. Preserve the eight tracks, existing page ownership and useful links. Extra tools to obtain aggregates actual upstream links and canonical setup snippets from those pages. Wrapper source files are not deleted merely because the notes switch to direct commands; deletion requires an explicit scope decision.
 
 Keep the live playbook free of progress records, audit counts, build status, study metadata and real-target material. Do not label a tool exam-permitted without current official policy verification, or confuse source-checked commands with executed/lab-validated evidence.
 
@@ -163,13 +182,14 @@ Keep the live playbook free of progress records, audit counts, build status, stu
 | Vault `public-exploit-finder.md` / `src/lib/nstsec-exploit-links.mjs` | Utility introduction / selected URL-family classification and generated section backlinks. The utility stays out of SUMMARY track membership. |
 | `src/content/oscp-nstsec.snapshot.json` | Generated build input, including rendered pages, headings, assets and derived tools. Never hand-author procedure changes here. Builds need neither the vault nor network access. |
 | `src/content/oscp-tool-catalog.json` | Recognizes tool projects and aliases. Does not own usage guidance. |
+| Vault `tool-setup.md` / `src/lib/nstsec-tool-setup.mjs` | Shared preparation template / validation and transclusion of canonical track setup blocks. |
 | `src/content/oscp-extra-tools.json` | Extra-install eligibility names only. Does not own setup instructions. Stock/built-in tools stay excluded; custom/minimal Kali images may differ. |
 | `src/pages/oscp/nstsec/[...slug].astro` | Overview and topic rendering, left/right navigation and current search behavior. |
 | `src/styles/oscp-notes.css` | Standalone shared light styling. Keep it independent of the portfolio theme. |
 | `src/pages/oscp/nstsec/automation.astro` | Compatibility redirect to overview. Not a content page. |
 | This blueprint / `CONTENT_GUIDE.md` | Structural editing contract / site-wide build, deployment and other collection documentation. Neither is a learner-facing track. |
 
-The tool directory currently groups qualifying links under five tracks; tracks without classified extra-tool hyperlinks have no empty tools section. Names occurring only in code/prose do not create an index entry. Each listed upstream URL must also exist on an owning page. The directory is an aggregation of classified extra dependencies, not every hyperlink or every installed command.
+The tool directory retains qualifying source links grouped by track below its ordered preparation workflow; tracks without classified extra-tool hyperlinks have no empty links section. Names occurring only in code/prose do not create an index entry. Each listed upstream URL must also exist on an owning page. The directory is an aggregation of classified extra dependencies and their shared preparation snippets, not every hyperlink or every installed command.
 
 ## 6. Required workflow for future changes
 

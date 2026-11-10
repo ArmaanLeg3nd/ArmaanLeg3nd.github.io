@@ -4,6 +4,7 @@ import {resolve,dirname,relative} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createMarkdownProcessor} from '@astrojs/markdown-remark';
 import {collectExploitLinks,renderExploitLinks} from '../src/lib/nstsec-exploit-links.mjs';
+import {collectToolSetups,renderToolSetupPage} from '../src/lib/nstsec-tool-setup.mjs';
 const source=resolve(process.argv[2]||'');
 if(!process.argv[2])throw new Error('Provide the reviewed NSTSec checkout');
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -26,9 +27,12 @@ const rebase=(target,path)=>{
  return 'https://github.com/Astaruf/OSCP-notes/blob/main/'+dest+url.hash;
 };
 const pages=[];
+const setupSources=[];
 for(const entry of entries){
  let fence=false;
- let md=(await readFile(resolve(source,entry.path),'utf8')).replace(/\r\n/g,'\n').split('\n').map(line=>{
+ const authored=await readFile(resolve(source,entry.path),'utf8');
+ setupSources.push({...entry,url:route(entry.path),markdown:authored});
+ let md=authored.replace(/\r\n/g,'\n').split('\n').map(line=>{
   if(/^\s*(`{3,}|~{3,})/.test(line)){fence=!fence;return line;}
   if(fence)return line;
   line=line.replace(/\{%\s*embed url="([^"]+)"\s*%\}/g,'[Open resource]($1)').replace(/\{%\s*file src="([^"]+)"\s*%\}/g,'[Source attachment]($1)').replace(/\{%\s*code title="([^"]+)"\s*%\}/g,'**$1**').replace(/\{%\s*hint style="([^"]+)"\s*%\}/g,'> **Note:**').replace(/\{%\s*end(?:hint|embed|code)\s*%\}/g,'');
@@ -78,7 +82,10 @@ for(const [track,urls] of tracks){
   toolMarkdown+='| '+sourceLinks+' | '+links+' |\n';
  }
 }
-const renderedTools=await processor.render(toolMarkdown);
+const setups=collectToolSetups(setupSources,tools);
+const setupTemplate=await readFile(resolve(source,'tool-setup.md'),'utf8');
+const trackLinks=toolMarkdown.slice(toolMarkdown.indexOf('\n## '));
+const renderedTools=await processor.render(renderToolSetupPage(setupTemplate,setups,trackLinks));
 pages.push({depth:0,title:'Extra tools to obtain',path:'tools.md',slug:'tools',url:'/oscp/nstsec/tools/',html:renderedTools.code,headings:renderedTools.metadata.headings});
 const exploitLinks=collectExploitLinks(pages);
 const finderSource=await readFile(resolve(source,'public-exploit-finder.md'),'utf8');
