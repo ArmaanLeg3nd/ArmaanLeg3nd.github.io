@@ -7,7 +7,7 @@ const source=resolve(process.argv[2]||'');
 if(!process.argv[2])throw new Error('Provide the reviewed NSTSec checkout');
 const root=fileURLToPath(new URL('../',import.meta.url));
 const summary=await readFile(resolve(source,'SUMMARY.md'),'utf8');
-const entries=[...summary.matchAll(/^(\s*)\* \[([^\]]+)\]\(([^)]+)\)/gm)].filter(m=>m[3]!=='README.md').map(m=>({depth:m[1].length?1:0,title:m[2],path:m[3]}));
+const entries=[...summary.matchAll(/^([ \t]*)\* \[([^\]]+)\]\(([^)]+)\)/gm)].filter(m=>m[3]!=='README.md').map(m=>({depth:m[1].length?1:0,title:m[2],path:m[3]}));
 const slug=path=>path.replace(/(?:^|\/)README\.md$/,'').replace(/\.md$/,'').replace(/\/$/,'');
 const route=path=>'/oscp/nstsec/'+(slug(path)?slug(path)+'/':'');
 const paths=new Set(entries.map(e=>e.path));
