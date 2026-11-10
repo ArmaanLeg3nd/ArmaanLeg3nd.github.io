@@ -1,11 +1,11 @@
 [
   {
-    "name": "OSCP Strategy Workspace & Reference",
+    "name": "OSCP Notes & Reference",
     "category": "Security methodology",
-    "summary": "An interactive exploitation strategy map with recognition checks, operational procedures, and a companion attack-path visualizer for recorded investigations.",
+    "summary": "Focused service and technique notes with copyable commands, concise checks, and a simple track index. Extended procedures and investigation tools remain available.",
     "stack": ["Astro", "Svelte", "OSCP"],
     "repo": "https://github.com/ArmaanLeg3nd/OSCP-Exploitation-Reference",
-    "link": {"label": "Open workspace", "href": "/tools/oscp/"}
+    "link": {"label": "Open notes", "href": "/oscp/"}
   },
   {
     "name": "PMXencrypt - Python Runtime Crypter",

@@ -16,7 +16,7 @@ export const navigationSections: Array<{ key: SectionKey | "home"; label: string
   { key: "writeups", label: "Writeups", href: "/writeups/" },
   { key: "projects", label: "Projects", href: "/projects/" },
   { key: "tools", label: "Tools", href: "/tools/" },
-  { key: "notes", label: "Notes", href: "/notes/" },
+  { key: "notes", label: "Notes", href: "/oscp/" },
   { key: "labs", label: "Labs", href: "/labs/" },
   { key: "research", label: "Research", href: "/research/" },
   { key: "about", label: "About", href: "/about/" },

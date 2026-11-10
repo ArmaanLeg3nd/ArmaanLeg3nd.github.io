@@ -15,7 +15,7 @@
       "enabled": false
     },
     "notes": {
-      "enabled": false
+      "enabled": true
     },
     "labs": {
       "enabled": false
@@ -32,7 +32,7 @@
   },
   "socials": [
     {
-      "label": "GitHub \u2197",
+      "label": "GitHub ↗",
       "href": "https://github.com/ArmaanLeg3nd"
     }
   ]

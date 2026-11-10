@@ -27,3 +27,14 @@ test('the reference entry redirects to the adapted collection',()=>{
  assert.ok(readFileSync(new URL('dist/oscp/index.html',root),'utf8').includes('/oscp/nstsec/'));
  assert.ok(existsSync(new URL('dist/oscp/reference/INDEX/index.html',root)));
 });
+test('site entry points make the new notes primary',()=>{
+ const home=readFileSync(new URL('dist/index.html',root),'utf8');
+ const projects=readFileSync(new URL('dist/projects/index.html',root),'utf8');
+ const tools=JSON.parse(readFileSync(new URL('src/content/tools.json',root),'utf8'));
+ assert.ok(home.includes('href="/oscp/"'));
+ assert.ok(projects.includes('Open notes')&&projects.includes('href="/oscp/"'));
+ assert.equal(tools[0].href,'/oscp/');
+ assert.equal(tools[0].title,'OSCP notes');
+ const page=readFileSync(new URL('dist/oscp/nstsec/index.html',root),'utf8');
+ assert.ok(page.includes('id="track-browser"')&&page.includes('class="skip-link"'));
+});

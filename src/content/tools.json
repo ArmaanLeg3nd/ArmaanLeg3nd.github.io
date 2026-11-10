@@ -1,19 +1,19 @@
 [
   {
     "id": "oscp-plain",
-    "title": "OSCP plain reference",
+    "title": "OSCP notes",
     "href": "/oscp/",
     "category": "Reference",
-    "summary": "A simple light reference with blue links, complete notes and a persistent hierarchical index.",
+    "summary": "The primary OSCP notes: focused service and technique pages, clear commands and a simple track index.",
     "facts": [
-      "Plain pages",
-      "Fixed index",
-      "Full reference"
+      "Quick lookup",
+      "Track index",
+      "Commands & checks"
     ]
   },
   {
     "id": "oscp",
-    "title": "OSCP strategy workspace",
+    "title": "Extended OSCP workspace",
     "href": "/tools/oscp/",
     "category": "Security methodology",
     "summary": "Navigate from discovery to evidence. Recognition clues, prerequisite checks, complete commands, and conditional next steps.",
