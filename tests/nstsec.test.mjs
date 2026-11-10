@@ -4,8 +4,8 @@ import {readFileSync,existsSync} from 'node:fs';
 const root=new URL('../',import.meta.url);
 const snapshot=JSON.parse(readFileSync(new URL('src/content/oscp-nstsec.snapshot.json',root),'utf8'));
 test('adapted track pages and all local destinations exist in the built site',()=>{
- assert.equal(snapshot.pages.length,42);
- assert.equal(snapshot.pages.filter(p=>!p.depth).length,8);
+ assert.equal(snapshot.pages.length,43);
+ assert.equal(snapshot.pages.filter(p=>!p.depth&&p.path!=='tools.md').length,8);
  const missing=new Set();
  for(const p of snapshot.pages){
   const file=new URL('dist'+p.url+'index.html',root);
@@ -22,6 +22,21 @@ test('adapted track pages and all local destinations exist in the built site',()
   }
  }
  assert.deepEqual([...missing],[]);
+});
+test('tool index links each catalogued tool to its source notes and resolves fragments',()=>{
+ assert.ok(snapshot.tools.length>100);
+ const index=snapshot.pages.find(p=>p.path==='tools.md');
+ assert.ok(index);
+ for(const tool of snapshot.tools){
+  assert.ok(index.html.includes(tool.url.replaceAll('&','&amp;')),tool.name+': upstream link');
+  assert.ok(tool.mentions.length,tool.name+': no owning page');
+  for(const mention of tool.mentions){
+   const [url,fragment]=mention.url.split('#');
+   const page=snapshot.pages.find(p=>p.url===url);
+   assert.ok(page,tool.name+': receiving page');
+   if(fragment)assert.ok(page.html.includes('id="'+fragment+'"'),tool.name+': section fragment');
+  }
+ }
 });
 test('the reference entry redirects to the adapted collection',()=>{
  assert.ok(readFileSync(new URL('dist/oscp/index.html',root),'utf8').includes('/oscp/nstsec/'));

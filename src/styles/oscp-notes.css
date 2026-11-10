@@ -69,6 +69,7 @@ figcaption { font-size: 12px; color: var(--muted); }
 table { display: block; max-width: 100%; overflow: auto; border-collapse: collapse; font-size: 14px; margin: 20px 0; }
 td,th { text-align: left; border: 1px solid var(--line); padding: 9px 12px; vertical-align: top; }
 th { background: var(--soft); }
+.tool-aliases { display: block; color: var(--muted); font-size: 11px; line-height: 1.6; max-width: 320px; overflow-wrap: anywhere; }
 aside { position: fixed; top: calc(var(--header) + 40px); right: 24px; bottom: 24px; width: 185px; overflow: auto; font-size: 12px; line-height: 1.6; border-left: 1px solid var(--line); padding-left: 18px; }
 aside strong { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
 aside ul { padding: 0; list-style: none; }

@@ -2,6 +2,8 @@
 
 ## Adapted OSCP working notes
 
+The Tools and resources page at `/oscp/nstsec/tools/` is generated during `sync-nstsec.mjs` from `src/content/oscp-tool-catalog.json` and actual mentions in the source pages. The catalog owns upstream/documentation links and aliases; the importer owns page backlinks and section references. Built-in commands and related example scripts are grouped under their toolkit. Add newly introduced tools to the catalog when editing notes, and check the resulting page references. The generated directory is separate from the eight track groups and is included in ordinary notes search.
+
 The shared Notes navigation, primary tool entry and OSCP project action all lead to `/oscp/`. `src/styles/oscp-notes.css` owns the standalone light presentation; do not inherit the portfolio theme or reintroduce source-specific heading colors. The track browser collapses on small screens, while desktop retains separate left tracks and right page contents. The local workspace's default reference is the corresponding reviewed source collection; extended study resources are secondary.
 
 `/oscp/` now leads to `/oscp/nstsec/`, the compact working collection adapted from Astaruf/NSTSec. The former reference landing remains at `/oscp/library/`; existing detailed procedure URLs remain available. The adaptation was authorized for the owner's configured personal deployment. Attribution is retained; no upstream license is implied.
