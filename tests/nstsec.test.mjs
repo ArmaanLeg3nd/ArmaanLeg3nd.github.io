@@ -89,7 +89,7 @@ test('automation replaces only the overlapping first passes and retains focused 
  assert.ok(page('services-exploitation/139-445-smb.md').includes('nxc smb HOST_FQDN --use-kcache --shares --pass-pol'));
  assert.ok(page('network-scan.md').includes('top-tcp-ports,all-tcp-ports'));
  assert.match(page('network-scan.md'),/exclude-tags = (?:&quot;|")default/);
- assert.ok(page('network-scan.md').includes('--config ./autorecon.toml'));
+ assert.ok(page('network-scan.md').includes('oscp/tools/config/autorecon.toml'));
  for(const item of snapshot.pages)assert.ok(!/toolkit\.py|Invoke-EnumToolkit/.test(item.html),item.url+': no custom launcher dependency');
  assert.ok(page('privilege-escalation/linux-privesc.md').includes('timeout --signal=INT 120s'));
  assert.ok(page('privilege-escalation/windows-privesc.md').includes('Get-HostSurface.ps1'));

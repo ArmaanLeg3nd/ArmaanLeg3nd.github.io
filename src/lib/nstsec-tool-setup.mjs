@@ -19,12 +19,25 @@ export function collectToolSetups(sources,tools){
  for(const name of expected)if(!result.some(r=>r.name===name))throw new Error('Missing tool setup: '+name);
  return result;
 }
-export function renderToolSetupPage(template,setups,trackLinks,bundledLinks=''){
+export function collectToolConfigurations(sources){
+ const result=[];
+ for(const source of sources){
+  for(const match of source.markdown.replace(/\r\n/g,'\n').matchAll(/<!-- tool-config (\{[^\n]+\}) -->\s*([\s\S]*?)\s*<!-- \/tool-config -->/g)){
+   const meta=JSON.parse(match[1]),body=match[2],anchor=body.match(/<a id="(config-[^"]+)"><\/a>/)?.[1];
+   if(typeof meta.name!=='string'||!meta.name||typeof meta.usage!=='string'||!(/^[a-z0-9][a-z0-9-]*$/).test(meta.usage)||!anchor||!body.includes('```bash'))throw new Error('Incomplete tool configuration: '+source.path);
+   const owner=source.url+'#'+anchor;
+   if(result.some(r=>r.name===meta.name||r.owner===owner))throw new Error('Duplicate tool configuration: '+meta.name);
+   result.push({...meta,body,owner,usage:source.url+'#'+meta.usage,title:source.title});
+  }
+ }
+ return result;
+}
+export function renderToolSetupPage(template,setups,trackLinks,bundledLinks='',configurations=[]){
  const baseline=setups.filter(s=>s.tier==='baseline');
  const packages=[...new Set(baseline.flatMap(s=>s.packages))];
  const use=s=>`\n\n[Use ${s.name}](${s.usage}) · [Setup source](${s.owner})\n`;
  const entry=(s,open)=>{
-  let body=s.body.replace(/<a id="setup-[^"]+"><\/a>/,'');
+  let body=s.body.replace(/<a id="(?:setup|config)-[^"]+"><\/a>/,'');
   if(open){body=body.replace(/^<details>\s*<summary>[\s\S]*?<\/summary>/,'### '+s.name).replace(/<\/details>\s*$/,'');
    if(s.packages.length)body=body.replace(/^sudo apt install [^\n]+\n/gm,'').replace(/```bash\s*```/g,'');
    return body+use(s);
@@ -42,6 +55,7 @@ export function renderToolSetupPage(template,setups,trackLinks,bundledLinks=''){
   }).filter(Boolean).join('\n\n'),
   'track-tool-links':trackLinks,
   'bundled-tool-lookup':bundledLinks,
+  'reusable-configurations':configurations.map(s=>entry(s,false)).join('\n\n'),
  };
  for(const [key,value]of Object.entries(sections)){
   const marker='<!-- '+key+' -->';if(template.split(marker).length!==2)throw new Error('Setup template needs exactly one '+marker);

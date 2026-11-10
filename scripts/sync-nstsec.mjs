@@ -4,7 +4,7 @@ import {resolve,dirname,relative} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createMarkdownProcessor} from '@astrojs/markdown-remark';
 import {collectExploitLinks,renderExploitLinks} from '../src/lib/nstsec-exploit-links.mjs';
-import {collectToolSetups,renderToolSetupPage} from '../src/lib/nstsec-tool-setup.mjs';
+import {collectToolSetups,collectToolConfigurations,renderToolSetupPage} from '../src/lib/nstsec-tool-setup.mjs';
 const source=resolve(process.argv[2]||'');
 if(!process.argv[2])throw new Error('Provide the reviewed NSTSec checkout');
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -90,7 +90,8 @@ const bundledLinks='| Tool / family | Kali package | Used in these notes |\n| --
  const owner=pages.find(p=>p.path===t.ownerPath);if(!owner)throw new Error('Missing bundled tool owner: '+t.name);
  return '| '+t.name+' | '+t.packages.map(p=>'`'+p+'`').join(', ')+' | ['+owner.title+']('+owner.url+') |';
 }).join('\n');
-const renderedTools=await processor.render(renderToolSetupPage(setupTemplate,setups,trackLinks,bundledLinks));
+const configurations=collectToolConfigurations(setupSources);
+const renderedTools=await processor.render(renderToolSetupPage(setupTemplate,setups,trackLinks,bundledLinks,configurations));
 pages.push({depth:0,title:'Extra tools to obtain',path:'tools.md',slug:'tools',url:'/oscp/nstsec/tools/',html:renderedTools.code,headings:renderedTools.metadata.headings});
 const exploitLinks=collectExploitLinks(pages);
 const finderSource=await readFile(resolve(source,'public-exploit-finder.md'),'utf8');

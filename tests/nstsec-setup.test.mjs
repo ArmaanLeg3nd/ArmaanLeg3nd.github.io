@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {collectToolSetups,renderToolSetupPage} from '../src/lib/nstsec-tool-setup.mjs';
+import {collectToolSetups,collectToolConfigurations,renderToolSetupPage} from '../src/lib/nstsec-tool-setup.mjs';
 const snapshot=JSON.parse(readFileSync(new URL('../src/content/oscp-nstsec.snapshot.json',import.meta.url),'utf8'));
 const plain=html=>html.replace(/<[^>]*>/g,'').replaceAll('&quot;','"').replaceAll('&#x26;','&').replaceAll('&amp;','&').replaceAll('&#x3C;','<').replaceAll('&lt;','<').replaceAll('&gt;','>');
 const blocks=html=>[...html.matchAll(/<pre\b[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/g)].map(m=>plain(m[1]).trim());
@@ -37,7 +37,7 @@ test('setup collection fails closed on missing, duplicate, unknown or unsafe pac
  assert.throws(()=>collectToolSetups([source(meta)],[]),/no owning/);
  assert.throws(()=>collectToolSetups([source({...meta,packages:['one;other']})],[{name:'One'}]),/Invalid package/);
  const setups=collectToolSetups([source(meta)],[{name:'One'}]);
- const template=['baseline-packages','baseline-kali','baseline-linux','baseline-windows','optional-setups','track-tool-links','bundled-tool-lookup'].map(k=>'<!-- '+k+' -->').join('\n');
+ const template=['baseline-packages','baseline-kali','baseline-linux','baseline-windows','optional-setups','track-tool-links','bundled-tool-lookup','reusable-configurations'].map(k=>'<!-- '+k+' -->').join('\n');
  const output=renderToolSetupPage(template,setups,'links');assert.equal(output.split('sudo apt install one').length-1,1);
  assert.throws(()=>renderToolSetupPage('missing',setups,''),/exactly one/);
 });
@@ -54,4 +54,32 @@ test('stock Kali tools stay discoverable and newly identified extras have setup'
  const smtp=snapshot.pages.find(p=>p.path==='services-exploitation/25-465-587-smtp.md');
  assert.ok(plain(smtp.html).includes('python3 vrfy.py TARGET USER'));
  assert.ok(!plain(smtp.html).includes('print banner'));
+});
+
+test('reusable configurations are shared once and usage selects the prepared paths',()=>{
+ const utility=snapshot.pages.find(p=>p.path==='tools.md'),text=plain(utility.html),names=[];
+ for(const page of snapshot.pages.filter(p=>!['tools.md','public-exploit-finder.md'].includes(p.path))){
+  for(const match of page.html.matchAll(/<!-- tool-config (\{[^\n]+\}) -->\s*([\s\S]*?)<!-- \/tool-config -->/g)){
+   const meta=JSON.parse(match[1]),anchor=match[2].match(/id="(config-[^"]+)"/)[1];names.push(meta.name);
+   assert.ok(utility.html.includes('href="'+page.url+'#'+anchor+'"'));
+   assert.ok(page.html.includes('id="'+meta.usage+'"'));
+   for(const code of blocks(match[2]))for(const line of code.split('\n').filter(Boolean))assert.ok(text.includes(line),meta.name+': lost config command '+line);
+  }
+ }
+ assert.deepEqual(names.sort(),['SOCKS client profile','Legacy Samba client profile','Kali SSH endpoint','HTTP file receiver','TFTP file receiver'].sort());
+ const scan=plain(snapshot.pages.find(p=>p.path==='network-scan.md').html);
+ assert.equal(scan.split('exclude-tags = "default"').length-1,1);
+ assert.equal(text.split('exclude-tags = "default"').length-1,1);
+ assert.ok(!scan.includes('--config ./autorecon.toml'));
+ assert.ok(text.includes('config/autorecon.toml')&&text.includes('config/proxychains-oscp.conf'));
+ const windows=plain(snapshot.pages.find(p=>p.path==='privilege-escalation/windows-privesc.md').html);
+ assert.ok(!windows.includes('PermitRootLogin yes'));
+ assert.ok(windows.includes('impacket-psexec -port 1445'));
+});
+
+test('configuration metadata rejects ambiguous and invalid receiving sections',()=>{
+ const source={path:'owner.md',title:'Owner',url:'/owner/',markdown:'<!-- tool-config {"name":"Example","usage":"run-it"} -->\n<details><a id="config-example"></a>\n```bash\ntrue\n```\n</details>\n<!-- /tool-config -->'};
+ assert.equal(collectToolConfigurations([source])[0].usage,'/owner/#run-it');
+ assert.throws(()=>collectToolConfigurations([source,source]),/Duplicate/);
+ assert.throws(()=>collectToolConfigurations([{...source,markdown:source.markdown.replace('run-it','javascript:bad')}]),/Incomplete/);
 });
