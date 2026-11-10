@@ -12,7 +12,8 @@ test('every indexed tool has one canonical setup and the utility preserves its s
    const meta=JSON.parse(match[1]);assert.ok(!found.has(meta.name),meta.name);found.set(meta.name,meta);
    const anchor=match[2].match(/id="(setup-[^"]+)"/)[1];assert.ok(utility.html.includes(page.url+'#'+anchor));
    const tool=snapshot.tools.find(t=>t.name===meta.name);
-   const usage=tool.mentions.find(m=>m.url.split('#')[0]===page.url)?.url||page.url;
+   const usage=meta.usage?page.url+'#'+meta.usage:tool.mentions.find(m=>m.url.split('#')[0]===page.url)?.url||page.url;
+   if(meta.usage)assert.ok(page.html.includes('id="'+meta.usage+'"'),meta.name+': missing receiving anchor');
    assert.ok(utility.html.includes('href="'+usage+'">Use '+meta.name.replaceAll('&','&amp;')));
    const utilityText=plain(utility.html);
    for(const code of blocks(match[2]))for(const line of code.split('\n').filter(Boolean)){
@@ -36,6 +37,8 @@ test('setup collection fails closed on missing, duplicate, unknown or unsafe pac
  assert.throws(()=>collectToolSetups([source(meta),source(meta)],[{name:'One'}]),/Duplicate/);
  assert.throws(()=>collectToolSetups([source(meta)],[]),/no owning/);
  assert.throws(()=>collectToolSetups([source({...meta,packages:['one;other']})],[{name:'One'}]),/Invalid package/);
+ assert.throws(()=>collectToolSetups([source({...meta,usage:'javascript:bad'})],[{name:'One'}]),/Invalid setup receiving/);
+ const explicit=collectToolSetups([source({...meta,usage:'run-one'})],[{name:'One'}]);assert.equal(explicit[0].usage,'/owner/#run-one');
  const setups=collectToolSetups([source(meta)],[{name:'One'}]);
  const template=['baseline-packages','baseline-kali','baseline-linux','baseline-windows','optional-setups','track-tool-links','bundled-tool-lookup','reusable-configurations'].map(k=>'<!-- '+k+' -->').join('\n');
  const output=renderToolSetupPage(template,setups,'links');assert.equal(output.split('sudo apt install one').length-1,1);
@@ -66,7 +69,7 @@ test('reusable configurations are shared once and usage selects the prepared pat
    for(const code of blocks(match[2]))for(const line of code.split('\n').filter(Boolean))assert.ok(text.includes(line),meta.name+': lost config command '+line);
   }
  }
- assert.deepEqual(names.sort(),['SOCKS client profile','Legacy Samba client profile','Kali SSH endpoint','HTTP file receiver','TFTP file receiver'].sort());
+ assert.deepEqual(names.sort(),['SOCKS client profile','Legacy Samba client profile','Kali SSH endpoint','HTTP file receiver','TFTP file receiver','Packaged Windows support files'].sort());
  const scan=plain(snapshot.pages.find(p=>p.path==='network-scan.md').html);
  assert.equal(scan.split('exclude-tags = "default"').length-1,1);
  assert.equal(text.split('exclude-tags = "default"').length-1,1);

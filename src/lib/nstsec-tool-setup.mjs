@@ -12,7 +12,8 @@ export function collectToolSetups(sources,tools){
    const anchor=body.match(/<a id="(setup-[^"]+)"><\/a>/)?.[1];
    if(!anchor||!(/```(?:bash|powershell|cmd)\n/).test(body))throw new Error('Incomplete setup: '+meta.name);
    const tool=tools.find(t=>t.name===meta.name);
-   const usage=tool.mentions?.find(m=>m.url.split('#')[0]===source.url)?.url||source.url;
+   if(meta.usage!==undefined&&(typeof meta.usage!=='string'||!(/^[a-z0-9][a-z0-9-]*$/).test(meta.usage)))throw new Error('Invalid setup receiving section: '+meta.name);
+   const usage=meta.usage?source.url+'#'+meta.usage:tool.mentions?.find(m=>m.url.split('#')[0]===source.url)?.url||source.url;
    result.push({...meta,body,owner:source.url+'#'+anchor,usage,title:source.title});
   }
  }
