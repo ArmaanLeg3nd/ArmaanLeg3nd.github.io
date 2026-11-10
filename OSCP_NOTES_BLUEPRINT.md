@@ -123,6 +123,18 @@ Keep mandatory sequential checks, prerequisites and decisive interpretation visi
 | New page, navigation layer or track | First show why an existing owner cannot hold the coherent procedure without harming lookup. Do not create a page just to announce or compare additions. |
 | Retirement or rename | Consolidate useful unique content first, fix receiving links, and preserve a redirect or anchor where practical. |
 
+### Replacing wrappers with direct tool use
+
+When replacing a custom wrapper in the concise notes, design the direct workflow around the learner's task. Do not mechanically paste the wrapper's generated command or reduce the tool to its shortest possible invocation. Assess which collection/plugin choices, authentication context, scope, output, concurrency, timing and other options provide a concrete benefit in that scenario. Keep useful upstream orchestration tools such as AutoRecon intact; there is no requirement to decompose them into their smallest constituent tools.
+
+- Put a complete direct invocation or short necessary sequence in the existing owning section. Code blocks contain operational commands, without wrapper banners, print statements, explanatory comments or redundant bookkeeping. Keep necessary output capture and useful native tool output.
+- Keep options that materially improve coverage, control, reliability or interpretation. Use suitable upstream defaults where no override is needed. Retain distinct non-overlapping capabilities and required authentication/configuration; explain a meaningful limitation briefly beside the command.
+- Put stable, worthwhile plugin/configuration choices in one small inspectable configuration file when that makes use clearer. Define its contents and setup once, inline in a labelled disclosure on the owning page. A few clear flags can be preferable to another file; do not create configuration layers solely to conceal a long command. Avoid repeated file-path arguments when one deliberate profile selection is sufficient.
+- Keep the baseline focused. Put complete variants for different access contexts, selected coverage, multiple assigned hosts, constrained connectivity or genuinely useful controls beside it. Do not make every optional setting part of every invocation or impose repeated When/Baseline/Interpretation/Next headings.
+- Retain custom native collectors or correlations when they provide useful functionality rather than merely launching another tool. For individual questions, prefer an appropriate direct upstream or built-in check. Do not expand one useful collector into pages of duplicated low-level commands.
+- Source-check options and relevant versions, inspect plugin behaviour and current exam restrictions, then verify the direct invocation in an authorized context before calling it live-validated. Testing a wrapper does not automatically validate a revised direct profile. Note material changes in coverage, defaults or removed safeguards in private review evidence; retain operational cues where they affect safe/correct use.
+- Replace superseded wrapper instructions in place and consolidate duplication. Preserve the eight tracks, existing page ownership and useful links. Extra tools to obtain remains an aggregation of actual upstream links from those pages. Wrapper source files are not deleted merely because the notes switch to direct commands; deletion requires an explicit scope decision.
+
 Keep the live playbook free of progress records, audit counts, build status, study metadata and real-target material. Do not label a tool exam-permitted without current official policy verification, or confuse source-checked commands with executed/lab-validated evidence.
 
 ## 5. Authoring and build ownership
