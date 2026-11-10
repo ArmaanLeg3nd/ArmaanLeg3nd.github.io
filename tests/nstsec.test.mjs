@@ -85,3 +85,37 @@ test('site entry points make the new notes primary',()=>{
  const page=readFileSync(new URL('dist/oscp/nstsec/index.html',root),'utf8');
  assert.ok(page.includes('id="track-browser"')&&page.includes('class="skip-link"'));
 });
+
+test('every local section handoff has a receiving anchor',()=>{
+ const missing=[];
+ for(const p of snapshot.pages)for(const m of p.html.matchAll(/href="([^"]*)"/g)){
+  let u;try{u=new URL(m[1].replaceAll('&amp;','&'),'https://local'+p.url);}catch{continue;}
+  if(u.origin!=='https://local'||!u.hash)continue;
+  const target=snapshot.pages.find(q=>q.url===u.pathname);if(!target)continue;
+  const id=decodeURIComponent(u.hash.slice(1));
+  if(![...target.html.matchAll(/\bid="([^"]+)"/g)].some(x=>x[1]===id))missing.push(p.path+' -> '+u.pathname+u.hash);
+ }
+ assert.deepEqual(missing,[]);
+});
+
+test('parent capabilities remain discoverable after consolidation',()=>{
+ const page=path=>snapshot.pages.find(p=>p.path===path).html;
+ assert.ok(page('services-exploitation/21-ftp.md').includes('href="/oscp/nstsec/brute-forcing/#ftp"'));
+ assert.ok(!page('services-exploitation/21-ftp.md').includes('Brute Forcing SSH'));
+ assert.ok(page('brute-forcing.md').includes('ftp-found.txt TARGET ftp'));
+ assert.ok(page('services-exploitation/139-445-smb.md').includes('-s /PATH/shares.txt'));
+ assert.ok(page('privilege-escalation/linux-privesc.md').includes('-s usr010,net,pro'));
+ assert.ok(page('privilege-escalation/linux-privesc.md').includes('./linpeas_linux_amd64'));
+ assert.ok(page('privilege-escalation/windows-privesc.md').includes('systeminfo userinfo'));
+ assert.ok(page('transfer-files/README.md').includes('scp /tmp/FILE USER@LHOST:'));
+ assert.ok(page('network-scan.md').includes('nmap --script-help ftp-anon'));
+ for(const path of ['active-directory/ad-manual-enumeration.md','active-directory/ad-lateral-movement.md'])assert.ok(!page(path).includes('user-content-fn-'));
+ const aliases={
+  'network-scan.md':['manual-network-scan','nmap','automatic-network-scan','nmapautomator','netcat','masscan'],
+  'privilege-escalation/linux-privesc.md':['linpeas','linux-smart-enumeration'],
+  'privilege-escalation/windows-privesc.md':['winpeas-recommended','seatbelt','accesschkexe'],
+  'active-directory/ad-automatic-enumeration.md':['sharpound','bloodhound'],
+  'services-exploitation/139-445-smb.md':['enum4linux','smbclient--smbmap--crackmapexec']
+ };
+ for(const [path,ids] of Object.entries(aliases))for(const id of ids)assert.ok(page(path).includes('id="'+id+'"'),path+'#'+id);
+});

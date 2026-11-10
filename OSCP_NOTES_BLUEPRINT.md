@@ -158,7 +158,7 @@ The tool directory currently groups qualifying links under five tracks; tracks w
 ## 6. Required workflow for future changes
 
 1. Read this blueprint and the owning source page; inspect adjacent sections and any existing canonical procedure before editing.
-2. Identify the reader's task, existing owner, overlap and unique addition. Prefer a small in-place revision or consolidation.
+2. Identify the reader's task, existing owner, overlap and unique addition. Prefer a small in-place revision or consolidation. For broader consolidation, compare the parent/source capabilities: preserve useful focused modes and verify labelled links reach the precise owning section. A command existing somewhere else does not make it discoverable; retain parent anchors where the corresponding task remains. Keep the comparison/evidence private.
 3. Source-check changed commands/policy as applicable. Keep private research and execution evidence outside the published content.
 4. Edit the reviewed Markdown. Update `SUMMARY.md` only for intentional membership/order changes. Add tool source links at the usage location; update classification only if needed.
 5. Run `node scripts/sync-nstsec.mjs <reviewed-source-checkout>`, `npm run build`, `node --test tests/nstsec.test.mjs` and `npm run check` as applicable to the changes. Inspect changed destinations/fragments and disclosures; use browser checks for layout/interaction changes.
