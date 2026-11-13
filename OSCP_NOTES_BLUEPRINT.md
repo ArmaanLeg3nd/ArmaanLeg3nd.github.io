@@ -12,6 +12,8 @@ The default `/oscp/` entry leads to `/oscp/nstsec/`. The older, larger collectio
 
 ## 2. Navigation and page hierarchy
 
+Owner-requested standalone supplement: `/oscp/manual-exploitation/`, authored in `src/pages/oscp/manual-exploitation.astro`, is linked from Misc and lives outside the eight core tracks. It provides compact finding-to-method checks and manually selected execution blocks, with links back to the full owning procedures. Keep this deliberately selected quick-use collection separate from core NSTSec editing; it does not replace the owning procedures, tool setup aggregation, or concept/practice distinction. Review shared command changes against the corresponding owner to avoid drift. Its search is local to this page; it does not join the core notes search index.
+
 There are eight tracks in the existing order. A track can have a useful landing procedure plus focused service/technique pages; this is not literally one file per track. Keep a complete procedure together. The overview lists tracks, not every subsection or tool. Extra tools to obtain, Public exploit finder and Misc are utility links outside the eight tracks. Misc at `/oscp/nstsec/misc/` links supplied standalone HTML study guides in `public/oscp/nstsec/misc/`; those guides retain their independent presentation.
 
 The tree below maps reviewed source paths to the published structure. Source root: `Sources/External/NSTSec-OSCP-notes/` in the OSCP vault. Remove `.md` and replace a terminal `README` with the containing directory to get the route beneath `/oscp/nstsec/`.

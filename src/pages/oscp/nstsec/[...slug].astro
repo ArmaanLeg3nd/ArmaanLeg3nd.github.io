@@ -3,7 +3,7 @@ import snapshot from '../../../content/oscp-nstsec.snapshot.json';
 import '../../../styles/oscp-notes.css';
 import { preparedNotes, searchPages } from '../../../lib/nstsec-search-index';
 import { serializeSearchIndex } from '../../../lib/nstsec-search';
-export function getStaticPaths(){const miscPage={path:'misc.md',slug:'misc',url:'/oscp/nstsec/misc/',title:'Misc',depth:0,headings:[],html:'<h1>Misc</h1><p>Standalone study guides.</p><ul><li><a href="/oscp/nstsec/misc/active-directory-oscp-speedrun.html">Active Directory OSCP speedrun</a></li><li><a href="/oscp/nstsec/misc/windows-privesc-oscp-speedrun.html">Windows privilege escalation OSCP speedrun</a></li></ul>'};return [{params:{slug:'misc'},props:{page:miscPage}},{params:{slug:undefined},props:{page:null}},...snapshot.pages.map(page=>({params:{slug:page.slug},props:{page}}))];}
+export function getStaticPaths(){const miscPage={path:'misc.md',slug:'misc',url:'/oscp/nstsec/misc/',title:'Misc',depth:0,headings:[],html:'<h1>Misc</h1><p>Standalone study guides.</p><ul><li><a href="/oscp/manual-exploitation/">Manual exploitation — finding to execution</a></li><li><a href="/oscp/nstsec/misc/active-directory-oscp-speedrun.html">Active Directory OSCP speedrun</a></li><li><a href="/oscp/nstsec/misc/windows-privesc-oscp-speedrun.html">Windows privilege escalation OSCP speedrun</a></li></ul>'};return [{params:{slug:'misc'},props:{page:miscPage}},{params:{slug:undefined},props:{page:null}},...snapshot.pages.map(page=>({params:{slug:page.slug},props:{page}}))];}
 const {page}=Astro.props;
 const groups:snapshotGroup[]=[];
 type snapshotGroup={title:string;url:string;children:typeof snapshot.pages};
