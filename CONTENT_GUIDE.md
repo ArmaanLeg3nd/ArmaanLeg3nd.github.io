@@ -123,3 +123,7 @@ Audit scope: structural/content-preservation and usability checks over the compl
 Selective emphasis: existing prerequisite labels use dark amber, decisive evidence labels dark green, and a small reviewed set of disruptive-action phrases dark red. No blanket tool-name/error coloring, paragraph backgrounds or code highlighting. Links stay blue and underlined; the original bold wording carries meaning without color. Direct heading targets have a pale landing marker. Print uses black underlined cue text. Keep the phrase/label list narrow in `oscp-emphasis.ts`; do not expand it into a generic keyword highlighter.
 
 Cue highlights use soft red/amber/green fills with dark text and cloned inline decoration across wrapped lines. Contrast is checked against each actual fill; print removes fills while keeping bold underlined text. Only the existing selected words/labels receive fills.
+
+## Miscellaneous resources
+
+`/misc/` links standalone supplied HTML study guides stored in `public/misc/`. Shared site navigation exposes Misc; guide links use full-page navigation to initialize their own scripts and styles. Preserve the supplied files independently of the canonical OSCP notes.

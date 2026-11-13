@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Misc | Armaan" description="Standalone study guides and additional resources.">
+  <main class="page page--compact">
+    <header data-reveal>
+      <p class="eyebrow">Armaan / Misc</p>
+      <h1>Misc</h1>
+      <p>Standalone study guides and additional resources.</p>
+    </header>
+    <ul aria-label="Study guides" data-reveal>
+      <li><a href="/misc/active-directory-oscp-speedrun.html" data-astro-reload>Active Directory OSCP speedrun</a><p>Domain enumeration, attack paths, credentials, and lateral movement.</p></li>
+      <li><a href="/misc/windows-privesc-oscp-speedrun.html" data-astro-reload>Windows privilege escalation OSCP speedrun</a><p>Enumeration, escalation techniques, and troubleshooting.</p></li>
+    </ul>
+  </main>
+</BaseLayout>
+<style>
+  header { max-width: 43rem; margin-bottom: 3rem; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 500; line-height: 1.1; letter-spacing: -.06em; margin: 1rem 0; }
+  p { color: var(--muted); line-height: 1.8; }
+  ul { list-style: none; padding: 0; max-width: 48rem; }
+  li { padding: 1.5rem 0; border-top: 1px solid var(--border); }
+  a { color: var(--cyan-soft); text-decoration: underline; text-underline-offset: .2em; font-size: 1.15rem; }
+  li p { margin: .5rem 0 0; }
+</style>
