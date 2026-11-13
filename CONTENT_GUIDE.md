@@ -129,3 +129,5 @@ Cue highlights use soft red/amber/green fills with dark text and cloned inline d
 ## Miscellaneous resources
 
 `/oscp/nstsec/misc/` is a utility page in the notes sidebar, outside the eight tracks. It links supplied standalone HTML guides stored in `public/oscp/nstsec/misc/`. Preserve their independent styles and scripts. The former `/misc/` entry and guide URLs redirect to this location.
+
+The owner-requested linWinPwn quick-use sheet lives at `public/oscp/nstsec/misc/linwinpwn-quick-use.html`, linked from Misc. Keep wrapper-specific controls there and link the existing AD/SMB procedures for focused collection and validation. It retains standalone light styling and command-copy controls.
