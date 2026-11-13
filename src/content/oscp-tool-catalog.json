@@ -153,5 +153,7 @@
  ["Built-in utilities and runtimes","RPM","https://rpm.org/","rpm"],
  ["Services and databases","NetExec","https://github.com/Pennyw0rth/NetExec","netexec,nxc"],
  ["Network and web","WPScan","https://github.com/wpscanteam/wpscan","wpscan"],
- ["Windows enumeration and escalation","Process Monitor","https://learn.microsoft.com/en-us/sysinternals/downloads/procmon","procmon,procmon64.exe"]
+ ["Windows enumeration and escalation","Process Monitor","https://learn.microsoft.com/en-us/sysinternals/downloads/procmon","procmon,procmon64.exe"],
+ ["Active Directory and credential tools","BloodHound.py CE","https://github.com/dirkjanm/BloodHound.py","bloodhound-ce-python"],
+ ["Active Directory and credential tools","bloodyAD","https://github.com/CravateRouge/bloodyAD","bloodyad"]
 ]

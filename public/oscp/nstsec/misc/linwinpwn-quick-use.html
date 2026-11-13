@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="A compact linWinPwn AD first pass: one launch command, four enumeration choices, optional hash/ticket authentication and result triage.">
-<title>linWinPwn quick-use sheet | OSCP notes</title>
+<meta name="description" content="Four direct AD enumeration collectors without linWinPwn menus: directory graph, inventory, writable rights and version-aware share checks.">
+<title>AD first pass without menus | OSCP notes</title>
 <style>
 :root{color-scheme:light;font-family:system-ui,sans-serif;color:#18212c;background:#fff;line-height:1.6}*{box-sizing:border-box}body{margin:0}a{color:#1755a1;text-underline-offset:3px}header{border-bottom:1px solid #dae0e7;padding:16px 24px}header div{max-width:1160px;margin:auto}header a{margin-right:24px}.layout{max-width:1160px;margin:auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding:32px 24px}nav{position:sticky;top:24px;align-self:start}nav a{display:block;padding:5px 0;font-size:.92rem}main{min-width:0;max-width:850px}h1{font-size:2.3rem;line-height:1.15;margin:0 0 14px}h2{margin-top:42px;font-size:1.45rem;border-bottom:1px solid #dae0e7;padding-bottom:8px}h3{font-size:1.05rem;margin-bottom:8px}h1,h2,h3{color:#18212c;scroll-margin-top:20px}p{margin:10px 0 16px}.lead{font-size:1.1rem;color:#4d5967}.cue{border-left:3px solid #9b6b15;background:#fff9eb;padding:12px 16px;margin:20px 0}.muted{color:#596572;font-size:.92rem}pre{position:relative;overflow:auto;border:1px solid #dbe1e8;background:#f6f8fa;padding:36px 16px 16px;border-radius:5px;line-height:1.5}code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:anywhere}pre code{overflow-wrap:normal;font-size:.86rem}button{cursor:pointer;border:1px solid #cbd3dd;border-radius:4px;background:white;padding:3px 9px;color:#263849;font:inherit;font-size:.75rem}pre button{position:absolute;right:8px;top:6px}button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #1755a1;outline-offset:3px}details{border:1px solid #dbe1e8;padding:12px 16px;margin:14px 0;border-radius:5px}summary{cursor:pointer;font-weight:600}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{padding:10px;text-align:left;vertical-align:top;border-bottom:1px solid #dbe1e8}th{background:#f6f8fa}li{margin:6px 0}.status{min-height:1.4em}.source-list{padding-left:20px}@media(max-width:760px){.layout{display:block;padding:24px 18px}nav{position:static;border-bottom:1px solid #dae0e7;padding-bottom:18px;margin-bottom:25px}nav a{display:inline-block;margin-right:14px}h1{font-size:1.9rem}}@media print{header,nav,button,.status{display:none}.layout{display:block;max-width:none;padding:0}main{max-width:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}details{break-inside:avoid}a{color:#111}}
 </style>
@@ -12,60 +12,60 @@
 <body>
 <header><div><a href="/oscp/nstsec/misc/">← Misc</a><a href="/oscp/nstsec/active-directory/ad-automatic-enumeration/">AD enumeration notes</a><a href="https://github.com/lefayjey/linWinPwn">Upstream project</a></div></header>
 <div class="layout">
-<nav aria-label="On this page"><strong>linWinPwn</strong><a href="#selective">1. Start</a><a href="#collect">2. Collect</a><a href="#results">3. Triage</a><a href="#troubleshooting">4. If it fails</a><a href="#sources">Sources & setup</a></nav>
+<nav aria-label="On this page"><strong>AD first pass</strong><a href="#selective">1. Prepare</a><a href="#collect">2. Four direct collectors</a><a href="#results">3. Read the results</a><a href="#troubleshooting">4. Limits</a><a href="#sources">Sources & setup</a></nav>
 <main>
-<h1>linWinPwn: collect, then triage</h1>
-<p class="lead">One launch command. Four collection choices. Follow the useful leads manually.</p>
-<p>Use it like an AD first-pass collector: map identities, relationships, permissions and shares, then investigate the strongest finding. It reduces command juggling; it does not prove that a suggested attack path works.</p>
-<div class="cue" id="auto"><strong>OSCP boundary:</strong> use the selected enumeration actions below. Do not use <code>--auto</code> or “run all” batches: the reviewed automatic path includes attack routines and vulnerability probes. Automated enumeration is permitted; automatic exploitation, mass vulnerability scanning and spoofing are restricted. This is feature-based guidance, not blanket OffSec approval of linWinPwn. <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Official rules</a> · <a href="https://help.offsec.com/hc/en-us/articles/4412170923924-OSCP-Exam-FAQ">Exam FAQ</a>.</div>
+<h1>AD first pass, without menus</h1>
+<p class="lead">Four direct collectors for relationships, readable inventory, writable objects and shares.</p>
+<p>Use the collector for the information you need. Start with the directory graph; add readable inventory when it helps you inspect users/groups, and query rights/shares for actionable leads. All commands run without menu selection or a password prompt.</p>
+<div class="cue" id="auto"><strong>Why direct commands?</strong> linWinPwn has no selective noninteractive collection flag. Its menus read from <code>/dev/tty</code>; <code>--auto</code> also runs attack routines. These direct invocations avoid that wrapper's startup scans, authentication-repair prompts and automatic batch. Automated enumeration fits OffSec's feature-based rules; this is not blanket tool approval. <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide">Official restrictions</a>.</div>
 
-<h2 id="selective">1. Start with your domain account</h2>
-<span id="choose"></span><span id="scope"></span>
-<p>Run from Kali with linWinPwn installed, working AD DNS/time and routed access to the DC. Replace <code>DC_IP</code>, <code>DOMAIN</code>, <code>USER</code>, <code>PASSWORD</code> and <code>TARGET</code>. Use a private output directory.</p>
-<pre><code class="language-bash">mkdir -p ~/oscp/work/TARGET/evidence/linwinpwn
-linWinPwn -t DC_IP -d DOMAIN -u 'USER' -p 'PASSWORD' --targets DC -o ~/oscp/work/TARGET/evidence/linwinpwn</code></pre>
-<p><strong>Scope:</strong> <code>--targets DC</code> limits host routines that honor it; it does not constrain every collector. BloodHound “all methods” contacts domain hosts independently. Use it only when those hosts are in scope; otherwise choose DCOnly. Startup itself contacts the DC and scans selected ports.</p>
-<details id="credentials"><summary>Have a hash or ticket instead? Choose one alternative</summary>
-<p><strong>NTLM hash:</strong> use the matching account and LM:NT material.</p>
-<pre><code class="language-bash">linWinPwn -t DC_IP -d DOMAIN -u 'USER' -H 'LM_HASH:NT_HASH' --targets DC -o ~/oscp/work/TARGET/evidence/linwinpwn</code></pre>
-<p><strong>Kerberos cache:</strong> use a valid cache for the intended identity; DNS, service names and clock alignment must be correct.</p>
-<pre><code class="language-bash">linWinPwn -t DC_IP -d DOMAIN -u 'USER' -K /absolute/path/USER.ccache --targets DC -o ~/oscp/work/TARGET/evidence/linwinpwn</code></pre>
-<p>Use one credential method per run. Child-tool credential support differs. Keep secrets, tickets and output private.</p>
+<h2 id="selective">1. Prepare one private working directory</h2>
+<span id="choose"></span><span id="scope"></span><span id="credentials"></span>
+<p>Run in Kali with the tools installed, one valid domain identity, working AD DNS and routes to the selected services. Replace <code>DOMAIN</code> with the DNS domain, <code>DOMAIN_NETBIOS</code> with its short domain name, <code>DC_HOST</code> with the DC FQDN, <code>DC_IP</code> with its IP, and <code>TARGET</code> with one approved SMB host. The examples use passwords; they do not claim interchangeable hash/ticket support.</p>
+<pre><code class="language-bash">mkdir -p ~/oscp/work/TARGET/evidence/ad-first-pass
+cd ~/oscp/work/TARGET/evidence/ad-first-pass</code></pre>
+<p>Use a fresh directory for each identity/run. Secrets appear in process arguments, and NetExec also stores data locally; keep the working directory, shell history and tool databases private.</p>
+
+<h2 id="collect">2. Run the selected collectors</h2>
+<h3 id="graph">A. Directory relationships — start here</h3>
+<pre><code class="language-bash">bloodhound-ce-python -d DOMAIN -u USER -p 'PASSWORD' -dc DC_HOST -ns DC_IP -c DCOnly --disable-autogc --zip</code></pre>
+<p><strong>Get:</strong> groups, trusts, object properties, ACLs and containers as CE graph data. <strong>Limit:</strong> no member-host sessions/local groups. DNS and DC/GC discovery still need scoped connectivity; this is not a network endpoint allowlist. The normal authentication path can obtain a TGT and fall back to NTLM. <a href="/oscp/nstsec/active-directory/ad-automatic-enumeration/#kali-directory-graph-without-a-menu">Owning procedure & limits</a>.</p>
+
+<h3 id="inventory">B. Readable domain inventory</h3>
+<pre><code class="language-bash">ldapdomaindump -u 'DOMAIN_NETBIOS\USER' -p 'PASSWORD' -o ldap-inventory ldap://DC_IP</code></pre>
+<p><strong>Get:</strong> users/groups/computers/policy reports in <code>ldap-inventory/</code>. This queries LDAP and writes local reports; it does not test object writes. Extra hostname resolution is off. LDAP referrals can still expand contacted endpoints; a supplied IP is not an enforced boundary. Signing/channel-binding support differs across forks. <a href="/oscp/nstsec/active-directory/ad-automatic-enumeration/#readable-inventory-from-kali-ldapdomaindump">Owning procedure</a>.</p>
+
+<h3 id="writable">C. Writable directory objects</h3>
+<pre><code class="language-bash">bloodyAD --host DC_HOST --dc-ip DC_IP -d DOMAIN -u USER -p 'PASSWORD' get writable --detail --partition DOMAIN > writable.txt</code></pre>
+<p><strong>Get:</strong> writable attributes, security-descriptor rights and creatable child classes in the domain naming context. The selected path searches effective-right attributes; it does not add, modify or delete an object. Configuration/schema/DNS partitions are omitted. Leave trust traversal and BloodHound export options off. Requires help showing <code>--partition</code>. <a href="/oscp/nstsec/active-directory/ad-automatic-enumeration/#writable-directory-objects-from-kali">Owning procedure</a>.</p>
+
+<h3 id="shares">D. Shares on one approved host</h3>
+<p><strong>Version gate:</strong> use this form only if <code>nxc smb --help</code> documents <code>--file-write-check</code> and <code>--no-admin-check</code>. Leave <code>--file-write-check</code> off.</p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares --no-admin-check --log shares.log</code></pre>
+<p><strong>Get:</strong> share visibility, directory-listing access and access-right probes against existing share roots. In this version profile, no temporary files/directories are created; the separate SCM admin probe is skipped. <code>WRITE (ACL)</code> reports a requested right, not an ACL change or demonstrated file creation. <a href="/oscp/nstsec/services-exploitation/139-445-smb/">SMB owner & next checks</a>.</p>
+<details><summary>Older NetExec with --no-write-check (including v1.4.0)</summary>
+<p>Older plain <code>--shares</code> can create/delete temporary files and directories. Use this complete form only when local help supports the older flag:</p>
+<pre><code class="language-bash">nxc smb TARGET -d DOMAIN -u USER -p 'PASSWORD' --shares --no-write-check --log shares.log</code></pre>
+<p>Write testing is skipped, and the older release can still query SCM permissions during login. A READ filter alone does not suppress its write check. If neither documented version profile matches, stop and check that installed version before using it.</p>
 </details>
 
-<h2 id="collect">2. Run this short collection checklist</h2>
-<p>Choose these actions individually from the menus. Return to the main menu when switching families. Match the labels if numbering changes.</p>
-<div class="table-wrap"><table><thead><tr><th>Select</th><th>Collect</th><th>Useful result</th></tr></thead><tbody>
-<tr><td><strong>2 → 1ce</strong><br>or <strong>2 → 2ce</strong></td><td><strong>BloodHound CE</strong>: all methods when all contacted hosts are in scope; DCOnly for directory-focused collection.</td><td>Group memberships, ACL/delegation relationships and potential paths. All methods also attempts host/session collection, subject to rights and reachability.</td></tr>
-<tr><td><strong>2 → 3</strong></td><td><strong>ldapdomaindump</strong>: readable directory inventory.</td><td>HTML/JSON lists of users, computers and groups; inspect descriptions and interesting identities without navigating a graph.</td></tr>
-<tr><td><strong>2 → 11</strong></td><td><strong>bloodyAD writable rights</strong>: queries writable objects.</td><td>Candidate objects your identity may control. This is a rights query, not an instruction to modify them.</td></tr>
-<tr><td><strong>8 → 2</strong></td><td><strong>NetExec share enumeration</strong>: hosts selected by <code>--targets</code>.</td><td>Accessible shares to inspect for useful files. With the baseline, this is DC-focused; it is not an all-server share inventory.</td></tr>
+<h2 id="results">3. Turn a result into one next check</h2>
+<div class="table-wrap"><table><thead><tr><th>Result</th><th>Interpretation / next check</th></tr></thead><tbody>
+<tr><td>BloodHound ZIP</td><td>Import into compatible BloodHound CE. Validate the useful edge's identity, object, effective permissions and prerequisites; a graph path is a candidate.</td></tr>
+<tr><td>LDAP inventory</td><td>Inspect relevant users, memberships, descriptions, hosts and policies. Broad object visibility does not imply control.</td></tr>
+<tr><td><code>writable.txt</code></td><td>Check the exact attribute/right, object type, protection and privileged consumer/trigger before choosing a change. Writable does not automatically mean escalation.</td></tr>
+<tr><td>Readable share</td><td>Read one relevant file through the <a href="/oscp/nstsec/services-exploitation/139-445-smb/">SMB procedure</a>. Share access is not proof of local administration or execution.</td></tr>
+<tr><td>Denied/empty/failed collection</td><td>Keep the gap. Confirm credential, protocol support, connectivity and visibility before ruling out a path.</td></tr>
 </tbody></table></div>
-<p><strong>Then stop collecting and read the results.</strong> These four choices provide a broad first pass without running every tool. If DCOnly was used, missing host/session data remains unknown.</p>
-<details><summary>Only when the first pass leaves a specific gap</summary>
-<ul><li><strong>2 → 9</strong> — delegation inventory with findDelegation/NetExec when you need a readable delegation check.</li><li><strong>3 → 1</strong> — NetExec LDAP ADCS discovery when certificate infrastructure is relevant. This discovers infrastructure; it does not establish an exploitable template.</li><li><strong>2 → 6</strong> — password-policy enumeration before separately considering any guessing workflow.</li></ul>
-<p>Do not select the attack, vulnerability-check, dumping, object-modification or command-execution menus from this sheet. An individual technique needs its own reviewed procedure; its exclusion here does not imply that OffSec forbids every technique in those menus.</p>
-</details>
+<p>Stop collecting when you have a useful lead. Re-enumerate after a new identity or access change; save which identity and command produced each decisive observation.</p>
 
-<h2 id="results">3. Turn the output into your next check</h2>
-<p>Results live under <code>~/oscp/work/TARGET/evidence/linwinpwn/linWinPwn_DOMAIN/</code>. Read individual collector files and errors, not just completion banners. Keep different runs/identities separate so old output does not become new evidence.</p>
-<div class="table-wrap"><table><thead><tr><th>Finding</th><th>Next action</th></tr></thead><tbody>
-<tr><td>BloodHound CE JSON in <code>DomainRecon/</code></td><td>Import into a compatible <strong>Community Edition</strong> instance. Inspect a candidate path and <a href="/oscp/nstsec/active-directory/ad-manual-enumeration/">verify each useful permission</a> before acting.</td></tr>
-<tr><td>Interesting identity, group or writable object in <code>DomainRecon/</code></td><td>Check the exact identity, effective rights, object type and inheritance. A writable-object label is a candidate, not confirmed escalation.</td></tr>
-<tr><td>Readable share in <code>Shares/</code></td><td><a href="/oscp/nstsec/services-exploitation/139-445-smb/">Read a specific relevant file</a>. Share visibility alone does not establish useful contents, local admin or execution.</td></tr>
-<tr><td>Denied, missing or empty results</td><td>Check the collector's credentials, dependency and connectivity. Failed collection does not prove that the attack surface is absent.</td></tr>
-</tbody></table></div>
-<p>Re-enumerate after obtaining a new identity or access level. Save the identity, command and decisive output for each useful lead.</p>
+<h2 id="troubleshooting">4. Boundaries that matter</h2>
+<ul><li><strong>Authentication failure:</strong> stop retries; confirm account/domain, validity and state. Separate collectors perform separate logons, even though they share one identity.</li><li><strong>LDAP/Kerberos failure:</strong> check routing, AD DNS/time, signing and channel binding. Do not weaken target policy to make collection succeed.</li><li><strong>Scope:</strong> discovered hosts/trusts are evidence, not permission to contact them. DCOnly is directory-focused, not a universal one-IP network sandbox.</li><li><strong>Host collection:</strong> linWinPwn's <code>all,LoggedOn</code> is excluded from the baseline. It adds member-host RPC and remote-registry queries, which can trigger RemoteRegistry service startup.</li><li><strong>Inventory is active:</strong> logons, audit events, network traffic and local evidence writes still occur. No target writes in a selected path does not mean no observable effects.</li><li><strong>Tool versions:</strong> use local help and the owning procedures. Do not extrapolate behavior from a tool name or another release.</li></ul>
 
-<h2 id="troubleshooting">4. If collection fails</h2>
-<ul><li><strong>Login failure:</strong> stop retries; confirm account/domain, credential and account state. Stop if the wrapper unexpectedly prompts to change a password.</li><li><strong>LDAP or Kerberos failure:</strong> check DC reachability, DNS, clock and signing/channel-binding requirements. Use the <a href="/oscp/nstsec/active-directory/ad-automatic-enumeration/">focused AD procedure</a> for transport-specific commands.</li><li><strong>[X] Missing:</strong> repair the named dependency; the wrapper is not a self-contained bundle.</li><li><strong>Graph import failure:</strong> match the CE collector output to a compatible BloodHound CE importer.</li></ul>
-<p>Do not fix an uncertain result by switching to <code>--auto</code>. Use the specific collector directly if its wrapper behavior is unclear.</p>
-
-<h2 id="sources">Sources & one-time setup</h2>
+<h2 id="sources">Sources & setup</h2>
 <span id="setup"></span><span id="tooling"></span>
-<p><strong>Tooling for this section:</strong> linWinPwn coordinates BloodHound CE, ldapdomaindump, bloodyAD and NetExec. A domain account plus the relevant LDAP/SMB/Kerberos connectivity is the baseline; host/session collection needs additional reachability and rights. Use <a href="/oscp/nstsec/active-directory/ad-automatic-enumeration/">direct collectors and setup</a> when you need one focused check.</p>
-<p>For linWinPwn installation, follow the <a href="https://github.com/lefayjey/linWinPwn#setup">upstream setup instructions</a>. Review the installer first: it installs/upgrades many dependencies, uses sudo and writes under <code>/opt/lwp-scripts</code>. No installation or target execution is established by this sheet.</p>
-<p class="muted">Commands/menu actions source-checked against version 1.4.17, revision <a href="https://github.com/lefayjey/linWinPwn/blob/16c860e840a21cd9450c671f7b2aa29af61d3f9f/linWinPwn.sh">16c860e</a> · <a href="https://github.com/lefayjey/linWinPwn/blob/16c860e840a21cd9450c671f7b2aa29af61d3f9f/MENUS.md">menu reference</a>. These are study references for later scoped practice, not evidence of practical competence.</p>
+<p><strong>Tooling for this section:</strong> BloodHound.py CE for directory relationships, ldapdomaindump for readable inventory, bloodyAD for an effective-rights query, and NetExec for selected-host shares. <a href="/oscp/nstsec/tools/">Extra tools preparation</a> and <a href="/oscp/nstsec/active-directory/ad-automatic-enumeration/#prepare-tools-used-on-this-page">owning AD setup</a> keep installation/help checks separate from collection. These are reference examples for later scoped practice; no live target execution is established here.</p>
+<p><a href="https://github.com/dirkjanm/BloodHound.py/tree/bloodhound-ce">BloodHound.py CE source</a> · <a href="https://github.com/dirkjanm/ldapdomaindump">ldapdomaindump source</a> · <a href="https://github.com/CravateRouge/bloodyAD">bloodyAD source</a> · <a href="https://www.netexec.wiki/smb-protocol/enumeration/enumerate-shares-and-access">NetExec shares documentation</a> · <a href="https://github.com/lefayjey/linWinPwn">linWinPwn source</a> · <a href="https://help.offsec.com/hc/en-us/articles/4412170923924-OSCP-Exam-FAQ">OffSec FAQ</a></p>
 <p class="status" id="copy-status" aria-live="polite"></p>
 <p><a href="/oscp/nstsec/misc/">← Back to Misc</a></p>
 </main></div>

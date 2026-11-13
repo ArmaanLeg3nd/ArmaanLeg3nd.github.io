@@ -130,4 +130,4 @@ Cue highlights use soft red/amber/green fills with dark text and cloned inline d
 
 `/oscp/nstsec/misc/` is a utility page in the notes sidebar, outside the eight tracks. It links supplied standalone HTML guides stored in `public/oscp/nstsec/misc/`. Preserve their independent styles and scripts. The former `/misc/` entry and guide URLs redirect to this location.
 
-The owner-requested linWinPwn quick-use sheet lives at `public/oscp/nstsec/misc/linwinpwn-quick-use.html`, linked from Misc. Keep selective enumeration controls and exam exclusions there and link the existing AD/SMB procedures for focused collection and validation. It retains standalone light styling and command-copy controls.
+The owner-requested linWinPwn quick-use sheet lives at `public/oscp/nstsec/misc/linwinpwn-quick-use.html`, linked from Misc. The stable URL now holds the direct noninteractive AD-first-pass extract, linked as such from Misc. Canonical commands/setup remain on the owning AD/SMB pages; keep the extract synchronized with their collection and version boundaries. It retains standalone light styling and command-copy controls.
