@@ -12,7 +12,7 @@ The default `/oscp/` entry leads to `/oscp/nstsec/`. The older, larger collectio
 
 ## 2. Navigation and page hierarchy
 
-There are eight tracks in the existing order. A track can have a useful landing procedure plus focused service/technique pages; this is not literally one file per track. Keep a complete procedure together. The overview lists tracks, not every subsection or tool. Extra tools to obtain and Public exploit finder are utility links outside the eight tracks.
+There are eight tracks in the existing order. A track can have a useful landing procedure plus focused service/technique pages; this is not literally one file per track. Keep a complete procedure together. The overview lists tracks, not every subsection or tool. Extra tools to obtain, Public exploit finder and Misc are utility links outside the eight tracks. Misc at `/oscp/nstsec/misc/` links supplied standalone HTML study guides in `public/oscp/nstsec/misc/`; those guides retain their independent presentation.
 
 The tree below maps reviewed source paths to the published structure. Source root: `Sources/External/NSTSec-OSCP-notes/` in the OSCP vault. Remove `.md` and replace a terminal `README` with the containing directory to get the route beneath `/oscp/nstsec/`.
 
@@ -69,7 +69,7 @@ The manual-enumeration subdirectory is physically nested but its three entries c
 ### Presentation contract
 
 - Fixed header: brand, centered notes search, secondary Extended library link.
-- Desktop left: Overview, Extra tools to obtain, Public exploit finder, eight tracks. Only the current track's child branch starts expanded; branches use native disclosures.
+- Desktop left: Overview, Extra tools to obtain, Public exploit finder, Misc, eight tracks. Only the current track's child branch starts expanded; branches use native disclosures.
 - Center: breadcrumb, page title and the actual procedure. Avoid dashboards, repeated chooser panels and maintenance commentary in this area.
 - Right on wide screens: the current page's H2/H3 contents, with H3 indentation. It disappears at widths of 1150px or less.
 - At 760px or less: Browse tracks starts collapsed above the document; search stays in the fixed header on its own row. Extremely narrow overview uses one column.
